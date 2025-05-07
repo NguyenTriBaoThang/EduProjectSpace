@@ -1,0 +1,6 @@
+@EduProject_TADProgrammer_HostAddress = http://localhost:5234
+
+GET {{EduProject_TADProgrammer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
