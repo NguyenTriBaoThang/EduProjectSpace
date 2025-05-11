@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang chi tiết giảng viên hướng dẫn của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Chi tiết GVHD | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <div class="sidebar-section">
+            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
+            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="head_lecturer_assign.html" class="active"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." onkeyup="filterGroups()">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <h6>Nguyễn Huy Cường</h6>
+                <p>nguyenhuycuong@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">👩‍🏫 Chi tiết giảng viên hướng dẫn</h2>
+                <button class="btn btn-info" onclick="exportDetails()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="head_lecturer_assign.html"><i class="bi bi-person-plus"></i> Danh sách GVHD</a></li>
+                    <li class="breadcrumb-item active"><i class="bi bi-folder"></i> Chi tiết GVHD</li>
+                </ol>
+            </nav>
+
+            <!-- Lecturer Info -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Thông tin giảng viên</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Tên GVHD:</strong> <span id="lecturerName"></span></p>
+                    <p><strong>Môn học:</strong> <span id="courseInfo"></span></p>
+                    <p><strong>Số sinh viên:</strong> <span id="studentCount"></span></p>
+                    <p><strong>Số nhóm:</strong> <span id="groupCount"></span></p>
+                </div>
+            </div>
+
+            <!-- Groups Table -->
+            <div class="table-container">
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm nhóm..." onkeyup="filterGroups()">
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('studentIds')">Mã SV <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('studentNames')">Tên SV <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('groupName')">Tên nhóm <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('projectName')">Tên đồ án <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        let courses = [
+            { courseId: "CS101", name: "Công nghệ phần mềm", semester: "HK1-2025", classId: "CNTT01", head: "Nguyễn Huy Cường" },
+            { courseId: "AI201", name: "Trí tuệ nhân tạo", semester: "HK1-2025", classId: "AI01", head: "Nguyễn Huy Cường" }
+        ];
+
+        let students = [
+            { id: "21520001", name: "Nguyễn Tri Bão Thắng", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
+            { id: "21520002", name: "Trần Văn A", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
+            { id: "21520003", name: "Lê Thị B", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 2 },
+            { id: "21520004", name: "Phạm Văn C", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
+            { id: "21520005", name: "Nguyễn Thị D", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
+            { id: "21520006", name: "Hoàng Văn E", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 },
+            { id: "21520007", name: "Trần Thị F", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 }
+        ];
+
+        let groups = [
+            { id: 1, name: "Nhóm 1", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["21520001", "21520002"] },
+            { id: 2, name: "Nhóm 2", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT002", members: ["21520003"] },
+            { id: 3, name: "Nhóm 3", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", members: ["21520004", "21520005"] },
+            { id: 4, name: "Nhóm 4", courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT004", members: ["21520006", "21520007"] }
+        ];
+
+        let projects = [
+            { projectId: "DT001", name: "Công nghệ phần mềm", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", startDate: "01/01/2025", endDate: "30/06/2025", gradingDate: "15/07/2025", description: "Xây dựng phần mềm quản lý", fileUrl: "files/DT001_description.pdf" },
+            { projectId: "DT002", name: "Ứng dụng AI trong y tế", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", startDate: "01/01/2025", endDate: "30/06/2025", gradingDate: "15/07/2025", description: "Phát triển AI hỗ trợ chẩn đoán", fileUrl: "files/DT002_description.pdf" },
+            { projectId: "DT003", name: "Lập trình Web", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", startDate: "01/01/2025", endDate: "30/06/2025", gradingDate: "15/07/2025", description: "Tạo trang web bán hàng", fileUrl: "files/DT003_description.pdf" },
+            { projectId: "DT004", name: "Phân tích dữ liệu", courseId: "AI201", semester: "HK1-2025", classId: "AI01", startDate: "01/01/2025", endDate: "30/06/2025", gradingDate: "15/07/2025", description: "Phân tích dữ liệu y tế", fileUrl: "files/DT004_description.pdf" }
+        ];
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Lấy thông tin từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedLecturer = decodeURIComponent(urlParams.get("lecturer"));
+        const selectedCourseId = urlParams.get("courseId");
+        const selectedSemester = urlParams.get("semester");
+        const selectedClassId = urlParams.get("classId");
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
+        });
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lấy thông tin nhóm
+        function getGroupData(groupId) {
+            const group = groups.find(g => g.id === groupId);
+            if (!group) return { studentIds: "", studentNames: "Chưa có thành viên", groupName: "Chưa có nhóm", projectName: "Chưa có đồ án" };
+
+            const studentIds = group.members.join(", ");
+            const studentNames = students.filter(s => group.members.includes(s.id)).map(s => s.name).join(", ");
+            const groupName = group.name;
+            const project = projects.find(p => p.projectId === group.projectId);
+            const projectName = project ? project.name : "Chưa có đồ án";
+
+            return { studentIds, studentNames, groupName, projectName };
+        }
+
+        // Lọc và sắp xếp bảng nhóm
+        function getFilteredGroups() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+
+            // Lấy danh sách nhóm duy nhất của GVHD trong lớp
+            const filteredGroups = groups.filter(group =>
+                group.courseId === selectedCourseId &&
+                group.semester === selectedSemester &&
+                group.classId === selectedClassId &&
+                students.some(s => s.lecturer === selectedLecturer && s.groupId === group.id)
+            );
+
+            const groupData = filteredGroups.map(group => {
+                const { studentIds, studentNames, groupName, projectName } = getGroupData(group.id);
+                return { groupId: group.id, studentIds, studentNames, groupName, projectName };
+            });
+
+            return groupData.filter(data =>
+                data.studentIds.toLowerCase().includes(searchText) ||
+                data.studentNames.toLowerCase().includes(searchText) ||
+                data.groupName.toLowerCase().includes(searchText) ||
+                data.projectName.toLowerCase().includes(searchText)
+            );
+        }
+
+        // Hiển thị thông tin GVHD
+        function displayLecturerInfo() {
+            const filteredStudents = students.filter(s =>
+                s.lecturer === selectedLecturer &&
+                s.courseId === selectedCourseId &&
+                s.semester === selectedSemester &&
+                s.classId === selectedClassId
+            );
+            const studentCount = filteredStudents.length;
+            const groupCount = new Set(filteredStudents.map(s => s.groupId)).size;
+            const course = courses.find(c => c.courseId === selectedCourseId && c.semester === selectedSemester && c.classId === selectedClassId);
+
+            document.getElementById("lecturerName").textContent = selectedLecturer;
+            document.getElementById("courseInfo").textContent = `${selectedCourseId} - ${course ? course.name : ""} (${selectedClassId} - ${selectedSemester})`;
+            document.getElementById("studentCount").textContent = studentCount;
+            document.getElementById("groupCount").textContent = groupCount;
+        }
+
+        // Hiển thị bảng nhóm
+        function displayTable(page) {
+            const filteredGroups = getFilteredGroups();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredGroups.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (!selectedLecturer || !selectedCourseId || !selectedSemester || !selectedClassId) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Vui lòng chọn một giảng viên từ danh sách.</td></tr>';
+            } else if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy nhóm nào.</td></tr>';
+            } else {
+                paginatedData.forEach((groupData, index) => {
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${groupData.studentIds}</td>
+                            <td>${groupData.studentNames}</td>
+                            <td>${groupData.groupName}</td>
+                            <td>${groupData.projectName}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="viewGroupDetails(${groupData.groupId})">
+                                    <i class="bi bi-eye"></i> Xem chi tiết
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredGroups.length);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterGroups() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Điều hướng đến trang chi tiết nhóm
+        function viewGroupDetails(groupId) {
+            window.location.href = `head_group_details.html?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}&groupId=${groupId}`;
+        }
+
+        // Xuất thông tin chi tiết sang Excel
+        function exportDetails() {
+            const filteredGroups = getFilteredGroups();
+            const worksheetData = [
+                ["Chi tiết giảng viên hướng dẫn - Hệ thống Sinh viên HUTECH"],
+                [`GVHD: ${selectedLecturer}`],
+                [`Môn học: ${selectedCourseId} - ${selectedClassId} - ${selectedSemester}`],
+                [],
+                ["#", "Mã SV", "Tên SV", "Tên nhóm", "Tên đồ án"]
+            ];
+
+            filteredGroups.forEach((groupData, index) => {
+                worksheetData.push([
+                    index + 1,
+                    groupData.studentIds,
+                    groupData.studentNames,
+                    groupData.groupName,
+                    groupData.projectName
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "ChiTietGVHD");
+            XLSX.writeFile(workbook, `chi_tiet_gvhd_${selectedLecturer}_${selectedCourseId}_${selectedClassId}_${selectedSemester}.xlsx`);
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayLecturerInfo();
+            displayTable(currentPage);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang tổng quan Admin của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Tổng quan Admin | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="../ADMIN/img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        .dashboard-list-group-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dashboard-notification-title {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .text-muted {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
+        <a href="admin_dashboard.html" class="active"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện. Navbar hỗ trợ tìm kiếm và các chức năng tiện ích -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Dropdown hiển thị thông tin Admin và chức năng đăng xuất -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <h6 id="adminName">Admin HUTECH</h6>
+                <p id="adminEmail">admin@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="container mt-4">
+            <!-- Ghi chú: 4.1 - Xây dựng nền tảng trực tuyến hỗ trợ toàn diện quản lý đồ án -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">📊 Tổng quan Admin</h2>
+                <!-- Ghi chú: 4.8 - Hệ thống báo cáo và thống kê. Nút xuất Excel hỗ trợ thống kê nhanh -->
+                <button class="btn btn-info" onclick="exportDashboard()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện với người dùng -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-house-door-fill"></i> Tổng quan
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Summary Cards -->
+            <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Thống kê nhanh hỗ trợ quản lý tổng quan -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card-dashboard summary-card avg">
+                        <div class="card-header">
+                            <i class="bi bi-people"></i>
+                            <h5>Số lượng sinh viên</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="studentCount">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-dashboard summary-card high">
+                        <div class="card-header">
+                            <i class="bi bi-folder-check"></i>
+                            <h5>Đồ án đã nộp</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="submittedProjects">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-dashboard summary-card low">
+                        <div class="card-header">
+                            <i class="bi bi-lightbulb"></i>
+                            <h5>Đề tài chờ duyệt</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="pendingTopics">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-dashboard summary-card avg">
+                        <div class="card-header">
+                            <i class="bi bi-bell"></i>
+                            <h5>Thông báo gần đây</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="recentNotificationsCount">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Recent Notifications -->
+            <div class="row">
+                <!-- Ghi chú: 4.8 - Hệ thống báo cáo và thống kê. Biểu đồ trạng thái đồ án -->
+                <div class="col-md-6">
+                    <div class="card-dashboard">
+                        <div class="card-header">
+                            <i class="bi bi-bar-chart-line"></i>
+                            <h5>Thống kê trạng thái đồ án</h5>
+                        </div>
+                        <div class="card-content chart-container">
+                            <canvas id="projectStatusChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ghi chú: 4.4 - Hệ thống thông báo và nhắc nhở tự động. Thông báo gần đây hiển thị cập nhật -->
+                <div class="col-md-6">
+                    <div class="card-dashboard">
+                        <div class="card-header">
+                            <i class="bi bi-bell"></i>
+                            <h5>Thông báo gần đây</h5>
+                        </div>
+                        <div class="card-content">
+                            <ul class="list-group list-group-flush" id="recentNotifications"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mục đích: Tải dữ liệu từ API, hiển thị trên dashboard, xử lý đăng xuất với HttpOnly cookie.
+        // Hỗ trợ chức năng: 4.1, 4.2, 4.4, 4.7, 4.8, 4.9.1
+
+        const API_URL = "https://localhost:7047";
+
+        // Tải dữ liệu khi trang được load
+        window.onload = async () => {
+            try {
+                await loadUserProfile();
+                await loadDashboardData();
+            } catch (error) {
+                console.error("Error loading dashboard:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "../LOGIN/login.html";
+            }
+        };
+
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_ADMIN") {
+                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            }
+            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+        }
+
+        // Tải dữ liệu tổng quan từ API
+        async function loadDashboardData() {
+            try {
+                // Tải thống kê tổng quan
+                const summaryResponse = await fetch(`${API_URL}/api/Dashboard/summary`, {
+                    method: "GET",
+                    headers: { "Accept": "*/*" },
+                    credentials: "include"
+                });
+                if (!summaryResponse.ok) {
+                    throw new Error(`Lỗi tải thống kê tổng quan: ${summaryResponse.status}`);
+                }
+                const summary = await summaryResponse.json();
+                document.getElementById("studentCount").textContent = summary.studentCount || 0;
+                document.getElementById("submittedProjects").textContent = summary.submittedProjects || 0;
+                document.getElementById("pendingTopics").textContent = summary.pendingTopics || 0;
+
+                // Tải trạng thái đồ án
+                const statusResponse = await fetch(`${API_URL}/api/Dashboard/project-status`, {
+                    method: "GET",
+                    headers: { "Accept": "*/*" },
+                    credentials: "include"
+                });
+                if (!statusResponse.ok) {
+                    throw new Error(`Lỗi tải trạng thái đồ án: ${statusResponse.status}`);
+                }
+                const status = await statusResponse.json();
+                updateProjectStatusChart(status);
+
+                // Tải thông báo gần đây
+                const notificationsResponse = await fetch(`${API_URL}/api/Notifications/recent`, {
+                    method: "GET",
+                    headers: { "Accept": "*/*" },
+                    credentials: "include"
+                });
+                if (!notificationsResponse.ok) {
+                    throw new Error(`Lỗi tải thông báo gần đây: ${notificationsResponse.status}`);
+                }
+                const notifications = await notificationsResponse.json();
+                updateRecentNotifications(notifications);
+                document.getElementById("recentNotificationsCount").textContent = notifications.length;
+            } catch (error) {
+                throw new Error(`Lỗi API: ${error.message}`);
+            }
+        }
+
+        // Cập nhật biểu đồ trạng thái đồ án
+        let projectStatusChart;
+        function updateProjectStatusChart(status) {
+            const ctx = document.getElementById("projectStatusChart").getContext("2d");
+            if (projectStatusChart) projectStatusChart.destroy();
+            projectStatusChart = new Chart(ctx, {
+                type: "doughnut",
+                data: {
+                    labels: ["Chưa nộp", "Đã nộp", "Đã chấm điểm"],
+                    datasets: [{
+                        data: [
+                            status.notSubmitted || 0,
+                            status.submitted || 0,
+                            status.graded || 0
+                        ],
+                        backgroundColor: ["#dc3545", "#28a745", "#007bff"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                font: { size: 14, weight: "bold" }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Cập nhật thông báo gần đây
+        function updateRecentNotifications(notifications) {
+            const list = document.getElementById("recentNotifications");
+            list.innerHTML = "";
+            notifications.forEach(notification => {
+                const li = document.createElement("li");
+                li.className = "dashboard-list-group-item";
+                const details = notification.details || "";
+                li.innerHTML = `
+                    <i class="bi bi-bell"></i>
+                    <span class="dashboard-notification-title" data-full-text="${details}">${details.substring(0, 30)}...</span>
+                    <span class="text-muted">${new Date(notification.createdAt).toLocaleString()}</span>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        // Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    credentials: "include"
+                });
+                if (response.ok) {
+                    localStorage.removeItem("user");
+                    window.location.href = "../LOGIN/login.html";
+                } else {
+                    throw new Error("Đăng xuất thất bại.");
+                }
+            } catch (error) {
+                console.error("Logout error:", error);
+                alert("Không đăng xuất được. Vui lòng thử lại.");
+            }
+        }
+
+        // Xuất Excel
+        function exportDashboard() {
+            const studentCount = document.getElementById("studentCount").textContent;
+            const submittedProjects = document.getElementById("submittedProjects").textContent;
+            const pendingTopics = document.getElementById("pendingTopics").textContent;
+            const recentNotificationsCount = document.getElementById("recentNotificationsCount").textContent;
+            const statusData = projectStatusChart.data.datasets[0].data;
+            const notifications = Array.from(document.querySelectorAll("#recentNotifications li")).map(li => ({
+                details: li.querySelector(".dashboard-notification-title").dataset.fullText,
+                time: li.querySelector(".text-muted").textContent
+            }));
+
+            const worksheetData = [
+                ["Tổng quan Admin - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["Thống kê nhanh"],
+                ["Số lượng sinh viên", studentCount],
+                ["Đồ án đã nộp", submittedProjects],
+                ["Đề tài chờ duyệt", pendingTopics],
+                ["Thông báo gần đây", recentNotificationsCount],
+                [],
+                ["Thống kê trạng thái đồ án"],
+                ["Chưa nộp", statusData[0]],
+                ["Đã nộp", statusData[1]],
+                ["Đã chấm điểm", statusData[2]],
+                [],
+                ["Thông báo gần đây"],
+                ...notifications.map(n => [n.details, n.time])
+            ];
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "TongQuanAdmin");
+            XLSX.writeFile(workbook, "admin_dashboard.xlsx");
+        }
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "admin_notifications.html";
+        });
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+    </script>
+</body>
+</html>

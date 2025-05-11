@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hệ thống Quản lý đồ án môn học của Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>HUTECH | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html" class="active"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án <span class="badge bg-danger ms-2" id="pendingTasks">2</span></a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="calendarBtn" class="btn"><i class="bi bi-calendar"></i></button>
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn position-relative">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle" id="unreadCount">0</span>
+                </button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="container mt-4">
+            <h2 class="fw-bold text-primary">📊 BẢNG ĐIỀU KHIỂN</h2>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-house-door-fill"></i> Tổng quan
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Thống kê -->
+            <div class="row mt-4">
+                <!-- Bài tập đã nộp -->
+                <div class="col-md-4">
+                    <div class="card-dashboard shadow">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="bi bi-upload text-primary fs-4 me-2"></i> <h5 class="mb-0">Bài tập đã nộp</h5>
+                        </div>
+                        <div class="card-content text-center">
+                            <canvas id="submissionChart"></canvas>
+                            <p class="fw-bold mt-2 text-success">Tổng số: <span id="totalSubmissions">0</span></p>
+                        </div>
+                        <div class="card-footer text-center text-muted">📅 Cập nhật: Hôm nay</div>
+                    </div>
+                </div>
+                <!-- Tiến độ đồ án -->
+                <div class="col-md-4">
+                    <div class="card-dashboard shadow">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="bi bi-bar-chart-line text-success fs-4 me-2"></i> <h5 class="mb-0">Tiến độ đồ án</h5>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                        <div class="card-footer text-center text-muted">📅 Cập nhật: Hôm nay</div>
+                    </div>
+                </div>
+                <!-- Đề xuất đề tài -->
+                <div class="col-md-4">
+                    <div class="card-dashboard shadow">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="bi bi-lightbulb text-warning fs-4 me-2"></i> <h5 class="mb-0">Đề xuất đề tài</h5>
+                        </div>
+                        <div class="card-content text-center">
+                            <p>Chưa có đề tài nào được đề xuất.</p>
+                            <a href="student_proposals_list.html" class="btn btn-primary">Đề xuất ngay</a>
+                        </div>
+                        <div class="card-footer text-center text-muted">📅 Cập nhật: Hôm nay</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thông báo và Lịch cá nhân -->
+            <div class="row mt-4">
+                <!-- Thông báo mới -->
+                <div class="col-md-6">
+                    <div class="card-dashboard shadow">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-bell text-danger fs-4 me-2"></i> <h5 class="mb-0">Thông báo mới</h5>
+                            </div>
+                            <span class="badge bg-danger" id="unreadNotifications">0</span>
+                        </div>
+                        <div class="card-content">
+                            <ul class="list-group list-group-flush" id="notificationList"></ul>
+                            <div class="text-center mt-2" id="viewMoreNotifications" style="display: none;">
+                                <a href="notifications_list.html" class="btn btn-sm btn-primary">Xem thêm</a>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center text-muted">📅 Cập nhật: Hôm nay</div>
+                    </div>
+                </div>
+                <!-- Lịch cá nhân -->
+                <div class="col-md-6">
+                    <div class="card-dashboard shadow">
+                        <div class="card-header d-flex align-items-center">
+                            <i class="bi bi-calendar text-primary fs-4 me-2"></i> <h5 class="mb-0">Lịch cá nhân</h5>
+                        </div>
+                        <div class="card-content">
+                            <ul class="list-group list-group-flush" id="scheduleList">
+                                <li class="dashboard-list-group-item">
+                                    <i class="bi bi-folder-check"></i>
+                                    <span class="dashboard-notification-title">Hạn nộp báo cáo tuần 1</span>
+                                    <span class="text-muted">28/02/2025</span>
+                                </li>
+                                <li class="dashboard-list-group-item">
+                                    <i class="bi bi-award"></i>
+                                    <span class="dashboard-notification-title">Họp hội đồng chấm điểm</span>
+                                    <span class="text-muted">01/03/2025</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer text-center text-muted">📅 Cập nhật: Hôm nay</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Công việc sắp đến hạn -->
+            <h2 class="fw-bold text-primary mt-5">📌 Công việc sắp đến hạn</h2>
+            <div class="table-container">
+                <div class="table-header">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm công việc..." onkeyup="filterTable()">
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Chưa nộp">Chưa nộp</option>
+                        <option value="Đã nộp">Đã nộp</option>
+                    </select>
+                </div>
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Bài tập</th>
+                                <th>Môn học</th>
+                                <th>Hạn chót</th>
+                                <th>Thời gian còn lại</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskTable"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        const tasks = [
+            { id: 1, name: "Nộp đề tài", project: "Đồ án cơ sở", deadline: "05-02-2025", status: "Chưa nộp" },
+            { id: 2, name: "Bài tập tuần 1", project: "Đồ án cơ sở", deadline: "05-02-2025", status: "Đã nộp" },
+            { id: 3, name: "Bài tập tuần 2", project: "Đồ án cơ sở", deadline: "12-02-2025", status: "Đã nộp" },
+            { id: 4, name: "Bài tập tuần 4", project: "Đồ án cơ sở", deadline: "20-02-2025", status: "Đã nộp" },
+            { id: 5, name: "Bài tập tuần 3", project: "Đồ án cơ sở", deadline: "18-02-2025", status: "Chưa nộp" },
+            { id: 6, name: "Bài tập tuần 5", project: "Đồ án cơ sở", deadline: "23-02-2025", status: "Chưa nộp" },
+            { id: 7, name: "Bài tập tuần 6", project: "Đồ án cơ sở", deadline: "25-02-2025", status: "Chưa nộp" },
+            { id: 8, name: "Bài tập tuần 7", project: "Đồ án cơ sở", deadline: "28-02-2025", status: "Chưa nộp" },
+            { id: 9, name: "Bài tập tuần 8", project: "Đồ án cơ sở", deadline: "10-03-2025", status: "Chưa nộp" },
+            { id: 10, name: "Bài tập tuần 1", project: "Đồ án chuyên ngành", deadline: "15-03-2025", status: "Chưa nộp" },
+            { id: 11, name: "Bài tập tuần 1", project: "Đồ án tốt nghiệp", deadline: "19-03-2025", status: "Chưa nộp" },
+            { id: 12, name: "Bài tập tuần 2", project: "Đồ án tốt nghiệp", deadline: "21-03-2025", status: "Chưa nộp" },
+            { id: 13, name: "Bài tập tuần 3", project: "Đồ án tốt nghiệp", deadline: "23-03-2025", status: "Chưa nộp" },
+            { id: 14, name: "Bài tập tuần 4", project: "Đồ án tốt nghiệp", deadline: "28-03-2025", status: "Chưa nộp" }
+        ];
+
+        const notifications = [
+            { id: 1, title: "Nộp đồ án trước 10/02", fullText: "Nộp đồ án chuyên ngành trước 10/02 để tránh trễ hạn...", date: "24-02-2025" },
+            { id: 2, title: "Cập nhật hướng dẫn nộp bài", fullText: "Cập nhật hướng dẫn nộp bài chi tiết...", date: "23-02-2025" },
+            { id: 3, title: "Bảo trì hệ thống 15/02", fullText: "Hệ thống bảo trì từ 15/02 22:00 đến 16/02 06:00...", date: "22-02-2025" },
+            { id: 4, title: "Thông báo lịch bảo vệ", fullText: "Lịch bảo vệ đồ án được cập nhật...", date: "21-02-2025" },
+            { id: 5, title: "Nhắc nhở nộp bài tuần 1", fullText: "Nộp bài tập tuần 1 trước 05/02...", date: "20-02-2025" },
+            { id: 6, title: "Cập nhật tài liệu tham khảo", fullText: "Tài liệu mới đã được đăng tải...", date: "19-02-2025" },
+            { id: 7, title: "Thông báo nghỉ lễ", fullText: "Trường nghỉ lễ từ 01/03 đến 03/03...", date: "18-02-2025" }
+        ];
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("content");
+            const icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            icon.classList.toggle("bi-list");
+            icon.classList.toggle("bi-layout-sidebar-inset");
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("calendarBtn").addEventListener("click", () => {
+            window.location.href = "student_schedule.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Charts
+        const submissionData = {
+            "Đồ án cơ sở": tasks.filter(t => t.project === "Đồ án cơ sở" && t.status === "Đã nộp").length,
+            "Đồ án chuyên ngành": tasks.filter(t => t.project === "Đồ án chuyên ngành" && t.status === "Đã nộp").length,
+            "Đồ án tốt nghiệp": tasks.filter(t => t.project === "Đồ án tốt nghiệp" && t.status === "Đã nộp").length
+        };
+        document.getElementById("totalSubmissions").textContent = Object.values(submissionData).reduce((a, b) => a + b, 0);
+        const ctx1 = document.getElementById('submissionChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(submissionData),
+                datasets: [{ data: Object.values(submissionData), backgroundColor: ['#4CAF50', '#2196F3', '#FF9800'] }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' }, tooltip: { enabled: true } }
+            }
+        });
+
+        const progressData = {
+            "Đồ án cơ sở": 80,
+            "Đồ án chuyên ngành": 60,
+            "Đồ án tốt nghiệp": 30
+        };
+        const ctx2 = document.getElementById('progressChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(progressData),
+                datasets: [{ label: 'Tiến độ (%)', data: Object.values(progressData), backgroundColor: ['#4CAF50', '#2196F3', '#FF9800'] }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',
+                scales: { x: { beginAtZero: true, max: 100 } }
+            }
+        });
+
+        // Notifications
+        function displayNotifications() {
+            const notificationList = document.getElementById("notificationList");
+            notificationList.innerHTML = "";
+            const sortedNotifications = notifications.sort((a, b) => new Date(b.date.split('-').reverse().join('-')) - new Date(a.date.split('-').reverse().join('-')));
+            const latestNotifications = sortedNotifications.slice(0, 5);
+
+            latestNotifications.forEach((notif, index) => {
+                const iconClass = index === 0 ? "bi-exclamation-circle text-warning" : "bi-info-circle text-primary";
+                notificationList.innerHTML += `
+                    <li class="dashboard-list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="${iconClass} me-2"></i>
+                            <a href="notification_detail.html?id=${notif.id}" class="dashboard-notification-title text-decoration-none text-dark" data-full-text="${notif.fullText}">
+                                ${notif.title}
+                            </a>
+                            <span class="ms-auto text-muted fs-6">${notif.date}</span>
+                        </div>
+                    </li>
+                `;
+            });
+
+            document.getElementById("unreadNotifications").textContent = latestNotifications.length;
+            document.getElementById("unreadCount").textContent = latestNotifications.length;
+            if (sortedNotifications.length > 5) {
+                document.getElementById("viewMoreNotifications").style.display = "block";
+            }
+        }
+
+        // Tasks Table
+        const itemsPerPage = 5;
+        let currentPage = 1;
+
+        function calculateDaysRemaining(deadline) {
+            const today = new Date();
+            const deadlineDate = new Date(deadline.split('-').reverse().join('-'));
+            const timeDiff = deadlineDate - today;
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            return daysRemaining < 0 ? "Hết hạn nộp" : `${daysRemaining} ngày`;
+        }
+
+        function getFilteredTasks() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+            return tasks.filter(task =>
+                task.name.toLowerCase().includes(searchText) &&
+                (statusFilter === "" || task.status === statusFilter) &&
+                !(task.status === "Đã nộp" && calculateDaysRemaining(task.deadline) === "Hết hạn nộp")
+            ).sort((a, b) => new Date(a.deadline.split('-').reverse().join('-')) - new Date(b.deadline.split('-').reverse().join('-')));
+        }
+
+        function displayTable(page) {
+            const filteredTasks = getFilteredTasks();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredTasks.slice(start, end);
+            const tableBody = document.getElementById("taskTable");
+            tableBody.innerHTML = "";
+
+            paginatedData.forEach((task, index) => {
+                const daysRemaining = calculateDaysRemaining(task.deadline);
+                const statusClass = daysRemaining === "Hết hạn nộp" ? "badge bg-danger" : task.status === "Chưa nộp" ? "badge bg-warning" : "badge bg-success";
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${start + index + 1}</td>
+                        <td>${task.name}</td>
+                        <td>${task.project}</td>
+                        <td>${task.deadline}</td>
+                        <td>${daysRemaining}</td>
+                        <td><span class="${statusClass}">${daysRemaining === 'Hết hạn nộp' ? 'Hết hạn' : task.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info">👁️ Xem</button>
+                            ${task.status === 'Chưa nộp' && daysRemaining !== 'Hết hạn nộp' ? `<button class="btn btn-sm btn-primary ms-1" onclick="submitTask(${task.id})">📤 Nộp</button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById("pendingTasks").textContent = filteredTasks.filter(t => t.status === "Chưa nộp" && calculateDaysRemaining(t.deadline) !== "Hết hạn nộp").length;
+            setupPagination(filteredTasks.length);
+        }
+
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        function submitTask(id) {
+            window.location.href = `student_submissions_list.html?taskId=${id}`;
+        }
+
+        // Initial Load
+        displayTable(currentPage);
+        displayNotifications();
+    </script>
+</body>
+</html>

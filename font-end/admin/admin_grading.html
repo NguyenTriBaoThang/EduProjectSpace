@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang quản lý hội đồng chấm điểm Admin của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Quản lý hội đồng chấm điểm | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
+        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="admin_grading.html" class="active"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện. Navbar hỗ trợ tìm kiếm và các chức năng tiện ích -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <h6>Admin HUTECH</h6>
+                <p>admin@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Grading Management Section -->
+        <div class="container mt-4">
+            <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Xây dựng hội đồng chấm điểm, phân công giảng viên đánh giá -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">🏆 Quản lý hội đồng chấm điểm</h2>
+                <div>
+                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addGradingModal">Thêm hội đồng <i class="bi bi-plus-circle"></i></button>
+                    <!-- Ghi chú: 4.8 - Hệ thống báo cáo và thống kê. Xuất danh sách hội đồng -->
+                    <button class="btn btn-info" onclick="exportGrading()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+            </div>
+
+            <!-- Breadcrumb -->
+            <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện với người dùng -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-award"></i> Quản lý hội đồng
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Grading Table -->
+            <div class="table-container">
+                <!-- Ghi chú: 4.2 - Giao diện trực quan. Bộ lọc hỗ trợ tìm kiếm và phân loại -->
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm hội đồng..." onkeyup="filterTable()">
+                    <select id="semesterFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📅 Kỳ học</option>
+                        <option value="HK20251">Học kỳ 1 - 2025</option>
+                        <option value="HK20252">Học kỳ 2 - 2025</option>
+                        <option value="HK20253">Học kỳ 3 - 2025</option>
+                    </select>
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('gradingId')">Mã hội đồng <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('semester')">Kỳ học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('members')">Thành viên <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Hội Đồng -->
+    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Tạo hội đồng và phân công giảng viên -->
+    <div class="modal fade" id="addGradingModal" tabindex="-1" aria-labelledby="addGradingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGradingModalLabel">Thêm hội đồng chấm điểm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addGradingForm">
+                        <div class="mb-3">
+                            <label class="form-label">Mã hội đồng</label>
+                            <input type="text" id="gradingId" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kỳ học</label>
+                            <select id="gradingSemester" class="form-select" required>
+                                <option value="HK20251">Học kỳ 1 - 2025</option>
+                                <option value="HK20252">Học kỳ 2 - 2025</option>
+                                <option value="HK20253">Học kỳ 3 - 2025</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Thành viên hội đồng</label>
+                            <div id="lecturerCheckboxes">
+                                <div class="form-check">
+                                    <input type="checkbox" id="lecturer1" class="form-check-input" value="Nguyễn Huy Cường">
+                                    <label class="form-check-label" for="lecturer1">Nguyễn Huy Cường</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="lecturer2" class="form-check-input" value="Trần Thị Vân Anh">
+                                    <label class="form-check-label" for="lecturer2">Trần Thị Vân Anh</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="lecturer3" class="form-check-input" value="Lê Văn Nam">
+                                    <label class="form-check-label" for="lecturer3">Lê Văn Nam</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="lecturer4" class="form-check-input" value="Phạm Thị Hồng">
+                                    <label class="form-check-label" for="lecturer4">Phạm Thị Hồng</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="lecturer5" class="form-check-input" value="Nguyễn Văn Bình">
+                                    <label class="form-check-label" for="lecturer5">Nguyễn Văn Bình</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="addGrading()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Hội Đồng -->
+    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Sửa hội đồng và phân công giảng viên -->
+    <div class="modal fade" id="editGradingModal" tabindex="-1" aria-labelledby="editGradingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGradingModalLabel">Sửa hội đồng chấm điểm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editGradingForm">
+                        <input type="hidden" id="editGradingId">
+                        <div class="mb-3">
+                            <label class="form-label">Mã hội đồng</label>
+                            <input type="text" id="editGradingCode" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kỳ học</label>
+                            <select id="editGradingSemester" class="form-select" required>
+                                <option value="HK20251">Học kỳ 1 - 2025</option>
+                                <option value="HK20252">Học kỳ 2 - 2025</option>
+                                <option value="HK20253">Học kỳ 3 - 2025</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Thành viên hội đồng</label>
+                            <div id="editLecturerCheckboxes">
+                                <div class="form-check">
+                                    <input type="checkbox" id="editLecturer1" class="form-check-input" value="Nguyễn Huy Cường">
+                                    <label class="form-check-label" for="editLecturer1">Nguyễn Huy Cường</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="editLecturer2" class="form-check-input" value="Trần Thị Vân Anh">
+                                    <label class="form-check-label" for="editLecturer2">Trần Thị Vân Anh</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="editLecturer3" class="form-check-input" value="Lê Văn Nam">
+                                    <label class="form-check-label" for="editLecturer3">Lê Văn Nam</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="editLecturer4" class="form-check-input" value="Phạm Thị Hồng">
+                                    <label class="form-check-label" for="editLecturer4">Phạm Thị Hồng</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="editLecturer5" class="form-check-input" value="Nguyễn Văn Bình">
+                                    <label class="form-check-label" for="editLecturer5">Nguyễn Văn Bình</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditGrading()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu hội đồng
+        let gradingCouncils = [
+            { id: 1, gradingId: "HD001", semester: "HK20251", members: ["Nguyễn Huy Cường", "Trần Thị Vân Anh"] },
+            { id: 2, gradingId: "HD002", semester: "HK20252", members: ["Lê Văn Nam", "Phạm Thị Hồng"] },
+            { id: 3, gradingId: "HD003", semester: "HK20253", members: ["Nguyễn Văn Bình"] }
+        ];
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "admin_notifications.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lọc và sắp xếp bảng
+        function getFilteredCouncils() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const semesterFilter = document.getElementById("semesterFilter").value;
+
+            let filtered = gradingCouncils.filter(council =>
+                (council.gradingId.toLowerCase().includes(searchText) || 
+                 council.semester.toLowerCase().includes(searchText) || 
+                 council.members.join(", ").toLowerCase().includes(searchText)) &&
+                (semesterFilter === "" || council.semester === semesterFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = sortColumn === 'members' ? a[sortColumn].join(", ").toLowerCase() : a[sortColumn].toLowerCase();
+                    let valueB = sortColumn === 'members' ? b[sortColumn].join(", ").toLowerCase() : b[sortColumn].toLowerCase();
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Hiển thị bảng
+        function displayTable(page) {
+            const filteredCouncils = getFilteredCouncils();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredCouncils.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy hội đồng nào.</td></tr>';
+            } else {
+                paginatedData.forEach((council, index) => {
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${council.gradingId}</td>
+                            <td>${council.semester}</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${council.members.join(', ')}">${council.members.join(', ')}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info me-1" onclick="editGrading(${council.id})"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteGrading(${council.id})"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredCouncils.length);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Thêm hội đồng
+        function addGrading() {
+            const form = document.getElementById("addGradingForm");
+            if (form.checkValidity()) {
+                const members = [];
+                document.querySelectorAll("#lecturerCheckboxes .form-check-input:checked").forEach(checkbox => {
+                    members.push(checkbox.value);
+                });
+                if (members.length === 0) {
+                    alert("Vui lòng chọn ít nhất một giảng viên!");
+                    return;
+                }
+                const newGrading = {
+                    id: gradingCouncils.length + 1,
+                    gradingId: document.getElementById("gradingId").value,
+                    semester: document.getElementById("gradingSemester").value,
+                    members: members
+                };
+                gradingCouncils.push(newGrading);
+                alert("Đã thêm hội đồng: " + newGrading.gradingId);
+                bootstrap.Modal.getInstance(document.getElementById("addGradingModal")).hide();
+                displayTable(currentPage);
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Sửa hội đồng
+        function editGrading(id) {
+            const council = gradingCouncils.find(g => g.id === id);
+            if (council) {
+                document.getElementById("editGradingId").value = council.id;
+                document.getElementById("editGradingCode").value = council.gradingId;
+                document.getElementById("editGradingSemester").value = council.semester;
+                document.querySelectorAll("#editLecturerCheckboxes .form-check-input").forEach(checkbox => {
+                    checkbox.checked = council.members.includes(checkbox.value);
+                });
+                const modal = new bootstrap.Modal(document.getElementById("editGradingModal"));
+                modal.show();
+            }
+        }
+
+        function saveEditGrading() {
+            const id = parseInt(document.getElementById("editGradingId").value);
+            const council = gradingCouncils.find(g => g.id === id);
+            if (council) {
+                const members = [];
+                document.querySelectorAll("#editLecturerCheckboxes .form-check-input:checked").forEach(checkbox => {
+                    members.push(checkbox.value);
+                });
+                if (members.length === 0) {
+                    alert("Vui lòng chọn ít nhất một giảng viên!");
+                    return;
+                }
+                council.gradingId = document.getElementById("editGradingCode").value;
+                council.semester = document.getElementById("editGradingSemester").value;
+                council.members = members;
+                alert("Đã cập nhật hội đồng: " + council.gradingId);
+                bootstrap.Modal.getInstance(document.getElementById("editGradingModal")).hide();
+                displayTable(currentPage);
+            }
+        }
+
+        // Xóa hội đồng
+        function deleteGrading(id) {
+            if (confirm("Bạn có chắc muốn xóa hội đồng này không?")) {
+                gradingCouncils = gradingCouncils.filter(g => g.id !== id);
+                alert("Đã xóa hội đồng!");
+                displayTable(currentPage);
+            }
+        }
+
+        // Xuất danh sách hội đồng sang Excel
+        function exportGrading() {
+            const filteredCouncils = getFilteredCouncils();
+            const worksheetData = [
+                ["Danh sách hội đồng chấm điểm - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["#", "Mã hội đồng", "Kỳ học", "Thành viên"]
+            ];
+
+            filteredCouncils.forEach((council, index) => {
+                worksheetData.push([
+                    index + 1,
+                    council.gradingId,
+                    council.semester,
+                    council.members.join(", ")
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachHoiDong");
+            XLSX.writeFile(workbook, "danh_sach_hoi_dong.xlsx");
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayTable(currentPage);
+        });
+    </script>
+</body>
+</html>

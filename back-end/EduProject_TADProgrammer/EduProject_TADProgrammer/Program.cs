@@ -1,8 +1,4 @@
-﻿// File: Program.cs
-// Mục đích: Cấu hình ứng dụng ASP.NET Core, thêm middleware, dịch vụ, xác thực JWT, và hỗ trợ MVC/Razor Pages.
-// Chức năng hỗ trợ: 
-//   1: Phân quyền và bảo mật (cấu hình JWT, HTTPS, DI, CORS, xác thực).
-using EduProject_TADProgrammer.Data;
+﻿using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Middleware;
 using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,29 +15,31 @@ internal class Program
         // Thêm ApplicationDbContext với SQL Server
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-                   .EnableSensitiveDataLogging() // In dữ liệu chi tiết khi debug
-                   .EnableDetailedErrors()); // Hiển thị lỗi chi tiết
+                   .EnableSensitiveDataLogging()
+                   .EnableDetailedErrors());
 
         // Thêm dịch vụ MVC và Razor Pages
-        builder.Services.AddControllersWithViews(); // Hỗ trợ MVC và Razor Pages (Login.cshtml)
+        builder.Services.AddControllersWithViews();
 
-        // Thêm Swagger cho API documentation
+        // Thêm Swagger
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
         // Thêm các dịch vụ
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<RoleService>();
+        builder.Services.AddScoped<DashboardService>();
         builder.Services.AddScoped<JwtService>();
 
-        // Thêm CORS policy cho frontend
+        // Thêm CORS policy
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: "MyAllowOrigins", policy =>
             {
                 policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500")
                       .AllowAnyHeader()
-                      .AllowAnyMethod();
+                      .AllowAnyMethod()
+                      .AllowCredentials(); // Thêm để hỗ trợ HttpOnly cookie
             });
         });
 
@@ -64,7 +62,7 @@ internal class Program
 
         var app = builder.Build();
 
-        // Cấu hình HTTP request pipeline
+        // Cấu hình pipeline
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -73,34 +71,29 @@ internal class Program
         else
         {
             app.UseExceptionHandler("/Home/Error");
-            app.UseHsts(); // Bật HSTS cho production
+            app.UseHsts();
         }
 
         app.UseHttpsRedirection();
-        app.UseStaticFiles(); // Phục vụ file tĩnh (CSS, JS)
+        app.UseStaticFiles();
         app.UseRouting();
 
-        // Thêm CORS trước middleware JWT
         app.UseCors("MyAllowOrigins");
-
-        // Thêm middleware JWT
         app.UseMiddleware<JwtMiddleware>();
-
         app.UseAuthentication();
         app.UseAuthorization();
 
-        // Định nghĩa route mặc định cho MVC
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
-        // Kiểm tra kết nối cơ sở dữ liệu
+        // Kiểm tra kết nối DB
         using (var scope = app.Services.CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             try
             {
-                dbContext.Database.CanConnect(); // Kiểm tra kết nối
+                dbContext.Database.CanConnect();
                 Console.WriteLine("Kết nối cơ sở dữ liệu thành công!");
             }
             catch (Exception ex)

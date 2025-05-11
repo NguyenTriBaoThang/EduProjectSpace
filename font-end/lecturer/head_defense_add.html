@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang thêm lịch bảo vệ của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Thêm lịch bảo vệ | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+        }
+        .content {
+            padding: 20px;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 15px 20px;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+        }
+        .form-control[readonly] {
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #00c4ff);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #adb5bd);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <div class="sidebar-section">
+            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
+            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="head_defense_list.html"  class="active"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <h6>Nguyễn Huy Cường</h6>
+                <p>nguyenhuycuong@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Add Defense Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold" style="color: #28a745;">➕ Thêm lịch bảo vệ</h2>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="head_defense_list.html"><i class="bi bi-list-ul"></i> Danh sách môn cần xếp lịch bảo vệ</a></li>
+                    <li class="breadcrumb-item"><a id="backToDefenseLink"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a></li>
+                    <li class="breadcrumb-item active"><i class="bi bi-plus-circle"></i> Thêm lịch bảo vệ</li>
+                </ol>
+            </nav>
+
+            <!-- Add Form -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Thông tin lịch bảo vệ</h5>
+                </div>
+                <div class="card-body">
+                    <form id="addDefenseForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Mã đề tài</label>
+                                    <select id="defenseProjectId" class="form-select" required>
+                                        <option value="">Chọn nhóm</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tên nhóm</label>
+                                    <input type="text" id="defenseName" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Thành viên</label>
+                                    <input type="text" id="defenseMembers" class="form-control" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Trạng thái</label>
+                                    <input type="text" id="defenseStatus" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm GVHD</label>
+                                    <input type="text" id="defenseLecturerScore" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm hội đồng</label>
+                                    <input type="text" id="defenseCouncilScore" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Duyệt điểm</label>
+                                    <input type="text" id="defenseApproved" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày bảo vệ</label>
+                                    <input type="date" id="defenseDate" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Địa điểm</label>
+                                    <input type="text" id="defenseLocation" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Hội đồng</label>
+                                    <select id="defenseCouncil" class="form-select" required>
+                                        <option value="">Chọn hội đồng</option>
+                                        <option value="HD001">HD001</option>
+                                        <option value="HD002">HD002</option>
+                                        <option value="HD003">HD003</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-primary" onclick="saveDefense()">Lưu</button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelAdd()">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu nhóm sinh viên
+        let groups = [
+            { id: 1, name: "Nhóm 1", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["Nguyễn Tri Bão Thắng", "Trần Văn A"], status: "Đã duyệt", grades: { lecturerScore: 8.5, councilScore: 8.0, approved: "Chưa duyệt" } },
+            { id: 2, name: "Nhóm 2", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT002", members: ["Lê Thị B"], status: "Chưa duyệt", grades: null },
+            { id: 3, name: "Nhóm 3", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", members: ["Phạm Văn C", "Nguyễn Thị D"], status: "Hoàn thành", grades: { lecturerScore: 9.0, councilScore: 8.8, approved: "Đã duyệt" } },
+            { id: 4, name: "Nhóm 4", courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT004", members: ["Hoàng Văn E", "Trần Thị F"], status: "Đã duyệt", grades: { lecturerScore: 7.5, councilScore: 7.8, approved: "Chưa duyệt" } }
+        ];
+
+        let defenseSchedules = [
+            { id: 1, projectId: "DT001", date: "01/03/2025", location: "Phòng họp A", council: "HD001" },
+            { id: 2, projectId: "DT003", date: "02/03/2025", location: "Phòng họp B", council: "HD002" },
+            { id: 3, projectId: "DT004", date: "03/03/2025", location: "Phòng họp C", council: "HD003" }
+        ];
+
+        // Lấy thông tin từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectIdFromUrl = urlParams.get("projectId");
+        const courseId = urlParams.get("courseId");
+        const semester = urlParams.get("semester");
+        const classId = urlParams.get("classId");
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
+        });
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Đổ danh sách nhóm vào select
+        function populateDefenseProjects() {
+            const select = document.getElementById("defenseProjectId");
+            select.innerHTML = '<option value="">Chọn nhóm</option>';
+            groups.filter(group => 
+                !defenseSchedules.some(s => s.projectId === group.projectId) &&
+                group.courseId === courseId && 
+                group.semester === semester && 
+                group.classId === classId
+            ).forEach(group => {
+                select.innerHTML += `<option value="${group.projectId}">${group.projectId} - ${group.name}</option>`;
+            });
+
+            if (projectIdFromUrl) {
+                select.value = projectIdFromUrl;
+                updateGroupInfo(projectIdFromUrl);
+            }
+
+            select.addEventListener("change", () => {
+                const selectedProjectId = select.value;
+                updateGroupInfo(selectedProjectId);
+            });
+        }
+
+        // Cập nhật thông tin nhóm khi chọn
+        function updateGroupInfo(projectId) {
+            const group = groups.find(g => g.projectId === projectId);
+            if (group) {
+                document.getElementById("defenseName").value = group.name;
+                document.getElementById("defenseMembers").value = group.members.join(", ");
+                document.getElementById("defenseStatus").value = group.status;
+                document.getElementById("defenseLecturerScore").value = group.grades ? group.grades.lecturerScore : "Chưa có";
+                document.getElementById("defenseCouncilScore").value = group.grades ? group.grades.councilScore : "Chưa có";
+                document.getElementById("defenseApproved").value = group.grades ? group.grades.approved : "Chưa duyệt";
+            } else {
+                document.getElementById("defenseName").value = "";
+                document.getElementById("defenseMembers").value = "";
+                document.getElementById("defenseStatus").value = "";
+                document.getElementById("defenseLecturerScore").value = "";
+                document.getElementById("defenseCouncilScore").value = "";
+                document.getElementById("defenseApproved").value = "";
+            }
+        }
+
+        // Hiển thị thông tin ban đầu
+        function displayForm() {
+            if (!courseId || !semester || !classId) {
+                document.querySelector(".card-body").innerHTML = "<p class='text-center text-muted'>Vui lòng chọn một môn học từ danh sách để thêm lịch bảo vệ.</p>";
+            } else {
+                populateDefenseProjects();
+                document.getElementById("backToDefenseLink").href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
+            }
+        }
+
+        // Lưu lịch bảo vệ
+        function saveDefense() {
+            const form = document.getElementById("addDefenseForm");
+            if (form.checkValidity()) {
+                const projectId = document.getElementById("defenseProjectId").value;
+                if (defenseSchedules.some(s => s.projectId === projectId)) {
+                    alert("Nhóm này đã được xếp lịch bảo vệ!");
+                    return;
+                }
+                const newDefense = {
+                    id: defenseSchedules.length + 1,
+                    projectId: projectId,
+                    date: formatDate(document.getElementById("defenseDate").value),
+                    location: document.getElementById("defenseLocation").value,
+                    council: document.getElementById("defenseCouncil").value
+                };
+                defenseSchedules.push(newDefense);
+                alert(`Đã thêm lịch bảo vệ cho nhóm ${newDefense.projectId} vào ngày ${newDefense.date}`);
+                window.location.href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Hủy thêm lịch
+        function cancelAdd() {
+            window.location.href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
+        }
+
+        // Hàm định dạng ngày từ ISO sang dd/mm/yyyy
+        function formatDate(isoDate) {
+            const date = new Date(isoDate);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayForm();
+        });
+    </script>
+</body>
+</html>

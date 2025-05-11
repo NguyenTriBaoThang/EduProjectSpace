@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Xem chi tiết đề tài đồ án của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Xem chi tiết đề tài đồ án | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html" class="active"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <h2 class="fw-bold text-primary">📋 Xem chi tiết đề tài đồ án</h2>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="student_proposals_list.html"><i class="bi bi-list-ul"></i> Danh sách đề xuất</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-file-earmark-text"></i> Chi tiết đề xuất
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Section nội dung chi tiết -->
+            <div class="card mt-4" id="proposalDetails">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="text-uppercase" id="proposalTitle"></h5>
+                        <span id="proposalStatus" class="badge"></span>
+                    </div>
+                    <button class="btn btn-info btn-sm" onclick="exportProposal()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Thông tin chi tiết đề tài</h5>
+                    <p class="card-text">
+                        <strong>Loại đồ án:</strong> <span id="proposalType"></span> <br>
+                        <strong>Ngày đề xuất:</strong> <span id="proposalDate"></span> <br>
+                        <strong>Người đề xuất:</strong> <span id="proposer"></span> <br>
+                        <strong>Mô tả:</strong> <span id="proposalDescription"></span>
+                    </p>
+
+                    <!-- Gợi ý từ giảng viên -->
+                    <div class="alert alert-info" role="alert" id="teacherFeedback">
+                        <h5 class="alert-heading">Gợi ý từ giảng viên:</h5>
+                        <p id="feedbackText"></p>
+                    </div>
+                </div>
+
+                <!-- Phần file đính kèm -->
+                <div class="card-footer text-muted">
+                    <strong>File đính kèm:</strong>
+                    <ul class="file-list" id="fileList"></ul>
+                    <button class="btn btn-outline-primary btn-sm mt-2" onclick="downloadAllFiles()">Tải tất cả file</button>
+                </div>
+            </div>
+
+            <!-- Nút quay lại danh sách đề tài -->
+            <div class="mt-4 text-right">
+                <a href="student_proposals_list.html" class="btn btn-secondary btn-back">
+                    <i class="bi bi-arrow-left-circle"></i> Quay lại danh sách đề tài
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu đề tài
+        const proposals = {
+            "1": {
+                title: "Đồ án cơ sở: Xây dựng hệ thống quản lý sinh viên",
+                status: "Đã duyệt",
+                type: "Chuyên ngành",
+                date: "10-02-2025",
+                proposer: "Nguyễn Tri Bão Thắng",
+                description: "Đây là đề tài đồ án cơ sở với các mục tiêu nghiên cứu về ứng dụng công nghệ trong phát triển phần mềm, bao gồm việc sử dụng các công cụ hiện đại như Java, Spring Boot, và cơ sở dữ liệu MySQL.",
+                feedback: "Đề tài này đã được duyệt. Bạn cần chú trọng vào phần phân tích hệ thống và tối ưu hóa các quy trình. Nên tập trung vào việc ứng dụng các công nghệ mới và có thể mở rộng hệ thống sau khi hoàn thành.",
+                files: [
+                    { name: "proposal_document.pdf", url: "#" },
+                    { name: "system_design.png", url: "#" }
+                ]
+            },
+            "2": {
+                title: "Đồ án chuyên ngành: Ứng dụng di động đặt vé xe",
+                status: "Chưa duyệt",
+                type: "Chuyên ngành",
+                date: "15-02-2025",
+                proposer: "Nguyễn Tri Bão Thắng",
+                description: "Phát triển ứng dụng di động đặt vé xe sử dụng Flutter và Firebase để quản lý dữ liệu thời gian thực.",
+                feedback: "Đề tài cần bổ sung thêm phần phân tích yêu cầu và kế hoạch triển khai chi tiết hơn.",
+                files: [
+                    { name: "mobile_app_proposal.docx", url: "#" }
+                ]
+            }
+        };
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            const sidebar = document.querySelector(".sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            icon.classList.toggle("bi-list");
+            icon.classList.toggle("bi-layout-sidebar-inset");
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Lấy thông tin đề tài từ URL
+        const params = new URLSearchParams(window.location.search);
+        const proposalId = params.get("id");
+
+        function loadProposal() {
+            const proposal = proposals[proposalId];
+            if (proposal) {
+                document.getElementById("proposalTitle").textContent = `Đề tài: ${proposal.title}`;
+                document.getElementById("proposalStatus").textContent = proposal.status;
+                document.getElementById("proposalStatus").className = `badge ${proposal.status === "Đã duyệt" ? "bg-success" : "bg-warning"}`;
+                document.getElementById("proposalType").textContent = proposal.type;
+                document.getElementById("proposalDate").textContent = proposal.date;
+                document.getElementById("proposer").textContent = proposal.proposer;
+                document.getElementById("proposalDescription").textContent = proposal.description;
+                document.getElementById("feedbackText").textContent = proposal.feedback;
+
+                const fileList = document.getElementById("fileList");
+                fileList.innerHTML = "";
+                proposal.files.forEach(file => {
+                    fileList.innerHTML += `<li><a href="${file.url}" download class="btn btn-outline-primary btn-sm">📥 ${file.name}</a></li>`;
+                });
+            } else {
+                document.getElementById("proposalDetails").innerHTML = "<p class='p-4'>Không tìm thấy đề tài với ID này.</p>";
+            }
+        }
+
+        // Tải tất cả file đính kèm
+        function downloadAllFiles() {
+            const proposal = proposals[proposalId];
+            if (proposal && proposal.files.length > 0) {
+                proposal.files.forEach(file => {
+                    const link = document.createElement("a");
+                    link.href = file.url;
+                    link.download = file.name;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            } else {
+                alert("Không có file nào để tải!");
+            }
+        }
+
+        // Xuất báo cáo Excel
+        function exportProposal() {
+            const proposal = proposals[proposalId];
+            if (!proposal) return;
+
+            const worksheetData = [
+                [`Chi tiết đề tài đồ án - ${proposal.title}`],
+                ["Trạng thái", proposal.status],
+                ["Loại đồ án", proposal.type],
+                ["Ngày đề xuất", proposal.date],
+                ["Người đề xuất", proposal.proposer],
+                ["Mô tả", proposal.description],
+                ["Gợi ý từ giảng viên", proposal.feedback],
+                ["File đính kèm", proposal.files.map(f => f.name).join(", ")]
+            ];
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "ChiTietDeTai");
+            XLSX.writeFile(workbook, `de_tai_${proposalId}.xlsx`);
+        }
+
+        // Khởi chạy
+        loadProposal();
+    </script>
+</body>
+</html>

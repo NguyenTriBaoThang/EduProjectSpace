@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Remove="Data\SeedData.cs~RF7e0db4e.TMP" />
+    <None Remove="Services\JwtService.cs~RF13682788.TMP" />
   </ItemGroup>
 
   <ItemGroup>

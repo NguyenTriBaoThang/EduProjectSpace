@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang quản lý thông báo Admin của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Quản lý thông báo | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
+        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="admin_notifications.html" class="active"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <h6>Admin HUTECH</h6>
+                <p>admin@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Notifications Management Section -->
+        <div class="container mt-4">
+            <!-- Ghi chú: 4.4 - Hệ thống thông báo và nhắc nhở tự động. Quản lý và gửi thông báo hệ thống -->
+            <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Cấu hình thông báo hệ thống -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">🔔 Quản lý thông báo</h2>
+                <div>
+                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNotificationModal">Thêm thông báo <i class="bi bi-plus-circle"></i></button>
+                    <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#configNotificationModal">Cấu hình <i class="bi bi-gear"></i></button>
+                    <button class="btn btn-info" onclick="exportNotifications()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-bell"></i> Quản lý thông báo
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Notifications Table -->
+            <div class="table-container">
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm thông báo..." onkeyup="filterTable()">
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Đã gửi">Đã gửi</option>
+                        <option value="Chưa gửi">Chưa gửi</option>
+                    </select>
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('title')">Tiêu đề <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('content')">Nội dung <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('recipient')">Người nhận <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('date')">Ngày gửi <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Thông Báo -->
+    <div class="modal fade" id="addNotificationModal" tabindex="-1" aria-labelledby="addNotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNotificationModalLabel">Thêm thông báo mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addNotificationForm">
+                        <div class="mb-3">
+                            <label class="form-label">Tiêu đề</label>
+                            <input type="text" id="notificationTitle" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung</label>
+                            <textarea id="notificationContent" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Người nhận</label>
+                            <select id="notificationRecipient" class="form-select" required>
+                                <option value="Tất cả">Tất cả</option>
+                                <option value="Sinh viên">Sinh viên</option>
+                                <option value="Giảng viên">Giảng viên</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="addNotification()">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Thông Báo -->
+    <div class="modal fade" id="editNotificationModal" tabindex="-1" aria-labelledby="editNotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNotificationModalLabel">Sửa thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editNotificationForm">
+                        <input type="hidden" id="editNotificationId">
+                        <div class="mb-3">
+                            <label class="form-label">Tiêu đề</label>
+                            <input type="text" id="editNotificationTitle" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung</label>
+                            <textarea id="editNotificationContent" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Người nhận</label>
+                            <select id="editNotificationRecipient" class="form-select" required>
+                                <option value="Tất cả">Tất cả</option>
+                                <option value="Sinh viên">Sinh viên</option>
+                                <option value="Giảng viên">Giảng viên</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select id="editNotificationStatus" class="form-select" required>
+                                <option value="Đã gửi">Đã gửi</option>
+                                <option value="Chưa gửi">Chưa gửi</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditNotification()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cấu Hình Thông Báo -->
+    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Cấu hình thông báo hệ thống -->
+    <div class="modal fade" id="configNotificationModal" tabindex="-1" aria-labelledby="configNotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="configNotificationModalLabel">Cấu hình thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="configNotificationForm">
+                        <div class="mb-3">
+                            <label class="form-label">Kênh gửi thông báo</label>
+                            <div class="form-check">
+                                <input type="checkbox" id="enableWeb" class="form-check-input" checked>
+                                <label class="form-check-label" for="enableWeb">Hiển thị trên web</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="enableEmail" class="form-check-input">
+                                <label class="form-check-label" for="enableEmail">Gửi qua email</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tần suất nhắc nhở tự động</label>
+                            <select id="reminderFrequency" class="form-select">
+                                <option value="none">Không nhắc</option>
+                                <option value="daily">Hàng ngày</option>
+                                <option value="weekly">Hàng tuần</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveConfig()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu thông báo
+        let notifications = [
+            { id: 1, title: "Thông báo nộp đồ án tuần 1", content: "Yêu cầu sinh viên nộp báo cáo tiến độ tuần 1 trước ngày 28/02/2025.", recipient: "Sinh viên", date: "25/02/2025", status: "Đã gửi" },
+            { id: 2, title: "Họp hội đồng chấm điểm", content: "Hội đồng chấm điểm sẽ họp vào ngày 01/03/2025 tại phòng họp A.", recipient: "Giảng viên", date: "24/02/2025", status: "Đã gửi" },
+            { id: 3, title: "Cập nhật lịch học kỳ", content: "Lịch học kỳ mới đã được cập nhật, vui lòng kiểm tra.", recipient: "Tất cả", date: "23/02/2025", status: "Đã gửi" },
+            { id: 4, title: "Nhắc nhở đề xuất đề tài", content: "Sinh viên cần đề xuất đề tài trước ngày 05/03/2025.", recipient: "Sinh viên", date: "", status: "Chưa gửi" },
+            { id: 5, title: "Thông báo nghỉ lễ", content: "Nghỉ lễ từ 29/04/2025 đến 02/05/2025.", recipient: "Tất cả", date: "", status: "Chưa gửi" }
+        ];
+
+        // Cấu hình thông báo
+        let notificationConfig = {
+            enableWeb: true,
+            enableEmail: false,
+            reminderFrequency: "none"
+        };
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "admin_notifications.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lọc và sắp xếp bảng
+        function getFilteredNotifications() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            let filtered = notifications.filter(notification =>
+                (notification.title.toLowerCase().includes(searchText) || 
+                 notification.content.toLowerCase().includes(searchText)) &&
+                (statusFilter === "" || notification.status === statusFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn] ? a[sortColumn].toLowerCase() : "";
+                    let valueB = b[sortColumn] ? b[sortColumn].toLowerCase() : "";
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Hiển thị bảng
+        function displayTable(page) {
+            const filteredNotifications = getFilteredNotifications();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredNotifications.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy thông báo nào.</td></tr>';
+            } else {
+                paginatedData.forEach((notification, index) => {
+                    const statusClass = notification.status === "Đã gửi" ? "bg-success" : "bg-warning";
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${notification.title}</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${notification.content}">${notification.content}</td>
+                            <td>${notification.recipient}</td>
+                            <td>${notification.date || "Chưa gửi"}</td>
+                            <td><span class="badge ${statusClass}">${notification.status}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info me-1" onclick="editNotification(${notification.id})"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteNotification(${notification.id})"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredNotifications.length);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Thêm thông báo
+        function addNotification() {
+            const form = document.getElementById("addNotificationForm");
+            if (form.checkValidity()) {
+                const currentDate = new Date().toLocaleDateString('vi-VN');
+                const newNotification = {
+                    id: notifications.length + 1,
+                    title: document.getElementById("notificationTitle").value,
+                    content: document.getElementById("notificationContent").value,
+                    recipient: document.getElementById("notificationRecipient").value,
+                    date: currentDate,
+                    status: "Đã gửi"
+                };
+                notifications.push(newNotification);
+                alert("Đã gửi thông báo: " + newNotification.title);
+                bootstrap.Modal.getInstance(document.getElementById("addNotificationModal")).hide();
+                displayTable(currentPage);
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Sửa thông báo
+        function editNotification(id) {
+            const notification = notifications.find(n => n.id === id);
+            if (notification) {
+                document.getElementById("editNotificationId").value = notification.id;
+                document.getElementById("editNotificationTitle").value = notification.title;
+                document.getElementById("editNotificationContent").value = notification.content;
+                document.getElementById("editNotificationRecipient").value = notification.recipient;
+                document.getElementById("editNotificationStatus").value = notification.status;
+                const modal = new bootstrap.Modal(document.getElementById("editNotificationModal"));
+                modal.show();
+            }
+        }
+
+        function saveEditNotification() {
+            const id = parseInt(document.getElementById("editNotificationId").value);
+            const notification = notifications.find(n => n.id === id);
+            if (notification) {
+                notification.title = document.getElementById("editNotificationTitle").value;
+                notification.content = document.getElementById("editNotificationContent").value;
+                notification.recipient = document.getElementById("editNotificationRecipient").value;
+                notification.status = document.getElementById("editNotificationStatus").value;
+                if (notification.status === "Đã gửi" && !notification.date) {
+                    notification.date = new Date().toLocaleDateString('vi-VN');
+                } else if (notification.status === "Chưa gửi") {
+                    notification.date = "";
+                }
+                alert("Đã cập nhật thông báo: " + notification.title);
+                bootstrap.Modal.getInstance(document.getElementById("editNotificationModal")).hide();
+                displayTable(currentPage);
+            }
+        }
+
+        // Xóa thông báo
+        function deleteNotification(id) {
+            if (confirm("Bạn có chắc muốn xóa thông báo này không?")) {
+                notifications = notifications.filter(n => n.id !== id);
+                alert("Đã xóa thông báo!");
+                displayTable(currentPage);
+            }
+        }
+
+        // Xuất danh sách thông báo sang Excel
+        function exportNotifications() {
+            const filteredNotifications = getFilteredNotifications();
+            const worksheetData = [
+                ["Danh sách thông báo - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["#", "Tiêu đề", "Nội dung", "Người nhận", "Ngày gửi", "Trạng thái"]
+            ];
+
+            filteredNotifications.forEach((notification, index) => {
+                worksheetData.push([
+                    index + 1,
+                    notification.title,
+                    notification.content,
+                    notification.recipient,
+                    notification.date || "Chưa gửi",
+                    notification.status
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachThongBao");
+            XLSX.writeFile(workbook, "danh_sach_thong_bao.xlsx");
+        }
+
+        // Lưu cấu hình thông báo
+        function saveConfig() {
+            notificationConfig.enableWeb = document.getElementById("enableWeb").checked;
+            notificationConfig.enableEmail = document.getElementById("enableEmail").checked;
+            notificationConfig.reminderFrequency = document.getElementById("reminderFrequency").value;
+            alert("Đã lưu cấu hình thông báo!");
+            bootstrap.Modal.getInstance(document.getElementById("configNotificationModal")).hide();
+            console.log("Cấu hình thông báo:", notificationConfig); // Để kiểm tra, sẽ thay bằng logic thực tế khi tích hợp backend
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayTable(currentPage);
+        });
+    </script>
+</body>
+</html>

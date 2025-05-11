@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang chi tiết duyệt chấm điểm của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Chi tiết duyệt chấm điểm | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+        }
+        .content {
+            padding: 20px;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #007bff, #00c4ff);
+            color: white;
+            padding: 15px 20px;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+        }
+        .card-body {
+            padding: 25px;
+            background-color: #fff;
+        }
+        .info-section, .grade-section {
+            padding: 20px;
+        }
+        .info-section {
+            background-color: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+        }
+        .grade-section {
+            background-color: #fff;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        .form-control, .form-select {
+            border-radius: 10px; /* Bo tròn hơn */
+            padding: 12px 15px;
+            font-size: 1rem;
+            background-color: #ffffff; /* Nền trắng tinh */
+            border: 2px solid #007bff; /* Viền xanh đậm */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Bóng nhẹ bên trong */
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0056b3; /* Viền xanh đậm hơn khi focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng phát sáng */
+            outline: none;
+        }
+        .form-control[readonly] {
+            background-color: #f0f8ff; /* Nền xanh nhạt cho readonly */
+            color: #2c3e50; /* Chữ xanh xám đậm */
+            border: 2px dashed #00c4ff; /* Viền nét đứt xanh nhạt */
+            opacity: 0.9;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-list li {
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background-color: #f1f3f5;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+        .file-list li:hover {
+            background-color: #e9ecef;
+        }
+        .file-list a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .file-list a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #00c4ff);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8, #48c9b0);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <div class="sidebar-section">
+            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
+            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="head_course_assign.html" class="active"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <h6>Nguyễn Huy Cường</h6>
+                <p>nguyenhuycuong@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Grading Details Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">🏆 Chi tiết duyệt chấm điểm</h2>
+                <button class="btn btn-info" onclick="exportDetails()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a></li>
+                    <li class="breadcrumb-item"><a id="backToGradingLink"><i class="bi bi-folder"></i> Chi tiết chấm điểm</a></li>
+                    <li class="breadcrumb-item active"><i class="bi bi-file-earmark-text"></i> Chi tiết duyệt điểm</li>
+                </ol>
+            </nav>
+
+            <!-- Group Info -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Thông tin nhóm và đồ án</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Left Column: Group Info -->
+                        <div class="col-md-5 info-section">
+                            <form id="gradeForm">
+                                <input type="hidden" id="gradeGroupId">
+                                <div class="mb-3">
+                                    <label class="form-label">Tên nhóm</label>
+                                    <input type="text" id="gradeGroupName" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Mã đồ án</label>
+                                    <input type="text" id="gradeProjectId" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tên đồ án</label>
+                                    <input type="text" id="gradeProjectName" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Thành viên</label>
+                                    <input type="text" id="gradeMembers" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Giảng viên hướng dẫn</label>
+                                    <input type="text" id="gradeLecturer" class="form-control" readonly>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Right Column: Grade and Files -->
+                        <div class="col-md-7 grade-section">
+                            <form id="gradeFormDetails">
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm GVHD</label>
+                                    <input type="number" id="gradeLecturerScore" class="form-control" step="0.1" min="0" max="10" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm hội đồng</label>
+                                    <input type="number" id="gradeCouncilScore" class="form-control" step="0.1" min="0" max="10" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Phản hồi hội đồng</label>
+                                    <textarea id="gradeCouncilFeedback" class="form-control" rows="3" readonly></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tệp báo cáo</label>
+                                    <ul id="reportFiles" class="file-list"></ul>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Source code</label>
+                                    <ul id="sourceCodeFiles" class="file-list"></ul>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Slide thuyết trình</label>
+                                    <ul id="slideFiles" class="file-list"></ul>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Trạng thái duyệt</label>
+                                    <select id="gradeApproval" class="form-select" required>
+                                        <option value="Chưa duyệt">Chưa duyệt</option>
+                                        <option value="Đã duyệt">Đã duyệt</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="saveGradeApproval()">Lưu</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        let students = [
+            { id: "21520001", name: "Nguyễn Tri Bão Thắng", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
+            { id: "21520002", name: "Trần Văn A", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
+            { id: "21520003", name: "Lê Thị B", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 2 },
+            { id: "21520004", name: "Phạm Văn C", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
+            { id: "21520005", name: "Nguyễn Thị D", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
+            { id: "21520006", name: "Hoàng Văn E", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 },
+            { id: "21520007", name: "Trần Thị F", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 }
+        ];
+
+        let groups = [
+            { 
+                id: 1, 
+                name: "Nhóm 1", 
+                courseId: "CS101", 
+                semester: "HK1-2025", 
+                classId: "CNTT01", 
+                projectId: "DT001", 
+                members: ["21520001", "21520002"], 
+                status: "Đã duyệt", 
+                grades: { 
+                    lecturerScore: 8.5, 
+                    councilScore: 8.0, 
+                    councilFeedback: "Đề tài sáng tạo, cần cải thiện giao diện", 
+                    approved: "Chưa duyệt",
+                    reportFiles: ["baocao_final.docx"], 
+                    sourceCodeFiles: ["source_code.zip"], 
+                    slideFiles: ["presentation.pptx"] 
+                } 
+            },
+            { 
+                id: 2, 
+                name: "Nhóm 2", 
+                courseId: "CS101", 
+                semester: "HK1-2025", 
+                classId: "CNTT01", 
+                projectId: "DT002", 
+                members: ["21520003"], 
+                status: "Chưa duyệt", 
+                grades: null 
+            },
+            { 
+                id: 3, 
+                name: "Nhóm 3", 
+                courseId: "CS101", 
+                semester: "HK1-2025", 
+                classId: "CNTT01", 
+                projectId: "DT003", 
+                members: ["21520004", "21520005"], 
+                status: "Hoàn thành", 
+                grades: { 
+                    lecturerScore: 9.0, 
+                    councilScore: 8.8, 
+                    councilFeedback: "Hoàn thiện tốt", 
+                    approved: "Đã duyệt",
+                    reportFiles: ["baocao_final.docx", "appendix.pdf"], 
+                    sourceCodeFiles: ["web_project.zip"], 
+                    slideFiles: ["final_presentation.pptx"] 
+                } 
+            },
+            { 
+                id: 4, 
+                name: "Nhóm 4", 
+                courseId: "AI201", 
+                semester: "HK1-2025", 
+                classId: "AI01", 
+                projectId: "DT004", 
+                members: ["21520006", "21520007"], 
+                status: "Đã duyệt", 
+                grades: { 
+                    lecturerScore: 7.5, 
+                    councilScore: 7.8, 
+                    councilFeedback: "Cần thêm phân tích sâu", 
+                    approved: "Chưa duyệt",
+                    reportFiles: ["baocao_final.docx"], 
+                    sourceCodeFiles: ["data_analysis.zip"], 
+                    slideFiles: ["ai_presentation.pptx"] 
+                } 
+            }
+        ];
+
+        let projects = [
+            { projectId: "DT001", name: "Công nghệ phần mềm", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
+            { projectId: "DT002", name: "Ứng dụng AI trong y tế", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
+            { projectId: "DT003", name: "Lập trình Web", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
+            { projectId: "DT004", name: "Phân tích dữ liệu", courseId: "AI201", semester: "HK1-2025", classId: "AI01" }
+        ];
+
+        // Lấy thông tin từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedCourseId = urlParams.get("courseId");
+        const selectedSemester = urlParams.get("semester");
+        const selectedClassId = urlParams.get("classId");
+        const selectedGroupId = parseInt(urlParams.get("groupId"));
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
+        });
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Hiển thị chi tiết duyệt điểm
+        function displayGradingDetails() {
+            const group = groups.find(g => g.id === selectedGroupId && 
+                g.courseId === selectedCourseId && 
+                g.semester === selectedSemester && 
+                g.classId === selectedClassId);
+            if (!group || !group.grades) {
+                document.querySelector(".card-body").innerHTML = "<p class='text-center text-muted'>Không tìm thấy thông tin nhóm hoặc chưa có điểm để duyệt.</p>";
+                return;
+            }
+
+            const project = projects.find(p => p.projectId === group.projectId);
+            const members = students.filter(s => group.members.includes(s.id)).map(s => s.name).join(", ");
+            const lecturer = students.find(s => group.members.includes(s.id))?.lecturer || "Chưa xác định";
+
+            document.getElementById("gradeGroupId").value = group.id;
+            document.getElementById("gradeGroupName").value = group.name;
+            document.getElementById("gradeProjectId").value = group.projectId;
+            document.getElementById("gradeProjectName").value = project ? project.name : "Chưa có đồ án";
+            document.getElementById("gradeMembers").value = members;
+            document.getElementById("gradeLecturer").value = lecturer;
+            document.getElementById("gradeLecturerScore").value = group.grades.lecturerScore || "";
+            document.getElementById("gradeCouncilScore").value = group.grades.councilScore || "";
+            document.getElementById("gradeCouncilFeedback").value = group.grades.councilFeedback || "";
+
+            // Hiển thị các tệp báo cáo
+            const reportFiles = document.getElementById("reportFiles");
+            reportFiles.innerHTML = group.grades.reportFiles && group.grades.reportFiles.length > 0 
+                ? group.grades.reportFiles.map(file => `<li><a href="#">${file}</a></li>`).join("") 
+                : "<li>Chưa có tệp</li>";
+
+            // Hiển thị source code
+            const sourceCodeFiles = document.getElementById("sourceCodeFiles");
+            sourceCodeFiles.innerHTML = group.grades.sourceCodeFiles && group.grades.sourceCodeFiles.length > 0 
+                ? group.grades.sourceCodeFiles.map(file => `<li><a href="#">${file}</a></li>`).join("") 
+                : "<li>Chưa có tệp</li>";
+
+            // Hiển thị slide thuyết trình
+            const slideFiles = document.getElementById("slideFiles");
+            slideFiles.innerHTML = group.grades.slideFiles && group.grades.slideFiles.length > 0 
+                ? group.grades.slideFiles.map(file => `<li><a href="#">${file}</a></li>`).join("") 
+                : "<li>Chưa có tệp</li>";
+
+            document.getElementById("gradeApproval").value = group.grades.approved;
+
+            // Cập nhật link quay lại
+            document.getElementById("backToGradingLink").href = `head_grading.html?courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`;
+        }
+
+        // Lưu duyệt điểm
+        function saveGradeApproval() {
+            const form = document.getElementById("gradeForm");
+            if (form.checkValidity()) {
+                const groupId = parseInt(document.getElementById("gradeGroupId").value);
+                const approval = document.getElementById("gradeApproval").value;
+                const group = groups.find(g => g.id === groupId);
+                if (group && group.grades) {
+                    group.grades.approved = approval;
+                    alert(`Đã cập nhật trạng thái duyệt điểm cho nhóm ${group.name}: ${approval}`);
+                    window.location.href = `head_grading.html?courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`;
+                }
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Xuất thông tin chi tiết sang Excel
+        function exportDetails() {
+            const group = groups.find(g => g.id === selectedGroupId);
+            if (!group || !group.grades) return;
+
+            const project = projects.find(p => p.projectId === group.projectId);
+            const members = students.filter(s => group.members.includes(s.id)).map(s => s.name).join(", ");
+            const lecturer = students.find(s => group.members.includes(s.id))?.lecturer || "Chưa xác định";
+
+            const worksheetData = [
+                ["Chi tiết duyệt chấm điểm - Hệ thống Sinh viên HUTECH"],
+                [`Lớp: ${selectedCourseId} - ${selectedClassId} - ${selectedSemester}`],
+                [],
+                ["Tên nhóm", "Mã đồ án", "Tên đồ án", "Thành viên", "GVHD", "Điểm GVHD", "Điểm hội đồng", "Phản hồi hội đồng", "Tệp báo cáo", "Source code", "Slide thuyết trình", "Trạng thái duyệt", "Trạng thái đồ án"]
+            ];
+
+            worksheetData.push([
+                group.name,
+                group.projectId,
+                project ? project.name : "Chưa có đồ án",
+                members,
+                lecturer,
+                group.grades.lecturerScore || "Chưa chấm",
+                group.grades.councilScore || "Chưa chấm",
+                group.grades.councilFeedback || "",
+                group.grades.reportFiles ? group.grades.reportFiles.join(", ") : "Chưa có tệp",
+                group.grades.sourceCodeFiles ? group.grades.sourceCodeFiles.join(", ") : "Chưa có tệp",
+                group.grades.slideFiles ? group.grades.slideFiles.join(", ") : "Chưa có tệp",
+                group.grades.approved,
+                group.status
+            ]);
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "ChiTietChamDiem");
+            XLSX.writeFile(workbook, `chi_tiet_cham_diem_${group.name}_${selectedCourseId}_${selectedClassId}_${selectedSemester}.xlsx`);
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayGradingDetails();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hệ thống chấm điểm của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Hệ thống chấm điểm | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html" class="active"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Section -->
+        <div class="container mt-4">
+            <h2 class="fw-bold text-primary">📊 Hệ thống chấm điểm</h2>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-list-ul"></i> Danh sách các môn
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Tổng quan -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card p-3 shadow-sm text-center">
+                        <h5>Tổng số môn</h5>
+                        <p class="fw-bold fs-3" id="totalSubjects">0</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 shadow-sm text-center">
+                        <h5>Môn đạt</h5>
+                        <p class="fw-bold fs-3 text-success" id="passedSubjects">0</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 shadow-sm text-center">
+                        <h5>Môn không đạt</h5>
+                        <p class="fw-bold fs-3 text-danger" id="failedSubjects">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng điểm -->
+            <div class="table-container mt-4">
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
+                    <button class="btn btn-info" onclick="exportGrades()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('subject')">Môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('score')">Điểm số <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+
+            <!-- Phân tích kết quả học tập & tiến độ học tập -->
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <div class="card p-4 shadow-sm">
+                        <h5 class="text-center text-primary">📊 Kết quả học tập</h5>
+                        <div class="chart-container">
+                            <canvas id="studyResultChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-4 shadow-sm">
+                        <h5 class="text-center text-primary">📊 Tiến độ học tập</h5>
+                        <div class="chart-container">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        const grades = [
+            { id: 1, subject: "Thiết kế phần mềm", score: 8.5, status: "Đạt" },
+            { id: 2, subject: "Phát triển Web", score: 7.8, status: "Đạt" },
+            { id: 3, subject: "Lập trình di động", score: 9.2, status: "Xuất sắc" },
+            { id: 4, subject: "CSDL nâng cao", score: 6.9, status: "Cần cải thiện" },
+            { id: 5, subject: "Kỹ thuật lập trình", score: 4.5, status: "Không đạt" },
+            { id: 6, subject: "Lập trình C++", score: 8.0, status: "Đạt" },
+            { id: 7, subject: "Lập trình trên môi trường Windows", score: 7.5, status: "Đạt" },
+            { id: 8, subject: "Cơ sở dữ liệu", score: 4.0, status: "Không đạt" },
+            { id: 9, subject: "Đồ án cơ sở", score: 6.0, status: "Cần cải thiện" },
+            { id: 10, subject: "Đồ án chuyên ngành", score: 3.5, status: "Không đạt" },
+            { id: 11, subject: "Đồ án tốt nghiệp", score: 3.0, status: "Không đạt" }
+        ];
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            const sidebar = document.querySelector(".sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            icon.classList.toggle("bi-list");
+            icon.classList.toggle("bi-layout-sidebar-inset");
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Tính toán tổng quan
+        function calculateSummary() {
+            document.getElementById("totalSubjects").textContent = grades.length;
+            document.getElementById("passedSubjects").textContent = grades.filter(g => g.status === "Đạt" || g.status === "Xuất sắc").length;
+            document.getElementById("failedSubjects").textContent = grades.filter(g => g.status === "Không đạt").length;
+        }
+
+        // Lọc và sắp xếp bảng
+        function getFilteredGrades() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            let filtered = grades.filter(grade => 
+                grade.subject.toLowerCase().includes(searchText) || 
+                grade.status.toLowerCase().includes(searchText)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    const valueA = sortColumn === 'score' ? a[sortColumn] : a[sortColumn].toLowerCase();
+                    const valueB = sortColumn === 'score' ? b[sortColumn] : b[sortColumn].toLowerCase();
+                    if (sortDirection === 'asc') return valueA > valueB ? 1 : -1;
+                    return valueA < valueB ? 1 : -1;
+                });
+            }
+
+            return filtered;
+        }
+
+        function displayGradeTable(page) {
+            const filteredGrades = getFilteredGrades();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredGrades.slice(start, end);
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+            } else {
+                paginatedData.forEach((grade, index) => {
+                    let badgeClass = "badge bg-secondary";
+                    if (grade.status === "Đạt") badgeClass = "badge bg-success";
+                    if (grade.status === "Xuất sắc") badgeClass = "badge bg-primary";
+                    if (grade.status === "Cần cải thiện") badgeClass = "badge bg-warning";
+                    if (grade.status === "Không đạt") badgeClass = "badge bg-danger";
+
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${grade.subject}</td>
+                            <td><span class="${badgeClass}">${grade.score}</span></td>
+                            <td class="text-${badgeClass.includes('danger') ? 'danger' : badgeClass.includes('warning') ? 'warning' : 'success'}"><strong>${grade.status}</strong></td>
+                            <td><a href="student_grades_detail.html?id=${grade.id}" class="btn btn-info btn-sm">📖 Xem chi tiết</a></td>
+                        </tr>
+                    `;
+                });
+            }
+            setupPagination(filteredGrades.length);
+        }
+
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayGradeTable(currentPage);
+        }
+
+        function filterTable() {
+            currentPage = 1;
+            displayGradeTable(currentPage);
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayGradeTable(currentPage);
+        }
+
+        // Xuất file Excel
+        function exportGrades() {
+            const worksheetData = [
+                ["Hệ thống chấm điểm - Danh sách các môn"],
+                [],
+                ["#", "Môn học", "Điểm số", "Trạng thái"]
+            ];
+
+            grades.forEach((grade, index) => {
+                worksheetData.push([
+                    index + 1,
+                    grade.subject,
+                    grade.score,
+                    grade.status
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DiemSo");
+            XLSX.writeFile(workbook, "diem_so_mon_hoc.xlsx");
+        }
+
+        // Biểu đồ kết quả học tập
+        const ctx1 = document.getElementById("studyResultChart").getContext("2d");
+        new Chart(ctx1, {
+            type: "bar",
+            data: {
+                labels: grades.map(grade => grade.subject),
+                datasets: [{
+                    label: "Điểm số",
+                    data: grades.map(grade => grade.score),
+                    backgroundColor: grades.map(grade => 
+                        grade.status === "Xuất sắc" ? '#007bff' : 
+                        grade.status === "Đạt" ? '#28a745' : 
+                        grade.status === "Cần cải thiện" ? '#fd7e14' : '#dc3545'),
+                    borderColor: '#333',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 10 }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: context => `Điểm: ${context.raw} (${grades[context.dataIndex].status})`
+                        }
+                    }
+                }
+            }
+        });
+
+        // Biểu đồ tiến độ học tập
+        const ctx2 = document.getElementById("progressChart").getContext("2d");
+        new Chart(ctx2, {
+            type: "doughnut",
+            data: {
+                labels: ['Đạt', 'Xuất sắc', 'Cần cải thiện', 'Không đạt'],
+                datasets: [{
+                    data: [
+                        grades.filter(g => g.status === "Đạt").length,
+                        grades.filter(g => g.status === "Xuất sắc").length,
+                        grades.filter(g => g.status === "Cần cải thiện").length,
+                        grades.filter(g => g.status === "Không đạt").length
+                    ],
+                    backgroundColor: ['#28a745', '#007bff', '#fd7e14', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: context => `${context.label}: ${context.raw} môn`
+                        }
+                    }
+                }
+            }
+        });
+
+        // Khởi chạy
+        calculateSummary();
+        displayGradeTable(currentPage);
+    </script>
+</body>
+</html>

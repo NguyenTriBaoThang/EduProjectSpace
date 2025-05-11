@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang quản lý lịch sử hoạt động Admin của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Lịch sử hoạt động | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
+        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="admin_logs.html" class="active"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện. Navbar hỗ trợ tìm kiếm và các chức năng tiện ích -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Dropdown hiển thị thông tin Admin và chức năng đăng xuất -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <h6>Admin HUTECH</h6>
+                <p>admin@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Logs Management Section -->
+        <div class="container mt-4">
+            <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Xem log thao tác của user -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">⏳ Lịch sử hoạt động</h2>
+                <!-- Ghi chú: 4.8 - Hệ thống báo cáo và thống kê. Xuất danh sách log -->
+                <button class="btn btn-info" onclick="exportLogs()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện với người dùng -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-clock-history"></i> Lịch sử hoạt động
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Logs Table -->
+            <div class="table-container">
+                <!-- Ghi chú: 4.2 - Giao diện trực quan. Bộ lọc hỗ trợ tìm kiếm và phân loại -->
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm log..." onkeyup="filterTable()">
+                    <select id="userFilter" class="form-select" onchange="filterTable()">
+                        <option value="">👤 Người dùng</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Giảng viên">Giảng viên</option>
+                        <option value="Sinh viên">Sinh viên</option>
+                    </select>
+                    <select id="actionFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📌 Hành động</option>
+                        <option value="Đăng nhập">Đăng nhập</option>
+                        <option value="Thêm">Thêm</option>
+                        <option value="Sửa">Sửa</option>
+                        <option value="Xóa">Xóa</option>
+                        <option value="Gửi">Gửi</option>
+                    </select>
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('timestamp')">Thời gian <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('user')">Người dùng <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('role')">Vai trò <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('action')">Hành động <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('details')">Chi tiết <i class="bi bi-arrow-down-up"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu log
+        let logs = [
+            { id: 1, timestamp: "25/02/2025 10:30", user: "Admin HUTECH", role: "Admin", action: "Đăng nhập", details: "Đăng nhập vào hệ thống từ IP 192.168.1.1" },
+            { id: 2, timestamp: "25/02/2025 11:00", user: "Nguyễn Tri Bão Thắng", role: "Sinh viên", action: "Thêm", details: "Thêm đề tài đồ án 'Công nghệ phần mềm'" },
+            { id: 3, timestamp: "25/02/2025 11:15", user: "Nguyễn Huy Cường", role: "Giảng viên", action: "Sửa", details: "Sửa thông tin sinh viên 21520001" },
+            { id: 4, timestamp: "25/02/2025 11:20", user: "Admin HUTECH", role: "Admin", action: "Gửi", details: "Gửi thông báo 'Nộp báo cáo tuần 1'" },
+            { id: 5, timestamp: "25/02/2025 11:25", user: "Trần Thị Vân Anh", role: "Giảng viên", action: "Xóa", details: "Xóa sinh viên 21520003" }
+        ];
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "admin_notifications.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lọc và sắp xếp bảng
+        function getFilteredLogs() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const userFilter = document.getElementById("userFilter").value;
+            const actionFilter = document.getElementById("actionFilter").value;
+
+            let filtered = logs.filter(log =>
+                (log.timestamp.toLowerCase().includes(searchText) || 
+                 log.user.toLowerCase().includes(searchText) || 
+                 log.details.toLowerCase().includes(searchText)) &&
+                (userFilter === "" || log.role === userFilter) &&
+                (actionFilter === "" || log.action === actionFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn].toLowerCase();
+                    let valueB = b[sortColumn].toLowerCase();
+                    if (sortColumn === 'timestamp') {
+                        valueA = new Date(valueA.split(' ')[0].split('/').reverse().join('-') + ' ' + valueA.split(' ')[1]);
+                        valueB = new Date(valueB.split(' ')[0].split('/').reverse().join('-') + ' ' + valueB.split(' ')[1]);
+                    }
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Hiển thị bảng
+        function displayTable(page) {
+            const filteredLogs = getFilteredLogs();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredLogs.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy log nào.</td></tr>';
+            } else {
+                paginatedData.forEach((log, index) => {
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${log.timestamp}</td>
+                            <td>${log.user}</td>
+                            <td>${log.role}</td>
+                            <td>${log.action}</td>
+                            <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${log.details}">${log.details}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredLogs.length);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Xuất danh sách log sang Excel
+        // Ghi chú: 4.8 - Hệ thống báo cáo và thống kê
+        function exportLogs() {
+            const filteredLogs = getFilteredLogs();
+            const worksheetData = [
+                ["Lịch sử hoạt động - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["#", "Thời gian", "Người dùng", "Vai trò", "Hành động", "Chi tiết"]
+            ];
+
+            filteredLogs.forEach((log, index) => {
+                worksheetData.push([
+                    index + 1,
+                    log.timestamp,
+                    log.user,
+                    log.role,
+                    log.action,
+                    log.details
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "LichSuHoatDong");
+            XLSX.writeFile(workbook, "lich_su_hoat_dong.xlsx");
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayTable(currentPage);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang tổng quan Giảng viên của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Tổng quan Giảng viên | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <!-- Ghi chú: 4.9.2 - Chức năng của Giảng viên. Sidebar hiển thị các chức năng theo vai trò -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <a href="lecturer_dashboard.html" class="active"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <!-- Chức năng Trưởng bộ môn -->
+        <div class="sidebar-section" id="headSection">
+            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
+            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+        <!-- Chức năng Giảng viên hướng dẫn -->
+        <div class="sidebar-section" id="lecturerSection">
+            <h6 class="sidebar-subtitle">Giảng viên hướng dẫn</h6>
+            <a href="lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
+            <a href="lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
+            <a href="lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
+            <a href="lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
+            <a href="lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
+            <a href="lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện. Navbar hỗ trợ tìm kiếm và các chức năng tiện ích -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <h6 id="userName">Nguyễn Huy Cường</h6>
+                <p id="userEmail">nguyenhuycuong@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="container mt-4">
+            <!-- Ghi chú: 4.9.2 - Chức năng của Giảng viên. Trang tổng quan cho cả Trưởng bộ môn và GVHD -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">📊 Tổng quan Giảng viên</h2>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-house-door-fill"></i> Tổng quan
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card-dashboard" style="background: linear-gradient(90deg, #3498db, #2980b9); color: white;">
+                        <div class="card-header">
+                            <i class="bi bi-folder"></i>
+                            <h5>Số đề tài hướng dẫn</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="projectCount">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-dashboard" style="background: linear-gradient(90deg, #2ecc71, #27ae60); color: white;">
+                        <div class="card-header">
+                            <i class="bi bi-check-circle"></i>
+                            <h5>Đề tài đã duyệt</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="approvedProjects">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-dashboard" style="background: linear-gradient(90deg, #f39c12, #e67e22); color: white;">
+                        <div class="card-header">
+                            <i class="bi bi-hourglass-split"></i>
+                            <h5>Đề tài chờ duyệt</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="pendingProjects">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-dashboard" style="background: linear-gradient(90deg, #9b59b6, #8e44ad); color: white;">
+                        <div class="card-header">
+                            <i class="bi bi-bell"></i>
+                            <h5>Thông báo mới</h5>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="notificationCount">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="card-dashboard">
+                <div class="card-header">
+                    <i class="bi bi-bell"></i>
+                    <h5>Thông báo hệ thống</h5>
+                </div>
+                <div class="card-content">
+                    <ul class="list-group list-group-flush" id="notificationList">
+                        <li class="dashboard-list-group-item">
+                            <i class="bi bi-folder-check"></i>
+                            <span class="dashboard-notification-title" data-full-text="Hội đồng chấm điểm sẽ họp vào ngày 01/03/2025 tại phòng họp A">Họp hội đồng chấm điểm...</span>
+                            <span class="text-muted">24/02/2025</span>
+                        </li>
+                        <li class="dashboard-list-group-item">
+                            <i class="bi bi-calendar"></i>
+                            <span class="dashboard-notification-title" data-full-text="Lịch học kỳ mới đã được cập nhật, vui lòng kiểm tra">Cập nhật lịch học kỳ...</span>
+                            <span class="text-muted">23/02/2025</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        const userRole = "Trưởng bộ môn"; // Thay đổi thành "GVHD" để kiểm tra vai trò GVHD
+        const projects = [
+            { id: 1, projectId: "DT001", name: "Công nghệ phần mềm", student: "Nguyễn Tri Bão Thắng", lecturer: "Nguyễn Huy Cường", status: "Đã duyệt" },
+            { id: 2, projectId: "DT002", name: "Ứng dụng AI trong y tế", student: "Trần Văn A", lecturer: "Trần Thị Vân Anh", status: "Chưa duyệt" },
+            { id: 3, projectId: "DT003", name: "Lập trình Web", student: "Lê Thị B", lecturer: "Lê Văn Nam", status: "Hoàn thành" }
+        ];
+        const notifications = [
+            { title: "Họp hội đồng chấm điểm", content: "Hội đồng chấm điểm sẽ họp vào ngày 01/03/2025 tại phòng họp A", date: "24/02/2025" },
+            { title: "Cập nhật lịch học kỳ", content: "Lịch học kỳ mới đã được cập nhật, vui lòng kiểm tra", date: "23/02/2025" }
+        ];
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "lecturer_notifications.html"; // Có thể tạo thêm trang này nếu cần
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Cập nhật giao diện theo vai trò
+        function updateDashboard() {
+            const headSection = document.getElementById("headSection");
+            const lecturerSection = document.getElementById("lecturerSection");
+
+            if (userRole === "Trưởng bộ môn") {
+                headSection.style.display = "block";
+                lecturerSection.style.display = "none";
+            } else if (userRole === "GVHD") {
+                headSection.style.display = "none";
+                lecturerSection.style.display = "block";
+            }
+
+            // Cập nhật thông tin tổng quan
+            const projectCount = projects.filter(p => p.lecturer === "Nguyễn Huy Cường").length; // Giả định giảng viên hiện tại
+            const approvedProjects = projects.filter(p => p.lecturer === "Nguyễn Huy Cường" && (p.status === "Đã duyệt" || p.status === "Hoàn thành")).length;
+            const pendingProjects = projects.filter(p => p.lecturer === "Nguyễn Huy Cường" && p.status === "Chưa duyệt").length;
+            const notificationCount = notifications.length;
+
+            document.getElementById("projectCount").textContent = projectCount;
+            document.getElementById("approvedProjects").textContent = approvedProjects;
+            document.getElementById("pendingProjects").textContent = pendingProjects;
+            document.getElementById("notificationCount").textContent = notificationCount;
+
+            // Cập nhật danh sách thông báo
+            const notificationList = document.getElementById("notificationList");
+            notificationList.innerHTML = notifications.map(n => `
+                <li class="dashboard-list-group-item">
+                    <i class="bi bi-bell"></i>
+                    <span class="dashboard-notification-title" data-full-text="${n.content}">${n.title}...</span>
+                    <span class="text-muted">${n.date}</span>
+                </li>
+            `).join("");
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            updateDashboard();
+        });
+    </script>
+</body>
+</html>

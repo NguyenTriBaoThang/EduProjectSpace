@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bài tập tuần 1 của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Bài tập tuần 1 | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html" class="active"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary" id="taskTitle"></h2>
+                <button class="btn btn-info" onclick="exportSubmission()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="student_submissions_list.html"><i class="bi bi-list-ul"></i> Danh sách môn học</a>
+                    </li>
+                    <li class="breadcrumb-item" id="subjectBreadcrumb">
+                        <a href="student_submissions_week.html"><i class="bi bi-file-earmark-text"></i> Danh sách bài tập</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-journal-check"></i> <span id="taskBreadcrumb"></span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card p-4 shadow-sm card-custom">
+                        <h3 class="fw-bold" id="taskName"><i class="bi bi-journal-check"></i> </h3>
+                        <p class="text-muted" id="taskInfo"></p>
+                        <span class="due-date" id="taskDeadline"></span>
+                        <h5 class="fw-bold text-primary" id="taskPoints"></h5>
+                        <hr>
+                        <p class="text-muted">Lưu ý: Nộp bài đúng thời gian.</p>
+                        <hr>
+                        <div class="mb-3">
+                            <h6 class="fw-bold"><i class="bi bi-chat-left-text"></i> Nhận xét của lớp học</h6>
+                            <div id="classCommentText" class="comment-box" onclick="toggleCommentBox('classComment', 'classCommentText')">
+                                Thêm nhận xét về lớp học...
+                            </div>
+                            <div id="classComment" class="comment-input" style="display: none;">
+                                <input type="text" placeholder="Thêm nhận xét trong lớp học...">
+                                <button onclick="submitComment('classComment', 'classCommentList')"><i class="bi bi-send"></i></button>
+                            </div>
+                            <div id="classCommentList" class="comment-list"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="submission-container mb-3" id="submissionSection">
+                        <h6 class="fw-bold">Bài tập của bạn <span id="submissionStatus" class="text-warning"></span></h6>
+                        <div class="add-button" onclick="document.getElementById('fileInput').click()">
+                            <i class="bi bi-plus-circle"></i> Thêm hoặc tạo
+                        </div>
+                        <input type="file" id="fileInput" class="form-control mb-2" style="display:none;" multiple>
+                        <div id="fileList"></div>
+                        <button id="submitButton" class="btn btn-primary w-100 btn-custom mt-2" onclick="finalizeSubmission()">Nộp bài</button>
+                    </div>
+                    <div class="card p-3 shadow-sm card-custom">
+                        <h6 class="fw-bold"><i class="bi bi-person"></i> Nhận xét riêng tư</h6>
+                        <div id="privateCommentText" class="comment-box" onclick="toggleCommentBox('privateComment', 'privateCommentText')">
+                            Thêm nhận xét riêng tư...
+                        </div>
+                        <div id="privateComment" class="comment-input" style="display: none;">
+                            <input type="text" placeholder="Thêm nhận xét riêng tư...">
+                            <button onclick="submitComment('privateComment', 'privateCommentList')"><i class="bi bi-send"></i></button>
+                        </div>
+                        <div id="privateCommentList" class="comment-list"></div>
+                    </div>
+                    <div class="mt-4 mb-4 text-right">
+                        <a href="student_submissions_week.html" class="btn btn-secondary btn-back" id="backLink">
+                            <i class="bi bi-arrow-left-circle"></i> Danh sách Bài tập
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        const tasks = {
+            "1": { subjectId: 1, name: "Bài tập Tuần 1", instructor: "Nguyen Huy Cuong", created: "12/02/2025", updated: "13/02/2025", deadline: "20/02/2025", points: 100, status: "Chưa nộp", files: [], classComments: [], privateComments: [] },
+            "2": { subjectId: 1, name: "Bài tập Tuần 2", instructor: "Nguyen Huy Cuong", created: "08/02/2025", updated: "09/02/2025", deadline: "14/02/2025", points: 100, status: "Đã nộp", files: [{ name: "week2.pdf" }], classComments: [], privateComments: [] }
+        };
+
+        let currentTask = null;
+        let submittedFiles = [];
+
+        // Lấy thông tin từ URL
+        const params = new URLSearchParams(window.location.search);
+        const taskId = params.get("taskId") || "1";
+        currentTask = tasks[taskId];
+        if (currentTask) {
+            document.getElementById("taskTitle").textContent = `📌 ${currentTask.name}`;
+            document.getElementById("taskName").innerHTML = `<i class="bi bi-journal-check"></i> ${currentTask.name}`;
+            document.getElementById("taskInfo").textContent = `CNTT ${currentTask.instructor} • ${currentTask.created} (Đã chỉnh sửa ${currentTask.updated})`;
+            document.getElementById("taskDeadline").textContent = `Hạn nộp: ${currentTask.deadline}`;
+            document.getElementById("taskPoints").textContent = `${currentTask.points} điểm`;
+            document.getElementById("submissionStatus").textContent = currentTask.status;
+            document.getElementById("submissionStatus").className = currentTask.status === "Đã nộp" ? "text-success" : "text-warning";
+            document.getElementById("backLink").href = `student_submissions_week.html?id=${currentTask.subjectId}`;
+            document.getElementById("subjectBreadcrumb").innerHTML = `<a href="student_submissions_week.html?id=${currentTask.subjectId}"><i class="bi bi-file-earmark-text"></i> Danh sách bài tập</a>`;
+            document.getElementById("taskBreadcrumb").textContent = currentTask.name;
+
+            if (currentTask.status === "Đã nộp") {
+                document.getElementById("submitButton").textContent = "Hủy nộp bài";
+                document.getElementById("submitButton").onclick = cancelSubmission;
+                currentTask.files.forEach(file => addFileToList(file.name));
+            }
+        } else {
+            document.getElementById("taskTitle").textContent = "📌 Không tìm thấy bài tập";
+            document.querySelector(".card-custom").innerHTML = "<p>Không tìm thấy bài tập với ID này.</p>";
+        }
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Nộp bài tập
+        function submitAssignment(files) {
+            var fileList = document.getElementById("fileList");
+            submittedFiles = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const fileName = files[i].name;
+                submittedFiles.push({ name: fileName });
+                addFileToList(fileName);
+            }
+        }
+
+        function addFileToList(fileName) {
+            var fileList = document.getElementById("fileList");
+            var newFile = document.createElement("div");
+            newFile.classList.add("submission-box");
+            newFile.innerHTML = `
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Google_Drive_logo.png" alt="Google Drive">
+                <div class="submission-text">
+                    <strong title="${fileName}">${fileName}</strong>
+                    <p class="text-muted">Tệp lưu trữ nén</p>
+                </div>
+                ${currentTask.status === "Chưa nộp" ? `<button class="remove-file" onclick="removeFile(this)">×</button>` : ""}
+            `;
+            fileList.appendChild(newFile);
+        }
+
+        function finalizeSubmission() {
+            if (submittedFiles.length === 0) {
+                alert("Vui lòng chọn ít nhất một file để nộp!");
+                return;
+            }
+            currentTask.status = "Đã nộp";
+            currentTask.files = submittedFiles;
+            document.getElementById("submissionStatus").textContent = "Đã nộp";
+            document.getElementById("submissionStatus").className = "text-success";
+            document.getElementById("submitButton").textContent = "Hủy nộp bài";
+            document.getElementById("submitButton").onclick = cancelSubmission;
+            document.querySelectorAll(".remove-file").forEach(button => button.style.display = "none");
+            alert("Bài tập đã được nộp thành công!");
+        }
+
+        function cancelSubmission() {
+            if (confirm("Bạn có chắc muốn hủy nộp bài không?")) {
+                currentTask.status = "Chưa nộp";
+                currentTask.files = [];
+                submittedFiles = [];
+                document.getElementById("fileList").innerHTML = "";
+                document.getElementById("submissionStatus").textContent = "Chưa nộp";
+                document.getElementById("submissionStatus").className = "text-warning";
+                document.getElementById("submitButton").textContent = "Nộp bài";
+                document.getElementById("submitButton").onclick = finalizeSubmission;
+            }
+        }
+
+        function removeFile(button) {
+            const fileName = button.parentElement.querySelector("strong").textContent;
+            submittedFiles = submittedFiles.filter(f => f.name !== fileName);
+            button.parentElement.remove();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let dropArea = document.getElementById("submissionSection");
+            let fileInput = document.getElementById("fileInput");
+
+            dropArea.addEventListener("dragover", (event) => {
+                event.preventDefault();
+            });
+
+            dropArea.addEventListener("drop", (event) => {
+                event.preventDefault();
+                if (currentTask.status === "Chưa nộp") submitAssignment(event.dataTransfer.files);
+            });
+
+            fileInput.addEventListener("change", () => {
+                if (currentTask.status === "Chưa nộp") submitAssignment(fileInput.files);
+            });
+        });
+
+        // Nhận xét
+        function toggleCommentBox(id, textId) {
+            var inputBox = document.getElementById(id);
+            var textBox = document.getElementById(textId);
+            
+            if (inputBox.style.display === "none" || inputBox.style.display === "") {
+                inputBox.style.display = "block";
+                textBox.style.display = "none";
+                inputBox.querySelector("input").focus();
+            }
+        }
+
+        function submitComment(inputId, listId) {
+            var inputBox = document.getElementById(inputId).querySelector("input");
+            var commentText = inputBox.value.trim();
+            
+            if (commentText !== "") {
+                var commentList = document.getElementById(listId);
+                var newComment = document.createElement("div");
+                newComment.classList.add("comment-item");
+                newComment.innerHTML = `
+                    <img src="img/avatar.jpg" alt="Avatar">
+                    <div class="comment-content">
+                        <strong>Người dùng</strong>
+                        <div class="comment-time">Vừa xong</div>
+                        <p>${commentText}</p>
+                    </div>
+                `;
+                commentList.appendChild(newComment);
+                
+                if (listId === "classCommentList") currentTask.classComments.push(commentText);
+                else currentTask.privateComments.push(commentText);
+                
+                inputBox.value = "";
+                toggleCommentBox(inputId, inputId.replace("Comment", "CommentText"));
+            }
+        }
+
+        // Xuất dữ liệu sang Excel
+        function exportSubmission() {
+            const worksheetData = [
+                [`${currentTask.name}`],
+                ["Giảng viên", currentTask.instructor],
+                ["Ngày tạo", currentTask.created],
+                ["Ngày chỉnh sửa", currentTask.updated],
+                ["Hạn nộp", currentTask.deadline],
+                ["Điểm tối đa", currentTask.points],
+                ["Trạng thái", currentTask.status],
+                ["File đã nộp", currentTask.files.map(f => f.name).join(", ") || "Chưa có file"],
+                [],
+                ["Nhận xét lớp học"],
+                ...currentTask.classComments.map((comment, index) => [index + 1, comment]),
+                [],
+                ["Nhận xét riêng tư"],
+                ...currentTask.privateComments.map((comment, index) => [index + 1, comment])
+            ];
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "BaiTapTuan1");
+            XLSX.writeFile(workbook, `bai_tap_${taskId}.xlsx`);
+        }
+    </script>
+</body>
+</html>

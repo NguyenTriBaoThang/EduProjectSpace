@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang chi tiết nhóm và đồ án của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Chi tiết nhóm và đồ án | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        .group-details-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .group-details-container h5 {
+            color: #0d6efd;
+            font-weight: bold;
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        .info-item:hover {
+            background: #e9ecef;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .info-item i {
+            margin-right: 15px;
+            color: #0d6efd;
+            font-size: 1.3em;
+        }
+        .members-list {
+            max-height: 350px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-list li {
+            margin-bottom: 10px;
+        }
+        .file-list a {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+        .file-list a:hover {
+            text-decoration: underline;
+        }
+        .vertical-divider {
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            left: 50%;
+            width: 2px;
+            background: #0d6efd;
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+        .lecturer-info {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <div class="sidebar-section">
+            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
+            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="head_lecturer_assign.html" class="active"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3 bg-primary text-white">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list text-white"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <button id="toggleFullscreen" class="btn btn-outline-light mx-2"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn btn-outline-light mx-2"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn btn-outline-light mx-2"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn btn-outline-light"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <h6>Nguyễn Huy Cường</h6>
+                <p>nguyenhuycuong@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Group Details Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">👥 Chi tiết nhóm và đồ án</h2>
+                <button class="btn btn-primary" onclick="exportDetails()"><i class="bi bi-file-earmark-excel"></i> Xuất Excel</button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="head_lecturer_assign.html"><i class="bi bi-person-plus"></i> Danh sách GVHD</a></li>
+                    <li class="breadcrumb-item"><a id="backToLecturerLink"><i class="bi bi-folder"></i> Chi tiết GVHD</a></li>
+                    <li class="breadcrumb-item active"><i class="bi bi-file-earmark-text"></i> Chi tiết nhóm và đồ án</li>
+                </ol>
+            </nav>
+
+            <!-- Lecturer Info -->
+            <div class="lecturer-info">
+                <h6 class="text-primary"><i class="bi bi-person-circle"></i> Giảng viên hướng dẫn</h6>
+                <p><strong>Tên GVHD:</strong> <span id="lecturerName"></span></p>
+                <p><strong>Môn học:</strong> <span id="courseInfo"></span></p>
+            </div>
+
+            <!-- Group Info -->
+            <div class="group-details-container">
+                <div class="vertical-divider"></div>
+                <div class="row">
+                    <!-- Left Column: Group Members -->
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-people"></i> Thông tin nhóm</h5>
+                        <div class="info-item">
+                            <i class="bi bi-tag"></i>
+                            <div>
+                                <strong>Tên nhóm:</strong> <span id="groupName"></span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <div>
+                                <strong>Thành viên:</strong>
+                                <ul id="membersList" class="members-list list-group"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Project Details -->
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-file-earmark-text"></i> Chi tiết đồ án</h5>
+                        <div class="info-item">
+                            <i class="bi bi-book"></i>
+                            <div>
+                                <strong>Tên đồ án:</strong> <span id="projectName"></span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-calendar-event"></i>
+                            <div>
+                                <strong>Thời gian bắt đầu:</strong> <span id="startDate"></span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-calendar-check"></i>
+                            <div>
+                                <strong>Thời gian kết thúc:</strong> <span id="endDate"></span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-award"></i>
+                            <div>
+                                <strong>Thời gian chấm:</strong> <span id="gradingDate"></span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-card-text"></i>
+                            <div>
+                                <strong>Mô tả đề tài:</strong> <p id="description" class="mt-1"></p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-files"></i>
+                            <div>
+                                <strong>File mô tả đề tài:</strong>
+                                <ul id="fileList" class="file-list mt-1"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        let courses = [
+            { courseId: "CS101", name: "Công nghệ phần mềm", semester: "HK1-2025", classId: "CNTT01", head: "Nguyễn Huy Cường" },
+            { courseId: "AI201", name: "Trí tuệ nhân tạo", semester: "HK1-2025", classId: "AI01", head: "Nguyễn Huy Cường" }
+        ];
+
+        let students = [
+            { id: "21520001", name: "Nguyễn Tri Bão Thắng", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
+            { id: "21520002", name: "Trần Văn A", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
+            { id: "21520003", name: "Lê Thị B", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 2 },
+            { id: "21520004", name: "Phạm Văn C", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
+            { id: "21520005", name: "Nguyễn Thị D", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
+            { id: "21520006", name: "Hoàng Văn E", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 },
+            { id: "21520007", name: "Trần Thị F", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 }
+        ];
+
+        let groups = [
+            { id: 1, name: "Nhóm 1", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["21520001", "21520002"] },
+            { id: 2, name: "Nhóm 2", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT002", members: ["21520003"] },
+            { id: 3, name: "Nhóm 3", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", members: ["21520004", "21520005"] },
+            { id: 4, name: "Nhóm 4", courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT004", members: ["21520006", "21520007"] }
+        ];
+
+        let projects = [
+            { 
+                projectId: "DT001", 
+                name: "Công nghệ phần mềm", 
+                courseId: "CS101", 
+                semester: "HK1-2025", 
+                classId: "CNTT01", 
+                startDate: "01/01/2025", 
+                endDate: "30/06/2025", 
+                gradingDate: "15/07/2025", 
+                description: "Xây dựng phần mềm quản lý", 
+                fileUrls: ["files/DT001_description.pdf", "files/DT001_specs.pdf"] 
+            },
+            { 
+                projectId: "DT002", 
+                name: "Ứng dụng AI trong y tế", 
+                courseId: "CS101", 
+                semester: "HK1-2025", 
+                classId: "CNTT01", 
+                startDate: "01/01/2025", 
+                endDate: "30/06/2025", 
+                gradingDate: "15/07/2025", 
+                description: "Phát triển AI hỗ trợ chẩn đoán", 
+                fileUrls: ["files/DT002_description.pdf"] 
+            },
+            { 
+                projectId: "DT003", 
+                name: "Lập trình Web", 
+                courseId: "CS101", 
+                semester: "HK1-2025", 
+                classId: "CNTT01", 
+                startDate: "01/01/2025", 
+                endDate: "30/06/2025", 
+                gradingDate: "15/07/2025", 
+                description: "Tạo trang web bán hàng", 
+                fileUrls: ["files/DT003_description.pdf", "files/DT003_design.pdf"] 
+            },
+            { 
+                projectId: "DT004", 
+                name: "Phân tích dữ liệu", 
+                courseId: "AI201", 
+                semester: "HK1-2025", 
+                classId: "AI01", 
+                startDate: "01/01/2025", 
+                endDate: "30/06/2025", 
+                gradingDate: "15/07/2025", 
+                description: "Phân tích dữ liệu y tế", 
+                fileUrls: ["files/DT004_description.pdf"] 
+            }
+        ];
+
+        // Lấy thông tin từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedLecturer = decodeURIComponent(urlParams.get("lecturer"));
+        const selectedCourseId = urlParams.get("courseId");
+        const selectedSemester = urlParams.get("semester");
+        const selectedClassId = urlParams.get("classId");
+        const selectedGroupId = parseInt(urlParams.get("groupId"));
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
+        });
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Hiển thị chi tiết nhóm và đồ án
+        function displayGroupDetails() {
+            const group = groups.find(g => g.id === selectedGroupId && 
+                g.courseId === selectedCourseId && 
+                g.semester === selectedSemester && 
+                g.classId === selectedClassId);
+            if (!group) {
+                document.querySelector(".group-details-container").innerHTML = "<p class='text-center'>Không tìm thấy thông tin nhóm.</p>";
+                return;
+            }
+
+            const project = projects.find(p => p.projectId === group.projectId);
+            const members = students.filter(s => group.members.includes(s.id) && s.lecturer === selectedLecturer);
+
+            document.getElementById("lecturerName").textContent = selectedLecturer;
+            const course = courses.find(c => c.courseId === selectedCourseId && c.semester === selectedSemester && c.classId === selectedClassId);
+            document.getElementById("courseInfo").textContent = `${selectedCourseId} - ${course ? course.name : ""} (${selectedClassId} - ${selectedSemester})`;
+
+            document.getElementById("groupName").textContent = group.name;
+            document.getElementById("projectName").textContent = project ? project.name : "Chưa có đồ án";
+
+            const membersList = document.getElementById("membersList");
+            membersList.innerHTML = "";
+            members.forEach(member => {
+                membersList.innerHTML += `<li class="list-group-item">${member.id} - ${member.name}</li>`;
+            });
+
+            document.getElementById("startDate").textContent = project ? project.startDate : "Chưa xác định";
+            document.getElementById("endDate").textContent = project ? project.endDate : "Chưa xác định";
+            document.getElementById("gradingDate").textContent = project ? project.gradingDate : "Chưa xác định";
+            document.getElementById("description").textContent = project ? project.description : "Chưa có mô tả";
+
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = "";
+            if (project && project.fileUrls && project.fileUrls.length > 0) {
+                project.fileUrls.forEach(fileUrl => {
+                    fileList.innerHTML += `<li><a href="${fileUrl}" target="_blank">${fileUrl.split('/').pop()}</a></li>`;
+                });
+            } else {
+                fileList.innerHTML = "<li>Chưa có file</li>";
+            }
+
+            // Cập nhật link quay lại
+            document.getElementById("backToLecturerLink").href = `head_lecturer_details.html?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`;
+        }
+
+        // Xuất thông tin chi tiết sang Excel
+        function exportDetails() {
+            const group = groups.find(g => g.id === selectedGroupId);
+            if (!group) return;
+
+            const project = projects.find(p => p.projectId === group.projectId);
+            const members = students.filter(s => group.members.includes(s.id) && s.lecturer === selectedLecturer);
+
+            const worksheetData = [
+                ["Chi tiết nhóm và đồ án - Hệ thống Sinh viên HUTECH"],
+                [`GVHD: ${selectedLecturer}`],
+                [`Môn học: ${selectedCourseId} - ${selectedClassId} - ${selectedSemester}`],
+                [],
+                ["Mã SV", "Tên SV", "Tên nhóm", "Tên đồ án", "Thời gian bắt đầu", "Thời gian kết thúc", "Thời gian chấm", "Mô tả đề tài", "File mô tả"]
+            ];
+
+            members.forEach((student) => {
+                worksheetData.push([
+                    student.id,
+                    student.name,
+                    group.name,
+                    project ? project.name : "Chưa có đồ án",
+                    project ? project.startDate : "Chưa xác định",
+                    project ? project.endDate : "Chưa xác định",
+                    project ? project.gradingDate : "Chưa xác định",
+                    project ? project.description : "Chưa có mô tả",
+                    project && project.fileUrls ? project.fileUrls.join(", ") : "Chưa có file"
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "ChiTietNhom");
+            XLSX.writeFile(workbook, `chi_tiet_nhom_${group.name}_${selectedCourseId}_${selectedClassId}_${selectedSemester}.xlsx`);
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayGroupDetails();
+        });
+    </script>
+</body>
+</html>

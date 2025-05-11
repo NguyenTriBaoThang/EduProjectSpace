@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lịch sử nộp bài của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Lịch sử nộp bài | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html" class="active"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+        
+        <div class="container mt-4">
+            <h2 class="fw-bold text-primary">📜 Lịch sử nộp bài</h2>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-clock-history"></i> Danh sách lịch sử nộp bài
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Bảng lịch sử nộp bài -->
+            <div class="table-container">
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm bài tập..." onkeyup="filterTable()">
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Đã chấm">Đã chấm</option>
+                        <option value="Đã nộp">Đã nộp</option>
+                    </select>
+                    <select id="projectFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📁 Môn học</option>
+                        <option value="Đồ án cơ sở">Đồ án cơ sở</option>
+                        <option value="Đồ án chuyên ngành">Đồ án chuyên ngành</option>
+                        <option value="Đồ án tốt nghiệp">Đồ án tốt nghiệp</option>
+                    </select>
+                    <button class="btn btn-info" onclick="exportHistory()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('name')">Bài tập <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Môn học</th>
+                                <th class="sortable" onclick="sortTable('date')">Ngày nộp <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Trạng thái</th>
+                                <th class="sortable" onclick="sortTable('score')">Điểm <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        const tasks = [];
+        for (let i = 1; i <= 300; i++) {
+            const day = String((i % 30) + 1).padStart(2, '0');
+            const month = String((i % 12) + 1).padStart(2, '0');
+            tasks.push({
+                id: i,
+                name: `Bài tập ${i}: Nội dung bài`,
+                projectType: ["Đồ án cơ sở", "Đồ án chuyên ngành", "Đồ án tốt nghiệp"][i % 3],
+                date: `${day}-${month}-2025`,
+                status: i % 2 === 0 ? "Đã chấm" : "Đã nộp",
+                score: i % 2 === 0 ? (Math.random() * 10).toFixed(1) : "Chưa chấm"
+            });
+        }
+
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            const sidebar = document.querySelector(".sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            icon.classList.toggle("bi-list");
+            icon.classList.toggle("bi-layout-sidebar-inset");
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Lọc và sắp xếp bảng
+        function getFilteredTasks() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+            const projectFilter = document.getElementById("projectFilter").value;
+
+            let filtered = tasks.filter(task => 
+                task.name.toLowerCase().includes(searchText) &&
+                (statusFilter === "" || task.status === statusFilter) &&
+                (projectFilter === "" || task.projectType === projectFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn];
+                    let valueB = b[sortColumn];
+                    if (sortColumn === 'score') {
+                        valueA = valueA === "Chưa chấm" ? -1 : parseFloat(valueA);
+                        valueB = valueB === "Chưa chấm" ? -1 : parseFloat(valueB);
+                    } else if (sortColumn === 'date') {
+                        valueA = new Date(valueA.split('-').reverse().join('-'));
+                        valueB = new Date(valueB.split('-').reverse().join('-'));
+                    } else {
+                        valueA = valueA.toLowerCase();
+                        valueB = valueB.toLowerCase();
+                    }
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        function displayTable(page) {
+            const filteredTasks = getFilteredTasks();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredTasks.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy bài nộp nào.</td></tr>';
+            } else {
+                paginatedData.forEach((task, index) => {
+                    let statusClass = task.status === "Đã chấm" ? "status-graded" : "status-submitted";
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${task.name}</td>
+                            <td>${task.projectType}</td>
+                            <td>${task.date}</td>
+                            <td><span class="status ${statusClass}">${task.status}</span></td>
+                            <td>${task.score}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info btn-action" onclick="viewDetails(${task.id})">👁️‍🗨️ Xem</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            setupPagination(filteredTasks.length);
+        }
+
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        function viewDetails(id) {
+            window.location.href = `student_history_submissions_overview.html?taskId=${id}`;
+        }
+
+        // Xuất file Excel
+        function exportHistory() {
+            const filteredTasks = getFilteredTasks();
+            const worksheetData = [
+                ["Lịch sử nộp bài"],
+                [],
+                ["#", "Bài tập", "Môn học", "Ngày nộp", "Trạng thái", "Điểm"]
+            ];
+
+            filteredTasks.forEach((task, index) => {
+                worksheetData.push([
+                    index + 1,
+                    task.name,
+                    task.projectType,
+                    task.date,
+                    task.status,
+                    task.score
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "LichSuNopBai");
+            XLSX.writeFile(workbook, "lich_su_nop_bai.xlsx");
+        }
+
+        // Khởi chạy
+        displayTable(currentPage);
+    </script>
+</body>
+</html>

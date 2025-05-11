@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hệ thống Quản lý đồ án môn học của Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Nộp bài tập | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html" class="active"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary" id="subjectTitle">📌 Danh sách bài tập</h2>
+                <button class="btn btn-info" onclick="exportTasks()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="student_submissions_list.html"><i class="bi bi-list-ul"></i> Danh sách môn học</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-file-earmark-text"></i> Danh sách bài tập
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="table-container">
+                <!-- Header tìm kiếm -->
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm bài tập..." onkeyup="filterTable()">
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Chưa nộp">Chưa nộp</option>
+                        <option value="Đã nộp">Đã nộp</option>
+                    </select>
+                </div>
+
+                <!-- Bảng nội dung -->
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('name')">Bài tập <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('startDate')">Ngày bắt đầu <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('deadline')">Thời gian nộp <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Điểm</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Footer phân trang -->
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+
+            <!-- Nút quay lại danh sách môn học -->
+            <div class="mt-2 mb-2 text-right">
+                <a href="student_submissions_list.html" class="btn btn-secondary btn-back">
+                    <i class="bi bi-arrow-left-circle"></i> Danh sách Môn
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <!-- Modal Nộp Bài -->
+    <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="submitModalLabel">Nộp bài tập</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="submitForm">
+                        <div class="mb-3">
+                            <label class="form-label">Tên bài tập</label>
+                            <input type="text" id="taskName" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">File bài tập</label>
+                            <input type="file" id="taskFile" class="form-control" required>
+                            <small id="fileName" class="form-text text-muted"></small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="submitTask()">Nộp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu môn học và bài tập
+        const subjects = {
+            "1": { name: "Công nghệ phần mềm", tasks: [
+                { id: 1, name: "Đề xuất đề tài giữa kỳ", startDate: "25/01/2025", deadline: "01-02-2025", status: "Đã nộp", grade: "Chưa có điểm" },
+                { id: 2, name: "Bài tập Tuần 1", startDate: "02/02/2025", deadline: "07-02-2025", status: "Đã nộp", grade: "7.0" },
+                { id: 3, name: "Bài tập Tuần 2", startDate: "08/02/2025", deadline: "14-02-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 4, name: "Bài tập Tuần 3", startDate: "15/02/2025", deadline: "21-02-2025", status: "Đã nộp", grade: "8.5" },
+                { id: 5, name: "Bài tập Tuần 4", startDate: "22/02/2025", deadline: "28-02-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 6, name: "Bài tập giữa kỳ", startDate: "01/03/2025", deadline: "07-03-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 7, name: "Đề xuất đề tài cuối kỳ", startDate: "08/03/2025", deadline: "14-03-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 8, name: "Bài tập Tuần 5", startDate: "15/03/2025", deadline: "21-03-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 9, name: "Bài tập Tuần 6", startDate: "22/03/2025", deadline: "28-03-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 10, name: "Bài tập Tuần 7", startDate: "29/03/2025", deadline: "04-04-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 11, name: "Bài tập Tuần 8", startDate: "05/04/2025", deadline: "11-04-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 12, name: "Bài tập Tuần 9", startDate: "12/04/2025", deadline: "18-04-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 13, name: "Bài tập Tuần 10", startDate: "19/04/2025", deadline: "25-04-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
+                { id: 14, name: "Báo cáo cuối kỳ", startDate: "26/04/2025", deadline: "02-05-2025", status: "Chưa nộp", grade: "Chưa có điểm" }
+            ]},
+            // Thêm dữ liệu môn học khác nếu cần
+            "2": { name: "Lập trình Web", tasks: [
+                { id: 15, name: "Bài tập Tuần 1", startDate: "01/02/2025", deadline: "07-02-2025", status: "Đã nộp", grade: "8.0" },
+                { id: 16, name: "Bài tập Tuần 2", startDate: "08/02/2025", deadline: "14-02-2025", status: "Chưa nộp", grade: "Chưa có điểm" }
+            ]}
+        };
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+        let currentTasks = [];
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lấy dữ liệu từ URL
+        const params = new URLSearchParams(window.location.search);
+        const subjectId = params.get("id") || "1"; // Mặc định là môn ID 1 nếu không có trong URL
+        currentTasks = subjects[subjectId]?.tasks || [];
+        document.getElementById("subjectTitle").textContent = `📌 Danh sách bài tập - ${subjects[subjectId]?.name || "Không xác định"}`;
+
+        // Lọc và sắp xếp bảng
+        function getFilteredTasks() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            let filtered = currentTasks.filter(task =>
+                task.name.toLowerCase().includes(searchText) &&
+                (statusFilter === "" || task.status === statusFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn];
+                    let valueB = b[sortColumn];
+                    if (sortColumn === 'startDate' || sortColumn === 'deadline') {
+                        valueA = new Date(valueA.split('/').reverse().join('-'));
+                        valueB = new Date(valueB.split('/').reverse().join('-'));
+                    } else if (sortColumn === 'name' || sortColumn === 'status') {
+                        valueA = valueA.toLowerCase();
+                        valueB = valueB.toLowerCase();
+                    }
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        function displayTable(page) {
+            const filteredTasks = getFilteredTasks();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredTasks.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy bài tập nào.</td></tr>';
+            } else {
+                paginatedData.forEach((task, index) => {
+                    let statusClass = "status";
+                    if (task.status === "Chưa nộp") statusClass = "status-warning";
+                    if (task.status === "Đã nộp") statusClass = "status-success";
+                    let statusIcons = task.status === "Chưa nộp" ? "🕒" : "✔";
+
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${task.name}</td>
+                            <td>${task.startDate}</td>
+                            <td>${task.deadline}</td>
+                            <td><span class="${statusClass}">${statusIcons} ${task.status}</span></td>
+                            <td>${task.grade}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info" onclick="viewDetails(${task.id})">👁️ Xem</button>
+                                ${task.status === "Chưa nộp" ? `<button class="btn btn-sm btn-success ms-1" onclick="showSubmitModal(${task.id})">📤 Nộp</button>` : ""}
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredTasks.length);
+        }
+
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        function viewDetails(id) {
+            window.location.href = `student_submissions.html?taskId=${id}`;
+        }
+
+        function showSubmitModal(id) {
+            const task = currentTasks.find(t => t.id === id);
+            if (task) {
+                document.getElementById("taskName").value = task.name;
+                document.getElementById("fileName").textContent = "";
+                document.getElementById("taskFile").value = "";
+                document.getElementById("submitForm").dataset.taskId = id;
+                const modal = new bootstrap.Modal(document.getElementById("submitModal"));
+                modal.show();
+            }
+        }
+
+        function submitTask() {
+            const form = document.getElementById("submitForm");
+            const taskId = form.dataset.taskId;
+            const fileInput = document.getElementById("taskFile");
+
+            if (form.checkValidity()) {
+                const task = currentTasks.find(t => t.id == taskId);
+                if (task) {
+                    task.status = "Đã nộp";
+                    alert(`Đã nộp bài tập: ${task.name}`);
+                    const modal = bootstrap.Modal.getInstance(document.getElementById("submitModal"));
+                    modal.hide();
+                    displayTable(currentPage);
+                }
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        document.getElementById("taskFile").addEventListener("change", () => {
+            const fileInput = document.getElementById("taskFile");
+            const fileName = document.getElementById("fileName");
+            if (fileInput.files.length > 0) {
+                fileName.textContent = `File đã chọn: ${fileInput.files[0].name}`;
+            } else {
+                fileName.textContent = "";
+            }
+        });
+
+        // Xuất danh sách bài tập sang Excel
+        function exportTasks() {
+            const filteredTasks = getFilteredTasks();
+            const worksheetData = [
+                [`Danh sách bài tập - ${subjects[subjectId]?.name || "Không xác định"}`],
+                [],
+                ["#", "Bài tập", "Ngày bắt đầu", "Thời gian nộp", "Trạng thái", "Điểm"]
+            ];
+
+            filteredTasks.forEach((task, index) => {
+                worksheetData.push([
+                    index + 1,
+                    task.name,
+                    task.startDate,
+                    task.deadline,
+                    task.status,
+                    task.grade
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachBaiTap");
+            XLSX.writeFile(workbook, `danh_sach_bai_tap_${subjectId}.xlsx`);
+        }
+
+        // Khởi chạy
+        displayTable(currentPage);
+    </script>
+</body>
+</html>

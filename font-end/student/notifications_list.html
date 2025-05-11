@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Danh sách thông báo của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Danh sách Thông báo | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." id="searchInput" onkeyup="filterNotifications()">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn position-relative">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle" id="unreadCount">0</span>
+                </button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <div class="container mt-4 notification-container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-bell-fill"></i> Danh sách thông báo
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Thanh tìm kiếm và bộ lọc -->
+            <div class="mb-4 d-flex gap-3">
+                <input type="text" class="form-control" id="searchInput" placeholder="🔍 Tìm kiếm thông báo..." onkeyup="filterNotifications()">
+                <select class="form-select w-25" id="statusFilter" onchange="filterNotifications()">
+                    <option value="">Trạng thái</option>
+                    <option value="unread">Chưa đọc</option>
+                    <option value="read">Đã đọc</option>
+                </select>
+            </div>
+
+            <!-- Danh sách thông báo -->
+            <div id="notificationList" class="notification-grid"></div>
+
+            <!-- Phân trang -->
+            <div class="pagination-container">
+                <ul id="pagination" class="pagination"></ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <!-- Bootstrap Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu thông báo
+        const notifications = [];
+        for (let i = 1; i <= 50; i++) {
+            notifications.push({
+                id: i,
+                title: `Thông báo ${i} - Cập nhật thông tin quan trọng`,
+                date: `0${i % 9 + 1}/0${i % 12 + 1}/2025`,
+                author: `Người gửi ${i}`,
+                link: `notification_detail.html?id=${i}`,
+                status: i % 3 === 0 ? "read" : "unread" // 1/3 thông báo đã đọc
+            });
+        }
+
+        const itemsPerPage = 15;
+        let currentPage = 1;
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            const sidebar = document.querySelector(".sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            icon.classList.toggle("bi-list");
+            icon.classList.toggle("bi-layout-sidebar-inset");
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Hiển thị thông báo
+        function displayNotifications(page, filteredNotifications) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedNotifications = filteredNotifications.slice(start, end);
+
+            const notificationList = document.getElementById("notificationList");
+            notificationList.innerHTML = "";
+
+            if (paginatedNotifications.length === 0) {
+                notificationList.innerHTML = '<p class="text-center">Không tìm thấy thông báo nào.</p>';
+            } else {
+                paginatedNotifications.forEach(notification => {
+                    const statusIcon = notification.status === "unread" ? '<i class="bi bi-circle-fill text-danger me-2"></i>' : "";
+                    notificationList.innerHTML += `
+                        <div class="notification-card">
+                            <div class="notification-avatar">
+                                <div class="avatar-circle">${notification.author.charAt(0)}</div>
+                            </div>
+                            <div class="notification-content">
+                                <h6 class="notification-title">${statusIcon}${notification.title}</h6>
+                                <div class="notification-meta d-flex justify-content-between">
+                                    <span>📅 ${notification.date}</span>
+                                    <span>🧑‍💼 ${notification.author}</span>
+                                </div>
+                            </div>
+                            <div class="view-detail">
+                                <a href="${notification.link}" onclick="markAsRead(${notification.id}); return false;">Xem chi tiết</a>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById("unreadCount").textContent = filteredNotifications.filter(n => n.status === "unread").length;
+            setupPagination(filteredNotifications.length);
+        }
+
+        // Lọc thông báo
+        function getFilteredNotifications() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+            return notifications.filter(notif => {
+                const matchesSearch = notif.title.toLowerCase().includes(searchText) || 
+                                     notif.date.toLowerCase().includes(searchText) || 
+                                     notif.author.toLowerCase().includes(searchText);
+                const matchesStatus = statusFilter === "" || notif.status === statusFilter;
+                return matchesSearch && matchesStatus;
+            }).sort((a, b) => new Date(b.date.split('/').reverse().join('-')) - new Date(a.date.split('/').reverse().join('-')));
+        }
+
+        function filterNotifications() {
+            currentPage = 1; // Reset về trang đầu khi lọc
+            const filtered = getFilteredNotifications();
+            displayNotifications(currentPage, filtered);
+        }
+
+        // Đánh dấu đã đọc
+        function markAsRead(id) {
+            const notification = notifications.find(n => n.id === id);
+            if (notification) notification.status = "read";
+            const filtered = getFilteredNotifications();
+            displayNotifications(currentPage, filtered);
+        }
+
+        // Phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalItems === 0) return; // Không hiển thị phân trang nếu không có kết quả
+
+            pagination.innerHTML += `<li><a href="#" onclick="changePage(1)">« Đầu</a></li>`;
+            if (currentPage > 1) {
+                pagination.innerHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">Trước</a></li>`;
+            }
+
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            if (endPage - startPage < maxVisiblePages - 1) startPage = Math.max(1, endPage - maxVisiblePages + 1);
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.innerHTML += `<li><a href="#" class="${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</a></li>`;
+            }
+
+            if (currentPage < totalPages) {
+                pagination.innerHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">Sau</a></li>`;
+            }
+            pagination.innerHTML += `<li><a href="#" onclick="changePage(${totalPages})">Cuối »</a></li>`;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            const filtered = getFilteredNotifications();
+            displayNotifications(currentPage, filtered);
+        }
+
+        // Khởi chạy
+        const initialFiltered = getFilteredNotifications();
+        displayNotifications(currentPage, initialFiltered);
+    </script>
+</body>
+</html>

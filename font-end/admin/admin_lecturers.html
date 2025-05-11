@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang quản lý giảng viên Admin của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Quản lý giảng viên | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
+        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="admin_lecturers.html" class="active"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện. Navbar hỗ trợ tìm kiếm và các chức năng tiện ích -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Dropdown hiển thị thông tin Admin và chức năng đăng xuất -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <h6>Admin HUTECH</h6>
+                <p>admin@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Lecturers Management Section -->
+        <div class="container mt-4">
+            <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Quản lý danh sách giảng viên và phân công -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">👩‍🏫 Quản lý giảng viên</h2>
+                <div>
+                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addLecturerModal">Thêm giảng viên <i class="bi bi-plus-circle"></i></button>
+                    <button class="btn btn-warning me-2" onclick="document.getElementById('importExcel').click()">Nhập Excel <i class="bi bi-file-earmark-arrow-up"></i></button>
+                    <input type="file" id="importExcel" style="display: none;" accept=".xlsx, .xls" onchange="importLecturers(event)">
+                    <!-- Ghi chú: 4.8 - Hệ thống báo cáo và thống kê. Xuất danh sách giảng viên -->
+                    <button class="btn btn-info" onclick="exportLecturers()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+            </div>
+
+            <!-- Breadcrumb -->
+            <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện với người dùng -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-person-workspace"></i> Quản lý giảng viên
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Lecturers Table -->
+            <div class="table-container">
+                <!-- Ghi chú: 4.2 - Giao diện trực quan. Bộ lọc hỗ trợ tìm kiếm và phân loại -->
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm giảng viên..." onkeyup="filterTable()">
+                    <select id="roleFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Vai trò</option>
+                        <option value="Trưởng khoa">Trưởng khoa</option>
+                        <option value="Phó khoa">Phó khoa</option>
+                        <option value="Trưởng bộ môn">Trưởng bộ môn</option>
+                        <option value="Giảng viên">Giảng viên</option>
+                    </select>
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Hoạt động">Hoạt động</option>
+                        <option value="Khóa">Khóa</option>
+                    </select>
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('lecturerId')">Mã GV <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('name')">Họ và tên <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Email</th>
+                                <th class="sortable" onclick="sortTable('department')">Bộ môn <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('role')">Vai trò <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Giảng Viên -->
+    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Thêm giảng viên -->
+    <div class="modal fade" id="addLecturerModal" tabindex="-1" aria-labelledby="addLecturerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLecturerModalLabel">Thêm giảng viên mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addLecturerForm">
+                        <div class="mb-3">
+                            <label class="form-label">Mã giảng viên</label>
+                            <input type="text" id="lecturerId" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên</label>
+                            <input type="text" id="lecturerName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="lecturerEmail" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bộ môn</label>
+                            <input type="text" id="lecturerDepartment" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Vai trò</label>
+                            <select id="lecturerRole" class="form-select" required>
+                                <option value="Giảng viên">Giảng viên</option>
+                                <option value="Trưởng khoa">Trưởng khoa</option>
+                                <option value="Phó khoa">Phó khoa</option>
+                                <option value="Trưởng bộ môn">Trưởng bộ môn</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="addLecturer()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Giảng Viên -->
+    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Sửa thông tin giảng viên -->
+    <div class="modal fade" id="editLecturerModal" tabindex="-1" aria-labelledby="editLecturerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editLecturerModalLabel">Sửa thông tin giảng viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editLecturerForm">
+                        <input type="hidden" id="editLecturerId">
+                        <div class="mb-3">
+                            <label class="form-label">Mã giảng viên</label>
+                            <input type="text" id="editLecturerCode" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên</label>
+                            <input type="text" id="editLecturerName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="editLecturerEmail" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bộ môn</label>
+                            <input type="text" id="editLecturerDepartment" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Vai trò</label>
+                            <select id="editLecturerRole" class="form-select" required>
+                                <option value="Giảng viên">Giảng viên</option>
+                                <option value="Trưởng khoa">Trưởng khoa</option>
+                                <option value="Phó khoa">Phó khoa</option>
+                                <option value="Trưởng bộ môn">Trưởng bộ môn</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select id="editLecturerStatus" class="form-select" required>
+                                <option value="Hoạt động">Hoạt động</option>
+                                <option value="Khóa">Khóa</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditLecturer()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu giảng viên
+        let lecturers = [
+            { id: 1, lecturerId: "GV001", name: "Nguyễn Huy Cường", email: "nguyenhuycuong@hutech.edu.vn", department: "CNTT", role: "Giảng viên", status: "Hoạt động" },
+            { id: 2, lecturerId: "GV002", name: "Trần Thị Vân Anh", email: "tranvanh@hutech.edu.vn", department: "CNTT", role: "Trưởng khoa", status: "Hoạt động" },
+            { id: 3, lecturerId: "GV003", name: "Lê Văn Nam", email: "levannam@hutech.edu.vn", department: "CNTT", role: "Phó khoa", status: "Khóa" },
+            { id: 4, lecturerId: "GV004", name: "Phạm Thị Hồng", email: "phamhong@hutech.edu.vn", department: "CNTT", role: "Trưởng bộ môn", status: "Hoạt động" },
+            { id: 5, lecturerId: "GV005", name: "Nguyễn Văn Bình", email: "nguyenbinh@hutech.edu.vn", department: "CNTT", role: "Giảng viên", status: "Hoạt động" }
+        ];
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "admin_notifications.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lọc và sắp xếp bảng
+        function getFilteredLecturers() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const roleFilter = document.getElementById("roleFilter").value;
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            let filtered = lecturers.filter(lecturer =>
+                (lecturer.lecturerId.toLowerCase().includes(searchText) || 
+                 lecturer.name.toLowerCase().includes(searchText) || 
+                 lecturer.email.toLowerCase().includes(searchText)) &&
+                (roleFilter === "" || lecturer.role === roleFilter) &&
+                (statusFilter === "" || lecturer.status === statusFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn].toLowerCase();
+                    let valueB = b[sortColumn].toLowerCase();
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Hiển thị bảng
+        function displayTable(page) {
+            const filteredLecturers = getFilteredLecturers();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredLecturers.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy giảng viên nào.</td></tr>';
+            } else {
+                paginatedData.forEach((lecturer, index) => {
+                    const statusClass = lecturer.status === "Hoạt động" ? "bg-success" : "bg-danger";
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${lecturer.lecturerId}</td>
+                            <td>${lecturer.name}</td>
+                            <td>${lecturer.email}</td>
+                            <td>${lecturer.department}</td>
+                            <td>${lecturer.role}</td>
+                            <td><span class="badge ${statusClass}">${lecturer.status}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info me-1" onclick="editLecturer(${lecturer.id})"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteLecturer(${lecturer.id})"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredLecturers.length);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Thêm giảng viên
+        function addLecturer() {
+            const form = document.getElementById("addLecturerForm");
+            if (form.checkValidity()) {
+                const newLecturer = {
+                    id: lecturers.length + 1,
+                    lecturerId: document.getElementById("lecturerId").value,
+                    name: document.getElementById("lecturerName").value,
+                    email: document.getElementById("lecturerEmail").value,
+                    department: document.getElementById("lecturerDepartment").value,
+                    role: document.getElementById("lecturerRole").value,
+                    status: "Hoạt động"
+                };
+                lecturers.push(newLecturer);
+                alert("Đã thêm giảng viên: " + newLecturer.name);
+                bootstrap.Modal.getInstance(document.getElementById("addLecturerModal")).hide();
+                displayTable(currentPage);
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Sửa giảng viên
+        function editLecturer(id) {
+            const lecturer = lecturers.find(l => l.id === id);
+            if (lecturer) {
+                document.getElementById("editLecturerId").value = lecturer.id;
+                document.getElementById("editLecturerCode").value = lecturer.lecturerId;
+                document.getElementById("editLecturerName").value = lecturer.name;
+                document.getElementById("editLecturerEmail").value = lecturer.email;
+                document.getElementById("editLecturerDepartment").value = lecturer.department;
+                document.getElementById("editLecturerRole").value = lecturer.role;
+                document.getElementById("editLecturerStatus").value = lecturer.status;
+                const modal = new bootstrap.Modal(document.getElementById("editLecturerModal"));
+                modal.show();
+            }
+        }
+
+        function saveEditLecturer() {
+            const id = parseInt(document.getElementById("editLecturerId").value);
+            const lecturer = lecturers.find(l => l.id === id);
+            if (lecturer) {
+                lecturer.lecturerId = document.getElementById("editLecturerCode").value;
+                lecturer.name = document.getElementById("editLecturerName").value;
+                lecturer.email = document.getElementById("editLecturerEmail").value;
+                lecturer.department = document.getElementById("editLecturerDepartment").value;
+                lecturer.role = document.getElementById("editLecturerRole").value;
+                lecturer.status = document.getElementById("editLecturerStatus").value;
+                alert("Đã cập nhật thông tin giảng viên: " + lecturer.name);
+                bootstrap.Modal.getInstance(document.getElementById("editLecturerModal")).hide();
+                displayTable(currentPage);
+            }
+        }
+
+        // Xóa giảng viên
+        function deleteLecturer(id) {
+            if (confirm("Bạn có chắc muốn xóa giảng viên này không?")) {
+                lecturers = lecturers.filter(l => l.id !== id);
+                alert("Đã xóa giảng viên!");
+                displayTable(currentPage);
+            }
+        }
+
+        // Xuất danh sách giảng viên sang Excel
+        // Ghi chú: 4.8 - Hệ thống báo cáo và thống kê
+        function exportLecturers() {
+            const filteredLecturers = getFilteredLecturers();
+            const worksheetData = [
+                ["Danh sách giảng viên - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["#", "Mã GV", "Họ và tên", "Email", "Bộ môn", "Vai trò", "Trạng thái"]
+            ];
+
+            filteredLecturers.forEach((lecturer, index) => {
+                worksheetData.push([
+                    index + 1,
+                    lecturer.lecturerId,
+                    lecturer.name,
+                    lecturer.email,
+                    lecturer.department,
+                    lecturer.role,
+                    lecturer.status
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachGiangVien");
+            XLSX.writeFile(workbook, "danh_sach_giang_vien.xlsx");
+        }
+
+        // Nhập danh sách giảng viên từ Excel
+        // Ghi chú: 4.9.1 - Chức năng của Admin. Thêm giảng viên từ file Excel
+        function importLecturers(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                // Bỏ qua tiêu đề và xử lý dữ liệu từ dòng 3 trở đi
+                const importedLecturers = jsonData.slice(2).map((row, index) => ({
+                    id: lecturers.length + index + 1,
+                    lecturerId: row[1] || "",
+                    name: row[2] || "",
+                    email: row[3] || "",
+                    department: row[4] || "",
+                    role: row[5] || "Giảng viên",
+                    status: row[6] || "Hoạt động"
+                }));
+
+                // Thêm giảng viên mới từ file Excel
+                lecturers = lecturers.concat(importedLecturers.filter(lecturer => lecturer.lecturerId && lecturer.name));
+                alert(`Đã nhập ${importedLecturers.length} giảng viên từ Excel!`);
+                displayTable(currentPage);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayTable(currentPage);
+        });
+    </script>
+</body>
+</html>

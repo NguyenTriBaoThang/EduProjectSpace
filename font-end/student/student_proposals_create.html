@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Đề xuất đề tài đồ án của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Đề xuất đề tài đồ án | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html" class="active"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Proposal Section -->
+        <div class="container mt-4">
+            <h2 class="fw-bold text-primary">💡 Đề xuất đề tài đồ án</h2>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="student_proposals_list.html"><i class="bi bi-list-ul"></i> Danh sách đề xuất</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-lightbulb"></i> Đề xuất đề tài
+                    </li>
+                </ol>
+            </nav>
+
+            <form id="proposalForm" class="mt-4" onsubmit="submitProposal(event)">
+                <div class="mb-3">
+                    <label class="form-label">Môn học</label>
+                    <select id="subject" class="form-select" name="subject" required>
+                        <option value="">-- Chọn môn học --</option>
+                        <option value="Kỹ thuật lập trình">Kỹ thuật lập trình</option>
+                        <option value="Đồ án chuyên ngành">Đồ án chuyên ngành</option>
+                        <option value="Đồ án cơ sở">Đồ án cơ sở</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tên đề tài</label>
+                    <input type="text" id="title" class="form-control" name="title" placeholder="Nhập tên đề tài" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mô tả ngắn</label>
+                    <textarea id="description" class="form-control" name="description" rows="3" placeholder="Mô tả ngắn về đề tài" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Công nghệ sử dụng</label>
+                    <input type="text" id="technology" class="form-control" name="technology" placeholder="Ví dụ: Java, Spring Boot, Flutter..." required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">File đính kèm (nếu có)</label>
+                    <input type="file" id="attachment" class="form-control" name="attachment" onchange="displayFileName()">
+                    <small id="fileName" class="form-text text-muted"></small>
+                </div>
+                <div class="text-center d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-primary" onclick="showConfirmation()">Gửi đề xuất</button>
+                    <a href="student_proposals_list.html" class="btn btn-secondary btn-back"><i class="bi bi-arrow-left-circle"></i> Quay lại danh sách</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Modal Confirmation -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Xác nhận đề xuất</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn đã chắc chắn muốn gửi đề xuất chưa? Hãy xem kỹ thông tin trước khi gửi.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Success -->
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Gửi đề xuất thành công</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Đề xuất của bạn đã được gửi thành công!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToList()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            const sidebar = document.querySelector(".sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            icon.classList.toggle("bi-list");
+            icon.classList.toggle("bi-layout-sidebar-inset");
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Hiển thị tên file đã chọn
+        function displayFileName() {
+            const fileInput = document.getElementById("attachment");
+            const fileName = document.getElementById("fileName");
+            if (fileInput.files.length > 0) {
+                fileName.textContent = `File đã chọn: ${fileInput.files[0].name}`;
+            } else {
+                fileName.textContent = "";
+            }
+        }
+
+        // Hiển thị modal xác nhận
+        function showConfirmation() {
+            const form = document.getElementById("proposalForm");
+            if (form.checkValidity()) {
+                const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                confirmationModal.show();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Gửi form và xuất Excel
+        function submitForm() {
+            const form = document.getElementById("proposalForm");
+            const formData = new FormData(form);
+
+            const proposalData = {
+                subject: formData.get("subject"),
+                title: formData.get("title"),
+                description: formData.get("description"),
+                technology: formData.get("technology"),
+                attachment: formData.get("attachment") ? formData.get("attachment").name : "Không có file"
+            };
+
+            // Xuất Excel
+            const worksheetData = [
+                ["Đề xuất đề tài đồ án"],
+                ["Môn học", proposalData.subject],
+                ["Tên đề tài", proposalData.title],
+                ["Mô tả ngắn", proposalData.description],
+                ["Công nghệ sử dụng", proposalData.technology],
+                ["File đính kèm", proposalData.attachment]
+            ];
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DeXuatDeTai");
+            XLSX.writeFile(workbook, `de_xuat_${proposalData.title.replace(/\s+/g, '_')}.xlsx`);
+
+            // Hiển thị modal thành công
+            const confirmationModal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+            confirmationModal.hide();
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        }
+
+        // Chuyển hướng sau khi gửi thành công
+        function redirectToList() {
+            window.location.href = "student_proposals_list.html";
+        }
+
+        // Xử lý submit form
+        function submitProposal(event) {
+            event.preventDefault();
+            showConfirmation();
+        }
+    </script>
+</body>
+</html>

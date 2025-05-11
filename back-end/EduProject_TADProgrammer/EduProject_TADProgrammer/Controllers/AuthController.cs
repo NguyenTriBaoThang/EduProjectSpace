@@ -67,7 +67,7 @@ namespace EduProject_TADProgrammer.Controllers
                     Email = user.Email,
                     FullName = user.FullName,
                     RoleId = user.RoleId,
-                    RoleName = user.Role?.Name,
+                    RoleName = user.Role.Name,
                     FailedLoginAttempts = user.FailedLoginAttempts,
                     Locked = user.Locked,
                     CreatedAt = user.CreatedAt,

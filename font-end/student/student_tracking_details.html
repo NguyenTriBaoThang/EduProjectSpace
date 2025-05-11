@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hệ thống Quản lý đồ án môn học của Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Theo dõi tiến độ đồ án | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html" class="active"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary" id="subjectTitle">📊 Giai đoạn thực hiện</h2>
+                <button class="btn btn-info" onclick="exportTasks()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="student_tracking_list.html"><i class="bi bi-list-ul"></i> Danh sách môn học</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-bar-chart-line"></i> Giai đoạn thực hiện
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="row mt-4 mb-4 align-items-center">
+                <div class="text-center d-flex flex-column justify-content-center">
+                    <h5>Tiến độ tổng thể</h5>
+                    <div class="progress w-100" style="height: 30px;" id="overallProgress">
+                        <div class="progress-bar bg-success" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <!-- Header tìm kiếm -->
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm bài tập..." onkeyup="filterTable()">
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Hoàn thành">Hoàn thành</option>
+                        <option value="Đang thực hiện">Đang thực hiện</option>
+                        <option value="Chưa hoàn thành">Chưa hoàn thành</option>
+                    </select>
+                </div>
+
+                <!-- Bảng nội dung -->
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('name')">Bài tập <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('startDate')">Ngày bắt đầu <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('deadline')">Hạn hoàn thành <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Footer phân trang -->
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+
+            <div class="row mt-4 align-items-center">
+                <div class="text-center">
+                    <div class="chart-container mb-4">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                    <h5>Biểu đồ tiến độ</h5>
+                </div>
+            </div>
+
+            <div class="mt-4 mb-4 text-right">
+                <a href="student_tracking_list.html" class="btn btn-secondary btn-back">
+                    <i class="bi bi-arrow-left-circle"></i> Danh sách Môn học
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu
+        const subjects = {
+            "1": { name: "Công nghệ phần mềm", tasks: [
+                { id: 1, name: "Đề xuất đề tài", startDate: "05/01/2025", deadline: "10/01/2025", status: "Hoàn thành", note: "✔ Đã duyệt" },
+                { id: 2, name: "Thiết kế hệ thống", startDate: "12/01/2025", deadline: "20/01/2025", status: "Hoàn thành", note: "✔ Đã gửi báo cáo" },
+                { id: 3, name: "Phát triển Backend", startDate: "22/01/2025", deadline: "05/02/2025", status: "Đang thực hiện", note: "🔄 Chưa gửi báo cáo" },
+                { id: 4, name: "Kiểm thử phần mềm", startDate: "02/02/2025", deadline: "10/02/2025", status: "Chưa hoàn thành", note: "🔄 Chưa bắt đầu" },
+                { id: 5, name: "Triển khai hệ thống", startDate: "10/02/2025", deadline: "15/02/2025", status: "Chưa hoàn thành", note: "🔄 Đang lên kế hoạch" },
+                { id: 6, name: "Nghiên cứu tài liệu", startDate: "15/02/2025", deadline: "20/02/2025", status: "Hoàn thành", note: "✔ Đã nộp báo cáo" },
+                { id: 7, name: "Xây dựng cơ sở dữ liệu", startDate: "20/02/2025", deadline: "25/02/2025", status: "Đang thực hiện", note: "🔄 Cần kiểm tra" },
+                { id: 8, name: "Tạo báo cáo cuối kỳ", startDate: "25/02/2025", deadline: "01/03/2025", status: "Chưa hoàn thành", note: "🔄 Đang chuẩn bị" },
+                { id: 9, name: "Hoàn thành đồ án", startDate: "01/03/2025", deadline: "05/03/2025", status: "Chưa hoàn thành", note: "🔄 Chưa bắt đầu" },
+                { id: 10, name: "Nộp đồ án", startDate: "05/03/2025", deadline: "10/03/2025", status: "Chưa hoàn thành", note: "🔄 Đang làm báo cáo" },
+                { id: 11, name: "Chỉnh sửa đồ án", startDate: "10/03/2025", deadline: "15/03/2025", status: "Hoàn thành", note: "✔ Đã sửa lại theo yêu cầu" },
+                { id: 12, name: "Đánh giá đồ án", startDate: "15/03/2025", deadline: "20/03/2025", status: "Hoàn thành", note: "✔ Đã đánh giá" },
+                { id: 13, name: "Trình bày đồ án", startDate: "20/03/2025", deadline: "25/03/2025", status: "Chưa hoàn thành", note: "🔄 Đang chuẩn bị bài thuyết trình" },
+                { id: 14, name: "Tổng kết đồ án", startDate: "25/03/2025", deadline: "30/03/2025", status: "Chưa hoàn thành", note: "🔄 Cần chỉnh sửa" }
+            ]},
+            "2": { name: "Lập trình Web", tasks: [
+                { id: 15, name: "Thiết kế giao diện", startDate: "01/02/2025", deadline: "07/02/2025", status: "Hoàn thành", note: "✔ Đã hoàn thành" },
+                { id: 16, name: "Phát triển frontend", startDate: "08/02/2025", deadline: "14/02/2025", status: "Chưa hoàn thành", note: "🔄 Chưa bắt đầu" }
+            ]}
+        };
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+        let currentTasks = [];
+
+        // Lấy dữ liệu từ URL
+        const params = new URLSearchParams(window.location.search);
+        const subjectId = params.get("id") || "1"; // Mặc định là môn ID 1 nếu không có trong URL
+        currentTasks = subjects[subjectId]?.tasks || [];
+        document.getElementById("subjectTitle").textContent = `📊 Giai đoạn thực hiện - ${subjects[subjectId]?.name || "Không xác định"}`;
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lọc và sắp xếp dữ liệu bảng
+        function getFilteredTasks() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            let filtered = currentTasks.filter(task =>
+                task.name.toLowerCase().includes(searchText) &&
+                (statusFilter === "" || task.status === statusFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn];
+                    let valueB = b[sortColumn];
+                    if (sortColumn === 'startDate' || sortColumn === 'deadline') {
+                        valueA = new Date(valueA.split('/').reverse().join('-'));
+                        valueB = new Date(valueB.split('/').reverse().join('-'));
+                    } else {
+                        valueA = valueA.toLowerCase();
+                        valueB = valueB.toLowerCase();
+                    }
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Hiển thị dữ liệu bảng
+        function displayTable(page) {
+            const filteredTasks = getFilteredTasks();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredTasks.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy bài tập nào.</td></tr>';
+            } else {
+                paginatedData.forEach((task, index) => {
+                    let statusClass = "status-completed";
+                    if (task.status === "Chưa hoàn thành") statusClass = "status-warning";
+                    if (task.status === "Đang thực hiện") statusClass = "status-inprogress";
+
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${task.name}</td>
+                            <td>${task.startDate}</td>
+                            <td>${task.deadline}</td>
+                            <td><span class="${statusClass}">${task.status}</span></td>
+                            <td>${task.note}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredTasks.length);
+            updateProgressAndChart();
+        }
+
+        // Tạo phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Cập nhật thanh tiến độ và biểu đồ
+        function updateProgressAndChart() {
+            const filteredTasks = getFilteredTasks();
+            const completedTasks = filteredTasks.filter(task => task.status === "Hoàn thành").length;
+            const totalTasks = filteredTasks.length;
+            const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            document.getElementById("progressBar").style.width = `${progress}%`;
+            document.getElementById("progressBar").textContent = `${progress}% Hoàn thành`;
+
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            if (window.progressChart) window.progressChart.destroy();
+            window.progressChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Hoàn thành', 'Đang thực hiện', 'Chưa hoàn thành'],
+                    datasets: [{
+                        label: 'Tiến độ (%)',
+                        data: [
+                            filteredTasks.filter(task => task.status === 'Hoàn thành').length,
+                            filteredTasks.filter(task => task.status === 'Đang thực hiện').length,
+                            filteredTasks.filter(task => task.status === 'Chưa hoàn thành').length
+                        ],
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+
+        // Xuất dữ liệu sang Excel
+        function exportTasks() {
+            const filteredTasks = getFilteredTasks();
+            const worksheetData = [
+                [`Giai đoạn thực hiện - ${subjects[subjectId]?.name || "Không xác định"}`],
+                ["Tiến độ tổng thể", `${Math.round((filteredTasks.filter(t => t.status === "Hoàn thành").length / filteredTasks.length) * 100)}%`],
+                [],
+                ["#", "Bài tập", "Ngày bắt đầu", "Hạn hoàn thành", "Trạng thái", "Ghi chú"]
+            ];
+
+            filteredTasks.forEach((task, index) => {
+                worksheetData.push([
+                    index + 1,
+                    task.name,
+                    task.startDate,
+                    task.deadline,
+                    task.status,
+                    task.note
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "TienDoDoAn");
+            XLSX.writeFile(workbook, `tien_do_do_an_${subjectId}.xlsx`);
+        }
+
+        // Khởi chạy
+        displayTable(currentPage);
+    </script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang quản lý kỳ học Admin của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Quản lý kỳ học | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
+        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="admin_semesters.html" class="active"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện. Navbar hỗ trợ tìm kiếm và các chức năng tiện ích -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Dropdown hiển thị thông tin Admin và chức năng đăng xuất -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <h6>Admin HUTECH</h6>
+                <p>admin@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Semesters Management Section -->
+        <div class="container mt-4">
+            <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Tạo và quản lý các kỳ học -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">📅 Quản lý kỳ học</h2>
+                <div>
+                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addSemesterModal">Thêm kỳ học <i class="bi bi-plus-circle"></i></button>
+                    <!-- Ghi chú: 4.8 - Hệ thống báo cáo và thống kê. Xuất danh sách kỳ học -->
+                    <button class="btn btn-info" onclick="exportSemesters()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+            </div>
+
+            <!-- Breadcrumb -->
+            <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện với người dùng -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-calendar"></i> Quản lý kỳ học
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Semesters Table -->
+            <div class="table-container">
+                <!-- Ghi chú: 4.2 - Giao diện trực quan. Bộ lọc hỗ trợ tìm kiếm và phân loại -->
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm kỳ học..." onkeyup="filterTable()">
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Hoạt động">Hoạt động</option>
+                        <option value="Kết thúc">Kết thúc</option>
+                    </select>
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('semesterId')">Mã kỳ học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('name')">Tên kỳ học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('startDate')">Ngày bắt đầu <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('endDate')">Ngày kết thúc <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Kỳ Học -->
+    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Tạo kỳ học mới -->
+    <div class="modal fade" id="addSemesterModal" tabindex="-1" aria-labelledby="addSemesterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSemesterModalLabel">Thêm kỳ học mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSemesterForm">
+                        <div class="mb-3">
+                            <label class="form-label">Mã kỳ học</label>
+                            <input type="text" id="semesterId" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tên kỳ học</label>
+                            <input type="text" id="semesterName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ngày bắt đầu</label>
+                            <input type="date" id="semesterStartDate" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ngày kết thúc</label>
+                            <input type="date" id="semesterEndDate" class="form-control" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="addSemester()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Kỳ Học -->
+    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Sửa thông tin kỳ học -->
+    <div class="modal fade" id="editSemesterModal" tabindex="-1" aria-labelledby="editSemesterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSemesterModalLabel">Sửa thông tin kỳ học</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSemesterForm">
+                        <input type="hidden" id="editSemesterId">
+                        <div class="mb-3">
+                            <label class="form-label">Mã kỳ học</label>
+                            <input type="text" id="editSemesterCode" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tên kỳ học</label>
+                            <input type="text" id="editSemesterName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ngày bắt đầu</label>
+                            <input type="date" id="editSemesterStartDate" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ngày kết thúc</label>
+                            <input type="date" id="editSemesterEndDate" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select id="editSemesterStatus" class="form-select" required>
+                                <option value="Hoạt động">Hoạt động</option>
+                                <option value="Kết thúc">Kết thúc</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditSemester()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu kỳ học
+        let semesters = [
+            { id: 1, semesterId: "HK20251", name: "Học kỳ 1 - 2025", startDate: "01/01/2025", endDate: "30/04/2025", status: "Hoạt động" },
+            { id: 2, semesterId: "HK20252", name: "Học kỳ 2 - 2025", startDate: "01/05/2025", endDate: "31/08/2025", status: "Kết thúc" },
+            { id: 3, semesterId: "HK20253", name: "Học kỳ 3 - 2025", startDate: "01/09/2025", endDate: "31/12/2025", status: "Hoạt động" },
+            { id: 4, semesterId: "HK20241", name: "Học kỳ 1 - 2024", startDate: "01/01/2024", endDate: "30/04/2024", status: "Kết thúc" },
+            { id: 5, semesterId: "HK20242", name: "Học kỳ 2 - 2024", startDate: "01/05/2024", endDate: "31/08/2024", status: "Kết thúc" }
+        ];
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "admin_notifications.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Lọc và sắp xếp bảng
+        function getFilteredSemesters() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            let filtered = semesters.filter(semester =>
+                (semester.semesterId.toLowerCase().includes(searchText) || 
+                 semester.name.toLowerCase().includes(searchText)) &&
+                (statusFilter === "" || semester.status === statusFilter)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn].toLowerCase();
+                    let valueB = b[sortColumn].toLowerCase();
+                    if (sortColumn === 'startDate' || sortColumn === 'endDate') {
+                        valueA = new Date(valueA.split('/').reverse().join('-'));
+                        valueB = new Date(valueB.split('/').reverse().join('-'));
+                    }
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Hiển thị bảng
+        function displayTable(page) {
+            const filteredSemesters = getFilteredSemesters();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredSemesters.slice(start, end);
+
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy kỳ học nào.</td></tr>';
+            } else {
+                paginatedData.forEach((semester, index) => {
+                    const statusClass = semester.status === "Hoạt động" ? "bg-success" : "bg-danger";
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${semester.semesterId}</td>
+                            <td>${semester.name}</td>
+                            <td>${semester.startDate}</td>
+                            <td>${semester.endDate}</td>
+                            <td><span class="badge ${statusClass}">${semester.status}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info me-1" onclick="editSemester(${semester.id})"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteSemester(${semester.id})"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredSemesters.length);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Thêm kỳ học
+        function addSemester() {
+            const form = document.getElementById("addSemesterForm");
+            if (form.checkValidity()) {
+                const newSemester = {
+                    id: semesters.length + 1,
+                    semesterId: document.getElementById("semesterId").value,
+                    name: document.getElementById("semesterName").value,
+                    startDate: formatDate(document.getElementById("semesterStartDate").value),
+                    endDate: formatDate(document.getElementById("semesterEndDate").value),
+                    status: "Hoạt động"
+                };
+                semesters.push(newSemester);
+                alert("Đã thêm kỳ học: " + newSemester.name);
+                bootstrap.Modal.getInstance(document.getElementById("addSemesterModal")).hide();
+                displayTable(currentPage);
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Sửa kỳ học
+        function editSemester(id) {
+            const semester = semesters.find(s => s.id === id);
+            if (semester) {
+                document.getElementById("editSemesterId").value = semester.id;
+                document.getElementById("editSemesterCode").value = semester.semesterId;
+                document.getElementById("editSemesterName").value = semester.name;
+                document.getElementById("editSemesterStartDate").value = unformatDate(semester.startDate);
+                document.getElementById("editSemesterEndDate").value = unformatDate(semester.endDate);
+                document.getElementById("editSemesterStatus").value = semester.status;
+                const modal = new bootstrap.Modal(document.getElementById("editSemesterModal"));
+                modal.show();
+            }
+        }
+
+        function saveEditSemester() {
+            const id = parseInt(document.getElementById("editSemesterId").value);
+            const semester = semesters.find(s => s.id === id);
+            if (semester) {
+                semester.semesterId = document.getElementById("editSemesterCode").value;
+                semester.name = document.getElementById("editSemesterName").value;
+                semester.startDate = formatDate(document.getElementById("editSemesterStartDate").value);
+                semester.endDate = formatDate(document.getElementById("editSemesterEndDate").value);
+                semester.status = document.getElementById("editSemesterStatus").value;
+                alert("Đã cập nhật kỳ học: " + semester.name);
+                bootstrap.Modal.getInstance(document.getElementById("editSemesterModal")).hide();
+                displayTable(currentPage);
+            }
+        }
+
+        // Xóa kỳ học
+        function deleteSemester(id) {
+            if (confirm("Bạn có chắc muốn xóa kỳ học này không?")) {
+                semesters = semesters.filter(s => s.id !== id);
+                alert("Đã xóa kỳ học!");
+                displayTable(currentPage);
+            }
+        }
+
+        // Xuất danh sách kỳ học sang Excel
+        // Ghi chú: 4.8 - Hệ thống báo cáo và thống kê
+        function exportSemesters() {
+            const filteredSemesters = getFilteredSemesters();
+            const worksheetData = [
+                ["Danh sách kỳ học - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["#", "Mã kỳ học", "Tên kỳ học", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái"]
+            ];
+
+            filteredSemesters.forEach((semester, index) => {
+                worksheetData.push([
+                    index + 1,
+                    semester.semesterId,
+                    semester.name,
+                    semester.startDate,
+                    semester.endDate,
+                    semester.status
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachKyHoc");
+            XLSX.writeFile(workbook, "danh_sach_ky_hoc.xlsx");
+        }
+
+        // Hàm định dạng ngày từ ISO sang dd/mm/yyyy
+        function formatDate(isoDate) {
+            const date = new Date(isoDate);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        // Hàm chuyển định dạng ngày từ dd/mm/yyyy về yyyy-mm-dd cho input date
+        function unformatDate(dateStr) {
+            const [day, month, year] = dateStr.split('/');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            displayTable(currentPage);
+        });
+    </script>
+</body>
+</html>

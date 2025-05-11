@@ -1,0 +1,70 @@
+/* CSS cho trang chủ HUTECH */
+/* Đảm bảo body có chiều cao tối thiểu để footer luôn ở dưới cùng */
+body {
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Style cho header */
+.navbar {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style cho nội dung chính */
+.container {
+    padding: 20px;
+}
+
+/* Style cho footer */
+.footer {
+    background-color: #1D4ED8;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    width: 100%;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode */
+.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.dark-mode .navbar {
+    background: linear-gradient(90deg, #111827, #1F2937) !important;
+}
+
+.dark-mode .footer {
+    background-color: #111827;
+}
+
+.dark-mode .btn-primary {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+
+.dark-mode .lead {
+    color: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .img-fluid {
+        max-width: 100%;
+    }
+
+    .btn-lg {
+        width: 100%;
+    }
+}

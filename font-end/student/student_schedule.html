@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hệ thống Quản lý đồ án môn học của Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Lịch cá nhân | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html" class="active"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Lịch cá nhân -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">📅 Lịch cá nhân</h2>
+                <button class="btn btn-info" onclick="exportEvents()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-calendar"></i> Lịch cá nhân
+                    </li>
+                </ol>
+            </nav>
+
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <!-- Modal Thông báo -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Thông báo sự kiện</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="notificationMessage"></p>
+                    <p id="eventDescription" class="mt-3 text-muted"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script>
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector('.sidebar');
+            let navbar = document.querySelector('.navbar');
+            let content = document.querySelector('.content');
+
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                navbar.style.width = "calc(100% - 270px)";
+                content.style.marginLeft = "270px";
+            } else {
+                sidebar.classList.add('collapsed');
+                navbar.style.width = "calc(100% - 80px)";
+                content.style.marginLeft = "80px";
+            }
+        }
+
+        // Dữ liệu sự kiện mẫu (10 sự kiện trong ngày 2025-02-15)
+        const events = [
+            { id: "1", title: "Hạn nộp báo cáo chuyên ngành", start: "2025-02-15", description: "Nộp báo cáo về tiến độ đồ án cho giáo viên hướng dẫn" },
+            { id: "2", title: "Hạn nộp báo cáo cơ sở", start: "2025-02-15", description: "Nộp báo cáo về tiến độ đồ án cơ sở" },
+            { id: "3", title: "Thảo luận dự án", start: "2025-02-15", description: "Thảo luận về tiến độ và kế hoạch làm đồ án" },
+            { id: "4", title: "Họp nhóm đồ án", start: "2025-02-15", description: "Họp nhóm để phân công nhiệm vụ" },
+            { id: "5", title: "Nộp đề cương", start: "2025-02-15", description: "Nộp đề cương chi tiết cho giảng viên" },
+            { id: "6", title: "Kiểm tra tiến độ", start: "2025-02-15", description: "Giảng viên kiểm tra tiến độ đồ án" },
+            { id: "7", title: "Hạn chỉnh sửa báo cáo", start: "2025-02-15", description: "Chỉnh sửa báo cáo theo phản hồi" },
+            { id: "8", title: "Seminar đồ án", start: "2025-02-15", description: "Tham gia seminar đồ án với giảng viên" },
+            { id: "9", title: "Nộp tài liệu bổ sung", start: "2025-02-15", description: "Nộp tài liệu bổ sung theo yêu cầu" },
+            { id: "10", title: "Hạn gửi slide thuyết trình", start: "2025-02-15", description: "Gửi slide thuyết trình cho giảng viên" }
+        ];
+
+        // Khởi tạo FullCalendar
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'vi',
+                buttonText: {
+                    today: 'Hôm nay',
+                    month: 'Tháng',
+                    week: 'Tuần',
+                    day: 'Ngày',
+                    list: 'Lịch'
+                },
+                events: events,
+                eventClick: function(info) {
+                    var modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+                    var message = `Sự kiện: ${info.event.title}<br>Ngày: ${info.event.start.toLocaleDateString()}`;
+                    var description = info.event.extendedProps.description;
+
+                    document.getElementById('notificationMessage').innerHTML = message;
+                    document.getElementById('eventDescription').innerHTML = description;
+
+                    modal.show();
+                },
+                eventLimit: true, // Hiển thị nút "more" khi có nhiều sự kiện trong ngày
+                moreLinkText: function(num) {
+                    return "xem thêm +" + num; // Tùy chỉnh nút "more" thành "xem thêm +số lượng"
+                },
+                dayMaxEvents: 3 // Giới hạn tối đa 3 sự kiện hiển thị trực tiếp
+            });
+            calendar.render();
+        });
+
+        // Xuất sự kiện sang Excel
+        function exportEvents() {
+            const worksheetData = [
+                ["Lịch cá nhân"],
+                [],
+                ["Tiêu đề", "Ngày", "Mô tả"]
+            ];
+
+            events.forEach(event => {
+                worksheetData.push([
+                    event.title,
+                    event.start,
+                    event.description
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "LichCaNhan");
+            XLSX.writeFile(workbook, "lich_ca_nhan.xlsx");
+        }
+    </script>
+</body>
+</html>

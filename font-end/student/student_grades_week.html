@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chi tiết điểm bài tập của hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Chi tiết điểm bài tập | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="icon" href="img/img_logohutech.png" type="image/png">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Sinh viên</h4>
+        <a href="student_dashboard.html"><i class="bi bi-house-door"></i> Trang chủ</a>
+        <a href="student_submissions_list.html"><i class="bi bi-upload"></i> Nộp bài tập đồ án</a>
+        <a href="student_tracking_list.html"><i class="bi bi-bar-chart-line"></i> Theo dõi tiến độ đồ án</a>
+        <a href="student_history_submissions_list.html"><i class="bi bi-clock-history"></i> Xem lịch sử nộp bài</a>
+        <a href="student_proposals_list.html"><i class="bi bi-lightbulb"></i> Đề xuất đề tài đồ án</a>
+        <a href="student_schedule.html"><i class="bi bi-calendar"></i> Lịch cá nhân</a>
+        <a href="student_grades_list.html" class="active"><i class="bi bi-award"></i> Hệ thống chấm điểm</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="User Avatar">
+                <h6>Nguyễn Tri Bão Thắng</h6>
+                <p>nguyentribaothang@gmail.com</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Section -->
+        <div class="container mt-4">
+            <h2 class="fw-bold text-primary" id="assignmentTitle">📖 Chi tiết điểm bài tập</h2>
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="student_grades_list.html"><i class="bi bi-list-ul"></i> Danh sách các môn</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="student_grades_detail.html"><i class="bi bi-file-earmark-text"></i> Chi tiết điểm số</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-file-earmark-check"></i> Chi tiết bài tập
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Thông tin chi tiết bài tập -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="summary-card avg">
+                        <h4>📊 Điểm bài tập</h4>
+                        <h2 class="fw-bold" id="assignmentScore"></h2>
+                        <p>Đánh giá: <span class="fw-bold" id="assignmentEvaluation"></span></p>
+                        <p>Trạng thái: <span class="fw-bold" id="assignmentStatus"></span></p>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="submissionDetails" class="card p-4 shadow-sm">
+                        <h6 class="fw-bold">📂 Nội dung bài nộp:</h6>
+                        <p id="submissionContent"></p>
+                        <hr>
+                        <h6 class="fw-bold">📎 File đính kèm:</h6>
+                        <ul class="file-list" id="fileList"></ul>
+                        <button class="btn btn-outline-primary btn-sm mt-2" onclick="downloadAllFiles()">Tải tất cả file</button>
+                        <hr>
+                        <h6 class="fw-bold">📝 Nhận xét của giáo viên:</h6>
+                        <div class="teacher-feedback" id="teacherFeedback"></div>
+                        <hr>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-info" onclick="exportReport()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                            <a href="student_grades_detail.html" class="btn btn-outline-secondary"><i class="bi bi-arrow-left-circle"></i> Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu mẫu bài tập
+        const assignments = {
+            "1": {
+                title: "Bài tập tuần 1",
+                score: 8.5,
+                evaluation: "Tốt",
+                status: "Đã nộp",
+                content: "Xây dựng giao diện người dùng bằng HTML, CSS và JavaScript.",
+                files: [
+                    { name: "web_project.pdf", url: "files/web_project.pdf" },
+                    { name: "design_mockup.png", url: "files/design_mockup.png" },
+                    { name: "documentation.docx", url: "files/documentation.docx" }
+                ],
+                teacher: "Nguyễn Huy Cường",
+                feedback: "Bài làm tốt, giao diện thiết kế đẹp, đầy đủ chức năng. Cần tối ưu mã nguồn để hiệu suất cao hơn."
+            },
+            "2": {
+                title: "Bài tập tuần 2",
+                score: 9.0,
+                evaluation: "Xuất sắc",
+                status: "Đã nộp",
+                content: "Phát triển chức năng đăng nhập và đăng ký.",
+                files: [
+                    { name: "login_system.zip", url: "files/login_system.zip" }
+                ],
+                teacher: "Trần Văn B",
+                feedback: "Hoàn thành xuất sắc, mã nguồn sạch và tối ưu."
+            }
+        };
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            const sidebar = document.querySelector(".sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            icon.classList.toggle("bi-list");
+            icon.classList.toggle("bi-layout-sidebar-inset");
+        });
+
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "notifications_list.html";
+        });
+
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Lấy thông tin bài tập từ URL
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        function loadAssignment() {
+            const assignment = assignments[id];
+            if (assignment) {
+                document.getElementById("assignmentTitle").textContent = `📖 Chi tiết điểm bài tập - ${assignment.title}`;
+                document.getElementById("assignmentScore").textContent = assignment.score;
+                document.getElementById("assignmentEvaluation").textContent = assignment.evaluation;
+                document.getElementById("assignmentStatus").textContent = assignment.status;
+                document.getElementById("submissionContent").textContent = assignment.content;
+
+                const fileList = document.getElementById("fileList");
+                fileList.innerHTML = "";
+                assignment.files.forEach(file => {
+                    fileList.innerHTML += `<li><a href="${file.url}" download class="btn btn-sm btn-outline-primary">📥 ${file.name}</a></li>`;
+                });
+
+                document.getElementById("teacherFeedback").innerHTML = `
+                    <p><strong>👨‍🏫 Giáo viên:</strong> ${assignment.teacher}</p>
+                    <p>${assignment.feedback}</p>
+                `;
+            } else {
+                document.getElementById("assignmentTitle").textContent = "📖 Không tìm thấy bài tập";
+                document.getElementById("submissionDetails").innerHTML = "<p>Không có thông tin bài tập với ID này.</p>";
+            }
+        }
+
+        // Tải tất cả file đính kèm
+        function downloadAllFiles() {
+            const assignment = assignments[id];
+            if (assignment && assignment.files.length > 0) {
+                assignment.files.forEach(file => {
+                    const link = document.createElement("a");
+                    link.href = file.url;
+                    link.download = file.name;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            } else {
+                alert("Không có file nào để tải!");
+            }
+        }
+
+        // Xuất báo cáo Excel
+        function exportReport() {
+            const assignment = assignments[id];
+            if (!assignment) return;
+
+            const worksheetData = [
+                [`Chi tiết điểm bài tập - ${assignment.title}`],
+                ["Điểm số", assignment.score],
+                ["Đánh giá", assignment.evaluation],
+                ["Trạng thái", assignment.status],
+                [],
+                ["Nội dung bài nộp", assignment.content],
+                ["File đính kèm", assignment.files.map(f => f.name).join(", ")],
+                ["Giáo viên", assignment.teacher],
+                ["Nhận xét", assignment.feedback]
+            ];
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "ChiTietDiem");
+            XLSX.writeFile(workbook, `diem_bai_tap_${id}.xlsx`);
+        }
+
+        // Khởi chạy
+        loadAssignment();
+    </script>
+</body>
+</html>
