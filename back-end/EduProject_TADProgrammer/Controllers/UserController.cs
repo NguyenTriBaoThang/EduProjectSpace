@@ -14,9 +14,7 @@ namespace EduProject_TADProgrammer.Controllers
     //[Authorize(Roles = "ROLE_ADMIN")]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-
-        public UserController(UserService userService)
+        private readonly UserService _userService; public UserController(UserService userService)
         {
             _userService = userService;
         }
@@ -24,11 +22,11 @@ namespace EduProject_TADProgrammer.Controllers
         // GET: api/User
         // Lấy danh sách tất cả người dùng.
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery] long? roleId)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery] long[] roleIds)
         {
             var users = await _userService.GetAllUsers();
-            if (roleId.HasValue)
-                users = users.Where(u => u.RoleId == roleId.Value).ToList();
+            if (roleIds != null && roleIds.Length > 0)
+                users = users.Where(u => roleIds.Contains(u.RoleId)).ToList();
             return Ok(users);
         }
 
@@ -53,6 +51,7 @@ namespace EduProject_TADProgrammer.Controllers
                 Username = request.Username,
                 Email = request.Email,
                 FullName = request.FullName,
+                ClassCode = request.ClassCode,
                 RoleId = request.RoleId,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password ?? request.Username),
                 CreatedAt = DateTime.UtcNow,
@@ -71,7 +70,6 @@ namespace EduProject_TADProgrammer.Controllers
         public async Task<ActionResult<ImportResult>> ImportUsers([FromBody] List<CreateUserRequest> requests)
         {
             var result = new ImportResult { SuccessCount = 0, FailedCount = 0, Errors = new List<string>() };
-
             foreach (var request in requests)
             {
                 try
@@ -81,8 +79,9 @@ namespace EduProject_TADProgrammer.Controllers
                         Username = request.Username,
                         Email = request.Email,
                         FullName = request.FullName,
+                        ClassCode = request.ClassCode,
                         RoleId = request.RoleId,
-                        Password = BCrypt.Net.BCrypt.HashPassword(request.Username), // Password mặc định = Username
+                        Password = BCrypt.Net.BCrypt.HashPassword(request.Password ?? request.Username),
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
                         FailedLoginAttempts = 0,
@@ -98,7 +97,6 @@ namespace EduProject_TADProgrammer.Controllers
                     result.Errors.Add($"Lỗi khi nhập người dùng {request.Username}: {ex.Message}");
                 }
             }
-
             return Ok(result);
         }
 
@@ -117,9 +115,11 @@ namespace EduProject_TADProgrammer.Controllers
             user.Username = request.Username;
             user.Email = request.Email;
             user.FullName = request.FullName;
+            user.ClassCode = request.ClassCode;
             user.RoleId = request.RoleId;
             if (!string.IsNullOrEmpty(request.Password))
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            user.Locked = request.Locked;
             user.UpdatedAt = DateTime.UtcNow;
 
             await _userService.UpdateUser(user);
@@ -162,8 +162,8 @@ namespace EduProject_TADProgrammer.Controllers
                 Email = request.Email,
                 FullName = request.FullName,
                 ClassCode = request.ClassCode,
-                RoleId = 3, // Mặc định ROLE_STUDENT
-                Password = BCrypt.Net.BCrypt.HashPassword(request.Username), // Password = Username
+                RoleId = 3,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Username),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 FailedLoginAttempts = 0,
@@ -180,7 +180,6 @@ namespace EduProject_TADProgrammer.Controllers
         public async Task<ActionResult<ImportResult>> ImportStudents([FromBody] List<CreateStudentRequest> requests)
         {
             var result = new ImportResult { SuccessCount = 0, FailedCount = 0, Errors = new List<string>() };
-
             foreach (var request in requests)
             {
                 try
@@ -191,8 +190,8 @@ namespace EduProject_TADProgrammer.Controllers
                         Email = request.Email,
                         FullName = request.FullName,
                         ClassCode = request.ClassCode,
-                        RoleId = 3, // Mặc định ROLE_STUDENT
-                        Password = BCrypt.Net.BCrypt.HashPassword(request.Username), // Password = Username
+                        RoleId = 3,
+                        Password = BCrypt.Net.BCrypt.HashPassword(request.Username),
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
                         FailedLoginAttempts = 0,
@@ -202,13 +201,12 @@ namespace EduProject_TADProgrammer.Controllers
                     await _userService.LogAction(createdUser.Id, "CREATE_STUDENT", $"Student {createdUser.Username} created via import.");
                     result.SuccessCount++;
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     result.FailedCount++;
                     result.Errors.Add($"Lỗi khi nhập sinh viên {request.Username}: {ex.Message}");
                 }
             }
-
             return Ok(result);
         }
 
@@ -230,7 +228,7 @@ namespace EduProject_TADProgrammer.Controllers
             user.Locked = request.Locked;
             if (!string.IsNullOrEmpty(request.Password))
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
-            user.RoleId = 3; // Giữ ROLE_STUDENT
+            user.RoleId = 3;
             user.UpdatedAt = DateTime.UtcNow;
 
             await _userService.UpdateUser(user);
@@ -251,30 +249,149 @@ namespace EduProject_TADProgrammer.Controllers
             await _userService.LogAction(id, "DELETE_STUDENT", $"Student {user.Username} deleted.");
             return NoContent();
         }
+
+        // GET: api/User/lecturers
+        // Lấy danh sách giảng viên (RoleId = 2 hoặc 4).
+        [HttpGet("lecturers")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetLecturers()
+        {
+            var lecturers = await _userService.GetAllUsers();
+            lecturers = lecturers.Where(u => u.RoleId == 2 || u.RoleId == 4).ToList();
+            return Ok(lecturers);
+        }
+
+        // POST: api/User/lecturers
+        // Tạo giảng viên mới, Password mặc định bằng Username.
+        [HttpPost("lecturers")]
+        public async Task<ActionResult<UserDto>> CreateLecturer([FromBody] CreateLecturerRequest request)
+        {
+            if (request.RoleId != 2 && request.RoleId != 4)
+                return BadRequest(new { message = "RoleId phải là 2 (Giảng viên hướng dẫn) hoặc 4 (Trưởng bộ môn)." });
+
+            var user = new User
+            {
+                Username = request.Username,
+                Email = request.Email,
+                FullName = request.FullName,
+                ClassCode = request.ClassCode,
+                RoleId = request.RoleId,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Username),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                FailedLoginAttempts = 0,
+                Locked = false
+            };
+            var createdUser = await _userService.CreateUser(user);
+            await _userService.LogAction(createdUser.Id, "CREATE_LECTURER", $"Lecturer {createdUser.Username} created.");
+            return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
+        }
+
+        // POST: api/User/lecturers/import
+        // Nhập danh sách giảng viên từ Excel.
+        [HttpPost("lecturers/import")]
+        public async Task<ActionResult<ImportResult>> ImportLecturers([FromBody] List<CreateLecturerRequest> requests)
+        {
+            var result = new ImportResult { SuccessCount = 0, FailedCount = 0, Errors = new List<string>() };
+            foreach (var request in requests)
+            {
+                try
+                {
+                    if (request.RoleId != 2 && request.RoleId != 4)
+                        throw new Exception("RoleId phải là 2 (Giảng viên hướng dẫn) hoặc 4 (Trưởng bộ môn).");
+
+                    var user = new User
+                    {
+                        Username = request.Username,
+                        Email = request.Email,
+                        FullName = request.FullName,
+                        ClassCode = request.ClassCode,
+                        RoleId = request.RoleId,
+                        Password = BCrypt.Net.BCrypt.HashPassword(request.Username),
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        FailedLoginAttempts = 0,
+                        Locked = false
+                    };
+                    var createdUser = await _userService.CreateUser(user);
+                    await _userService.LogAction(createdUser.Id, "CREATE_LECTURER", $"Lecturer {createdUser.Username} created via import.");
+                    result.SuccessCount++;
+                }
+                catch (Exception ex)
+                {
+                    result.FailedCount++;
+                    result.Errors.Add($"Lỗi khi nhập giảng viên {request.Username}: {ex.Message}");
+                }
+            }
+            return Ok(result);
+        }
+
+        // PUT: api/User/lecturers/5
+        // Cập nhật thông tin giảng viên.
+        [HttpPut("lecturers/{id}")]
+        public async Task<IActionResult> UpdateLecturer(long id, [FromBody] UpdateLecturerRequest request)
+        {
+            if (id != request.Id)
+                return BadRequest("ID không khớp.");
+
+            var user = await _userService.GetById(id);
+            if (user == null || (user.RoleId != 2 && user.RoleId != 4))
+                return NotFound();
+
+            if (request.RoleId != 2 && request.RoleId != 4)
+                return BadRequest(new { message = "RoleId phải là 2 (Giảng viên hướng dẫn) hoặc 4 (Trưởng bộ môn)." });
+
+            user.Username = request.Username;
+            user.Email = request.Email;
+            user.FullName = request.FullName;
+            user.ClassCode = request.ClassCode;
+            user.RoleId = request.RoleId;
+            user.Locked = request.Locked;
+            if (!string.IsNullOrEmpty(request.Password))
+                user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _userService.UpdateUser(user);
+            await _userService.LogAction(id, "UPDATE_LECTURER", $"Lecturer {user.Username} updated.");
+            return NoContent();
+        }
+
+        // DELETE: api/User/lecturers/5
+        // Xóa giảng viên.
+        [HttpDelete("lecturers/{id}")]
+        public async Task<IActionResult> DeleteLecturer(long id)
+        {
+            var user = await _userService.GetById(id);
+            if (user == null || (user.RoleId != 2 && user.RoleId != 4))
+                return NotFound();
+
+            await _userService.DeleteUser(id);
+            await _userService.LogAction(id, "DELETE_LECTURER", $"Lecturer {user.Username} deleted.");
+            return NoContent();
+        }
     }
 
-    // Model cho request tạo người dùng (tất cả)
     public class CreateUserRequest
     {
         public string Username { get; set; }
         public string? Password { get; set; }
         public string Email { get; set; }
         public string FullName { get; set; }
+        public string ClassCode { get; set; }
         public long RoleId { get; set; }
     }
 
-    // Model cho request cập nhật người dùng (tất cả)
     public class UpdateUserRequest
     {
         public long Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string FullName { get; set; }
+        public string ClassCode { get; set; }
         public long RoleId { get; set; }
         public string? Password { get; set; }
+        public bool Locked { get; set; }
     }
 
-    // Model cho request tạo sinh viên
     public class CreateStudentRequest
     {
         public string Username { get; set; }
@@ -283,7 +400,6 @@ namespace EduProject_TADProgrammer.Controllers
         public string ClassCode { get; set; }
     }
 
-    // Model cho request cập nhật sinh viên
     public class UpdateStudentRequest
     {
         public long Id { get; set; }
@@ -294,7 +410,27 @@ namespace EduProject_TADProgrammer.Controllers
         public string? Password { get; set; }
     }
 
-    // Kết quả nhập Excel
+    public class CreateLecturerRequest
+    {
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string ClassCode { get; set; }
+        public long RoleId { get; set; }
+    }
+
+    public class UpdateLecturerRequest
+    {
+        public long Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string ClassCode { get; set; }
+        public long RoleId { get; set; }
+        public string? Password { get; set; }
+        public bool Locked { get; set; }
+    }
+
     public class ImportResult
     {
         public int SuccessCount { get; set; }
