@@ -14,6 +14,7 @@ namespace EduProject_TADProgrammer.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string FullName { get; set; }
+        public string ClassCode { get; set; }
         public long RoleId { get; set; }
         public string RoleName { get; set; } // Thêm để trả tên vai trò
         public string Tokenn { get; set; }

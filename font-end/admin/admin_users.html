@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Trang quản lý người dùng Admin của hệ thống Sinh viên HUTECH.">
-    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH.">
     <title>Quản lý người dùng | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,8 +13,6 @@
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
-    <!-- Sidebar -->
-    <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
         <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
@@ -30,10 +28,7 @@
         <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
-        <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện. Navbar hỗ trợ tìm kiếm và các chức năng tiện ích -->
         <nav class="navbar navbar-expand-lg px-3">
             <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
                 <i id="sidebarIcon" class="bi bi-list"></i>
@@ -50,8 +45,6 @@
             </div>
         </nav>
 
-        <!-- Profile Dropdown -->
-        <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Dropdown hiển thị thông tin Admin và chức năng đăng xuất -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
@@ -66,20 +59,17 @@
             </div>
         </div>
 
-        <!-- Users Management Section -->
         <div class="container mt-4">
-            <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Quản lý danh sách người dùng và phân quyền -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">👤 Quản lý người dùng</h2>
                 <div>
                     <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addUserModal">Thêm người dùng <i class="bi bi-plus-circle"></i></button>
-                    <!-- Ghi chú: 4.8 - Hệ thống báo cáo và thống kê. Xuất danh sách người dùng -->
+                    <button class="btn btn-warning me-2" onclick="document.getElementById('importExcel').click()">Nhập Excel <i class="bi bi-file-earmark-arrow-up"></i></button>
+                    <input type="file" id="importExcel" style="display: none;" accept=".xlsx, .xls" onchange="importUsers(event)">
                     <button class="btn btn-info" onclick="exportUsers()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
                 </div>
             </div>
 
-            <!-- Breadcrumb -->
-            <!-- Ghi chú: 4.2 - Giao diện trực quan, thân thiện với người dùng -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
@@ -91,9 +81,7 @@
                 </ol>
             </nav>
 
-            <!-- Users Table -->
             <div class="table-container">
-                <!-- Ghi chú: 4.2 - Giao diện trực quan. Bộ lọc hỗ trợ tìm kiếm và phân loại -->
                 <div class="table-header d-flex gap-2">
                     <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm người dùng..." onkeyup="filterTable()">
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
@@ -128,8 +116,6 @@
         </div>
     </div>
 
-    <!-- Modal Thêm Người Dùng -->
-    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Thêm tài khoản người dùng -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -160,10 +146,6 @@
                                 <option value="4">Trưởng bộ môn</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Mật khẩu</label>
-                            <input type="password" id="userPassword" class="form-control" required>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -174,8 +156,6 @@
         </div>
     </div>
 
-    <!-- Modal Sửa Người Dùng -->
-    <!-- Ghi chú: 4.9.1 - Chức năng của Admin. Sửa thông tin tài khoản người dùng -->
     <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -187,12 +167,20 @@
                     <form id="editUserForm">
                         <input type="hidden" id="editUserId">
                         <div class="mb-3">
+                            <label class="form-label">Tên đăng nhập</label>
+                            <input type="text" id="editUserUsername" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Họ và tên</label>
                             <input type="text" id="editUserFullName" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" id="editUserEmail" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu</label>
+                            <input type="password" id="editUserPassword" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Vai trò</label>
@@ -226,9 +214,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Mục đích: Tải dữ liệu người dùng từ API, quản lý thêm/sửa/xóa người dùng, xuất Excel, xử lý đăng xuất với HttpOnly cookie.
-        // Hỗ trợ chức năng: 1, 3, 4, 4.2, 4.7, 4.8, 4.9.1
-
         const API_URL = "https://localhost:7047";
         let users = [];
         const itemsPerPage = 5;
@@ -236,7 +221,6 @@
         let sortColumn = null;
         let sortDirection = 'asc';
 
-        // Tải dữ liệu khi trang được load
         window.onload = async () => {
             try {
                 await loadUserProfile();
@@ -248,7 +232,6 @@
             }
         };
 
-        // Tải thông tin người dùng
         async function loadUserProfile() {
             const user = JSON.parse(localStorage.getItem("user"));
             if (!user || user.roleName !== "ROLE_ADMIN") {
@@ -258,17 +241,13 @@
             document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
-        // Tải danh sách người dùng từ API
         async function loadUsers() {
             try {
                 const response = await fetch(`${API_URL}/api/User`, {
-                    method: "GET",
-                    headers: { "Accept": "*/*" },
+                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
                     credentials: "include"
                 });
-                if (!response.ok) {
-                    throw new Error(`Lỗi tải danh sách người dùng: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`Lỗi tải danh sách người dùng: ${response.status}`);
                 users = await response.json();
                 displayTable(currentPage);
             } catch (error) {
@@ -276,20 +255,25 @@
             }
         }
 
-        // Lọc và sắp xếp bảng
+        function isUsernameDuplicate(username, excludeId = null) {
+            return users.some(user => user.username === username && (!excludeId || user.id !== excludeId));
+        }
+
         function getFilteredUsers() {
             const searchText = document.getElementById("searchInput").value.toLowerCase();
             const roleFilter = document.getElementById("roleFilter").value;
 
             let filtered = users.filter(user =>
-                (user.fullName.toLowerCase().includes(searchText) || user.email.toLowerCase().includes(searchText)) &&
+                (user.username.toLowerCase().includes(searchText) ||
+                 user.fullName.toLowerCase().includes(searchText) ||
+                 user.email.toLowerCase().includes(searchText)) &&
                 (roleFilter === "" || user.roleName === roleFilter)
             );
 
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = sortColumn === 'locked' ? a[sortColumn] : a[sortColumn].toLowerCase();
-                    let valueB = sortColumn === 'locked' ? b[sortColumn] : b[sortColumn].toLowerCase();
+                    let valueA = sortColumn === 'locked' ? a.locked : (a[sortColumn] || '').toLowerCase();
+                    let valueB = sortColumn === 'locked' ? b.locked : (b[sortColumn] || '').toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -297,7 +281,6 @@
             return filtered;
         }
 
-        // Hiển thị bảng
         function displayTable(page) {
             const filteredUsers = getFilteredUsers();
             const start = (page - 1) * itemsPerPage;
@@ -332,7 +315,6 @@
             setupPagination(filteredUsers.length);
         }
 
-        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
@@ -352,13 +334,11 @@
             pagination.innerHTML = paginationHTML;
         }
 
-        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
-        // Sắp xếp bảng
         function sortTable(column) {
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -369,56 +349,62 @@
             displayTable(currentPage);
         }
 
-        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
-        // Thêm người dùng
         async function addUser() {
             const form = document.getElementById("addUserForm");
-            if (form.checkValidity()) {
-                const newUser = {
-                    username: document.getElementById("userUsername").value,
-                    fullName: document.getElementById("userFullName").value,
-                    email: document.getElementById("userEmail").value,
-                    roleId: parseInt(document.getElementById("userRole").value),
-                    password: document.getElementById("userPassword").value
-                };
-                try {
-                    const response = await fetch(`${API_URL}/api/User`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "*/*"
-                        },
-                        credentials: "include",
-                        body: JSON.stringify(newUser)
-                    });
-                    if (!response.ok) {
-                        const error = await response.json();
-                        throw new Error(error.message || `Lỗi thêm người dùng: ${response.status}`);
-                    }
-                    alert("Đã thêm người dùng: " + newUser.fullName);
-                    bootstrap.Modal.getInstance(document.getElementById("addUserModal")).hide();
-                    await loadUsers();
-                } catch (error) {
-                    console.error("Add user error:", error);
-                    alert(`Không thêm được người dùng: ${error.message}`);
-                }
-            } else {
+            if (!form.checkValidity()) {
                 form.reportValidity();
+                return;
+            }
+
+            const username = document.getElementById("userUsername").value;
+            if (isUsernameDuplicate(username)) {
+                alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+                return;
+            }
+
+            const newUser = {
+                username: username,
+                fullName: document.getElementById("userFullName").value,
+                email: document.getElementById("userEmail").value,
+                roleId: parseInt(document.getElementById("userRole").value)
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/User`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(newUser)
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || "Không thêm được người dùng.");
+                }
+                alert("Đã thêm người dùng: " + newUser.fullName);
+                bootstrap.Modal.getInstance(document.getElementById("addUserModal")).hide();
+                await loadUsers();
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Không thêm được người dùng: " + error.message);
             }
         }
 
-        // Sửa người dùng
         function editUser(id) {
             const user = users.find(u => u.id === id);
             if (user) {
                 document.getElementById("editUserId").value = user.id;
+                document.getElementById("editUserUsername").value = user.username;
                 document.getElementById("editUserFullName").value = user.fullName;
                 document.getElementById("editUserEmail").value = user.email;
+                document.getElementById("editUserPassword").value = '';
                 document.getElementById("editUserRole").value = user.roleId;
                 document.getElementById("editUserStatus").value = user.locked.toString();
                 const modal = new bootstrap.Modal(document.getElementById("editUserModal"));
@@ -427,73 +413,64 @@
         }
 
         async function saveEditUser() {
-            const id = parseInt(document.getElementById("editUserId").value);
-
-            const user = users.find(u => u.id === id); // Lấy dữ liệu người dùng hiện tại từ users
-            if (!user) {
-                alert("Không tìm thấy dữ liệu người dùng.");
+            const form = document.getElementById("editUserForm");
+            if (!form.checkValidity()) {
+                form.reportValidity();
                 return;
             }
 
+            const id = parseInt(document.getElementById("editUserId").value);
             const updatedUser = {
                 id: id,
-                username: user.username,
+                username: document.getElementById("editUserUsername").value,
                 fullName: document.getElementById("editUserFullName").value,
                 email: document.getElementById("editUserEmail").value,
+                password: document.getElementById("editUserPassword").value || undefined,
                 roleId: parseInt(document.getElementById("editUserRole").value),
-                roleName: user.roleName,
-                tokenn: user.tokenn,
-                failedLoginAttempts: user.failedLoginAttempts,
-                locked: document.getElementById("editUserStatus").value === "true",
-                createdAt: user.createdAt
+                locked: document.getElementById("editUserStatus").value === "true"
             };
+
             try {
                 const response = await fetch(`${API_URL}/api/User/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        "Accept": "*/*"
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include",
                     body: JSON.stringify(updatedUser)
                 });
                 if (!response.ok) {
                     const error = await response.json();
-                    throw new Error(error.message || `Lỗi sửa người dùng: ${response.status}`);
+                    throw new Error(error.message || "Không cập nhật được người dùng.");
                 }
                 alert("Đã cập nhật thông tin người dùng: " + updatedUser.fullName);
                 bootstrap.Modal.getInstance(document.getElementById("editUserModal")).hide();
                 await loadUsers();
             } catch (error) {
-                console.error("Edit user error:", error);
-                alert(`Không sửa được người dùng: ${error.message}`);
+                console.error("Error:", error);
+                alert("Không cập nhật được người dùng: " + error.message);
             }
         }
 
-        // Xóa người dùng
         async function deleteUser(id) {
-            if (confirm("Bạn có chắc muốn xóa người dùng này không?")) {
-                try {
-                    const response = await fetch(`${API_URL}/api/User/${id}`, {
-                        method: "DELETE",
-                        headers: { "Accept": "*/*" },
-                        credentials: "include"
-                    });
-                    if (!response.ok) {
-                        const error = await response.json();
-                        throw new Error(error.message || `Lỗi xóa người dùng: ${response.status}`);
-                    }
-                    alert("Đã xóa người dùng!");
-                    await loadUsers();
-                } catch (error) {
-                    console.error("Delete user error:", error);
-                    alert(`Không xóa được người dùng: ${error.message}`);
-                }
+            if (!confirm("Bạn có chắc muốn xóa người dùng này không?")) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/User/${id}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error("Không xóa được người dùng.");
+                alert("Đã xóa người dùng!");
+                await loadUsers();
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Không xóa được người dùng: " + error.message);
             }
         }
 
-        // Xuất danh sách người dùng sang Excel
-        // Ghi chú: 4.8 - Hệ thống báo cáo và thống kê
         function exportUsers() {
             const filteredUsers = getFilteredUsers();
             const worksheetData = [
@@ -518,16 +495,102 @@
             XLSX.writeFile(workbook, "danh_sach_nguoi_dung.xlsx");
         }
 
-        // Đăng xuất
+        async function importUsers(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { 
+                        header: ["Username", "FullName", "Email", "RoleId"], 
+                        skipHeader: true 
+                    });
+
+                    if (rows.length === 0) {
+                        alert("File Excel trống hoặc định dạng không đúng.");
+                        return;
+                    }
+
+                    const usersToImport = rows.map(row => ({
+                        username: row.Username?.toString(),
+                        fullName: row.FullName?.toString(),
+                        email: row.Email?.toString(),
+                        roleId: parseInt(row.RoleId) || 3
+                    })).filter(user => user.username && user.fullName && user.email && [1, 2, 3, 4].includes(user.roleId));
+
+                    if (usersToImport.length === 0) {
+                        alert("Không có dữ liệu hợp lệ trong file Excel. Đảm bảo có Username, FullName, Email, RoleId (1-4).");
+                        return;
+                    }
+
+                    const usernameSet = new Set();
+                    const duplicateUsernames = [];
+                    for (const user of usersToImport) {
+                        if (usernameSet.has(user.username)) {
+                            duplicateUsernames.push(user.username);
+                        } else {
+                            usernameSet.add(user.username);
+                        }
+                    }
+                    if (duplicateUsernames.length > 0) {
+                        alert(`File Excel chứa Username trùng lặp: ${duplicateUsernames.join(', ')}. Vui lòng sửa trước khi nhập.`);
+                        return;
+                    }
+
+                    const existingDuplicates = usersToImport
+                        .filter(user => isUsernameDuplicate(user.username))
+                        .map(user => user.username);
+                    if (existingDuplicates.length > 0) {
+                        alert(`Username đã tồn tại trong hệ thống: ${existingDuplicates.join(', ')}. Vui lòng sửa trước khi nhập.`);
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`${API_URL}/api/User/import`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                            },
+                            credentials: "include",
+                            body: JSON.stringify(usersToImport)
+                        });
+
+                        if (!response.ok) {
+                            const error = await response.json();
+                            throw new Error(error.message || "Không nhập được danh sách người dùng.");
+                        }
+
+                        const result = await response.json();
+                        alert(`Đã nhập ${result.successCount} người dùng thành công. Thất bại: ${result.failedCount}. ${result.errors.length > 0 ? 'Lỗi: ' + result.errors.join('; ') : ''}`);
+                        await loadUsers();
+                    } catch (error) {
+                        console.error("Import error:", error);
+                        alert("Không nhập được danh sách người dùng: " + error.message);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            } catch (error) {
+                console.error("Error reading file:", error);
+                alert("Lỗi đọc file Excel: " + error.message);
+            }
+        }
+
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
+                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
                     credentials: "include"
                 });
                 if (response.ok) {
                     localStorage.removeItem("user");
-                    window.location.href = "/font-end/login//login.html";
+                    localStorage.removeItem("token");
+                    window.location.href = "/font-end/login/login.html";
                 } else {
                     throw new Error("Đăng xuất thất bại.");
                 }
@@ -537,7 +600,6 @@
             }
         }
 
-        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";

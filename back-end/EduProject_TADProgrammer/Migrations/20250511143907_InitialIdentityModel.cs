@@ -151,6 +151,8 @@ namespace EduProject_TADProgrammer.Migrations
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     RoleId = table.Column<long>(type: "bigint", nullable: false),
+                    AvatarUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    ClassCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     FailedLoginAttempts = table.Column<int>(type: "int", nullable: false),
                     Locked = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -1025,8 +1027,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "FilePath" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(6062), "backups/db_backup_2025_02_01.sql" },
-                    { 2L, new DateTime(2025, 5, 5, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(6065), "backups/db_backup_2025_02_02.sql" }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2896), "backups/db_backup_2025_02_01.sql" },
+                    { 2L, new DateTime(2025, 5, 10, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2898), "backups/db_backup_2025_02_02.sql" }
                 });
 
             migrationBuilder.InsertData(
@@ -1034,8 +1036,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "EndDate", "Name", "Semester", "StartDate" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3448), new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Đồ án Tốt nghiệp CNTT", "HK2-2025", new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3452), new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Đồ án Cơ sở CNTT", "HK2-2025", new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(150), new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Đồ án Tốt nghiệp CNTT", "HK2-2025", new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(153), new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Đồ án Cơ sở CNTT", "HK2-2025", new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -1043,8 +1045,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4706), "Hội đồng 1" },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4709), "Hội đồng 2" }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1483), "Hội đồng 1" },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1486), "Hội đồng 2" }
                 });
 
             migrationBuilder.InsertData(
@@ -1052,8 +1054,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "Answer", "Category", "CreatedAt", "Question" },
                 values: new object[,]
                 {
-                    { 1L, "Đăng nhập, vào mục Nộp bài, tải file lên.", "Nộp bài", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5270), "Làm thế nào để nộp đồ án?" },
-                    { 2L, "Xem lịch bảo vệ trong mục Lịch.", "Bảo vệ", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5273), "Thời gian bảo vệ là khi nào?" }
+                    { 1L, "Đăng nhập, vào mục Nộp bài, tải file lên.", "Nộp bài", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2021), "Làm thế nào để nộp đồ án?" },
+                    { 2L, "Xem lịch bảo vệ trong mục Lịch.", "Bảo vệ", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2024), "Thời gian bảo vệ là khi nào?" }
                 });
 
             migrationBuilder.InsertData(
@@ -1072,8 +1074,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "Key", "Value" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5760), "LOGO_URL", "images/hutech_logo.png" },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5763), "THEME_COLOR", "#1976d2" }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2581), "LOGO_URL", "images/hutech_logo.png" },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2585), "THEME_COLOR", "#1976d2" }
                 });
 
             migrationBuilder.InsertData(
@@ -1081,8 +1083,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "MetricType", "Value" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5816), "CPU", 45.5f },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5819), "RAM", 60f }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2643), "CPU", 45.5f },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2646), "RAM", 60f }
                 });
 
             migrationBuilder.InsertData(
@@ -1097,53 +1099,53 @@ namespace EduProject_TADProgrammer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedAt", "Email", "FailedLoginAttempts", "FullName", "Locked", "Password", "RoleId", "UpdatedAt", "Username" },
+                columns: new[] { "Id", "AvatarUrl", "ClassCode", "CreatedAt", "Email", "FailedLoginAttempts", "FullName", "Locked", "Password", "RoleId", "UpdatedAt", "Username" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3214), "admin@hutech.edu.vn", 0, "Quản trị viên", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3215), "admin" },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3220), "head1@hutech.edu.vn", 0, "Nguyễn Văn Hùng", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 4L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3222), "head1" },
-                    { 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3226), "head2@hutech.edu.vn", 0, "Trần Thị Lan", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 4L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3227), "head2" },
-                    { 4L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3230), "lecturer1@hutech.edu.vn", 0, "Lê Văn Nam", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3231), "lecturer1" },
-                    { 5L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3234), "lecturer2@hutech.edu.vn", 0, "Phạm Thị Mai", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3235), "lecturer2" },
-                    { 6L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3239), "lecturer3@hutech.edu.vn", 0, "Hoàng Văn Tùng", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3239), "lecturer3" },
-                    { 7L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3243), "student1@hutech.edu.vn", 0, "Nguyễn Tri Bão Thắng", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3244), "student1" },
-                    { 8L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3257), "student2@hutech.edu.vn", 0, "Trần Văn Bình", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3258), "student2" },
-                    { 9L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3261), "student3@hutech.edu.vn", 0, "Lê Thị Cẩm", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3262), "student3" },
-                    { 10L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3265), "student4@hutech.edu.vn", 0, "Phạm Văn Đức", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3266), "student4" },
-                    { 11L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3269), "student5@hutech.edu.vn", 0, "Hoàng Thị Em", false, "$2a$11$q4RoFFsn855Eqt.SkAKVL.E90ELKmg//yFHyXLYyZQEjM5JNo5OeK", 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3270), "student5" }
+                    { 1L, "/static/medit/imgUser/avatar.jpg", null, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9928), "admin@hutech.edu.vn", 0, "Quản trị viên", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 1L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9929), "admin" },
+                    { 2L, "/static/medit/imgUser/avatar.jpg", null, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9935), "head1@hutech.edu.vn", 0, "Nguyễn Văn Hùng", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 4L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9936), "head1" },
+                    { 3L, "/static/medit/imgUser/avatar.jpg", null, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9941), "head2@hutech.edu.vn", 0, "Trần Thị Lan", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 4L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9941), "head2" },
+                    { 4L, "/static/medit/imgUser/avatar.jpg", null, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9945), "lecturer1@hutech.edu.vn", 0, "Lê Văn Nam", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 2L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9946), "lecturer1" },
+                    { 5L, "/static/medit/imgUser/avatar.jpg", null, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9950), "lecturer2@hutech.edu.vn", 0, "Phạm Thị Mai", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 2L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9950), "lecturer2" },
+                    { 6L, "/static/medit/imgUser/avatar.jpg", null, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9954), "lecturer3@hutech.edu.vn", 0, "Hoàng Văn Tùng", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 2L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9955), "lecturer3" },
+                    { 7L, "/static/medit/imgUser/avatar.jpg", "21DTHA1", new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9958), "student1@hutech.edu.vn", 0, "Nguyễn Tri Bão Thắng", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 3L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9959), "student1" },
+                    { 8L, "/static/medit/imgUser/avatar.jpg", "21DTHA1", new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9983), "student2@hutech.edu.vn", 0, "Trần Văn Bình", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 3L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9984), "student2" },
+                    { 9L, "/static/medit/imgUser/avatar.jpg", "21DTHA1", new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9987), "student3@hutech.edu.vn", 0, "Lê Thị Cẩm", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 3L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9988), "student3" },
+                    { 10L, "/static/medit/imgUser/avatar.jpg", "21DTHA1", new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9992), "student4@hutech.edu.vn", 0, "Phạm Văn Đức", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 3L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9992), "student4" },
+                    { 11L, "/static/medit/imgUser/avatar.jpg", "21DTHA1", new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9996), "student5@hutech.edu.vn", 0, "Hoàng Thị Em", false, "$2a$11$4ZFHM8rBy./u3RYDFECsxuu3I2nVkiXpwcbIaPFiQ9nP6aLSso99W", 3L, new DateTime(2025, 5, 11, 14, 39, 4, 549, DateTimeKind.Utc).AddTicks(9997), "student5" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AISuggestions",
                 columns: new[] { "Id", "Content", "CreatedAt", "ProjectId", "Type", "UserId" },
-                values: new object[] { 1L, "Đề xuất thêm tính năng phân tích dữ liệu thời gian thực.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5948), null, "PROJECT", 7L });
+                values: new object[] { 1L, "Đề xuất thêm tính năng phân tích dữ liệu thời gian thực.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2777), null, "PROJECT", 7L });
 
             migrationBuilder.InsertData(
                 table: "Calendars",
                 columns: new[] { "Id", "CreatedAt", "EndTime", "EventTitle", "GroupId", "StartTime", "UserId" },
-                values: new object[] { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5882), new DateTime(2025, 2, 10, 15, 0, 0, 0, DateTimeKind.Unspecified), "Họp nhóm", null, new DateTime(2025, 2, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), 7L });
+                values: new object[] { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2715), new DateTime(2025, 2, 10, 15, 0, 0, 0, DateTimeKind.Unspecified), "Họp nhóm", null, new DateTime(2025, 2, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), 7L });
 
             migrationBuilder.InsertData(
                 table: "CommitteeMembers",
                 columns: new[] { "Id", "CommitteeId", "CreatedAt", "LecturerId", "Role" },
                 values: new object[,]
                 {
-                    { 1L, 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4765), 2L, "Chủ tịch" },
-                    { 2L, 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4768), 4L, "Thành viên" }
+                    { 1L, 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1538), 2L, "Chủ tịch" },
+                    { 2L, 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1541), 4L, "Thành viên" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Discussions",
                 columns: new[] { "Id", "Content", "CreatedAt", "ProjectId", "Title", "UserId", "Votes" },
-                values: new object[] { 2L, "Nên dùng framework nào cho giao diện?", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5406), null, "Thắc mắc về thiết kế giao diện", 9L, 3 });
+                values: new object[] { 2L, "Nên dùng framework nào cho giao diện?", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2216), null, "Thắc mắc về thiết kế giao diện", 9L, 3 });
 
             migrationBuilder.InsertData(
                 table: "FeedbackSurveys",
                 columns: new[] { "Id", "Content", "CreatedAt", "Rating", "UserId" },
                 values: new object[,]
                 {
-                    { 1L, "Hệ thống dễ sử dụng.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5497), 4, 7L },
-                    { 2L, "Cần cải thiện tốc độ tải.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5500), 3, 8L }
+                    { 1L, "Hệ thống dễ sử dụng.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2313), 4, 7L },
+                    { 2L, "Cần cải thiện tốc độ tải.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2316), 3, 8L }
                 });
 
             migrationBuilder.InsertData(
@@ -1151,8 +1153,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "Action", "CreatedAt", "Details", "UserId" },
                 values: new object[,]
                 {
-                    { 1L, "LOGIN", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(6004), "Admin đăng nhập hệ thống.", 1L },
-                    { 2L, "SUBMISSION", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(6007), "Sinh viên nộp bài cho đồ án 1.", 7L }
+                    { 1L, "LOGIN", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2835), "Admin đăng nhập hệ thống.", 1L },
+                    { 2L, "SUBMISSION", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2838), "Sinh viên nộp bài cho đồ án 1.", 7L }
                 });
 
             migrationBuilder.InsertData(
@@ -1160,8 +1162,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "Content", "CreatedAt", "GroupId", "Status", "Title", "Type", "UserId" },
                 values: new object[,]
                 {
-                    { 1L, "Hạn nộp là 28/02/2025.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5007), null, "SENT", "Hạn nộp đồ án", "WEB", 7L },
-                    { 2L, "Bài nộp đã được phản hồi.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5011), null, "SENT", "Phản hồi bài nộp", "EMAIL", 9L }
+                    { 1L, "Hạn nộp là 28/02/2025.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1786), null, "SENT", "Hạn nộp đồ án", "WEB", 7L },
+                    { 2L, "Bài nộp đã được phản hồi.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1790), null, "SENT", "Phản hồi bài nộp", "EMAIL", 9L }
                 });
 
             migrationBuilder.InsertData(
@@ -1169,9 +1171,9 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CourseId", "CreatedAt", "Description", "LecturerId", "Status", "Title", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1L, 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3530), "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", 4L, "APPROVED", "Ứng dụng AI trong y tế", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3531) },
-                    { 2L, 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3535), "Xây dựng hệ thống quản lý đồ án sinh viên.", 5L, "PENDING", "Hệ thống quản lý đồ án", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3536) },
-                    { 3L, 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3539), "Phát triển website bán hàng trực tuyến.", 6L, "APPROVED", "Ứng dụng thương mại điện tử", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3540) }
+                    { 1L, 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(241), "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", 4L, "APPROVED", "Ứng dụng AI trong y tế", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(242) },
+                    { 2L, 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(247), "Xây dựng hệ thống quản lý đồ án sinh viên.", 5L, "PENDING", "Hệ thống quản lý đồ án", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(248) },
+                    { 3L, 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(251), "Phát triển website bán hàng trực tuyến.", 6L, "APPROVED", "Ứng dụng thương mại điện tử", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(252) }
                 });
 
             migrationBuilder.InsertData(
@@ -1179,36 +1181,36 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "Score", "Skill", "StudentId" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5619), 8, "Lập trình Python", 7L },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5623), 7, "Thiết kế giao diện", 8L }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2435), 8, "Lập trình Python", 7L },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2439), 7, "Thiết kế giao diện", 8L }
                 });
 
             migrationBuilder.InsertData(
                 table: "AISuggestions",
                 columns: new[] { "Id", "Content", "CreatedAt", "ProjectId", "Type", "UserId" },
-                values: new object[] { 2L, "Điểm nội dung có thể tăng nếu bổ sung tài liệu tham khảo.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5951), 1L, "GRADE", null });
+                values: new object[] { 2L, "Điểm nội dung có thể tăng nếu bổ sung tài liệu tham khảo.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2783), 1L, "GRADE", null });
 
             migrationBuilder.InsertData(
                 table: "DefenseSchedules",
                 columns: new[] { "Id", "CreatedAt", "EndTime", "ProjectId", "Room", "StartTime" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4818), new DateTime(2025, 3, 1, 9, 0, 0, 0, DateTimeKind.Unspecified), 1L, "A101", new DateTime(2025, 3, 1, 8, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4822), new DateTime(2025, 3, 2, 9, 0, 0, 0, DateTimeKind.Unspecified), 2L, "A102", new DateTime(2025, 3, 2, 8, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1589), new DateTime(2025, 3, 1, 9, 0, 0, 0, DateTimeKind.Unspecified), 1L, "A101", new DateTime(2025, 3, 1, 8, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1594), new DateTime(2025, 3, 2, 9, 0, 0, 0, DateTimeKind.Unspecified), 2L, "A102", new DateTime(2025, 3, 2, 8, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "Discussions",
                 columns: new[] { "Id", "Content", "CreatedAt", "ProjectId", "Title", "UserId", "Votes" },
-                values: new object[] { 1L, "Có ai biết cách tích hợp AI vào ứng dụng y tế?", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5403), 1L, "Hỏi về AI trong y tế", 7L, 5 });
+                values: new object[] { 1L, "Có ai biết cách tích hợp AI vào ứng dụng y tế?", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2212), 1L, "Hỏi về AI trong y tế", 7L, 5 });
 
             migrationBuilder.InsertData(
                 table: "GradeSchedules",
                 columns: new[] { "Id", "CreatedAt", "Deadline", "LecturerId", "ProjectId", "Status" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4590), new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4L, 1L, "PENDING" },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4594), new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 5L, 2L, "PENDING" }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1362), new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4L, 1L, "PENDING" },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1366), new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 5L, 2L, "PENDING" }
                 });
 
             migrationBuilder.InsertData(
@@ -1216,9 +1218,9 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "ProjectId" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3679), "Nhóm 1", 1L },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3683), "Nhóm 2", 2L },
-                    { 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3686), "Nhóm 3", 3L }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(404), "Nhóm 1", 1L },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(408), "Nhóm 2", 2L },
+                    { 3L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(410), "Nhóm 3", 3L }
                 });
 
             migrationBuilder.InsertData(
@@ -1226,8 +1228,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "ProjectId", "Title", "VersionNumber" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3602), "Phiên bản ban đầu.", 1L, "Ứng dụng AI trong y tế", 1 },
-                    { 2L, new DateTime(2025, 5, 5, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3605), "Cập nhật mô tả.", 1L, "Ứng dụng AI trong y tế (Cập nhật)", 2 }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(321), "Phiên bản ban đầu.", 1L, "Ứng dụng AI trong y tế", 1 },
+                    { 2L, new DateTime(2025, 5, 10, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(324), "Cập nhật mô tả.", 1L, "Ứng dụng AI trong y tế (Cập nhật)", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -1235,41 +1237,41 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "Content", "CreatedAt", "CreatedBy", "ProjectId" },
                 values: new object[,]
                 {
-                    { 1L, "Ứng dụng AI của bạn giải quyết vấn đề gì?", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5202), 4L, 1L },
-                    { 2L, "Hệ thống quản lý đồ án có những tính năng gì?", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5205), 5L, 2L }
+                    { 1L, "Ứng dụng AI của bạn giải quyết vấn đề gì?", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1963), 4L, 1L },
+                    { 2L, "Hệ thống quản lý đồ án có những tính năng gì?", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1966), 5L, 2L }
                 });
 
             migrationBuilder.InsertData(
                 table: "Resources",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "FilePath", "GroupId", "ProjectId", "Title", "Type" },
-                values: new object[] { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5130), 4L, "resources/ai_doc.pdf", null, 1L, "Tài liệu AI", "REFERENCE" });
+                values: new object[] { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1899), 4L, "resources/ai_doc.pdf", null, 1L, "Tài liệu AI", "REFERENCE" });
 
             migrationBuilder.InsertData(
                 table: "Tasks",
                 columns: new[] { "Id", "CreatedAt", "Deadline", "Description", "GroupId", "ProjectId", "Status", "StudentId", "Title" },
-                values: new object[] { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3932), new DateTime(2025, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Thiết kế giao diện quản lý đồ án.", null, 2L, "IN_PROGRESS", 9L, "Thiết kế giao diện" });
+                values: new object[] { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(641), new DateTime(2025, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Thiết kế giao diện quản lý đồ án.", null, 2L, "IN_PROGRESS", 9L, "Thiết kế giao diện" });
 
             migrationBuilder.InsertData(
                 table: "TimeTrackings",
                 columns: new[] { "Id", "CreatedAt", "Duration", "EndTime", "ProjectId", "StartTime", "StudentId" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5695), 120, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5693), 1L, new DateTime(2025, 5, 6, 7, 11, 8, 348, DateTimeKind.Utc).AddTicks(5690), 7L },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5702), 60, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5700), 1L, new DateTime(2025, 5, 6, 8, 11, 8, 348, DateTimeKind.Utc).AddTicks(5699), 8L }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2513), 120, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2510), 1L, new DateTime(2025, 5, 11, 12, 39, 4, 550, DateTimeKind.Utc).AddTicks(2505), 7L },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2519), 60, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2517), 1L, new DateTime(2025, 5, 11, 13, 39, 4, 550, DateTimeKind.Utc).AddTicks(2516), 8L }
                 });
 
             migrationBuilder.InsertData(
                 table: "Calendars",
                 columns: new[] { "Id", "CreatedAt", "EndTime", "EventTitle", "GroupId", "StartTime", "UserId" },
-                values: new object[] { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5887), new DateTime(2025, 2, 28, 23, 59, 0, 0, DateTimeKind.Unspecified), "Nộp bài", 1L, new DateTime(2025, 2, 28, 23, 59, 0, 0, DateTimeKind.Unspecified), 2L });
+                values: new object[] { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(2719), new DateTime(2025, 2, 28, 23, 59, 0, 0, DateTimeKind.Unspecified), "Nộp bài", 1L, new DateTime(2025, 2, 28, 23, 59, 0, 0, DateTimeKind.Unspecified), 2L });
 
             migrationBuilder.InsertData(
                 table: "Grades",
                 columns: new[] { "Id", "Comment", "CriteriaId", "GradedAt", "GradedBy", "GroupId", "ProjectId", "Score", "StudentId" },
                 values: new object[,]
                 {
-                    { 1L, "Nội dung tốt.", 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4415), 4L, 1L, 1L, 8.5f, null },
-                    { 2L, "Trình bày rõ ràng.", 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4419), 4L, 1L, 1L, 8f, null }
+                    { 1L, "Nội dung tốt.", 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1170), 4L, 1L, 1L, 8.5f, null },
+                    { 2L, "Trình bày rõ ràng.", 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1173), 4L, 1L, 1L, 8f, null }
                 });
 
             migrationBuilder.InsertData(
@@ -1277,11 +1279,11 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "GroupId", "JoinedAt", "StudentId" },
                 values: new object[,]
                 {
-                    { 1L, 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3760), 7L },
-                    { 2L, 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3762), 8L },
-                    { 3L, 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3765), 9L },
-                    { 4L, 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3767), 10L },
-                    { 5L, 3L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3768), 11L }
+                    { 1L, 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(470), 7L },
+                    { 2L, 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(473), 8L },
+                    { 3L, 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(476), 9L },
+                    { 4L, 3L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(478), 10L },
+                    { 5L, 3L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(480), 11L }
                 });
 
             migrationBuilder.InsertData(
@@ -1289,8 +1291,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "GroupId", "Status", "StudentId" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3831), 1L, "PENDING", 9L },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3834), 2L, "APPROVED", 10L }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(554), 1L, "PENDING", 9L },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(557), 2L, "APPROVED", 10L }
                 });
 
             migrationBuilder.InsertData(
@@ -1298,8 +1300,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "EndTime", "GroupId", "Location", "StartTime", "Title" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4885), 4L, new DateTime(2025, 2, 10, 15, 0, 0, 0, DateTimeKind.Unspecified), 1L, "Phòng B101", new DateTime(2025, 2, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), "Họp nhóm tuần 1" },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4889), 5L, new DateTime(2025, 2, 17, 15, 0, 0, 0, DateTimeKind.Unspecified), 2L, "Online", new DateTime(2025, 2, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), "Họp nhóm tuần 2" }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1661), 4L, new DateTime(2025, 2, 10, 15, 0, 0, 0, DateTimeKind.Unspecified), 1L, "Phòng B101", new DateTime(2025, 2, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), "Họp nhóm tuần 1" },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1666), 5L, new DateTime(2025, 2, 17, 15, 0, 0, 0, DateTimeKind.Unspecified), 2L, "Online", new DateTime(2025, 2, 17, 14, 0, 0, 0, DateTimeKind.Unspecified), "Họp nhóm tuần 2" }
                 });
 
             migrationBuilder.InsertData(
@@ -1307,36 +1309,36 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "Comment", "CreatedAt", "GroupId", "RevieweeId", "ReviewerId", "Score" },
                 values: new object[,]
                 {
-                    { 1L, "Làm việc tốt.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5061), 1L, 8L, 7L, 8 },
-                    { 2L, "Cần cải thiện giao tiếp.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5065), 1L, 7L, 8L, 7 }
+                    { 1L, "Làm việc tốt.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1843), 1L, 8L, 7L, 8 },
+                    { 2L, "Cần cải thiện giao tiếp.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1847), 1L, 7L, 8L, 7 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Resources",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "FilePath", "GroupId", "ProjectId", "Title", "Type" },
-                values: new object[] { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(5134), 5L, "resources/report_template.docx", 2L, null, "Mẫu báo cáo", "SAMPLE" });
+                values: new object[] { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1904), 5L, "resources/report_template.docx", 2L, null, "Mẫu báo cáo", "SAMPLE" });
 
             migrationBuilder.InsertData(
                 table: "Submissions",
                 columns: new[] { "Id", "FilePath", "GroupId", "ProjectId", "Status", "SubmittedAt", "Version" },
                 values: new object[,]
                 {
-                    { 1L, "submissions/dt001.pdf", 1L, 1L, "SUBMITTED", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4006), 1 },
-                    { 2L, "submissions/dt002.pdf", 2L, 2L, "VALIDATED", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4010), 1 }
+                    { 1L, "submissions/dt001.pdf", 1L, 1L, "SUBMITTED", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(733), 1 },
+                    { 2L, "submissions/dt002.pdf", 2L, 2L, "VALIDATED", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(737), 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tasks",
                 columns: new[] { "Id", "CreatedAt", "Deadline", "Description", "GroupId", "ProjectId", "Status", "StudentId", "Title" },
-                values: new object[] { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(3927), new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Phân tích yêu cầu hệ thống AI.", 1L, 1L, "TODO", null, "Phân tích yêu cầu" });
+                values: new object[] { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(635), new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Phân tích yêu cầu hệ thống AI.", 1L, 1L, "TODO", null, "Phân tích yêu cầu" });
 
             migrationBuilder.InsertData(
                 table: "CodeRuns",
                 columns: new[] { "Id", "Code", "CreatedAt", "Language", "PlagiarismScore", "Result", "SubmissionId" },
                 values: new object[,]
                 {
-                    { 1L, "print('Hello World')", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4213), "Python", 0.1f, "Success", 1L },
-                    { 2L, "public class Main { public static void main(String[] args) { System.out.println('Hello'); } }", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4216), "Java", 0.2f, "Success", 2L }
+                    { 1L, "print('Hello World')", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(923), "Python", 0.1f, "Success", 1L },
+                    { 2L, "public class Main { public static void main(String[] args) { System.out.println('Hello'); } }", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(927), "Java", 0.2f, "Success", 2L }
                 });
 
             migrationBuilder.InsertData(
@@ -1344,22 +1346,22 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "Content", "CreatedAt", "LecturerId", "SubmissionId" },
                 values: new object[,]
                 {
-                    { 1L, "Cần cải thiện phần phân tích dữ liệu.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4137), 4L, 1L },
-                    { 2L, "Tốt, nhưng cần bổ sung tài liệu tham khảo.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4141), 5L, 2L }
+                    { 1L, "Cần cải thiện phần phân tích dữ liệu.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(865), 4L, 1L },
+                    { 2L, "Tốt, nhưng cần bổ sung tài liệu tham khảo.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(868), 5L, 2L }
                 });
 
             migrationBuilder.InsertData(
                 table: "GradeAppeals",
                 columns: new[] { "Id", "CreatedAt", "GradeId", "Reason", "Response", "Status", "StudentId" },
-                values: new object[] { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4653), 1L, "Điểm nội dung chưa hợp lý.", null, "PENDING", 7L });
+                values: new object[] { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1423), 1L, "Điểm nội dung chưa hợp lý.", null, "PENDING", 7L });
 
             migrationBuilder.InsertData(
                 table: "GradeLogs",
                 columns: new[] { "Id", "Action", "CreatedAt", "Details", "GradeId", "LecturerId" },
                 values: new object[,]
                 {
-                    { 1L, "CREATE", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4545), "Tạo điểm cho nhóm 1.", 1L, 4L },
-                    { 2L, "UPDATE", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4548), "Cập nhật điểm nhóm 1.", 1L, 4L }
+                    { 1L, "CREATE", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1314), "Tạo điểm cho nhóm 1.", 1L, 4L },
+                    { 2L, "UPDATE", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1318), "Cập nhật điểm nhóm 1.", 1L, 4L }
                 });
 
             migrationBuilder.InsertData(
@@ -1367,8 +1369,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "Comment", "CreatedAt", "GradeId", "Score", "VersionNumber" },
                 values: new object[,]
                 {
-                    { 1L, "Phiên bản đầu.", new DateTime(2025, 5, 5, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4486), 1L, 8f, 1 },
-                    { 2L, "Cập nhật điểm.", new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4490), 1L, 8.5f, 2 }
+                    { 1L, "Phiên bản đầu.", new DateTime(2025, 5, 10, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1251), 1L, 8f, 1 },
+                    { 2L, "Cập nhật điểm.", new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1256), 1L, 8.5f, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -1376,8 +1378,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "FilePath", "MeetingId" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4940), "records/meeting1.mp3", 1L },
-                    { 2L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4943), "records/meeting2.mp4", 2L }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1724), "records/meeting1.mp3", 1L },
+                    { 2L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(1727), "records/meeting2.mp4", 2L }
                 });
 
             migrationBuilder.InsertData(
@@ -1385,8 +1387,8 @@ namespace EduProject_TADProgrammer.Migrations
                 columns: new[] { "Id", "CreatedAt", "FilePath", "SubmissionId", "VersionNumber" },
                 values: new object[,]
                 {
-                    { 1L, new DateTime(2025, 5, 6, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4064), "submissions/dt001_v1.pdf", 1L, 1 },
-                    { 2L, new DateTime(2025, 5, 5, 9, 11, 8, 348, DateTimeKind.Utc).AddTicks(4067), "submissions/dt001_v2.pdf", 1L, 2 }
+                    { 1L, new DateTime(2025, 5, 11, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(799), "submissions/dt001_v1.pdf", 1L, 1 },
+                    { 2L, new DateTime(2025, 5, 10, 14, 39, 4, 550, DateTimeKind.Utc).AddTicks(803), "submissions/dt001_v2.pdf", 1L, 2 }
                 });
 
             migrationBuilder.CreateIndex(
