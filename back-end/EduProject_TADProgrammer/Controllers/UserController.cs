@@ -15,7 +15,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "ROLE_ADMIN")]
+    //[Authorize(Roles = "ROLE_ADMIN")]
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
@@ -58,7 +58,9 @@ namespace EduProject_TADProgrammer.Controllers
                 RoleId = request.RoleId,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                FailedLoginAttempts = 0,
+                Locked = false
             };
             var createdUser = await _userService.CreateUser(user);
             await _userService.LogAction(createdUser.Id, "CREATE_USER", $"User {createdUser.Username} created.");
@@ -68,19 +70,19 @@ namespace EduProject_TADProgrammer.Controllers
         // PUT: api/user/5
         // Cập nhật thông tin người dùng.
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(long id, [FromBody] UserDto userDto)
+        public async Task<IActionResult> UpdateUser(long id, [FromBody] UpdateUserRequest userDto)
         {
             if (id != userDto.Id)
-                return BadRequest();
+                return BadRequest("ID không khớp.");
 
             var user = await _userService.GetById(id);
             if (user == null)
                 return NotFound();
 
-            user.Username = userDto.Username;
             user.Email = userDto.Email;
             user.FullName = userDto.FullName;
             user.RoleId = userDto.RoleId;
+            user.Locked = userDto.Locked;
             user.UpdatedAt = DateTime.UtcNow;
 
             await _userService.UpdateUser(user);
@@ -101,6 +103,19 @@ namespace EduProject_TADProgrammer.Controllers
             await _userService.LogAction(id, "DELETE_USER", $"User {user.Username} deleted.");
             return NoContent();
         }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 
     // Model cho request tạo người dùng
@@ -111,5 +126,14 @@ namespace EduProject_TADProgrammer.Controllers
         public string Email { get; set; }
         public string FullName { get; set; }
         public long RoleId { get; set; }
+    }
+
+    public class UpdateUserRequest
+    {
+        public long Id { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public long RoleId { get; set; }
+        public bool Locked { get; set; }
     }
 }

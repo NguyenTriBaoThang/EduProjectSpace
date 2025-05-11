@@ -99,8 +99,18 @@ namespace EduProject_TADProgrammer.Services
         // Tạo người dùng mới.
         public async Task<UserDto> CreateUser(User user)
         {
+            if (await _context.Users.AnyAsync(u => u.Username == user.Username))
+                throw new System.Exception("Username đã tồn tại.");
+            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
+                throw new System.Exception("Email đã tồn tại.");
+            if (!await IsValidRoleId(user.RoleId))
+                throw new System.Exception("RoleId không hợp lệ.");
+
+            user.FailedLoginAttempts = 0;
+            user.Locked = false;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
             var createdUser = await _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
@@ -122,6 +132,9 @@ namespace EduProject_TADProgrammer.Services
         // Cập nhật thông tin người dùng.
         public async System.Threading.Tasks.Task UpdateUser(User user)
         {
+            if (!await IsValidRoleId(user.RoleId))
+                throw new System.Exception("RoleId không hợp lệ.");
+
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
@@ -149,6 +162,11 @@ namespace EduProject_TADProgrammer.Services
             };
             _context.Logs.Add(log);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsValidRoleId(long roleId)
+        {
+            return await _context.Roles.AnyAsync(r => r.Id == roleId);
         }
     }
 }
