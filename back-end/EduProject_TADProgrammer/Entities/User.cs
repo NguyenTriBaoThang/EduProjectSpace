@@ -42,6 +42,12 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("RoleId")]
         public Role Role { get; set; }
 
+        [StringLength(255)]
+        public string ?AvatarUrl { get; set; }
+
+        [StringLength(50)]
+        public string ?ClassCode { get; set; } // For students only
+
         [Required]
         public int FailedLoginAttempts { get; set; } = 0;
 

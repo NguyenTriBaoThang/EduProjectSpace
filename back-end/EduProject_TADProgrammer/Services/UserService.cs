@@ -1,9 +1,4 @@
-﻿// File: Services/UserService.cs
-// Mục đích: Xử lý logic nghiệp vụ liên quan đến tài khoản người dùng (xác thực, CRUD, ghi nhật ký).
-// Chức năng hỗ trợ: 
-//   1: Phân quyền và bảo mật (xác thực, quản lý tài khoản, ghi nhật ký).
-//   3: Quản lý tài khoản.
-using EduProject_TADProgrammer.Data;
+﻿using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +41,7 @@ namespace EduProject_TADProgrammer.Services
                     Username = u.Username,
                     Email = u.Email,
                     FullName = u.FullName,
+                    ClassCode = u.ClassCode,
                     RoleId = u.RoleId,
                     RoleName = u.Role.Name,
                     FailedLoginAttempts = u.FailedLoginAttempts,
@@ -71,6 +67,7 @@ namespace EduProject_TADProgrammer.Services
                 Username = user.Username,
                 Email = user.Email,
                 FullName = user.FullName,
+                ClassCode = user.ClassCode,
                 RoleId = user.RoleId,
                 RoleName = user.Role?.Name,
                 FailedLoginAttempts = user.FailedLoginAttempts,
@@ -96,11 +93,11 @@ namespace EduProject_TADProgrammer.Services
                 .FirstOrDefaultAsync(u => u.Username == username);
         }
 
-        // Tạo người dùng mới.
+        // Tạo người dùng mới, kiểm tra trùng Username/Email.
         public async Task<UserDto> CreateUser(User user)
         {
             if (await _context.Users.AnyAsync(u => u.Username == user.Username))
-                throw new System.Exception("Username đã tồn tại.");
+                throw new System.Exception("Mã sinh viên hoặc Username đã tồn tại.");
             if (await _context.Users.AnyAsync(u => u.Email == user.Email))
                 throw new System.Exception("Email đã tồn tại.");
             if (!await IsValidRoleId(user.RoleId))
@@ -120,6 +117,7 @@ namespace EduProject_TADProgrammer.Services
                 Username = createdUser.Username,
                 Email = createdUser.Email,
                 FullName = createdUser.FullName,
+                ClassCode = createdUser.ClassCode,
                 RoleId = createdUser.RoleId,
                 RoleName = createdUser.Role?.Name,
                 FailedLoginAttempts = createdUser.FailedLoginAttempts,
@@ -129,11 +127,13 @@ namespace EduProject_TADProgrammer.Services
             };
         }
 
-        // Cập nhật thông tin người dùng.
+        // Cập nhật thông tin người dùng, kiểm tra trùng Email.
         public async System.Threading.Tasks.Task UpdateUser(User user)
         {
             if (!await IsValidRoleId(user.RoleId))
                 throw new System.Exception("RoleId không hợp lệ.");
+            if (await _context.Users.AnyAsync(u => u.Email == user.Email && u.Id != user.Id))
+                throw new System.Exception("Email đã tồn tại.");
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
@@ -164,6 +164,7 @@ namespace EduProject_TADProgrammer.Services
             await _context.SaveChangesAsync();
         }
 
+        // Kiểm tra RoleId hợp lệ.
         public async Task<bool> IsValidRoleId(long roleId)
         {
             return await _context.Roles.AnyAsync(r => r.Id == roleId);
