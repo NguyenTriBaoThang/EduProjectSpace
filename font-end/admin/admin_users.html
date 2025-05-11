@@ -9,25 +9,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
     <!-- Sidebar -->
     <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
-        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
-        <a href="admin_users.html" class="active"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
-        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
-        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
-        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
-        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
-        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
-        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
-        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
-        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
-        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+        <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/admin/admin_users.html" class="active"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="/font-end/admin/admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="/font-end/admin/admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="/font-end/admin/admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="/font-end/admin/admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="/font-end/admin/admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="/font-end/admin/admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="/font-end/admin/admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
     </div>
 
     <!-- Main Content -->
@@ -54,15 +54,15 @@
         <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Dropdown hiển thị thông tin Admin và chức năng đăng xuất -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Admin Avatar">
-                <h6>Admin HUTECH</h6>
-                <p>admin@hutech.edu.vn</p>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
+                <h6 id="adminName">Admin HUTECH</h6>
+                <p id="adminEmail">admin@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -83,7 +83,7 @@
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                        <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i></a>
                     </li>
                     <li class="breadcrumb-item active">
                         <i class="bi bi-person-lines-fill"></i> Quản lý người dùng
@@ -98,9 +98,10 @@
                     <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm người dùng..." onkeyup="filterTable()">
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Vai trò</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Giảng viên">Giảng viên</option>
-                        <option value="Sinh viên">Sinh viên</option>
+                        <option value="ROLE_ADMIN">Admin</option>
+                        <option value="ROLE_LECTURER">Giảng viên hướng dẫn</option>
+                        <option value="ROLE_STUDENT">Sinh viên</option>
+                        <option value="ROLE_HEAD">Trưởng bộ môn</option>
                     </select>
                 </div>
 
@@ -109,10 +110,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('name')">Tên <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('fullName')">Tên <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Email</th>
-                                <th class="sortable" onclick="sortTable('role')">Vai trò <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('roleName')">Vai trò <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('locked')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -139,8 +140,12 @@
                 <div class="modal-body">
                     <form id="addUserForm">
                         <div class="mb-3">
+                            <label class="form-label">Tên đăng nhập</label>
+                            <input type="text" id="userUsername" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Họ và tên</label>
-                            <input type="text" id="userName" class="form-control" required>
+                            <input type="text" id="userFullName" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
@@ -149,9 +154,10 @@
                         <div class="mb-3">
                             <label class="form-label">Vai trò</label>
                             <select id="userRole" class="form-select" required>
-                                <option value="Admin">Admin</option>
-                                <option value="Giảng viên">Giảng viên</option>
-                                <option value="Sinh viên">Sinh viên</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Giảng viên hướng dẫn</option>
+                                <option value="3">Sinh viên</option>
+                                <option value="4">Trưởng bộ môn</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -182,7 +188,7 @@
                         <input type="hidden" id="editUserId">
                         <div class="mb-3">
                             <label class="form-label">Họ và tên</label>
-                            <input type="text" id="editUserName" class="form-control" required>
+                            <input type="text" id="editUserFullName" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
@@ -191,16 +197,17 @@
                         <div class="mb-3">
                             <label class="form-label">Vai trò</label>
                             <select id="editUserRole" class="form-select" required>
-                                <option value="Admin">Admin</option>
-                                <option value="Giảng viên">Giảng viên</option>
-                                <option value="Sinh viên">Sinh viên</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Giảng viên hướng dẫn</option>
+                                <option value="3">Sinh viên</option>
+                                <option value="4">Trưởng bộ môn</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
                             <select id="editUserStatus" class="form-select" required>
-                                <option value="Hoạt động">Hoạt động</option>
-                                <option value="Khóa">Khóa</option>
+                                <option value="false">Hoạt động</option>
+                                <option value="true">Khóa</option>
                             </select>
                         </div>
                     </form>
@@ -219,72 +226,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu người dùng
-        let users = [
-            { id: 1, name: "Nguyễn Tri Bão Thắng", email: "nguyentribaothang@gmail.com", role: "Sinh viên", status: "Hoạt động" },
-            { id: 2, name: "Nguyễn Huy Cường", email: "nguyenhuycuong@hutech.edu.vn", role: "Giảng viên", status: "Hoạt động" },
-            { id: 3, name: "Admin HUTECH", email: "admin@hutech.edu.vn", role: "Admin", status: "Hoạt động" },
-            { id: 4, name: "Trần Thị Vân Anh", email: "tranvanh@hutech.edu.vn", role: "Giảng viên", status: "Khóa" },
-            { id: 5, name: "Lê Văn B", email: "levanb@gmail.com", role: "Sinh viên", status: "Hoạt động" }
-        ];
+        // Mục đích: Tải dữ liệu người dùng từ API, quản lý thêm/sửa/xóa người dùng, xuất Excel, xử lý đăng xuất với HttpOnly cookie.
+        // Hỗ trợ chức năng: 1, 3, 4, 4.2, 4.7, 4.8, 4.9.1
 
+        const API_URL = "https://localhost:7047";
+        let users = [];
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
 
-        // Navbar Functions
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
-            toggleSidebar();
-        });
-
-        document.getElementById("notificationBtn").addEventListener("click", () => {
-            window.location.href = "admin_notifications.html";
-        });
-
-        document.getElementById("profileBtn").addEventListener("click", (event) => {
-            event.stopPropagation();
-            const dropdown = document.getElementById("profileDropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        });
-
-        document.addEventListener("click", (event) => {
-            const dropdown = document.getElementById("profileDropdown");
-            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
-                dropdown.style.display = "none";
+        // Tải dữ liệu khi trang được load
+        window.onload = async () => {
+            try {
+                await loadUserProfile();
+                await loadUsers();
+            } catch (error) {
+                console.error("Error loading users:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
             }
-        });
+        };
 
-        document.getElementById("toggleFullscreen").addEventListener("click", () => {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
-        });
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_ADMIN") {
+                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            }
+            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+        }
 
-        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
-        });
-
-        document.getElementById("toggleTheme").addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
-        });
-
-        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
-
-        // Toggle Sidebar
-        function toggleSidebar() {
-            let sidebar = document.querySelector(".sidebar");
-            let content = document.querySelector(".content");
-            let icon = document.getElementById("sidebarIcon");
-
-            sidebar.classList.toggle("collapsed");
-            content.classList.toggle("expanded");
-
-            if (sidebar.classList.contains("collapsed")) {
-                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
-            } else {
-                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+        // Tải danh sách người dùng từ API
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_URL}/api/User`, {
+                    method: "GET",
+                    headers: { "Accept": "*/*" },
+                    credentials: "include"
+                });
+                if (!response.ok) {
+                    throw new Error(`Lỗi tải danh sách người dùng: ${response.status}`);
+                }
+                users = await response.json();
+                displayTable(currentPage);
+            } catch (error) {
+                throw new Error(`Lỗi API: ${error.message}`);
             }
         }
 
@@ -294,14 +282,14 @@
             const roleFilter = document.getElementById("roleFilter").value;
 
             let filtered = users.filter(user =>
-                (user.name.toLowerCase().includes(searchText) || user.email.toLowerCase().includes(searchText)) &&
-                (roleFilter === "" || user.role === roleFilter)
+                (user.fullName.toLowerCase().includes(searchText) || user.email.toLowerCase().includes(searchText)) &&
+                (roleFilter === "" || user.roleName === roleFilter)
             );
 
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = a[sortColumn].toLowerCase();
-                    let valueB = b[sortColumn].toLowerCase();
+                    let valueA = sortColumn === 'locked' ? a[sortColumn] : a[sortColumn].toLowerCase();
+                    let valueB = sortColumn === 'locked' ? b[sortColumn] : b[sortColumn].toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -323,14 +311,15 @@
                 tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy người dùng nào.</td></tr>';
             } else {
                 paginatedData.forEach((user, index) => {
-                    const statusClass = user.status === "Hoạt động" ? "bg-success" : "bg-danger";
+                    const statusText = user.locked ? "Khóa" : "Hoạt động";
+                    const statusClass = user.locked ? "bg-danger" : "bg-success";
                     tableBody.innerHTML += `
                         <tr>
                             <td>${start + index + 1}</td>
-                            <td>${user.name}</td>
+                            <td>${user.fullName}</td>
                             <td>${user.email}</td>
-                            <td>${user.role}</td>
-                            <td><span class="badge ${statusClass}">${user.status}</span></td>
+                            <td>${user.roleName.replace("ROLE_", "")}</td>
+                            <td><span class="badge ${statusClass}">${statusText}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-info me-1" onclick="editUser(${user.id})"><i class="bi bi-pencil"></i></button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})"><i class="bi bi-trash"></i></button>
@@ -387,20 +376,37 @@
         }
 
         // Thêm người dùng
-        function addUser() {
+        async function addUser() {
             const form = document.getElementById("addUserForm");
             if (form.checkValidity()) {
                 const newUser = {
-                    id: users.length + 1,
-                    name: document.getElementById("userName").value,
+                    username: document.getElementById("userUsername").value,
+                    fullName: document.getElementById("userFullName").value,
                     email: document.getElementById("userEmail").value,
-                    role: document.getElementById("userRole").value,
-                    status: "Hoạt động"
+                    roleId: parseInt(document.getElementById("userRole").value),
+                    password: document.getElementById("userPassword").value
                 };
-                users.push(newUser);
-                alert("Đã thêm người dùng: " + newUser.name);
-                bootstrap.Modal.getInstance(document.getElementById("addUserModal")).hide();
-                displayTable(currentPage);
+                try {
+                    const response = await fetch(`${API_URL}/api/User`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "*/*"
+                        },
+                        credentials: "include",
+                        body: JSON.stringify(newUser)
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || `Lỗi thêm người dùng: ${response.status}`);
+                    }
+                    alert("Đã thêm người dùng: " + newUser.fullName);
+                    bootstrap.Modal.getInstance(document.getElementById("addUserModal")).hide();
+                    await loadUsers();
+                } catch (error) {
+                    console.error("Add user error:", error);
+                    alert(`Không thêm được người dùng: ${error.message}`);
+                }
             } else {
                 form.reportValidity();
             }
@@ -411,35 +417,78 @@
             const user = users.find(u => u.id === id);
             if (user) {
                 document.getElementById("editUserId").value = user.id;
-                document.getElementById("editUserName").value = user.name;
+                document.getElementById("editUserFullName").value = user.fullName;
                 document.getElementById("editUserEmail").value = user.email;
-                document.getElementById("editUserRole").value = user.role;
-                document.getElementById("editUserStatus").value = user.status;
+                document.getElementById("editUserRole").value = user.roleId;
+                document.getElementById("editUserStatus").value = user.locked.toString();
                 const modal = new bootstrap.Modal(document.getElementById("editUserModal"));
                 modal.show();
             }
         }
 
-        function saveEditUser() {
+        async function saveEditUser() {
             const id = parseInt(document.getElementById("editUserId").value);
-            const user = users.find(u => u.id === id);
-            if (user) {
-                user.name = document.getElementById("editUserName").value;
-                user.email = document.getElementById("editUserEmail").value;
-                user.role = document.getElementById("editUserRole").value;
-                user.status = document.getElementById("editUserStatus").value;
-                alert("Đã cập nhật thông tin người dùng: " + user.name);
+
+            const user = users.find(u => u.id === id); // Lấy dữ liệu người dùng hiện tại từ users
+            if (!user) {
+                alert("Không tìm thấy dữ liệu người dùng.");
+                return;
+            }
+
+            const updatedUser = {
+                id: id,
+                username: user.username,
+                fullName: document.getElementById("editUserFullName").value,
+                email: document.getElementById("editUserEmail").value,
+                roleId: parseInt(document.getElementById("editUserRole").value),
+                roleName: user.roleName,
+                tokenn: user.tokenn,
+                failedLoginAttempts: user.failedLoginAttempts,
+                locked: document.getElementById("editUserStatus").value === "true",
+                createdAt: user.createdAt
+            };
+            try {
+                const response = await fetch(`${API_URL}/api/User/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "*/*"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(updatedUser)
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || `Lỗi sửa người dùng: ${response.status}`);
+                }
+                alert("Đã cập nhật thông tin người dùng: " + updatedUser.fullName);
                 bootstrap.Modal.getInstance(document.getElementById("editUserModal")).hide();
-                displayTable(currentPage);
+                await loadUsers();
+            } catch (error) {
+                console.error("Edit user error:", error);
+                alert(`Không sửa được người dùng: ${error.message}`);
             }
         }
 
         // Xóa người dùng
-        function deleteUser(id) {
+        async function deleteUser(id) {
             if (confirm("Bạn có chắc muốn xóa người dùng này không?")) {
-                users = users.filter(u => u.id !== id);
-                alert("Đã xóa người dùng!");
-                displayTable(currentPage);
+                try {
+                    const response = await fetch(`${API_URL}/api/User/${id}`, {
+                        method: "DELETE",
+                        headers: { "Accept": "*/*" },
+                        credentials: "include"
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || `Lỗi xóa người dùng: ${response.status}`);
+                    }
+                    alert("Đã xóa người dùng!");
+                    await loadUsers();
+                } catch (error) {
+                    console.error("Delete user error:", error);
+                    alert(`Không xóa được người dùng: ${error.message}`);
+                }
             }
         }
 
@@ -456,10 +505,10 @@
             filteredUsers.forEach((user, index) => {
                 worksheetData.push([
                     index + 1,
-                    user.name,
+                    user.fullName,
                     user.email,
-                    user.role,
-                    user.status
+                    user.roleName.replace("ROLE_", ""),
+                    user.locked ? "Khóa" : "Hoạt động"
                 ]);
             });
 
@@ -469,10 +518,67 @@
             XLSX.writeFile(workbook, "danh_sach_nguoi_dung.xlsx");
         }
 
-        // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            displayTable(currentPage);
+        // Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    credentials: "include"
+                });
+                if (response.ok) {
+                    localStorage.removeItem("user");
+                    window.location.href = "/font-end/login//login.html";
+                } else {
+                    throw new Error("Đăng xuất thất bại.");
+                }
+            } catch (error) {
+                console.error("Logout error:", error);
+                alert("Không đăng xuất được. Vui lòng thử lại.");
+            }
+        }
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "/font-end/admin/admin_notifications.html";
         });
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
+        });
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
     </script>
 </body>
 </html>
