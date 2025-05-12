@@ -322,15 +322,22 @@
                     credentials: "include"
                 });
 
-                // Dù logout thất bại (do token hết hạn), vẫn xoá user và chuyển trang
-                localStorage.removeItem("user");
-                window.location.href = "/font-end/login/login.html";
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                    console.log(data.message); // Ví dụ: "Đăng xuất thành công."
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
             } catch (error) {
-                console.error("Logout error:", error);
-                // Fallback chuyển trang nếu lỗi
-                localStorage.removeItem("user");
-                window.location.href = "/font-end/login/login.html";
+                alert("Đăng xuất bị lỗi:", error);
+                console.error("Đăng xuất bị lỗi:", error);
             }
+
+            // Xóa thông tin người dùng và chuyển hướng
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
         }
 
         // Xuất Excel

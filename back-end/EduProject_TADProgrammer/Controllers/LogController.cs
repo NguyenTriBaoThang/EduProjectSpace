@@ -9,7 +9,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "ROLE_ADMIN")]
+    [Authorize]
     public class LogController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
