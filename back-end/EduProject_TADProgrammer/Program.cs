@@ -26,10 +26,11 @@ internal class Program
         builder.Services.AddSwaggerGen();
 
         // Thêm các dịch vụ
+        builder.Services.AddScoped<JwtService>();
+        builder.Services.AddScoped<LogService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<RoleService>();
         builder.Services.AddScoped<DashboardService>();
-        builder.Services.AddScoped<JwtService>();
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddHostedService<DeadlineReminderService>();
 
