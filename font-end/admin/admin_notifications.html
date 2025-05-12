@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Trang quản lý thông báo Admin của hệ thống Sinh viên HUTECH.">
-    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
     <title>Quản lý thông báo | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,8 +29,9 @@
         <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
     </div>
 
-    <!-- Nội dung chính -->
+    <!-- Main Content -->
     <div class="content">
+        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg px-3">
             <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
                 <i id="sidebarIcon" class="bi bi-list"></i>
@@ -47,81 +48,93 @@
             </div>
         </nav>
 
-        <!-- Dropdown hồ sơ -->
+        <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="/font-end/static/img/user-default.png" alt="Avatar" class="avatar">
-                <div>
-                    <span class="fw-bold">Admin</span>
-                    <small class="d-block text-muted">admin@hutech.edu.vn</small>
-                </div>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
+                <h6>Admin HUTECH</h6>
+                <p>admin@hutech.edu.vn</p>
             </div>
-            <hr class="my-2">
-            <a href="/font-end/admin/admin_profile.html"><i class="bi bi-person"></i> Hồ sơ cá nhân</a>
-            <a href="/font-end/admin/admin_settings.html"><i class="bi bi-gear"></i> Cài đặt</a>
-            <a href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="/font-end/login/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
         </div>
 
-        <!-- Nội dung trang -->
-        <div class="container-fluid px-4 py-3">
-            <h4 class="mb-3">📢 Quản lý thông báo</h4>
-            <div class="card mb-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-bell me-2"></i>Thông báo hệ thống</span>
-                    <div>
-                        <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNotificationModal"><i class="bi bi-plus-circle"></i> Thêm thông báo</button>
-                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#configNotificationModal"><i class="bi bi-gear"></i> Cấu hình</button>
-                        <button class="btn btn-info" onclick="exportNotifications()"><i class="bi bi-file-earmark-excel"></i> Xuất Excel</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm kiếm tiêu đề hoặc nội dung..." oninput="filterTable()">
-                        </div>
-                        <div class="col-md-3">
-                            <select id="statusFilter" class="form-select" onchange="filterTable()">
-                                <option value="">Tất cả trạng thái</option>
-                                <option value="SENT">Đã gửi</option>
-                                <option value="PENDING">Chưa gửi</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col" onclick="sortTable('id')">#</th>
-                                    <th scope="col" onclick="sortTable('title')">Tiêu đề <i class="bi bi-sort-down"></i></th>
-                                    <th scope="col" onclick="sortTable('content')">Nội dung</th>
-                                    <th scope="col" onclick="sortTable('recipient')">Người nhận</th>
-                                    <th scope="col" onclick="sortTable('createdAt')">Ngày gửi <i class="bi bi-sort-down"></i></th>
-                                    <th scope="col" onclick="sortTable('status')">Trạng thái</th>
-                                    <th scope="col">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody"></tbody>
-                        </table>
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center" id="pagination"></ul>
-                    </nav>
+        <!-- Notifications Management Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">🔔 Quản lý thông báo</h2>
+                <div>
+                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addNotificationModal">Thêm thông báo <i class="bi bi-plus-circle"></i></button>
+                    <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#configNotificationModal">Cấu hình <i class="bi bi-gear"></i></button>
+                    <button class="btn btn-info" onclick="exportNotifications()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <i class="bi bi-bell-fill me-2"></i>Thông báo gần đây
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="bi bi-bell"></i> Quản lý thông báo
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow-sm rounded-3 mb-4">
+                <div class="card-header bg-primary text-white d-flex align-items-center py-2">
+                    <i class="bi bi-bell-fill me-2 fs-5"></i>
+                    <span class="fw-semibold">Thông báo gần đây</span>
                 </div>
-                <div class="card-body" id="recentNotifications">
-                    <p class="text-muted">Đang tải thông báo gần đây...</p>
+                <div class="card-body p-3" id="recentNotifications">
+                    <p class="text-muted mb-0">Đang tải thông báo gần đây...</p>
+                </div>
+            </div>
+
+            <!-- Notifications Table -->
+            <div class="table-container">
+                <div class="table-header d-flex gap-2">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm thông báo..." onkeyup="filterTable()">
+                    <select id="statusFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📂 Trạng thái</option>
+                        <option value="Đã gửi">Đã gửi</option>
+                        <option value="Chưa gửi">Chưa gửi</option>
+                    </select>
+                </div>
+
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('title')">Tiêu đề <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('content')">Nội dung <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('recipient')">Người nhận <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('date')">Ngày gửi <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
                 </div>
             </div>
         </div>
     </div>
+   
 
-    <!-- Modal Thêm thông báo -->
+    <!-- Modal Thêm Thông Báo -->
     <div class="modal fade" id="addNotificationModal" tabindex="-1" aria-labelledby="addNotificationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addNotificationModalLabel">Thêm thông báo mới</h5>
@@ -130,46 +143,46 @@
                 <div class="modal-body">
                     <form id="addNotificationForm">
                         <div class="mb-3">
-                            <label for="notificationTitle" class="form-label">Tiêu đề</label>
-                            <input type="text" class="form-control" id="notificationTitle" required>
+                            <label class="form-label">Tiêu đề</label>
+                            <input type="text" id="notificationTitle" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label for="notificationContent" class="form-label">Nội dung</label>
-                            <textarea class="form-control" id="notificationContent" rows="4" required></textarea>
+                            <label class="form-label">Nội dung</label>
+                            <textarea id="notificationContent" class="form-control" rows="4" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="notificationRecipientType" class="form-label">Đối tượng nhận</label>
-                            <select class="form-select" id="notificationRecipientType" onchange="toggleRecipientFields()" required>
-                                <option value="all">Tất cả người dùng</option>
+                            <label class="form-label">Người nhận</label>
+                            <select id="notificationRecipient" class="form-select" required>
+                                <option value="all">Tất cả</option>
                                 <option value="student">Sinh viên</option>
                                 <option value="lecturer">Giảng viên</option>
                                 <option value="admin">Quản trị viên</option>
-                                <option value="head">Trưởng khoa</option>
+                                <option value="head">Trưởng bộ môn</option>
                                 <option value="user">Cá nhân</option>
-                                <option value="group">Nhóm sinh viên</option>
+                                <option value="group">Nhóm</option>
                             </select>
                         </div>
                         <div class="mb-3" id="userIdField" style="display: none;">
-                            <label for="notificationUserId" class="form-label">ID Người dùng</label>
-                            <input type="text" class="form-control" id="notificationUserId">
+                            <label class="form-label">ID Người dùng</label>
+                            <input type="number" id="notificationUserId" class="form-control">
                         </div>
                         <div class="mb-3" id="groupIdField" style="display: none;">
-                            <label for="notificationGroupId" class="form-label">ID Nhóm</label>
-                            <input type="text" class="form-control" id="notificationGroupId">
+                            <label class="form-label">ID Nhóm</label>
+                            <input type="number" id="notificationGroupId" class="form-control">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="addNotification()">Gửi thông báo</button>
+                    <button type="button" class="btn btn-primary" onclick="addNotification()">Gửi</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Sửa thông báo -->
+    <!-- Modal Sửa Thông Báo -->
     <div class="modal fade" id="editNotificationModal" tabindex="-1" aria-labelledby="editNotificationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNotificationModalLabel">Sửa thông báo</h5>
@@ -179,16 +192,36 @@
                     <form id="editNotificationForm">
                         <input type="hidden" id="editNotificationId">
                         <div class="mb-3">
-                            <label for="editNotificationTitle" class="form-label">Tiêu đề</label>
-                            <input type="text" class="form-control" id="editNotificationTitle" required>
+                            <label class="form-label">Tiêu đề</label>
+                            <input type="text" id="editNotificationTitle" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editNotificationContent" class="form-label">Nội dung</label>
-                            <textarea class="form-control" id="editNotificationContent" rows="4" required></textarea>
+                            <label class="form-label">Nội dung</label>
+                            <textarea id="editNotificationContent" class="form-control" rows="4" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="editNotificationStatus" class="form-label">Trạng thái</label>
-                            <select class="form-select" id="editNotificationStatus" required>
+                            <label class="form-label">Người nhận</label>
+                            <select id="editNotificationRecipient" class="form-select" required>
+                                <option value="all">Tất cả</option>
+                                <option value="student">Sinh viên</option>
+                                <option value="lecturer">Giảng viên</option>
+                                <option value="admin">Quản trị viên</option>
+                                <option value="head">Trưởng bộ môn</option>
+                                <option value="user">Cá nhân</option>
+                                <option value="group">Nhóm</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="editUserIdField" style="display: none;">
+                            <label class="form-label">ID Người dùng</label>
+                            <input type="number" id="editNotificationUserId" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3" id="editGroupIdField" style="display: none;">
+                            <label class="form-label">ID Nhóm</label>
+                            <input type="number" id="editNotificationGroupId" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select id="editNotificationStatus" class="form-select" required>
                                 <option value="SENT">Đã gửi</option>
                                 <option value="PENDING">Chưa gửi</option>
                             </select>
@@ -197,13 +230,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="saveEditNotification()">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditNotification()">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Cấu hình thông báo -->
+    <!-- Modal Cấu Hình Thông Báo -->
     <div class="modal fade" id="configNotificationModal" tabindex="-1" aria-labelledby="configNotificationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -214,19 +247,20 @@
                 <div class="modal-body">
                     <form id="configNotificationForm">
                         <div class="mb-3">
+                            <label class="form-label">Kênh gửi thông báo</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="enableWeb" checked>
-                                <label class="form-check-label" for="enableWeb">Bật thông báo trên web</label>
+                                <input type="checkbox" id="enableWeb" class="form-check-input" checked>
+                                <label class="form-check-label" for="enableWeb">Hiển thị trên web</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="enableEmail">
-                                <label class="form-check-label" for="enableEmail">Bật thông báo qua email</label>
+                                <input type="checkbox" id="enableEmail" class="form-check-input">
+                                <label class="form-check-label" for="enableEmail">Gửi qua email</label>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="reminderFrequency" class="form-label">Tần suất nhắc nhở</label>
-                            <select class="form-select" id="reminderFrequency">
-                                <option value="none">Không nhắc nhở</option>
+                            <label class="form-label">Tần suất nhắc nhở tự động</label>
+                            <select id="reminderFrequency" class="form-select">
+                                <option value="none">Không nhắc</option>
                                 <option value="daily">Hàng ngày</option>
                                 <option value="weekly">Hàng tuần</option>
                             </select>
@@ -235,24 +269,66 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="saveConfig()">Lưu cấu hình</button>
+                    <button type="button" class="btn btn-primary" onclick="saveConfig()">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal Xem chi tiết Thông Báo -->
+    <div class="modal fade" id="viewNotificationModal" tabindex="-1" aria-labelledby="viewNotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewNotificationModalLabel">Chi tiết thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tiêu đề</label>
+                        <p id="viewNotificationTitle" class="bg-light p-2 rounded-3"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nội dung</label>
+                        <p id="viewNotificationContent" class="bg-light p-2 rounded-3"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Người nhận</label>
+                        <p id="viewNotificationRecipient" class="bg-light p-2 rounded-3"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Ngày gửi</label>
+                        <p id="viewNotificationDate" class="bg-light p-2 rounded-3"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Trạng thái</label>
+                        <p id="viewNotificationStatus" class="bg-light p-2 rounded-3"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_URL = "http://localhost:7047/api/Notifications";
+        let notifications = [];
+        const API_URL = "https://localhost:7047/api/Notifications"; // Thay bằng biến môi trường nếu cần
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
-        let notifications = [];
 
-        const token = localStorage.getItem("jwtToken");
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
+            toggleSidebar();
+        });
 
-        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";
         });
@@ -275,6 +351,11 @@
             else document.exitFullscreen();
         });
 
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
         document.getElementById("toggleTheme").addEventListener("click", () => {
             document.body.classList.toggle("dark-mode");
             localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
@@ -286,10 +367,8 @@
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
             let icon = document.getElementById("sidebarIcon");
-
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-
             if (sidebar.classList.contains("collapsed")) {
                 icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
             } else {
@@ -297,18 +376,10 @@
             }
         }
 
-        function toggleRecipientFields() {
-            const recipientType = document.getElementById("notificationRecipientType").value;
-            document.getElementById("userIdField").style.display = recipientType === "user" ? "block" : "none";
-            document.getElementById("groupIdField").style.display = recipientType === "group" ? "block" : "none";
-        }
-
-        async function fetchNotifications() {
-            const search = document.getElementById("searchInput").value;
-            const status = document.getElementById("statusFilter").value;
+        async function loadNotifications() {
             try {
-                const response = await fetch(`${API_URL}?search=${search}&status=${status}&page=${currentPage}&pageSize=${itemsPerPage}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
+                const response = await fetch(API_URL, {
+                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
                 });
                 if (response.status === 401) {
                     alert("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
@@ -318,7 +389,8 @@
                 if (!response.ok) throw new Error(`Lỗi HTTP! Mã: ${response.status}`);
                 const data = await response.json();
                 notifications = data.notifications;
-                displayTable(data.notifications, data.totalItems);
+                displayTable(currentPage);
+                displayRecentNotifications(notifications.slice(0, 5));
             } catch (error) {
                 console.error("Lỗi khi lấy thông báo:", error);
                 alert("Không thể tải thông báo. Vui lòng thử lại.");
@@ -328,7 +400,7 @@
         async function fetchRecentNotifications() {
             try {
                 const response = await fetch(`${API_URL}/recent`, {
-                    headers: { "Authorization": `Bearer ${token}` }
+                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
                 });
                 if (response.status === 401) {
                     alert("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
@@ -348,35 +420,103 @@
             const container = document.getElementById("recentNotifications");
             container.innerHTML = "";
             if (data.length === 0) {
-                container.innerHTML = '<p class="text-muted">Không có thông báo gần đây.</p>';
+                container.innerHTML = '<p class="text-muted mb-0">Không có thông báo gần đây.</p>';
             } else {
-                data.forEach(notification => {
-                    container.innerHTML += `
-                        <div class="list-group-item">
-                            <h6 class="mb-1">${notification.title}</h6>
-                            <small class="text-muted">Ngày gửi: ${notification.createdAt.split("T")[0]}</small>
+                container.innerHTML = `
+                    <div id="notificationCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                        <div class="carousel-inner"></div>
+                        <button class="carousel-control-prev bg-dark bg-opacity-50 rounded-3 p-3" type="button" data-bs-target="#notificationCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next bg-dark bg-opacity-50 rounded-3 p-3" type="button" data-bs-target="#notificationCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                `;
+                const carouselInner = container.querySelector(".carousel-inner");
+
+                data.slice(0, 3).forEach((notification, index) => {
+                    const isActive = index === 0 ? "active" : "";
+                    const iconColor = ["text-primary", "text-success", "text-warning"][index % 3];
+                    const buttonColor = ["btn-primary", "btn-success", "btn-warning"][index % 3];
+                    carouselInner.innerHTML += `
+                        <div class="carousel-item ${isActive}">
+                            <div class="d-flex flex-column align-items-center justify-content-center p-3 bg-light rounded-3 border border-light-subtle text-center">
+                                <i class="bi bi-bell-fill ${iconColor} fs-3 mb-2"></i>
+                                <h6 class="mb-1 fw-bold text-dark fs-6">${notification.title}</h6>
+                                <p class="mb-2 text-muted small">${notification.content || "Vui lòng kiểm tra chi tiết thông báo."}</p>
+                                <div class="d-flex align-items-center justify-content-center mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        Ngày gửi: ${new Date(notification.createdAt).toLocaleDateString('vi-VN')}
+                                    </small>
+                                </div>
+                                <button class="btn ${buttonColor} btn-sm py-1 px-3" onclick="viewNotificationDetails(${notification.id})">Xem chi tiết</button>
+                            </div>
                         </div>
                     `;
                 });
             }
         }
 
-        function displayTable(data, totalItems) {
+        function viewNotificationDetails(id) {
+            const notification = notifications.find(n => n.id === id);
+            if (notification) {
+                document.getElementById("viewNotificationTitle").textContent = notification.title;
+                document.getElementById("viewNotificationContent").textContent = notification.content || "Không có nội dung.";
+                document.getElementById("viewNotificationRecipient").textContent = notification.userId ? "Cá nhân" : notification.groupId ? "Nhóm" : notification.recipientType || "Tất cả";
+                document.getElementById("viewNotificationDate").textContent = notification.createdAt ? new Date(notification.createdAt).toLocaleDateString('vi-VN') : "Chưa gửi";
+                document.getElementById("viewNotificationStatus").textContent = notification.status === "SENT" ? "Đã gửi" : "Chưa gửi";
+                const modal = new bootstrap.Modal(document.getElementById("viewNotificationModal"));
+                modal.show();
+            }
+        }
+
+        function getFilteredNotifications() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            let filtered = notifications.filter(notification =>
+                (notification.title.toLowerCase().includes(searchText) || 
+                 notification.content.toLowerCase().includes(searchText)) &&
+                (statusFilter === "" || (statusFilter === "Đã gửi" ? notification.status === "SENT" : notification.status === "PENDING"))
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = sortColumn === "date" ? a.createdAt : (a[sortColumn] || '').toLowerCase();
+                    let valueB = sortColumn === "date" ? b.createdAt : (b[sortColumn] || '').toLowerCase();
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        function displayTable(page) {
+            const filteredNotifications = getFilteredNotifications();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredNotifications.slice(start, end);
+
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
-            if (data.length === 0) {
+
+            if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy thông báo nào.</td></tr>';
             } else {
-                data.forEach((notification, index) => {
+                paginatedData.forEach((notification, index) => {
                     const statusClass = notification.status === "SENT" ? "bg-success" : "bg-warning";
-                    const recipient = notification.user?.fullName || notification.group?.name || "Tất cả";
+                    const recipient = notification.userId ? "Cá nhân" : notification.groupId ? "Nhóm" : notification.recipientType || "Tất cả";
                     tableBody.innerHTML += `
                         <tr>
-                            <td>${(currentPage - 1) * itemsPerPage + index + 1}</td>
+                            <td>${start + index + 1}</td>
                             <td>${notification.title}</td>
                             <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${notification.content}">${notification.content}</td>
                             <td>${recipient}</td>
-                            <td>${notification.createdAt.split("T")[0] || "Chưa gửi"}</td>
+                            <td>${notification.createdAt ? new Date(notification.createdAt).toLocaleDateString('vi-VN') : "Chưa gửi"}</td>
                             <td><span class="badge ${statusClass}">${notification.status === "SENT" ? "Đã gửi" : "Chưa gửi"}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-info me-1" onclick="editNotification(${notification.id})"><i class="bi bi-pencil"></i></button>
@@ -386,29 +526,32 @@
                     `;
                 });
             }
-            setupPagination(totalItems);
+
+            setupPagination(filteredNotifications.length);
         }
 
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
             pagination.innerHTML = "";
+
             if (totalPages <= 1) return;
-            let html = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
-            if (currentPage > 2) html += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
-            if (currentPage > 3) html += `<li>...</li>`;
-            if (currentPage > 1) html += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
-            html += `<li><a href="#" class="active">${currentPage}</a></li>`;
-            if (currentPage < totalPages) html += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
-            if (currentPage < totalPages - 2) html += `<li>...</li>`;
-            if (currentPage < totalPages - 1) html += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            html += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
-            pagination.innerHTML = html;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
         }
 
         function changePage(page) {
             currentPage = page;
-            fetchNotifications();
+            displayTable(currentPage);
         }
 
         function sortTable(column) {
@@ -418,12 +561,27 @@
                 sortColumn = column;
                 sortDirection = 'asc';
             }
-            fetchNotifications();
+            displayTable(currentPage);
         }
 
         function filterTable() {
             currentPage = 1;
-            fetchNotifications();
+            displayTable(currentPage);
+        }
+
+        function toggleRecipientFields(isEdit = false) {
+            const recipientType = (isEdit ? document.getElementById("editNotificationRecipient") : document.getElementById("notificationRecipient")).value;
+            const userIdField = isEdit ? document.getElementById("editUserIdField") : document.getElementById("userIdField");
+            const groupIdField = isEdit ? document.getElementById("editGroupIdField") : document.getElementById("groupIdField");
+            const userIdInput = isEdit ? document.getElementById("editNotificationUserId") : document.getElementById("notificationUserId");
+            const groupIdInput = isEdit ? document.getElementById("editNotificationGroupId") : document.getElementById("notificationGroupId");
+
+            userIdField.style.display = recipientType === "user" ? "block" : "none";
+            groupIdField.style.display = recipientType === "group" ? "block" : "none";
+            if (isEdit) {
+                userIdInput.value = recipientType === "user" ? notifications.find(n => n.id === parseInt(document.getElementById("editNotificationId").value)).userId || "" : "";
+                groupIdInput.value = recipientType === "group" ? notifications.find(n => n.id === parseInt(document.getElementById("editNotificationId").value)).groupId || "" : "";
+            }
         }
 
         async function addNotification() {
@@ -432,18 +590,18 @@
                 const notification = {
                     title: document.getElementById("notificationTitle").value,
                     content: document.getElementById("notificationContent").value,
-                    status: "SENT",
-                    recipientType: document.getElementById("notificationRecipientType").value,
+                    recipientType: document.getElementById("notificationRecipient").value.toLowerCase(),
                     userId: document.getElementById("notificationUserId").value || null,
                     groupId: document.getElementById("notificationGroupId").value || null,
-                    type: "WEB"
+                    type: "WEB",
+                    status: "SENT"
                 };
                 try {
                     const response = await fetch(API_URL, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
                         body: JSON.stringify(notification)
                     });
@@ -453,9 +611,9 @@
                         return;
                     }
                     if (!response.ok) throw new Error("Không thể tạo thông báo.");
-                    alert("Đã gửi thông báo!");
+                    alert("Đã gửi thông báo: " + notification.title);
                     bootstrap.Modal.getInstance(document.getElementById("addNotificationModal")).hide();
-                    fetchNotifications();
+                    await loadNotifications();
                 } catch (error) {
                     console.error("Lỗi khi tạo thông báo:", error);
                     alert("Không thể tạo thông báo. Vui lòng thử lại.");
@@ -471,17 +629,22 @@
                 document.getElementById("editNotificationId").value = notification.id;
                 document.getElementById("editNotificationTitle").value = notification.title;
                 document.getElementById("editNotificationContent").value = notification.content;
+                document.getElementById("editNotificationRecipient").value = notification.recipientType || "all";
                 document.getElementById("editNotificationStatus").value = notification.status;
+                toggleRecipientFields(true);
                 const modal = new bootstrap.Modal(document.getElementById("editNotificationModal"));
                 modal.show();
             }
         }
 
         async function saveEditNotification() {
-            const id = document.getElementById("editNotificationId").value;
+            const id = parseInt(document.getElementById("editNotificationId").value);
             const notification = {
                 title: document.getElementById("editNotificationTitle").value,
                 content: document.getElementById("editNotificationContent").value,
+                recipientType: document.getElementById("editNotificationRecipient").value.toLowerCase(),
+                userId: document.getElementById("editNotificationUserId").value || null,
+                groupId: document.getElementById("editNotificationGroupId").value || null,
                 status: document.getElementById("editNotificationStatus").value,
                 type: "WEB"
             };
@@ -490,7 +653,7 @@
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     body: JSON.stringify(notification)
                 });
@@ -500,9 +663,9 @@
                     return;
                 }
                 if (!response.ok) throw new Error("Không thể cập nhật thông báo.");
-                alert("Đã cập nhật thông báo!");
+                alert("Đã cập nhật thông báo: " + notification.title);
                 bootstrap.Modal.getInstance(document.getElementById("editNotificationModal")).hide();
-                fetchNotifications();
+                await loadNotifications();
             } catch (error) {
                 console.error("Lỗi khi cập nhật thông báo:", error);
                 alert("Không thể cập nhật thông báo. Vui lòng thử lại.");
@@ -514,7 +677,7 @@
                 try {
                     const response = await fetch(`${API_URL}/${id}`, {
                         method: "DELETE",
-                        headers: { "Authorization": `Bearer ${token}` }
+                        headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
                     });
                     if (response.status === 401) {
                         alert("Bạn không có quyền xóa thông báo. Vui lòng đăng nhập lại.");
@@ -523,7 +686,7 @@
                     }
                     if (!response.ok) throw new Error("Không thể xóa thông báo.");
                     alert("Đã xóa thông báo!");
-                    fetchNotifications();
+                    await loadNotifications();
                 } catch (error) {
                     console.error("Lỗi khi xóa thông báo:", error);
                     alert("Không thể xóa thông báo. Vui lòng thử lại.");
@@ -531,43 +694,30 @@
             }
         }
 
-        async function exportNotifications() {
-            const search = document.getElementById("searchInput").value;
-            const status = document.getElementById("statusFilter").value;
-            try {
-                const response = await fetch(`${API_URL}?search=${search}&status=${status}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                if (response.status === 401) {
-                    alert("Bạn không có quyền xuất dữ liệu. Vui lòng đăng nhập lại.");
-                    window.location.href = "/font-end/login/login.html";
-                    return;
-                }
-                const data = await response.json();
-                const worksheetData = [
-                    ["Danh sách thông báo - Hệ thống Sinh viên HUTECH"],
-                    [],
-                    ["#", "Tiêu đề", "Nội dung", "Người nhận", "Ngày gửi", "Trạng thái"]
-                ];
-                data.notifications.forEach((notification, index) => {
-                    const recipient = notification.user?.fullName || notification.group?.name || "Tất cả";
-                    worksheetData.push([
-                        index + 1,
-                        notification.title,
-                        notification.content,
-                        recipient,
-                        notification.createdAt.split("T")[0] || "Chưa gửi",
-                        notification.status === "SENT" ? "Đã gửi" : "Chưa gửi"
-                    ]);
-                });
-                const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachThongBao");
-                XLSX.writeFile(workbook, "danh_sach_thong_bao.xlsx");
-            } catch (error) {
-                console.error("Lỗi khi xuất Excel:", error);
-                alert("Không thể xuất Excel. Vui lòng thử lại.");
-            }
+        function exportNotifications() {
+            const filteredNotifications = getFilteredNotifications();
+            const worksheetData = [
+                ["Danh sách thông báo - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["#", "Tiêu đề", "Nội dung", "Người nhận", "Ngày gửi", "Trạng thái"]
+            ];
+
+            filteredNotifications.forEach((notification, index) => {
+                const recipient = notification.userId ? "Cá nhân" : notification.groupId ? "Nhóm" : notification.recipientType || "Tất cả";
+                worksheetData.push([
+                    index + 1,
+                    notification.title,
+                    notification.content,
+                    recipient,
+                    notification.createdAt ? new Date(notification.createdAt).toLocaleDateString('vi-VN') : "Chưa gửi",
+                    notification.status === "SENT" ? "Đã gửi" : "Chưa gửi"
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachThongBao");
+            XLSX.writeFile(workbook, "danh_sach_thong_bao.xlsx");
         }
 
         async function saveConfig() {
@@ -581,7 +731,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     body: JSON.stringify(config)
                 });
@@ -599,9 +749,11 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchNotifications();
-            fetchRecentNotifications();
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadNotifications();
+            await fetchRecentNotifications();
+            document.getElementById("notificationRecipient").addEventListener("change", () => toggleRecipientFields());
+            document.getElementById("editNotificationRecipient").addEventListener("change", () => toggleRecipientFields(true));
         });
     </script>
 </body>

@@ -14,7 +14,9 @@ namespace EduProject_TADProgrammer.Controllers
     //[Authorize(Roles = "ROLE_ADMIN")]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService; public UserController(UserService userService)
+        private readonly UserService _userService; 
+        
+        public UserController(UserService userService)
         {
             _userService = userService;
         }

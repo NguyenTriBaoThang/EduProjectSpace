@@ -31,24 +31,16 @@ namespace EduProject_TADProgrammer.Services
             };
         }
 
-        public async Task<(List<NotificationDto> Notifications, int TotalItems)> GetNotificationsAsync(string search, string status, int page, int pageSize)
+        public async Task<(List<NotificationDto> Notifications, int TotalItems)> GetNotificationsAsync()
         {
             var query = _context.Notifications
                 .Include(n => n.User)
                 .Include(n => n.Group)
                 .AsQueryable();
 
-            if (!string.IsNullOrEmpty(search))
-                query = query.Where(n => n.Title.Contains(search) || n.Content.Contains(search));
-
-            if (!string.IsNullOrEmpty(status))
-                query = query.Where(n => n.Status == status);
-
             var totalItems = await query.CountAsync();
             var notifications = await query
                 .OrderByDescending(n => n.CreatedAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .Select(n => new NotificationDto
                 {
                     Id = n.Id,

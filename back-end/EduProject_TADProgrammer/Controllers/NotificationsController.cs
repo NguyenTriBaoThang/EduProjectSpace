@@ -9,12 +9,13 @@ using EduProject_TADProgrammer.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class NotificationsController : ControllerBase
     {
         private readonly NotificationService _notificationService;
@@ -25,16 +26,16 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetNotifications(string search = "", string status = "", int page = 1, int pageSize = 5)
+        public async Task<IActionResult> GetNotifications()
         {
-            var result = await _notificationService.GetNotificationsAsync(search, status, page, pageSize);
+            var result = await _notificationService.GetNotificationsAsync();
             return Ok(new { notifications = result.Notifications, totalItems = result.TotalItems });
         }
 
         // GET: api/notifications/recent
         // Mục đích: Lấy 5 thông báo gần đây (cho phép tất cả người dùng đã xác thực)
         [HttpGet("recent")]
-        public async Task<IActionResult> GetRecentNotificationsAsync()
+        public async Task<ActionResult<IEnumerable<NotificationDto>>> GetRecentNotificationsAsync()
         {
             var notifications = await _notificationService.GetRecentNotificationsAsync();
             return Ok(notifications);
