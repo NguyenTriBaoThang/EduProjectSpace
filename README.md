@@ -1,3 +1,7 @@
+<p align="center">
+	<img loading="lazy" src="./assets/imgProject.png" alt="EduProjectSpace" height="150">
+</p>
+
 <h1 align="center">EduProjectSpace</h1>
 
 <p align="center">
