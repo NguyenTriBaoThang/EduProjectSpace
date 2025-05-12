@@ -19,7 +19,7 @@ namespace EduProject_TADProgrammer.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly SmtpClient _smtpClient;
-
+        
         public NotificationService(ApplicationDbContext context)
         {
             _context = context;
