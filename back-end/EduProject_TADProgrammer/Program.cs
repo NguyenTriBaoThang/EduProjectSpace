@@ -30,35 +30,44 @@ internal class Program
         builder.Services.AddScoped<RoleService>();
         builder.Services.AddScoped<DashboardService>();
         builder.Services.AddScoped<JwtService>();
+        builder.Services.AddScoped<NotificationService>();
+        builder.Services.AddHostedService<DeadlineReminderService>();
 
         // Thêm CORS policy
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: "MyAllowOrigins", policy =>
             {
-                policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000")
+                policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000", "http://localhost:8080")
                       .AllowAnyHeader()
                       .AllowAnyMethod()
-                      .AllowCredentials(); // Thêm để hỗ trợ HttpOnly cookie
+                      .AllowCredentials(); //hỗ trợ HttpOnly cookie
             });
         });
 
-        // Cấu hình JWT Authentication
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+        // Cấu hình JWT Authentication AddJwtBearer
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            };
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-                };
-            });
+                    context.Token = context.Request.Cookies["token"];
+                    return Task.CompletedTask;
+                }
+            };
+        });
 
         var app = builder.Build();
 
@@ -74,12 +83,12 @@ internal class Program
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
 
         app.UseCors("MyAllowOrigins");
-        app.UseMiddleware<JwtMiddleware>();
+        //app.UseMiddleware<JwtMiddleware>();
         app.UseAuthentication();
         app.UseAuthorization();
 

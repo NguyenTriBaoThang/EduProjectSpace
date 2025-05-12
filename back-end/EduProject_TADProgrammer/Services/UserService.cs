@@ -20,14 +20,28 @@ namespace EduProject_TADProgrammer.Services
         // Xác thực người dùng, kiểm tra mật khẩu bằng BCrypt.
         public async Task<User> Authenticate(string username, string password)
         {
-            var user = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.Username == username);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+            var user = await _context.Users.Include(u => u.Role)
+                                          .FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null)
+            {
+                Console.WriteLine($"User not found: {username}");
                 return null;
-
+            }
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+            {
+                Console.WriteLine($"Password incorrect for {username}");
+                return null;
+            }
+            Console.WriteLine($"User authenticated: {username}");
             return user;
+
+           // var user = await _context.Users
+            //    .Include(u => u.Role)
+            //    .FirstOrDefaultAsync(u => u.Username == username);
+
+            //if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+           //     return null;
+
         }
 
         // Lấy tất cả người dùng, ánh xạ sang UserDto.
