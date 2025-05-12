@@ -15,7 +15,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class NotificationsController : ControllerBase
     {
         private readonly NotificationService _notificationService;

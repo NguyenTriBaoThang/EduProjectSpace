@@ -25,6 +25,7 @@ namespace EduProject_TADProgrammer.Services
         {
             var claims = new[]
             {
+                new Claim("id", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, user.Role.Name),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())

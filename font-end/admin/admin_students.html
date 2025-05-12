@@ -603,17 +603,23 @@
                     method: "POST",
                     credentials: "include"
                 });
+
+                const data = await response.json();
                 if (response.ok) {
-                    localStorage.removeItem("user");
-                    localStorage.removeItem("token");
-                    window.location.href = "/font-end/login/login.html";
+                    alert(data.message);
+                    console.log(data.message); // Ví dụ: "Đăng xuất thành công."
                 } else {
-                    throw new Error("Đăng xuất thất bại.");
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
-                console.error("Logout error:", error);
-                alert("Không đăng xuất được. Vui lòng thử lại.");
+                alert("Đăng xuất bị lỗi:", error);
+                console.error("Đăng xuất bị lỗi:", error);
             }
+
+            // Xóa thông tin người dùng và chuyển hướng
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
         }
 
         // Navbar Functions

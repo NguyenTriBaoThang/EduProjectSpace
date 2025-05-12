@@ -59,7 +59,7 @@
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="/font-end/login/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -670,6 +670,31 @@
                 console.error("Lỗi khi cập nhật thông báo:", error);
                 alert("Không thể cập nhật thông báo. Vui lòng thử lại.");
             }
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch("https://localhost:7047/api/Auth/logout", {
+                    method: "POST",
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                    console.log(data.message); // Ví dụ: "Đăng xuất thành công."
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi:", error);
+                console.error("Đăng xuất bị lỗi:", error);
+            }
+
+            // Xóa thông tin người dùng và chuyển hướng
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
         }
 
         async function deleteNotification(id) {

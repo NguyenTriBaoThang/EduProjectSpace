@@ -7,6 +7,7 @@ using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using EduProject_TADProgrammer.Entities;
 
 namespace EduProject_TADProgrammer.Controllers
 {
@@ -66,7 +67,7 @@ namespace EduProject_TADProgrammer.Controllers
                 });
                 Console.WriteLine("Cookie set successfully");
 
-                await _userService.LogAction(user.Id, "LOGIN", $"User {user.Username} logged in.");
+                await _userService.LogAction(user.Id, "Đăng nhập", $"User {user.FullName} đăng nhập hệ thống.");
 
                 return Ok(new
                 {
@@ -99,25 +100,36 @@ namespace EduProject_TADProgrammer.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            var idClaim = User.FindFirst("id");
-            if (idClaim == null)
+            try
             {
-                return Unauthorized(new { message = "Không tìm thấy thông tin người dùng trong token." });
+                var idClaim = User.FindFirst("id");
+                if (idClaim == null)
+                {
+                    return Unauthorized(new { message = "Không tìm thấy thông tin người dùng trong token." });
+                }
+
+                if (!long.TryParse(idClaim.Value, out var userId))
+                {
+                    return BadRequest(new { message = "ID người dùng không hợp lệ." });
+                }
+
+                await _userService.LogAction(userId, "Đăng xuất", "Tài khoản đã đăng xuất hệ thống.");
+
+                Response.Cookies.Append("token", "", new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddDays(-1)
+                });
+
+                return Ok(new { message = "Đăng xuất thành công." });
             }
-
-            var userId = long.Parse(User.FindFirst("id")?.Value);
-            await _userService.LogAction(userId, "LOGOUT", $"User logged out.");
-
-            // Xóa cookie
-            Response.Cookies.Append("token", "", new CookieOptions
+            catch (Exception ex)
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddDays(-1)
-            });
-
-            return Ok(new { message = "Đăng xuất thành công." });
+                // Ghi log lỗi nếu cần
+                return StatusCode(500, new { message = "Đã xảy ra lỗi server khi đăng xuất." });
+            }
         }
     }
 
