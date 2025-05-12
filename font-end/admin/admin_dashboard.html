@@ -321,15 +321,15 @@
                     method: "POST",
                     credentials: "include"
                 });
-                if (response.ok) {
-                    localStorage.removeItem("user");
-                    window.location.href = "/font-end/login/login.html";
-                } else {
-                    throw new Error("Đăng xuất thất bại.");
-                }
+
+                // Dù logout thất bại (do token hết hạn), vẫn xoá user và chuyển trang
+                localStorage.removeItem("user");
+                window.location.href = "/font-end/login/login.html";
             } catch (error) {
                 console.error("Logout error:", error);
-                alert("Không đăng xuất được. Vui lòng thử lại.");
+                // Fallback chuyển trang nếu lỗi
+                localStorage.removeItem("user");
+                window.location.href = "/font-end/login/login.html";
             }
         }
 

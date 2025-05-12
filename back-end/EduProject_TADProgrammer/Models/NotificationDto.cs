@@ -21,6 +21,7 @@ namespace EduProject_TADProgrammer.Models
         public string Content { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
+        public string RecipientType { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

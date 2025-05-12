@@ -7,7 +7,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_ADMIN")]
+    [Authorize(Roles = "ROLE_ADMIN")]
     public class DashboardController : ControllerBase
     {
         private readonly DashboardService _dashboardService;

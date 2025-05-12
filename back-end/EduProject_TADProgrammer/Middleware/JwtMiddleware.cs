@@ -1,14 +1,10 @@
-﻿// File: Middleware/JwtMiddleware.cs
-// Mục đích: Xác thực JWT token trong header Authorization, gắn thông tin người dùng vào HttpContext.
-// Chức năng hỗ trợ: 
-//   1: Phân quyền và bảo mật (xác thực token).
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
 
 namespace EduProject_TADProgrammer.Middleware
 {
@@ -23,12 +19,14 @@ namespace EduProject_TADProgrammer.Middleware
             _configuration = configuration;
         }
 
-        // Xác thực token, nếu hợp lệ thì gắn claims vào HttpContext.
-        public async Task InvokeAsync(HttpContext context)
+        public async System.Threading.Tasks.Task InvokeAsync(HttpContext context)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-
-            if (token != null)
+            if (string.IsNullOrEmpty(token))
+            {
+                context.Request.Cookies.TryGetValue("token", out token);
+            }
+            if (!string.IsNullOrEmpty(token))
             {
                 try
                 {
@@ -47,13 +45,13 @@ namespace EduProject_TADProgrammer.Middleware
 
                     var jwtToken = (JwtSecurityToken)validatedToken;
                     context.User = new ClaimsPrincipal(new ClaimsIdentity(jwtToken.Claims));
+                    context.Request.Headers["Authorization"] = $"Bearer {token}"; // Thêm header cho các middleware khác
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Token không hợp lệ, tiếp tục không gắn user.
+                    Console.WriteLine($"Lỗi xác thực token: {ex.Message}");
                 }
             }
-
             await _next(context);
         }
     }

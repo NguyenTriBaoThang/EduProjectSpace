@@ -131,9 +131,6 @@
 
                 // Lưu user và token
                 localStorage.setItem("user", JSON.stringify(user));
-                if (token) {
-                    localStorage.setItem("token", token);
-                }
 
                 // Chuyển hướng theo vai trò
                 const role = user.roleName;

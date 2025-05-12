@@ -28,9 +28,11 @@ namespace EduProject_TADProgrammer.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
+            Console.WriteLine($"Attempting login for username: {request.Username}");
             var user = await _userService.Authenticate(request.Username, request.Password);
             if (user == null)
             {
+                Console.WriteLine($"Authentication failed for {request.Username}");
                 var failedUser = await _userService.GetByUsername(request.Username);
                 if (failedUser != null)
                 {
@@ -45,35 +47,50 @@ namespace EduProject_TADProgrammer.Controllers
             if (user.Locked)
                 return Unauthorized(new { message = "Tài khoản đã bị khóa." });
 
-            var token = _jwtService.GenerateToken(user);
-            await _userService.LogAction(user.Id, "LOGIN", $"User {user.Username} logged in.");
-
-            // Set token vào HttpOnly cookie
-            Response.Cookies.Append("token", token, new CookieOptions
+            try
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddHours(1)
-            });
-
-            // Trả về thông tin người dùng
-            return Ok(new
-            {
-                user = new UserDto
+                var token = _jwtService.GenerateToken(user);
+                if (string.IsNullOrEmpty(token))
                 {
-                    Id = user.Id,
-                    Username = user.Username,
-                    Email = user.Email,
-                    FullName = user.FullName,
-                    RoleId = user.RoleId,
-                    RoleName = user.Role.Name,
-                    FailedLoginAttempts = user.FailedLoginAttempts,
-                    Locked = user.Locked,
-                    CreatedAt = user.CreatedAt,
-                    UpdatedAt = user.UpdatedAt
+                    Console.WriteLine("Token generation failed");
+                    return BadRequest(new { message = "Không thể tạo token." });
                 }
-            });
+                Console.WriteLine($"Token created: {token}");
+
+                Response.Cookies.Append("token", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddHours(1)
+                });
+                Console.WriteLine("Cookie set successfully");
+
+                await _userService.LogAction(user.Id, "LOGIN", $"User {user.Username} logged in.");
+
+                return Ok(new
+                {
+                    user = new UserDto
+                    {
+                        Id = user.Id,
+                        Username = user.Username,
+                        Email = user.Email,
+                        FullName = user.FullName,
+                        RoleId = user.RoleId,
+                        RoleName = user.Role.Name,
+                        FailedLoginAttempts = user.FailedLoginAttempts,
+                        Locked = user.Locked,
+                        CreatedAt = user.CreatedAt,
+                        UpdatedAt = user.UpdatedAt
+                    },
+                    token
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in login: {ex.Message}");
+                return StatusCode(500, new { message = "Lỗi server khi tạo token." });
+            }
         }
 
         // POST: api/auth/logout
@@ -82,6 +99,12 @@ namespace EduProject_TADProgrammer.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
+            var idClaim = User.FindFirst("id");
+            if (idClaim == null)
+            {
+                return Unauthorized(new { message = "Không tìm thấy thông tin người dùng trong token." });
+            }
+
             var userId = long.Parse(User.FindFirst("id")?.Value);
             await _userService.LogAction(userId, "LOGOUT", $"User logged out.");
 
@@ -90,7 +113,7 @@ namespace EduProject_TADProgrammer.Controllers
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(-1)
             });
 
