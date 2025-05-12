@@ -34,14 +34,6 @@ namespace EduProject_TADProgrammer.Services
             }
             Console.WriteLine($"User authenticated: {username}");
             return user;
-
-           // var user = await _context.Users
-            //    .Include(u => u.Role)
-            //    .FirstOrDefaultAsync(u => u.Username == username);
-
-            //if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
-           //     return null;
-
         }
 
         // Lấy tất cả người dùng, ánh xạ sang UserDto.

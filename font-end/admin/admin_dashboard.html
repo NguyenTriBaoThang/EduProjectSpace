@@ -304,7 +304,7 @@
             notifications.forEach(notification => {
                 const li = document.createElement("li");
                 li.className = "dashboard-list-group-item";
-                const details = notification.details || "";
+                const details = notification.title || "";
                 li.innerHTML = `
                     <i class="bi bi-bell"></i>
                     <span class="dashboard-notification-title" data-full-text="${details}">${details.substring(0, 30)}...</span>

@@ -40,6 +40,10 @@ namespace EduProject_TADProgrammer.Entities
         public string Content { get; set; }
 
         [Required]
+        [StringLength(50)]
+        public string RecipientType { get; set; }
+
+        [Required]
         public string Type { get; set; } // EMAIL, WEB, URGENT
 
         [Required]
