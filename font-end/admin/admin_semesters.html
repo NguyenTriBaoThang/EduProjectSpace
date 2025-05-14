@@ -8,6 +8,7 @@
     <title>Quản lý kỳ học | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
@@ -39,7 +40,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <input type="text" class="search-box me-3" id="searchInputFuse" placeholder="🔍 Tìm kỳ học...">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -51,8 +52,8 @@
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
-                <h6>Admin HUTECH</h6>
-                <p>admin@hutech.edu.vn</p>
+                <h6 id="adminName">Admin HUTECH</h6>
+                <p id="adminEmail">admin@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
@@ -87,7 +88,7 @@
             <!-- Semesters Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm kỳ học..." onkeyup="filterTable()">
+                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm kỳ học..." onkeyup="filterTable()">
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
                         <option value="Hoạt động">Hoạt động</option>
@@ -195,7 +196,363 @@
         let sortColumn = null;
         let sortDirection = 'asc';
         let semesters = [];
+        let fuse = null;
 
+        // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
+        function removeVietnameseTones(str) {
+            if (!str) return '';
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        // Hàm tạo chỉ mục cho Fuse.js
+        function createFuseIndex(data) {
+            return new Fuse(data, {
+                keys: [{ name: 'name', weight: 1.0 }],
+                includeScore: true,
+                threshold: 0.4, // Độ nhạy tìm kiếm mờ
+                ignoreLocation: true, // Tìm kiếm chuỗi con
+                useExtendedSearch: true,
+                getFn: (obj, path) => {
+                    const value = Fuse.config.getFn(obj, path);
+                    return removeVietnameseTones(value);
+                }
+            });
+        }
+
+        // Tải dữ liệu khi trang được load
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                await loadUserProfile();
+                await fetchSemesters();
+            } catch (error) {
+                console.error("Error loading semesters:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
+        });
+
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_ADMIN") {
+                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            }
+            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+        }
+
+        // Lấy danh sách kỳ học từ API
+        async function fetchSemesters() {
+            try {
+                const response = await fetch(`${API_URL}/api/Semesters`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể lấy dữ liệu kỳ học: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                semesters = JSON.parse(text);
+                fuse = createFuseIndex(semesters); // Tạo chỉ mục Fuse.js
+                displayTable(currentPage);
+            } catch (error) {
+                console.error("Lỗi khi lấy dữ liệu:", error);
+                throw error;
+            }
+        }
+
+        // Lọc và sắp xếp bảng
+        function getFilteredSemesters() {
+            const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
+            const statusFilter = document.getElementById("statusFilter").value;
+
+            // Tìm kiếm bằng Fuse.js
+            let filtered = searchText
+                ? fuse.search(searchText).map(result => result.item)
+                : semesters;
+
+            // Lọc theo trạng thái
+            if (statusFilter) {
+                filtered = filtered.filter(semester => semester.status === statusFilter);
+            }
+
+            // Sắp xếp nếu có
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn];
+                    let valueB = b[sortColumn];
+                    if (sortColumn === 'startDate' || sortColumn === 'endDate') {
+                        valueA = new Date(valueA);
+                        valueB = new Date(valueB);
+                    } else {
+                        valueA = valueA.toLowerCase();
+                        valueB = valueB.toLowerCase();
+                    }
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Hiển thị bảng
+        function displayTable(page) {
+            const filteredSemesters = getFilteredSemesters();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = filteredSemesters.slice(start, end);
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+            if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy kỳ học nào.</td></tr>';
+            } else {
+                paginatedData.forEach((semester, index) => {
+                    const statusClass = semester.status === "Hoạt động" ? "bg-success" : "bg-danger";
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${semester.name}</td>
+                            <td>${new Date(semester.startDate).toLocaleDateString('vi-VN')}</td>
+                            <td>${new Date(semester.endDate).toLocaleDateString('vi-VN')}</td>
+                            <td><span class="badge ${statusClass}">${semester.status}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-info me-1" onclick="editSemester(${semester.id})"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteSemester(${semester.id})"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            setupPagination(filteredSemesters.length);
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+            if (totalPages <= 1) return;
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        // Sắp xếp bảng
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        // Lọc bảng
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        // Thêm kỳ học
+        async function addSemester() {
+            const form = document.getElementById("addSemesterForm");
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            const startDate = new Date(document.getElementById("semesterStartDate").value + "T00:00:00Z");
+            const endDate = new Date(document.getElementById("semesterEndDate").value + "T00:00:00Z");
+            const newSemester = {
+                name: document.getElementById("semesterName").value,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            };
+            try {
+                const response = await fetch(`${API_URL}/api/Semesters`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(newSemester)
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể thêm kỳ học: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                const addedSemester = JSON.parse(text);
+                semesters.push(addedSemester);
+                fuse = createFuseIndex(semesters); // Cập nhật chỉ mục Fuse.js
+                alert("Đã thêm kỳ học: " + addedSemester.name);
+                bootstrap.Modal.getInstance(document.getElementById("addSemesterModal")).hide();
+                displayTable(currentPage);
+            } catch (error) {
+                console.error("Lỗi khi thêm kỳ học:", error);
+                alert(error.message);
+            }
+        }
+
+        // Sửa kỳ học
+        function editSemester(id) {
+            const semester = semesters.find(s => s.id === id);
+            if (semester) {
+                document.getElementById("editSemesterId").value = semester.id;
+                document.getElementById("editSemesterName").value = semester.name;
+                document.getElementById("editSemesterStartDate").value = new Date(semester.startDate).toISOString().split('T')[0];
+                document.getElementById("editSemesterEndDate").value = new Date(semester.endDate).toISOString().split('T')[0];
+                new bootstrap.Modal(document.getElementById("editSemesterModal")).show();
+            }
+        }
+
+        async function saveEditSemester() {
+            const id = parseInt(document.getElementById("editSemesterId").value);
+            const startDate = new Date(document.getElementById("editSemesterStartDate").value + "T00:00:00Z");
+            const endDate = new Date(document.getElementById("editSemesterEndDate").value + "T00:00:00Z");
+            const updatedSemester = {
+                id: id,
+                name: document.getElementById("editSemesterName").value,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            };
+            try {
+                const response = await fetch(`${API_URL}/api/Semesters/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(updatedSemester)
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể cập nhật kỳ học: ${errorText || response.statusText}`);
+                }
+                const index = semesters.findIndex(s => s.id === id);
+                semesters[index] = { ...semesters[index], ...updatedSemester };
+                fuse = createFuseIndex(semesters); // Cập nhật chỉ mục Fuse.js
+                alert("Đã cập nhật kỳ học: " + updatedSemester.name);
+                bootstrap.Modal.getInstance(document.getElementById("editSemesterModal")).hide();
+                displayTable(currentPage);
+            } catch (error) {
+                console.error("Lỗi khi cập nhật kỳ học:", error);
+                alert(error.message);
+            }
+        }
+
+        // Xóa kỳ học
+        async function deleteSemester(id) {
+            if (!confirm("Bạn có chắc muốn xóa kỳ học này không?")) return;
+            try {
+                const response = await fetch(`${API_URL}/api/Semesters/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể xóa kỳ học: ${errorText || response.statusText}`);
+                }
+                semesters = semesters.filter(s => s.id !== id);
+                fuse = createFuseIndex(semesters); // Cập nhật chỉ mục Fuse.js
+                alert("Đã xóa kỳ học!");
+                displayTable(currentPage);
+            } catch (error) {
+                console.error("Lỗi khi xóa kỳ học:", error);
+                alert(error.message);
+            }
+        }
+
+        // Xuất danh sách kỳ học sang Excel
+        async function exportSemesters() {
+            try {
+                const response = await fetch(`${API_URL}/api/Semesters/export`, {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể xuất danh sách kỳ học: ${errorText || response.statusText}`);
+                }
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "danh_sach_ky_hoc.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error("Lỗi khi xuất danh sách:", error);
+                alert(error.message);
+            }
+        }
+
+        // Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                    },
+                    credentials: "include"
+                });
+                const text = await response.text();
+                if (response.ok) {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
+                } else {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";
@@ -237,291 +594,6 @@
                 icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
             }
         }
-
-        async function fetchSemesters() {
-            try {
-                const response = await fetch(`${API_URL}/api/Semesters`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
-                    },
-                    credentials: "include"
-                });
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Không thể lấy dữ liệu kỳ học: ${errorText || response.statusText}`);
-                }
-                // Check if response body is empty
-                const text = await response.text();
-                if (!text) {
-                    throw new Error("Phản hồi từ server trống.");
-                }
-                semesters = JSON.parse(text);
-                displayTable(currentPage);
-            } catch (error) {
-                console.error("Lỗi khi lấy dữ liệu:", error);
-                alert(error.message);
-            }
-        }
-
-        function getFilteredSemesters() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
-            const statusFilter = document.getElementById("statusFilter").value;
-            let filtered = semesters.filter(semester =>
-                semester.name.toLowerCase().includes(searchText) &&
-                (statusFilter === "" || semester.status === statusFilter)
-            );
-            if (sortColumn) {
-                filtered.sort((a, b) => {
-                    let valueA = a[sortColumn].toLowerCase();
-                    let valueB = b[sortColumn].toLowerCase();
-                    if (sortColumn === 'startDate' || sortColumn === 'endDate') {
-                        valueA = new Date(valueA);
-                        valueB = new Date(valueB);
-                    }
-                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
-                });
-            }
-            return filtered;
-        }
-
-        function displayTable(page) {
-            const filteredSemesters = getFilteredSemesters();
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const paginatedData = filteredSemesters.slice(start, end);
-            const tableBody = document.getElementById("tableBody");
-            tableBody.innerHTML = "";
-            if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy kỳ học nào.</td></tr>';
-            } else {
-                paginatedData.forEach((semester, index) => {
-                    const statusClass = semester.status === "Hoạt động" ? "bg-success" : "bg-danger";
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td>${start + index + 1}</td>
-                            <td>${semester.name}</td>
-                            <td>${new Date(semester.startDate).toLocaleDateString('vi-VN')}</td>
-                            <td>${new Date(semester.endDate).toLocaleDateString('vi-VN')}</td>
-                            <td><span class="badge ${statusClass}">${semester.status}</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-info me-1" onclick="editSemester(${semester.id})"><i class="bi bi-pencil"></i></button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteSemester(${semester.id})"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-            setupPagination(filteredSemesters.length);
-        }
-
-        function setupPagination(totalItems) {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            const pagination = document.getElementById("pagination");
-            pagination.innerHTML = "";
-            if (totalPages <= 1) return;
-            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
-            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
-            if (currentPage > 3) paginationHTML += `<li>...</li>`;
-            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
-            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
-            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
-            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
-            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
-            pagination.innerHTML = paginationHTML;
-        }
-
-        function changePage(page) {
-            currentPage = page;
-            displayTable(currentPage);
-        }
-
-        function sortTable(column) {
-            if (sortColumn === column) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortColumn = column;
-                sortDirection = 'asc';
-            }
-            displayTable(currentPage);
-        }
-
-        function filterTable() {
-            currentPage = 1;
-            displayTable(currentPage);
-        }
-
-        async function addSemester() {
-            const form = document.getElementById("addSemesterForm");
-            if (form.checkValidity()) {
-                const startDate = new Date(document.getElementById("semesterStartDate").value + "T00:00:00Z");
-                const endDate = new Date(document.getElementById("semesterEndDate").value + "T00:00:00Z");
-                const newSemester = {
-                    name: document.getElementById("semesterName").value,
-                    startDate: startDate.toISOString(),
-                    endDate: endDate.toISOString()
-                };
-                try {
-                    const response = await fetch(`${API_URL}/api/Semesters`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
-                        },
-                        credentials: "include",
-                        body: JSON.stringify(newSemester)
-                    });
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Không thể thêm kỳ học: ${errorText || response.statusText}`);
-                    }
-                    const text = await response.text();
-                    if (!text) {
-                        throw new Error("Phản hồi từ server trống.");
-                    }
-                    const addedSemester = JSON.parse(text);
-                    semesters.push(addedSemester);
-                    alert("Đã thêm kỳ học: " + addedSemester.name);
-                    bootstrap.Modal.getInstance(document.getElementById("addSemesterModal")).hide();
-                    displayTable(currentPage);
-                } catch (error) {
-                    console.error("Lỗi khi thêm kỳ học:", error);
-                    alert(error.message);
-                }
-            } else {
-                form.reportValidity();
-            }
-        }
-
-        function editSemester(id) {
-            const semester = semesters.find(s => s.id === id);
-            if (semester) {
-                document.getElementById("editSemesterId").value = semester.id;
-                document.getElementById("editSemesterName").value = semester.name;
-                document.getElementById("editSemesterStartDate").value = new Date(semester.startDate).toISOString().split('T')[0];
-                document.getElementById("editSemesterEndDate").value = new Date(semester.endDate).toISOString().split('T')[0];
-                new bootstrap.Modal(document.getElementById("editSemesterModal")).show();
-            }
-        }
-
-        async function saveEditSemester() {
-            const id = parseInt(document.getElementById("editSemesterId").value);
-            const startDate = new Date(document.getElementById("editSemesterStartDate").value + "T00:00:00Z");
-            const endDate = new Date(document.getElementById("editSemesterEndDate").value + "T00:00:00Z");
-            const updatedSemester = {
-                id: id,
-                name: document.getElementById("editSemesterName").value,
-                startDate: startDate.toISOString(),
-                endDate: endDate.toISOString()
-            };
-            try {
-                const response = await fetch(`${API_URL}/api/Semesters/${id}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(updatedSemester)
-                });
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Không thể cập nhật kỳ học: ${errorText || response.statusText}`);
-                }
-                // PUT returns 204 No Content, so no JSON to parse
-                const index = semesters.findIndex(s => s.id === id);
-                semesters[index] = { ...semesters[index], ...updatedSemester };
-                alert("Đã cập nhật kỳ học: " + updatedSemester.name);
-                bootstrap.Modal.getInstance(document.getElementById("editSemesterModal")).hide();
-                displayTable(currentPage);
-            } catch (error) {
-                console.error("Lỗi khi cập nhật kỳ học:", error);
-                alert(error.message);
-            }
-        }
-
-        async function deleteSemester(id) {
-            if (confirm("Bạn có chắc muốn xóa kỳ học này không?")) {
-                try {
-                    const response = await fetch(`${API_URL}/api/Semesters/${id}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
-                        },
-                        credentials: "include"
-                    });
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Không thể xóa kỳ học: ${errorText || response.statusText}`);
-                    }
-                    // DELETE returns 204 No Content, so no JSON to parse
-                    semesters = semesters.filter(s => s.id !== id);
-                    alert("Đã xóa kỳ học!");
-                    displayTable(currentPage);
-                } catch (error) {
-                    console.error("Lỗi khi xóa kỳ học:", error);
-                    alert(error.message);
-                }
-            }
-        }
-
-        async function exportSemesters() {
-            try {
-                const response = await fetch(`${API_URL}/api/Semesters/export`, {
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
-                    },
-                    credentials: "include"
-                });
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Không thể xuất danh sách kỳ học: ${errorText || response.statusText}`);
-                }
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "danh_sach_ky_hoc.xlsx";
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-            } catch (error) {
-                console.error("Lỗi khi xuất danh sách:", error);
-                alert(error.message);
-            }
-        }
-
-        async function logout() {
-            try {
-                const response = await fetch(`${API_URL}/api/Auth/logout`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
-                    },
-                    credentials: "include"
-                });
-                const text = await response.text();
-                if (response.ok) {
-                    const data = text ? JSON.parse(text) : {};
-                    alert(data.message || "Đã đăng xuất thành công.");
-                } else {
-                    const data = text ? JSON.parse(text) : {};
-                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                }
-            } catch (error) {
-                alert("Đăng xuất bị lỗi: " + error.message);
-                console.error("Đăng xuất bị lỗi:", error);
-            }
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-            window.location.replace("/font-end/login/login.html");
-        }
-
-        document.addEventListener("DOMContentLoaded", fetchSemesters);
     </script>
 </body>
 </html>

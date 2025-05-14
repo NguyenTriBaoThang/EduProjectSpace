@@ -8,6 +8,7 @@
     <title>Quản lý thông báo | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
@@ -40,7 +41,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <input type="text" class="search-box me-3" id="searchInputFuse" placeholder="🔍 Tìm thông báo...">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -52,8 +53,8 @@
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
-                <h6>Admin HUTECH</h6>
-                <p>admin@hutech.edu.vn</p>
+                <h6 id="adminName">Admin HUTECH</h6>
+                <p id="adminEmail">admin@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
@@ -99,7 +100,7 @@
             <!-- Notifications Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm thông báo..." onkeyup="filterTable()">
+                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm thông báo..." onkeyup="filterTable()">
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
                         <option value="Đã gửi">Đã gửi</option>
@@ -115,7 +116,7 @@
                                 <th class="sortable" onclick="sortTable('title')">Tiêu đề <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('content')">Nội dung <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('recipient')">Người nhận <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('date')">Ngày gửi <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('createdAt')">Ngày gửi <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
                             </tr>
@@ -130,7 +131,6 @@
             </div>
         </div>
     </div>
-   
 
     <!-- Modal Thêm Thông Báo -->
     <div class="modal fade" id="addNotificationModal" tabindex="-1" aria-labelledby="addNotificationModalLabel" aria-hidden="true">
@@ -319,48 +319,95 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let notifications = [];
-        const API_URL = "https://localhost:7047/api/Notifications"; // Thay bằng biến môi trường nếu cần
+        const API_URL = "https://localhost:7047/api/Notifications";
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+        let fuse = null;
 
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
-            toggleSidebar();
+        // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
+        function removeVietnameseTones(str) {
+            if (!str) return '';
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        // Hàm tạo chỉ mục cho Fuse.js
+        function createFuseIndex(data) {
+            return new Fuse(data, {
+                keys: [
+                    { name: 'title', weight: 0.6 },
+                    { name: 'content', weight: 0.4 }
+                ],
+                includeScore: true,
+                threshold: 0.4, // Độ nhạy tìm kiếm mờ
+                ignoreLocation: true, // Tìm kiếm chuỗi con
+                useExtendedSearch: true,
+                getFn: (obj, path) => {
+                    const value = Fuse.config.getFn(obj, path);
+                    return removeVietnameseTones(value);
+                }
+            });
+        }
+
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_ADMIN") {
+                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            }
+            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+        }
+
+        // Tải dữ liệu khi trang được load
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                await loadUserProfile();
+                await loadNotifications();
+                await fetchRecentNotifications();
+                document.getElementById("notificationRecipient").addEventListener("change", () => toggleRecipientFields());
+                document.getElementById("editNotificationRecipient").addEventListener("change", () => toggleRecipientFields(true));
+            } catch (error) {
+                console.error("Error loading notifications:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
         });
 
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";
         });
-
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         });
-
         document.addEventListener("click", (event) => {
             const dropdown = document.getElementById("profileDropdown");
             if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
                 dropdown.style.display = "none";
             }
         });
-
         document.getElementById("toggleFullscreen").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleTheme").addEventListener("click", () => {
             document.body.classList.toggle("dark-mode");
             localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
         });
-
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
         function toggleSidebar() {
@@ -376,46 +423,76 @@
             }
         }
 
+        // Lấy danh sách thông báo từ API
         async function loadNotifications() {
             try {
                 const response = await fetch(API_URL, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
                 });
                 if (response.status === 401) {
                     alert("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
                     window.location.href = "/font-end/login/login.html";
                     return;
                 }
-                if (!response.ok) throw new Error(`Lỗi HTTP! Mã: ${response.status}`);
-                const data = await response.json();
-                notifications = data.notifications;
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Lỗi tải danh sách thông báo: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                const data = JSON.parse(text);
+                notifications = Array.isArray(data.notifications) ? data.notifications : [];
+                notifications = notifications.map(notification => ({
+                    ...notification,
+                    createdAt: notification.createdAt ? new Date(notification.createdAt).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Chưa gửi"
+                }));
+                fuse = createFuseIndex(notifications); // Tạo chỉ mục Fuse.js
                 displayTable(currentPage);
-                displayRecentNotifications(notifications.slice(0, 5));
             } catch (error) {
                 console.error("Lỗi khi lấy thông báo:", error);
                 alert("Không thể tải thông báo. Vui lòng thử lại.");
             }
         }
 
+        // Lấy thông báo gần đây
         async function fetchRecentNotifications() {
             try {
                 const response = await fetch(`${API_URL}/recent`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
                 });
                 if (response.status === 401) {
                     alert("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
                     window.location.href = "/font-end/login/login.html";
                     return;
                 }
-                if (!response.ok) throw new Error(`Lỗi HTTP! Mã: ${response.status}`);
-                const data = await response.json();
-                displayRecentNotifications(data);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Lỗi tải thông báo gần đây: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                const data = JSON.parse(text);
+                const recentNotifications = Array.isArray(data) ? data : [];
+                displayRecentNotifications(recentNotifications);
             } catch (error) {
                 console.error("Lỗi khi lấy thông báo gần đây:", error);
                 alert("Không thể tải thông báo gần đây. Vui lòng thử lại.");
             }
         }
 
+        // Hiển thị thông báo gần đây
         function displayRecentNotifications(data) {
             const container = document.getElementById("recentNotifications");
             container.innerHTML = "";
@@ -450,7 +527,7 @@
                                 <div class="d-flex align-items-center justify-content-center mb-2">
                                     <small class="text-muted">
                                         <i class="bi bi-calendar-event me-1"></i>
-                                        Ngày gửi: ${new Date(notification.createdAt).toLocaleDateString('vi-VN')}
+                                        Ngày gửi: ${notification.createdAt ? new Date(notification.createdAt).toLocaleDateString('vi-VN') : "Chưa gửi"}
                                     </small>
                                 </div>
                                 <button class="btn ${buttonColor} btn-sm py-1 px-3" onclick="viewNotificationDetails(${notification.id})">Xem chi tiết</button>
@@ -461,33 +538,47 @@
             }
         }
 
+        // Xem chi tiết thông báo
         function viewNotificationDetails(id) {
             const notification = notifications.find(n => n.id === id);
             if (notification) {
                 document.getElementById("viewNotificationTitle").textContent = notification.title;
                 document.getElementById("viewNotificationContent").textContent = notification.content || "Không có nội dung.";
                 document.getElementById("viewNotificationRecipient").textContent = notification.userId ? "Cá nhân" : notification.groupId ? "Nhóm" : notification.recipientType || "Tất cả";
-                document.getElementById("viewNotificationDate").textContent = notification.createdAt ? new Date(notification.createdAt).toLocaleDateString('vi-VN') : "Chưa gửi";
+                document.getElementById("viewNotificationDate").textContent = notification.createdAt !== "Chưa gửi" ? notification.createdAt : "Chưa gửi";
                 document.getElementById("viewNotificationStatus").textContent = notification.status === "SENT" ? "Đã gửi" : "Chưa gửi";
                 const modal = new bootstrap.Modal(document.getElementById("viewNotificationModal"));
                 modal.show();
             }
         }
 
+        // Lọc và sắp xếp thông báo
         function getFilteredNotifications() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const statusFilter = document.getElementById("statusFilter").value;
 
-            let filtered = notifications.filter(notification =>
-                (notification.title.toLowerCase().includes(searchText) || 
-                 notification.content.toLowerCase().includes(searchText)) &&
+            // Tìm kiếm bằng Fuse.js
+            let filtered = searchText
+                ? fuse.search(searchText).map(result => result.item)
+                : notifications;
+
+            // Lọc theo trạng thái
+            filtered = filtered.filter(notification =>
                 (statusFilter === "" || (statusFilter === "Đã gửi" ? notification.status === "SENT" : notification.status === "PENDING"))
             );
 
+            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = sortColumn === "date" ? a.createdAt : (a[sortColumn] || '').toLowerCase();
-                    let valueB = sortColumn === "date" ? b.createdAt : (b[sortColumn] || '').toLowerCase();
+                    let valueA = a[sortColumn] || '';
+                    let valueB = b[sortColumn] || '';
+                    if (sortColumn === 'createdAt') {
+                        valueA = a.createdAt === "Chưa gửi" ? "" : new Date(a.createdAt.replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
+                        valueB = b.createdAt === "Chưa gửi" ? "" : new Date(b.createdAt.replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
+                    } else if (sortColumn === 'recipient') {
+                        valueA = a.userId ? "Cá nhân" : a.groupId ? "Nhóm" : a.recipientType || "Tất cả";
+                        valueB = b.userId ? "Cá nhân" : b.groupId ? "Nhóm" : b.recipientType || "Tất cả";
+                    }
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -495,6 +586,7 @@
             return filtered;
         }
 
+        // Hiển thị bảng
         function displayTable(page) {
             const filteredNotifications = getFilteredNotifications();
             const start = (page - 1) * itemsPerPage;
@@ -516,7 +608,7 @@
                             <td>${notification.title}</td>
                             <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${notification.content}">${notification.content}</td>
                             <td>${recipient}</td>
-                            <td>${notification.createdAt ? new Date(notification.createdAt).toLocaleDateString('vi-VN') : "Chưa gửi"}</td>
+                            <td>${notification.createdAt}</td>
                             <td><span class="badge ${statusClass}">${notification.status === "SENT" ? "Đã gửi" : "Chưa gửi"}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-info me-1" onclick="editNotification(${notification.id})"><i class="bi bi-pencil"></i></button>
@@ -530,6 +622,7 @@
             setupPagination(filteredNotifications.length);
         }
 
+        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
@@ -549,11 +642,13 @@
             pagination.innerHTML = paginationHTML;
         }
 
+        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
+        // Sắp xếp bảng
         function sortTable(column) {
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -564,11 +659,13 @@
             displayTable(currentPage);
         }
 
+        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
+        // Hiển thị/ẩn trường ID người dùng hoặc nhóm
         function toggleRecipientFields(isEdit = false) {
             const recipientType = (isEdit ? document.getElementById("editNotificationRecipient") : document.getElementById("notificationRecipient")).value;
             const userIdField = isEdit ? document.getElementById("editUserIdField") : document.getElementById("userIdField");
@@ -579,11 +676,14 @@
             userIdField.style.display = recipientType === "user" ? "block" : "none";
             groupIdField.style.display = recipientType === "group" ? "block" : "none";
             if (isEdit) {
-                userIdInput.value = recipientType === "user" ? notifications.find(n => n.id === parseInt(document.getElementById("editNotificationId").value)).userId || "" : "";
-                groupIdInput.value = recipientType === "group" ? notifications.find(n => n.id === parseInt(document.getElementById("editNotificationId").value)).groupId || "" : "";
+                const id = parseInt(document.getElementById("editNotificationId").value);
+                const notification = notifications.find(n => n.id === id);
+                userIdInput.value = recipientType === "user" ? (notification?.userId || "") : "";
+                groupIdInput.value = recipientType === "group" ? (notification?.groupId || "") : "";
             }
         }
 
+        // Thêm thông báo
         async function addNotification() {
             const form = document.getElementById("addNotificationForm");
             if (form.checkValidity()) {
@@ -591,8 +691,8 @@
                     title: document.getElementById("notificationTitle").value,
                     content: document.getElementById("notificationContent").value,
                     recipientType: document.getElementById("notificationRecipient").value.toLowerCase(),
-                    userId: document.getElementById("notificationUserId").value || null,
-                    groupId: document.getElementById("notificationGroupId").value || null,
+                    userId: document.getElementById("notificationUserId").value ? parseInt(document.getElementById("notificationUserId").value) : null,
+                    groupId: document.getElementById("notificationGroupId").value ? parseInt(document.getElementById("notificationGroupId").value) : null,
                     type: "WEB",
                     status: "SENT"
                 };
@@ -603,26 +703,32 @@
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
-                        body: JSON.stringify(notification)
+                        body: JSON.stringify(notification),
+                        credentials: "include"
                     });
                     if (response.status === 401) {
                         alert("Bạn không có quyền tạo thông báo. Vui lòng đăng nhập lại.");
                         window.location.href = "/font-end/login/login.html";
                         return;
                     }
-                    if (!response.ok) throw new Error("Không thể tạo thông báo.");
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Không thể tạo thông báo: ${errorText || response.statusText}`);
+                    }
                     alert("Đã gửi thông báo: " + notification.title);
                     bootstrap.Modal.getInstance(document.getElementById("addNotificationModal")).hide();
+                    form.reset();
                     await loadNotifications();
                 } catch (error) {
                     console.error("Lỗi khi tạo thông báo:", error);
-                    alert("Không thể tạo thông báo. Vui lòng thử lại.");
+                    alert("Không thể tạo thông báo: " + error.message);
                 }
             } else {
                 form.reportValidity();
             }
         }
 
+        // Sửa thông báo
         function editNotification(id) {
             const notification = notifications.find(n => n.id === id);
             if (notification) {
@@ -637,14 +743,15 @@
             }
         }
 
+        // Lưu thông báo đã sửa
         async function saveEditNotification() {
             const id = parseInt(document.getElementById("editNotificationId").value);
             const notification = {
                 title: document.getElementById("editNotificationTitle").value,
                 content: document.getElementById("editNotificationContent").value,
                 recipientType: document.getElementById("editNotificationRecipient").value.toLowerCase(),
-                userId: document.getElementById("editNotificationUserId").value || null,
-                groupId: document.getElementById("editNotificationGroupId").value || null,
+                userId: document.getElementById("editNotificationUserId").value ? parseInt(document.getElementById("editNotificationUserId").value) : null,
+                groupId: document.getElementById("editNotificationGroupId").value ? parseInt(document.getElementById("editNotificationGroupId").value) : null,
                 status: document.getElementById("editNotificationStatus").value,
                 type: "WEB"
             };
@@ -655,70 +762,58 @@
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
-                    body: JSON.stringify(notification)
+                    body: JSON.stringify(notification),
+                    credentials: "include"
                 });
                 if (response.status === 401) {
                     alert("Bạn không có quyền sửa thông báo. Vui lòng đăng nhập lại.");
                     window.location.href = "/font-end/login/login.html";
                     return;
                 }
-                if (!response.ok) throw new Error("Không thể cập nhật thông báo.");
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể cập nhật thông báo: ${errorText || response.statusText}`);
+                }
                 alert("Đã cập nhật thông báo: " + notification.title);
                 bootstrap.Modal.getInstance(document.getElementById("editNotificationModal")).hide();
                 await loadNotifications();
             } catch (error) {
                 console.error("Lỗi khi cập nhật thông báo:", error);
-                alert("Không thể cập nhật thông báo. Vui lòng thử lại.");
+                alert("Không thể cập nhật thông báo: " + error.message);
             }
         }
 
-        async function logout() {
-            try {
-                const response = await fetch("https://localhost:7047/api/Auth/logout", {
-                    method: "POST",
-                    credentials: "include"
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert(data.message);
-                    console.log(data.message); // Ví dụ: "Đăng xuất thành công."
-                } else {
-                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                }
-            } catch (error) {
-                alert("Đăng xuất bị lỗi:", error);
-                console.error("Đăng xuất bị lỗi:", error);
-            }
-
-            // Xóa thông tin người dùng và chuyển hướng
-            localStorage.removeItem("user");
-            window.location.replace("/font-end/login/login.html");
-        }
-
+        // Xóa thông báo
         async function deleteNotification(id) {
             if (confirm("Bạn có chắc muốn xóa thông báo này không?")) {
                 try {
                     const response = await fetch(`${API_URL}/${id}`, {
                         method: "DELETE",
-                        headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+                        headers: {
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "include"
                     });
                     if (response.status === 401) {
                         alert("Bạn không có quyền xóa thông báo. Vui lòng đăng nhập lại.");
                         window.location.href = "/font-end/login/login.html";
                         return;
                     }
-                    if (!response.ok) throw new Error("Không thể xóa thông báo.");
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Không thể xóa thông báo: ${errorText || response.statusText}`);
+                    }
                     alert("Đã xóa thông báo!");
                     await loadNotifications();
                 } catch (error) {
                     console.error("Lỗi khi xóa thông báo:", error);
-                    alert("Không thể xóa thông báo. Vui lòng thử lại.");
+                    alert("Không thể xóa thông báo: " + error.message);
                 }
             }
         }
 
+        // Xuất danh sách thông báo sang Excel
         function exportNotifications() {
             const filteredNotifications = getFilteredNotifications();
             const worksheetData = [
@@ -734,7 +829,7 @@
                     notification.title,
                     notification.content,
                     recipient,
-                    notification.createdAt ? new Date(notification.createdAt).toLocaleDateString('vi-VN') : "Chưa gửi",
+                    notification.createdAt,
                     notification.status === "SENT" ? "Đã gửi" : "Chưa gửi"
                 ]);
             });
@@ -745,6 +840,7 @@
             XLSX.writeFile(workbook, "danh_sach_thong_bao.xlsx");
         }
 
+        // Lưu cấu hình thông báo
         async function saveConfig() {
             const config = {
                 enableWeb: document.getElementById("enableWeb").checked,
@@ -758,28 +854,53 @@
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
-                    body: JSON.stringify(config)
+                    body: JSON.stringify(config),
+                    credentials: "include"
                 });
                 if (response.status === 401) {
                     alert("Bạn không có quyền cấu hình thông báo. Vui lòng đăng nhập lại.");
                     window.location.href = "/font-end/login/login.html";
                     return;
                 }
-                if (!response.ok) throw new Error("Không thể lưu cấu hình.");
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể lưu cấu hình: ${errorText || response.statusText}`);
+                }
                 alert("Đã lưu cấu hình thông báo!");
                 bootstrap.Modal.getInstance(document.getElementById("configNotificationModal")).hide();
             } catch (error) {
                 console.error("Lỗi khi lưu cấu hình:", error);
-                alert("Không thể lưu cấu hình. Vui lòng thử lại.");
+                alert("Không thể lưu cấu hình: " + error.message);
             }
         }
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            await loadNotifications();
-            await fetchRecentNotifications();
-            document.getElementById("notificationRecipient").addEventListener("change", () => toggleRecipientFields());
-            document.getElementById("editNotificationRecipient").addEventListener("change", () => toggleRecipientFields(true));
-        });
+        // Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch("https://localhost:7047/api/Auth/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                const text = await response.text();
+                if (response.ok) {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
+                } else {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
+            }
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
+        }
     </script>
 </body>
 </html>
