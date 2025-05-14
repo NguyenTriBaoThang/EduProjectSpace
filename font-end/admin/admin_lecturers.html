@@ -8,6 +8,7 @@
     <title>Quản lý giảng viên | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
@@ -37,7 +38,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <input type="text" class="search-box me-3" id="searchInputFuse" placeholder="🔍 Tìm giảng viên...">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -83,7 +84,7 @@
 
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm giảng viên..." onkeyup="filterTable()">
+                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm giảng viên..." onkeyup="filterTable()">
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Vai trò</option>
                         <option value="ROLE_LECTURER">Giảng viên hướng dẫn</option>
@@ -229,7 +230,39 @@
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+        let fuse = null;
 
+        // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
+        function removeVietnameseTones(str) {
+            if (!str) return '';
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        // Hàm tạo chỉ mục cho Fuse.js
+        function createFuseIndex(data) {
+            return new Fuse(data, {
+                keys: [
+                    { name: 'username', weight: 0.4 },
+                    { name: 'fullName', weight: 0.4 },
+                    { name: 'email', weight: 0.2 }
+                ],
+                includeScore: true,
+                threshold: 0.4, // Độ nhạy tìm kiếm mờ
+                ignoreLocation: true, // Tìm kiếm chuỗi con
+                useExtendedSearch: true,
+                getFn: (obj, path) => {
+                    const value = Fuse.config.getFn(obj, path);
+                    return removeVietnameseTones(value);
+                }
+            });
+        }
+
+        // Tải dữ liệu khi trang được load
         window.onload = async () => {
             try {
                 await loadUserProfile();
@@ -241,6 +274,7 @@
             }
         };
 
+        // Tải thông tin người dùng
         async function loadUserProfile() {
             const user = JSON.parse(localStorage.getItem("user"));
             if (!user || user.roleName !== "ROLE_ADMIN") {
@@ -250,37 +284,55 @@
             document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
+        // Lấy danh sách giảng viên từ API
         async function loadLecturers() {
             try {
                 const response = await fetch(`${API_URL}/api/User/lecturers`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json"
+                    },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error(`Lỗi tải danh sách giảng viên: ${response.status}`);
-                lecturers = await response.json();
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Lỗi tải danh sách giảng viên: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                lecturers = JSON.parse(text);
+                fuse = createFuseIndex(lecturers); // Tạo chỉ mục Fuse.js
                 displayTable(currentPage);
             } catch (error) {
-                throw new Error(`Lỗi API: ${error.message}`);
+                throw error;
             }
         }
 
+        // Kiểm tra trùng mã giảng viên
         function isUsernameDuplicate(username, excludeId = null) {
             return lecturers.some(lecturer => lecturer.username === username && (!excludeId || lecturer.id !== excludeId));
         }
 
+        // Lọc và sắp xếp bảng
         function getFilteredLecturers() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const roleFilter = document.getElementById("roleFilter").value;
             const statusFilter = document.getElementById("statusFilter").value;
 
-            let filtered = lecturers.filter(lecturer =>
-                (lecturer.username.toLowerCase().includes(searchText) ||
-                 lecturer.fullName.toLowerCase().includes(searchText) ||
-                 lecturer.email.toLowerCase().includes(searchText)) &&
+            // Tìm kiếm bằng Fuse.js
+            let filtered = searchText
+                ? fuse.search(searchText).map(result => result.item)
+                : lecturers;
+
+            // Lọc theo vai trò và trạng thái
+            filtered = filtered.filter(lecturer =>
                 (roleFilter === "" || lecturer.roleName === roleFilter) &&
                 (statusFilter === "" || lecturer.locked.toString() === statusFilter)
             );
 
+            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valueA = sortColumn === 'locked' ? a.locked : (a[sortColumn] || '').toLowerCase();
@@ -292,6 +344,7 @@
             return filtered;
         }
 
+        // Hiển thị bảng
         function displayTable(page) {
             const filteredLecturers = getFilteredLecturers();
             const start = (page - 1) * itemsPerPage;
@@ -328,6 +381,7 @@
             setupPagination(filteredLecturers.length);
         }
 
+        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
@@ -347,11 +401,13 @@
             pagination.innerHTML = paginationHTML;
         }
 
+        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
+        // Sắp xếp bảng
         function sortTable(column) {
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -362,11 +418,13 @@
             displayTable(currentPage);
         }
 
+        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
+        // Thêm giảng viên
         async function addLecturer() {
             const form = document.getElementById("addLecturerForm");
             if (!form.checkValidity()) {
@@ -411,6 +469,7 @@
             }
         }
 
+        // Sửa giảng viên
         function editLecturer(id) {
             const lecturer = lecturers.find(l => l.id === id);
             if (lecturer) {
@@ -469,16 +528,23 @@
             }
         }
 
+        // Xóa giảng viên
         async function deleteLecturer(id) {
             if (!confirm("Bạn có chắc muốn xóa giảng viên này không?")) return;
 
             try {
                 const response = await fetch(`${API_URL}/api/User/lecturers/${id}`, {
                     method: "DELETE",
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json"
+                    },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error("Không xóa được giảng viên.");
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không xóa được giảng viên: ${errorText || response.statusText}`);
+                }
                 alert("Đã xóa giảng viên!");
                 await loadLecturers();
             } catch (error) {
@@ -487,6 +553,7 @@
             }
         }
 
+        // Xuất danh sách giảng viên sang Excel
         function exportLecturers() {
             const filteredLecturers = getFilteredLecturers();
             const worksheetData = [
@@ -513,6 +580,7 @@
             XLSX.writeFile(workbook, "danh_sach_giang_vien.xlsx");
         }
 
+        // Nhập danh sách giảng viên từ Excel
         async function importLecturers(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -603,32 +671,35 @@
             }
         }
 
-        //Đăng xuất
+        // Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
-
-                const data = await response.json();
+                const text = await response.text();
                 if (response.ok) {
-                    alert(data.message);
-                    console.log(data.message); // Ví dụ: "Đăng xuất thành công."
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
                 } else {
+                    const data = text ? JSON.parse(text) : {};
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
-                alert("Đăng xuất bị lỗi:", error);
+                alert("Đăng xuất bị lỗi: " + error.message);
                 console.error("Đăng xuất bị lỗi:", error);
             }
-
-            // Xóa thông tin người dùng và chuyển hướng
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
+        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";

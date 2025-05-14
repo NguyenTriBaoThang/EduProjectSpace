@@ -8,6 +8,7 @@
     <title>Lịch sử hoạt động | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
@@ -37,7 +38,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <input type="text" class="search-box me-3" id="searchInputFuse" placeholder="🔍 Tìm log...">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -78,7 +79,7 @@
 
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm log..." onkeyup="filterTable()">
+                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm log..." onkeyup="filterTable()">
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Vai trò</option>
                         <option value="ROLE_ADMIN">Admin</option>
@@ -105,9 +106,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('timestamp')">Thời gian <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('user')">Người dùng <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('role')">Vai trò <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('createdAt')">Thời gian <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('fullName')">Người dùng <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('roleName')">Vai trò <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('action')">Hành động <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('details')">Chi tiết <i class="bi bi-arrow-down-up"></i></th>
                             </tr>
@@ -135,7 +136,39 @@
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+        let fuse = null;
 
+        // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
+        function removeVietnameseTones(str) {
+            if (!str) return '';
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        // Hàm tạo chỉ mục cho Fuse.js
+        function createFuseIndex(data) {
+            return new Fuse(data, {
+                keys: [
+                    { name: 'fullName', weight: 0.4 },
+                    { name: 'action', weight: 0.3 },
+                    { name: 'details', weight: 0.3 }
+                ],
+                includeScore: true,
+                threshold: 0.4, // Độ nhạy tìm kiếm mờ
+                ignoreLocation: true, // Tìm kiếm chuỗi con
+                useExtendedSearch: true,
+                getFn: (obj, path) => {
+                    const value = Fuse.config.getFn(obj, path);
+                    return removeVietnameseTones(value);
+                }
+            });
+        }
+
+        // Tải dữ liệu khi trang được load
         window.onload = async () => {
             try {
                 await loadUserProfile();
@@ -147,6 +180,7 @@
             }
         };
 
+        // Tải thông tin người dùng
         async function loadUserProfile() {
             const user = JSON.parse(localStorage.getItem("user"));
             if (!user || user.roleName !== "ROLE_ADMIN") {
@@ -156,15 +190,26 @@
             document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
+        // Lấy danh sách log từ API
         async function loadLogs() {
             try {
                 const response = await fetch(`${API_URL}/api/Log`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json"
+                    },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error(`Lỗi tải danh sách log: ${response.status}`);
-                logs = await response.json();
-                logs = logs.map(log => ({
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Lỗi tải danh sách log: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                const rawLogs = JSON.parse(text);
+                logs = rawLogs.map(log => ({
                     id: log.id,
                     createdAt: new Date(log.createdAt).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
                     userId: log.userId,
@@ -173,12 +218,14 @@
                     action: mapAction(log.action),
                     details: log.details
                 }));
+                fuse = createFuseIndex(logs); // Tạo chỉ mục Fuse.js
                 displayTable(currentPage);
             } catch (error) {
-                throw new Error(`Lỗi API: ${error.message}`);
+                throw error;
             }
         }
 
+        // Ánh xạ hành động
         function mapAction(action) {
             switch (action) {
                 case "LOGIN": return "Đăng nhập";
@@ -189,28 +236,37 @@
                 case "JONT_GROUP": return "Tham gia nhóm";
                 case "SEND": return "Gửi tin nhắn";
                 case "GREADE": return "Chấm điểm";
-                case "SUBMISSION": return "Gửi";
+                case "SUBMISSION": return "Nộp bài";
                 default: return action;
             }
         }
 
+        // Lọc và sắp xếp bảng
         function getFilteredLogs() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const roleFilter = document.getElementById("roleFilter").value;
             const actionFilter = document.getElementById("actionFilter").value;
 
-            let filtered = logs.filter(log =>
-                (log.fullName.toLowerCase().includes(searchText) ||
-                 log.action.toLowerCase().includes(searchText) ||
-                 log.details.toLowerCase().includes(searchText)) &&
+            // Tìm kiếm bằng Fuse.js
+            let filtered = searchText
+                ? fuse.search(searchText).map(result => result.item)
+                : logs;
+
+            // Lọc theo vai trò và hành động
+            filtered = filtered.filter(log =>
                 (roleFilter === "" || log.roleName === roleFilter.replace("ROLE_", "")) &&
                 (actionFilter === "" || log.action === mapAction(actionFilter))
             );
 
+            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valueA = a[sortColumn] || '';
                     let valueB = b[sortColumn] || '';
+                    if (sortColumn === 'createdAt') {
+                        valueA = new Date(a.createdAt.replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
+                        valueB = new Date(b.createdAt.replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
+                    }
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -218,6 +274,7 @@
             return filtered;
         }
 
+        // Hiển thị bảng
         function displayTable(page) {
             const filteredLogs = getFilteredLogs();
             const start = (page - 1) * itemsPerPage;
@@ -247,6 +304,7 @@
             setupPagination(filteredLogs.length);
         }
 
+        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
@@ -266,11 +324,13 @@
             pagination.innerHTML = paginationHTML;
         }
 
+        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
+        // Sắp xếp bảng
         function sortTable(column) {
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -281,19 +341,24 @@
             displayTable(currentPage);
         }
 
+        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
+        // Xuất danh sách log sang Excel
         async function exportLogs() {
-            const search = document.getElementById("searchInput").value;
-            const roleFilter = document.getElementById("roleFilter").value;
-            const actionFilter = document.getElementById("actionFilter").value;
+            const search = encodeURIComponent(document.getElementById("searchInputFuse").value);
+            const roleFilter = encodeURIComponent(document.getElementById("roleFilter").value);
+            const actionFilter = encodeURIComponent(document.getElementById("actionFilter").value);
 
             try {
                 const response = await fetch(`${API_URL}/api/Log/export?search=${search}&roleFilter=${roleFilter}&actionFilter=${actionFilter}`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json"
+                    },
                     credentials: "include"
                 });
                 if (response.status === 401) {
@@ -301,7 +366,10 @@
                     window.location.href = "/font-end/login/login.html";
                     return;
                 }
-                if (!response.ok) throw new Error("Không xuất được file Excel.");
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không xuất được file Excel: ${errorText || response.statusText}`);
+                }
 
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
@@ -311,34 +379,42 @@
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
+                window.URL.revokeObjectURL(url);
             } catch (error) {
                 console.error("Error:", error);
                 alert("Không xuất được file Excel: " + error.message);
             }
         }
-        
+
+        // Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
-                const data = await response.json();
+                const text = await response.text();
                 if (response.ok) {
-                    alert(data.message);
-                    console.log(data.message);
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
                 } else {
+                    const data = text ? JSON.parse(text) : {};
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
-                alert("Đăng xuất bị lỗi:", error);
+                alert("Đăng xuất bị lỗi: " + error.message);
                 console.error("Đăng xuất bị lỗi:", error);
             }
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
+        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";

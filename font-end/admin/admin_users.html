@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
@@ -37,7 +38,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." id="searchInput" onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -83,7 +84,7 @@
 
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm người dùng..." onkeyup="filterTable()">
+                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm người dùng..." onkeyup="filterTable()">
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Vai trò</option>
                         <option value="ROLE_ADMIN">Admin</option>
@@ -216,10 +217,41 @@
     <script>
         const API_URL = "https://localhost:7047";
         let users = [];
+        let fuse = null;
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+
+        // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
+        function removeVietnameseTones(str) {
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        // Hàm tạo chỉ mục cho Fuse.js
+        function createFuseIndex(data) {
+            return new Fuse(data, {
+                keys: [
+                    { name: 'username', weight: 0.3 },
+                    { name: 'fullName', weight: 0.4 },
+                    { name: 'email', weight: 0.3 }
+                ],
+                includeScore: true,
+                threshold: 0.4, // Độ nhạy tìm kiếm mờ
+                ignoreLocation: true, // Tìm kiếm chuỗi con
+                useExtendedSearch: true,
+                getFn: (obj, path) => {
+                    // Chuẩn hóa dữ liệu khi tìm kiếm
+                    const value = Fuse.config.getFn(obj, path);
+                    return removeVietnameseTones(value);
+                }
+            });
+        }
 
         window.onload = async () => {
             try {
@@ -249,6 +281,7 @@
                 });
                 if (!response.ok) throw new Error(`Lỗi tải danh sách người dùng: ${response.status}`);
                 users = await response.json();
+                fuse = createFuseIndex(users); // Tạo chỉ mục Fuse.js
                 displayTable(currentPage);
             } catch (error) {
                 throw new Error(`Lỗi API: ${error.message}`);
@@ -260,16 +293,20 @@
         }
 
         function getFilteredUsers() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const roleFilter = document.getElementById("roleFilter").value;
 
-            let filtered = users.filter(user =>
-                (user.username.toLowerCase().includes(searchText) ||
-                 user.fullName.toLowerCase().includes(searchText) ||
-                 user.email.toLowerCase().includes(searchText)) &&
-                (roleFilter === "" || user.roleName === roleFilter)
-            );
+            // Tìm kiếm bằng Fuse.js
+            let filtered = searchText
+                ? fuse.search(searchText).map(result => result.item)
+                : users;
 
+            // Lọc theo vai trò
+            if (roleFilter) {
+                filtered = filtered.filter(user => user.roleName === roleFilter);
+            }
+
+            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valueA = sortColumn === 'locked' ? a.locked : (a[sortColumn] || '').toLowerCase();
@@ -465,7 +502,7 @@
                 if (!response.ok) throw new Error("Không xóa được người dùng.");
                 alert("Đã xóa người dùng!");
                 await loadUsers();
-            } catch (error) {
+            } catch(error) {
                 console.error("Error:", error);
                 alert("Không xóa được người dùng: " + error.message);
             }
@@ -580,7 +617,6 @@
             }
         }
 
-        //Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -591,17 +627,13 @@
                 const data = await response.json();
                 if (response.ok) {
                     alert(data.message);
-                    console.log(data.message); // Ví dụ: "Đăng xuất thành công."
                 } else {
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
-                alert("Đăng xuất bị lỗi:", error);
-                console.error("Đăng xuất bị lỗi:", error);
+                alert("Đăng xuất bị lỗi: " + error.message);
             }
 
-            // Xóa thông tin người dùng và chuyển hướng
             localStorage.removeItem("user");
             window.location.replace("/font-end/login/login.html");
         }
