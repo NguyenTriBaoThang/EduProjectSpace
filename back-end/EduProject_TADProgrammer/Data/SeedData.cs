@@ -28,9 +28,9 @@ namespace EduProject_TADProgrammer.Data
                 new User { Id = 2, Username = "head1", Password = hashedPassword, Email = "head1@hutech.edu.vn", FullName = "Nguyễn Văn Hùng", RoleId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 3, Username = "head2", Password = hashedPassword, Email = "head2@hutech.edu.vn", FullName = "Trần Thị Lan", RoleId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 // Giảng viên hướng dẫn
-                new User { Id = 4, Username = "lecturer1", Password = hashedPassword, Email = "lecturer1@hutech.edu.vn", FullName = "Lê Văn Nam", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 5, Username = "lecturer2", Password = hashedPassword, Email = "lecturer2@hutech.edu.vn", FullName = "Phạm Thị Mai", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 6, Username = "lecturer3", Password = hashedPassword, Email = "lecturer3@hutech.edu.vn", FullName = "Hoàng Văn Tùng", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 4, Username = "lecturer1", Password = hashedPassword, Email = "lecturer1@hutech.edu.vn", FullName = "Lê Văn Nam", RoleId = 2, CourseId = 1, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 5, Username = "lecturer2", Password = hashedPassword, Email = "lecturer2@hutech.edu.vn", FullName = "Phạm Thị Mai", RoleId = 2, CourseId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 6, Username = "lecturer3", Password = hashedPassword, Email = "lecturer3@hutech.edu.vn", FullName = "Hoàng Văn Tùng", RoleId = 2, CourseId = 3, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 // Sinh viên
                 new User { Id = 7, Username = "student1", Password = hashedPassword, Email = "student1@hutech.edu.vn", FullName = "Nguyễn Tri Bão Thắng", RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 8, Username = "student2", Password = hashedPassword, Email = "student2@hutech.edu.vn", FullName = "Trần Văn Bình", RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -40,24 +40,24 @@ namespace EduProject_TADProgrammer.Data
                 // Thêm mới
                 new User { Id = 12, Username = "student6", Password = hashedPassword, Email = "student6@hutech.edu.vn", FullName = "Nguyễn Văn Phú", RoleId = 3, ClassCode = "21DTHA2", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 13, Username = "student7", Password = hashedPassword, Email = "student7@hutech.edu.vn", FullName = "Trần Thị Hồng", RoleId = 3, ClassCode = "21DTHA2", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 14, Username = "lecturer4", Password = hashedPassword, Email = "lecturer4@hutech.edu.vn", FullName = "Nguyễn Thị Ngọc", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 15, Username = "lecturer5", Password = hashedPassword, Email = "lecturer5@hutech.edu.vn", FullName = "Võ Văn Tài", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new User { Id = 14, Username = "lecturer4", Password = hashedPassword, Email = "lecturer4@hutech.edu.vn", FullName = "Nguyễn Thị Ngọc", RoleId = 2, CourseId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 15, Username = "lecturer5", Password = hashedPassword, Email = "lecturer5@hutech.edu.vn", FullName = "Võ Văn Tài", RoleId = 2, CourseId = 5, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 3. Course (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
             modelBuilder.Entity<Course>().HasData(
-                new Course { Id = 1, Name = "Đồ án Tốt nghiệp CNTT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 2, Name = "Đồ án Cơ sở CNTT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 3, Name = "Đồ án Tốt nghiệp KTPM", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 4, Name = "Đồ án Cơ sở KTPM", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 5, Name = "Đồ án Tốt nghiệp ATTT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 6, Name = "Đồ án Cơ sở ATTT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 7, Name = "Đồ án Tốt nghiệp KHMT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 8, Name = "Đồ án Cơ sở KHMT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 9, Name = "Đồ án Tốt nghiệp HTTT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 10, Name = "Đồ án Cơ sở HTTT", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 11, Name = "Đồ án Tốt nghiệp CNPM", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 12, Name = "Đồ án Cơ sở CNPM", Semester = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow }
+                new Course { Id = 1, Name = "Đồ án Tốt nghiệp CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 2, Name = "Đồ án Cơ sở CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 3, Name = "Đồ án Tốt nghiệp KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 4, Name = "Đồ án Cơ sở KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 5, Name = "Đồ án Tốt nghiệp ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 6, Name = "Đồ án Cơ sở ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 7, Name = "Đồ án Tốt nghiệp KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 8, Name = "Đồ án Cơ sở KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 9, Name = "Đồ án Tốt nghiệp HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 10, Name = "Đồ án Cơ sở HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 11, Name = "Đồ án Tốt nghiệp CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow },
+                new Course { Id = 12, Name = "Đồ án Cơ sở CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow }
             );
 
             // 4. Project (Đã có 3 bản ghi, thêm 10 bản ghi để đủ 13)
@@ -639,6 +639,32 @@ namespace EduProject_TADProgrammer.Data
                 new Backup { Id = 10, FilePath = "backups/db_backup_2025_02_10.sql", CreatedAt = DateTime.UtcNow.AddDays(-9) },
                 new Backup { Id = 11, FilePath = "backups/db_backup_2025_02_11.sql", CreatedAt = DateTime.UtcNow.AddDays(-10) },
                 new Backup { Id = 12, FilePath = "backups/db_backup_2025_02_12.sql", CreatedAt = DateTime.UtcNow.AddDays(-11) }
+            );
+
+            // 40. Semester (Thêm 3 bản ghi)
+            modelBuilder.Entity<Semester>().HasData(
+                new Semester { Id = 1, Name = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
+                new Semester { Id = 2, Name = "HK1-2025", StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
+                new Semester { Id = 3, Name = "HK3-2025", StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow }
+            );
+
+            // 41 StudentCourse (Thêm 15 bản ghi)
+            modelBuilder.Entity<StudentCourse>().HasData(
+                new StudentCourse { Id = 1, StudentId = 7, CourseId = 1, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 2, StudentId = 7, CourseId = 2, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 3, StudentId = 8, CourseId = 1, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 4, StudentId = 8, CourseId = 3, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 5, StudentId = 9, CourseId = 2, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 6, StudentId = 9, CourseId = 4, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 7, StudentId = 10, CourseId = 3, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 8, StudentId = 10, CourseId = 5, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 9, StudentId = 11, CourseId = 4, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 10, StudentId = 11, CourseId = 6, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 11, StudentId = 12, CourseId = 5, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 12, StudentId = 12, CourseId = 7, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 13, StudentId = 13, CourseId = 6, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 14, StudentId = 13, CourseId = 8, EnrolledAt = DateTime.UtcNow },
+                new StudentCourse { Id = 15, StudentId = 7, CourseId = 9, EnrolledAt = DateTime.UtcNow }
             );
         }
     }

@@ -7,6 +7,7 @@
 //   77: So sánh điểm giữa các môn
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
@@ -20,8 +21,10 @@ namespace EduProject_TADProgrammer.Entities
         public string Name { get; set; }
 
         [Required]
-        [StringLength(20)]
-        public string Semester { get; set; }
+        public long SemesterId { get; set; }
+
+        [ForeignKey("SemesterId")]
+        public Semester Semester { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }

@@ -57,6 +57,11 @@ namespace EduProject_TADProgrammer.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        // Thêm quan hệ với Course cho giảng viên
+        public long? CourseId { get; set; } // Chỉ áp dụng cho ROLE_LECTURER
+        [ForeignKey("CourseId")]
+        public Course Course { get; set; }
+
         // Phương thức mã hóa mật khẩu
         public void HashPassword()
         {
