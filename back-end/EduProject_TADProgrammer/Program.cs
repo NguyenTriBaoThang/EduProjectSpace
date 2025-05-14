@@ -30,6 +30,7 @@ internal class Program
         builder.Services.AddScoped<LogService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<RoleService>();
+        builder.Services.AddScoped<SemesterService>();
         builder.Services.AddScoped<DashboardService>();
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddHostedService<DeadlineReminderService>();
