@@ -18,6 +18,7 @@ internal class Program
                    .EnableSensitiveDataLogging()
                    .EnableDetailedErrors());
 
+        builder.Services.AddScoped<GroupService>();
         // Thêm dịch vụ MVC và Razor Pages
         builder.Services.AddControllersWithViews();
 
