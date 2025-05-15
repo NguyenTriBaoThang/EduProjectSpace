@@ -62,6 +62,32 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("CourseId")]
         public Course Course { get; set; }
 
+        public virtual ICollection<GroupMember> GroupMembers { get; set; } = new List<GroupMember>();
+        public virtual ICollection<GroupRequest> GroupRequests { get; set; } = new List<GroupRequest>();
+        public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
+        public virtual ICollection<GradeAppeal> GradeAppeals { get; set; } = new List<GradeAppeal>();
+        public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+        public virtual ICollection<Meeting> Meetings { get; set; } = new List<Meeting>();
+        public virtual ICollection<Resource> Resources { get; set; } = new List<Resource>();
+        public virtual ICollection<SkillAssessment> SkillAssessments { get; set; } = new List<SkillAssessment>();
+        public virtual ICollection<AISuggestion> AISuggestions { get; set; } = new List<AISuggestion>();
+        public virtual ICollection<TimeTracking> TimeTrackings { get; set; } = new List<TimeTracking>();
+        public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
+        public virtual ICollection<GradeLog> GradeLogs { get; set; } = new List<GradeLog>();
+        public virtual ICollection<GradeSchedule> GradeSchedules { get; set; } = new List<GradeSchedule>();
+        public virtual ICollection<Discussion> Discussions { get; set; } = new List<Discussion>();
+        public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+        public virtual ICollection<FeedbackSurvey> FeedbackSurveys { get; set; } = new List<FeedbackSurvey>();
+        public virtual ICollection<CommitteeMember> CommitteeMembers { get; set; } = new List<CommitteeMember>();
+        public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
+        public virtual ICollection<Calendar> Calendars { get; set; } = new List<Calendar>();
+        public virtual ICollection<PeerReview> PeerReviewsAsReviewer { get; set; } = new List<PeerReview>();
+        public virtual ICollection<PeerReview> PeerReviewsAsReviewee { get; set; } = new List<PeerReview>();
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>(); 
+        public virtual ICollection<Grade> GradedGrades { get; set; } = new List<Grade>();
+
         // Phương thức mã hóa mật khẩu
         public void HashPassword()
         {

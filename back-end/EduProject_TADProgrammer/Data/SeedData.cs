@@ -46,35 +46,35 @@ namespace EduProject_TADProgrammer.Data
 
             // 3. Course (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
             modelBuilder.Entity<Course>().HasData(
-                new Course { Id = 1, Name = "Đồ án Tốt nghiệp CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 2, Name = "Đồ án Cơ sở CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 3, Name = "Đồ án Tốt nghiệp KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 4, Name = "Đồ án Cơ sở KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 5, Name = "Đồ án Tốt nghiệp ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 6, Name = "Đồ án Cơ sở ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 7, Name = "Đồ án Tốt nghiệp KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 8, Name = "Đồ án Cơ sở KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 9, Name = "Đồ án Tốt nghiệp HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 10, Name = "Đồ án Cơ sở HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 11, Name = "Đồ án Tốt nghiệp CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow },
-                new Course { Id = 12, Name = "Đồ án Cơ sở CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow }
+                new Course { Id = 1, Name = "Đồ án Tốt nghiệp CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_TN_2025", DefenseDate = new DateTime(2025, 6, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 2, Name = "Đồ án Cơ sở CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_CS_2025", DefenseDate = new DateTime(2025, 6, 10), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 3, Name = "Đồ án Tốt nghiệp KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "KTPM_TN_2025", DefenseDate = new DateTime(2025, 6, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 4, Name = "Đồ án Cơ sở KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "KTPM_CS_2025", DefenseDate = new DateTime(2025, 6, 10), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 5, Name = "Đồ án Tốt nghiệp ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "ATTT_TN_2025", DefenseDate = new DateTime(2025, 4, 20), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 6, Name = "Đồ án Cơ sở ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "ATTT_CS_2025", DefenseDate = new DateTime(2025, 4, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 7, Name = "Đồ án Tốt nghiệp KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "KHMT_TN_2025", DefenseDate = new DateTime(2025, 4, 20), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 8, Name = "Đồ án Cơ sở KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "KHMT_CS_2025", DefenseDate = new DateTime(2025, 4, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 9, Name = "Đồ án Tốt nghiệp HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "HTTT_TN_2025", DefenseDate = new DateTime(2025, 10, 20), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 10, Name = "Đồ án Cơ sở HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "HTTT_CS_2025", DefenseDate = new DateTime(2025, 10, 15), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 11, Name = "Đồ án Tốt nghiệp CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "CNPM_TN_2025", DefenseDate = new DateTime(2025, 10, 20), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 12, Name = "Đồ án Cơ sở CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "CNPM_CS_2025", DefenseDate = new DateTime(2025, 10, 15), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 4. Project (Đã có 3 bản ghi, thêm 10 bản ghi để đủ 13)
             modelBuilder.Entity<Project>().HasData(
-                new Project { Id = 1, Title = "Ứng dụng AI trong y tế", Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", CourseId = 1, LecturerId = 4, Status = "NOT_SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 2, Title = "Hệ thống quản lý đồ án", Description = "Xây dựng hệ thống quản lý đồ án sinh viên.", CourseId = 1, LecturerId = 5, Status = "NOT_SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 3, Title = "Ứng dụng thương mại điện tử", Description = "Phát triển website bán hàng trực tuyến.", CourseId = 2, LecturerId = 6, Status = "NOT_SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 4, Title = "Phân tích dữ liệu thời gian thực", Description = "Xây dựng hệ thống phân tích dữ liệu thời gian thực.", CourseId = 3, LecturerId = 14, Status = "NOT_SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 5, Title = "Ứng dụng quản lý học tập", Description = "Phát triển app quản lý học tập cho sinh viên.", CourseId = 4, LecturerId = 15, Status = "SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 6, Title = "Hệ thống bảo mật IoT", Description = "Xây dựng giải pháp bảo mật cho thiết bị IoT.", CourseId = 5, LecturerId = 4, Status = "SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 7, Title = "Phân tích dữ liệu mạng xã hội", Description = "Phân tích hành vi người dùng trên mạng xã hội.", CourseId = 6, LecturerId = 5, Status = "SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 8, Title = "Ứng dụng học ngoại ngữ", Description = "Phát triển app học ngoại ngữ với AI.", CourseId = 7, LecturerId = 6, Status = "SUBMITTED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 9, Title = "Hệ thống quản lý kho", Description = "Xây dựng hệ thống quản lý kho hàng tự động.", CourseId = 8, LecturerId = 14, Status = "GRADED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 10, Title = "Ứng dụng đặt lịch khám bệnh", Description = "Phát triển app đặt lịch khám bệnh trực tuyến.", CourseId = 9, LecturerId = 15, Status = "GRADED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 11, Title = "Hệ thống quản lý nhân sự", Description = "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", CourseId = 10, LecturerId = 4, Status = "GRADED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 12, Title = "Ứng dụng học tập nhóm", Description = "Phát triển app hỗ trợ học tập nhóm.", CourseId = 11, LecturerId = 5, Status = "GRADED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 13, Title = "Hệ thống phân tích tài chính", Description = "Xây dựng hệ thống phân tích tài chính cá nhân.", CourseId = 12, LecturerId = 6, Status = "GRADED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new Project { Id = 1, Title = "Ứng dụng AI trong y tế", Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", CourseId = 1, LecturerId = 4, GroupId = 1, Status = "NOT_SUBMITTED", ProjectCode = "AI_YTE_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 2, Title = "Hệ thống quản lý đồ án", Description = "Xây dựng hệ thống quản lý đồ án sinh viên.", CourseId = 1, LecturerId = 5, GroupId = 2, Status = "NOT_SUBMITTED", ProjectCode = "QLDA_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 3, Title = "Ứng dụng thương mại điện tử", Description = "Phát triển website bán hàng trực tuyến.", CourseId = 2, LecturerId = 6, GroupId = 3, Status = "NOT_SUBMITTED", ProjectCode = "TMĐT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 4, Title = "Phân tích dữ liệu thời gian thực", Description = "Xây dựng hệ thống phân tích dữ liệu thời gian thực.", CourseId = 3, GroupId = 4, LecturerId = 14, Status = "SUBMITTED", ProjectCode = "PTDL_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 5, Title = "Ứng dụng quản lý học tập", Description = "Phát triển app quản lý học tập cho sinh viên.", CourseId = 4, LecturerId = 15, GroupId = 5, Status = "SUBMITTED", ProjectCode = "QLHT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 6, Title = "Hệ thống bảo mật IoT", Description = "Xây dựng giải pháp bảo mật cho thiết bị IoT.", CourseId = 5, LecturerId = 4, GroupId = 6, Status = "SUBMITTED", ProjectCode = "BM_IOT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 7, Title = "Phân tích dữ liệu mạng xã hội", Description = "Phân tích hành vi người dùng trên mạng xã hội.", CourseId = 6, LecturerId = 5, GroupId = 7, Status = "SUBMITTED", ProjectCode = "PTMXH_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 8, Title = "Ứng dụng học ngoại ngữ", Description = "Phát triển app học ngoại ngữ với AI.", CourseId = 7, LecturerId = 6, GroupId = 9, Status = "GRADED", ProjectCode = "HNN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 9, Title = "Hệ thống quản lý kho", Description = "Xây dựng hệ thống quản lý kho hàng tự động.", CourseId = 8, LecturerId = 14, GroupId = 8, Status = "GRADED", ProjectCode = "QLK_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 10, Title = "Ứng dụng đặt lịch khám bệnh", Description = "Phát triển app đặt lịch khám bệnh trực tuyến.", CourseId = 9, LecturerId = 15, GroupId = 10, Status = "GRADED", ProjectCode = "DLKB_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 11, Title = "Hệ thống quản lý nhân sự", Description = "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", CourseId = 10, LecturerId = 4, GroupId = 12, Status = "GRADED", ProjectCode = "QLNS_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 12, Title = "Ứng dụng học tập nhóm", Description = "Phát triển app hỗ trợ học tập nhóm.", CourseId = 11, LecturerId = 5, GroupId = 11, Status = "PENDING", ProjectCode = "HTN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 13, Title = "Hệ thống phân tích tài chính", Description = "Xây dựng hệ thống phân tích tài chính cá nhân.", CourseId = 12, LecturerId = 6, GroupId = 13, Status = "PENDING", ProjectCode = "PTTC_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 5. ProjectVersion (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
@@ -95,19 +95,19 @@ namespace EduProject_TADProgrammer.Data
 
             // 6. Group (Đã có 3 bản ghi, thêm 10 bản ghi để đủ 13)
             modelBuilder.Entity<Group>().HasData(
-                new Group { Id = 1, Name = "Nhóm 1", ProjectId = 1, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 2, Name = "Nhóm 2", ProjectId = 2, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 3, Name = "Nhóm 3", ProjectId = 3, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 4, Name = "Nhóm 4", ProjectId = 4, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 5, Name = "Nhóm 5", ProjectId = 5, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 6, Name = "Nhóm 6", ProjectId = 6, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 7, Name = "Nhóm 7", ProjectId = 7, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 8, Name = "Nhóm 8", ProjectId = 8, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 9, Name = "Nhóm 9", ProjectId = 9, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 10, Name = "Nhóm 10", ProjectId = 10, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 11, Name = "Nhóm 11", ProjectId = 11, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 12, Name = "Nhóm 12", ProjectId = 12, CreatedAt = DateTime.UtcNow },
-                new Group { Id = 13, Name = "Nhóm 13", ProjectId = 13, CreatedAt = DateTime.UtcNow }
+                new Group { Id = 1, Name = "Nhóm 1", ProjectId = 1, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 2, Name = "Nhóm 2", ProjectId = 2, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 3, Name = "Nhóm 3", ProjectId = 3, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 4, Name = "Nhóm 4", ProjectId = 4, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 5, Name = "Nhóm 5", ProjectId = 5, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 6, Name = "Nhóm 6", ProjectId = 6, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 7, Name = "Nhóm 7", ProjectId = 7, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 8, Name = "Nhóm 8", ProjectId = 8, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 9, Name = "Nhóm 9", ProjectId = 9, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 10, Name = "Nhóm 10", ProjectId = 10, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 11, Name = "Nhóm 11", ProjectId = 11, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 12, Name = "Nhóm 12", ProjectId = 12, MaxMembers = 5, Status = "PENDING", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 13, Name = "Nhóm 13", ProjectId = 13, MaxMembers = 5, Status = "PENDING", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 7. GroupMember (Đã có 5 bản ghi, thêm 10 bản ghi để đủ 15)
@@ -650,21 +650,46 @@ namespace EduProject_TADProgrammer.Data
 
             // 41 StudentCourse (Thêm 15 bản ghi)
             modelBuilder.Entity<StudentCourse>().HasData(
-                new StudentCourse { Id = 1, StudentId = 7, CourseId = 1, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 2, StudentId = 7, CourseId = 2, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 3, StudentId = 8, CourseId = 1, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 4, StudentId = 8, CourseId = 3, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 5, StudentId = 9, CourseId = 2, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 6, StudentId = 9, CourseId = 4, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 7, StudentId = 10, CourseId = 3, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 8, StudentId = 10, CourseId = 5, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 9, StudentId = 11, CourseId = 4, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 10, StudentId = 11, CourseId = 6, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 11, StudentId = 12, CourseId = 5, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 12, StudentId = 12, CourseId = 7, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 13, StudentId = 13, CourseId = 6, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 14, StudentId = 13, CourseId = 8, EnrolledAt = DateTime.UtcNow },
-                new StudentCourse { Id = 15, StudentId = 7, CourseId = 9, EnrolledAt = DateTime.UtcNow }
+                // Nhóm 1 (Project 1, Course 1)
+                new StudentCourse { Id = 1, StudentId = 7, CourseId = 1, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 2, StudentId = 8, CourseId = 1, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 3, StudentId = 9, CourseId = 1, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 2 (Project 2, Course 1)
+                new StudentCourse { Id = 4, StudentId = 10, CourseId = 1, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 5, StudentId = 11, CourseId = 1, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 3 (Project 3, Course 2)
+                new StudentCourse { Id = 6, StudentId = 12, CourseId = 2, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 7, StudentId = 13, CourseId = 2, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 4 (Project 4, Course 3)
+                new StudentCourse { Id = 8, StudentId = 7, CourseId = 3, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 9, StudentId = 8, CourseId = 3, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 5 (Project 5, Course 4)
+                new StudentCourse { Id = 10, StudentId = 9, CourseId = 4, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 11, StudentId = 10, CourseId = 4, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 6 (Project 6, Course 5)
+                new StudentCourse { Id = 12, StudentId = 11, CourseId = 5, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 13, StudentId = 12, CourseId = 5, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 7 (Project 7, Course 6)
+                new StudentCourse { Id = 14, StudentId = 13, CourseId = 6, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 15, StudentId = 7, CourseId = 6, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 8 (Project 8, Course 7)
+                new StudentCourse { Id = 16, StudentId = 8, CourseId = 7, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 17, StudentId = 9, CourseId = 7, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 9 (Project 9, Course 8)
+                new StudentCourse { Id = 18, StudentId = 10, CourseId = 8, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 19, StudentId = 11, CourseId = 8, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 10 (Project 10, Course 9)
+                new StudentCourse { Id = 20, StudentId = 12, CourseId = 9, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 21, StudentId = 13, CourseId = 9, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 11 (Project 11, Course 10)
+                new StudentCourse { Id = 22, StudentId = 7, CourseId = 10, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 23, StudentId = 8, CourseId = 10, Status = "COMPLETED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 12 (Project 12, Course 11)
+                new StudentCourse { Id = 24, StudentId = 9, CourseId = 11, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 25, StudentId = 10, CourseId = 11, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                // Nhóm 13 (Project 13, Course 12)
+                new StudentCourse { Id = 26, StudentId = 11, CourseId = 12, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new StudentCourse { Id = 27, StudentId = 12, CourseId = 12, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
         }
     }

@@ -17,5 +17,7 @@ namespace EduProject_TADProgrammer.Entities
         public string Name { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public virtual ICollection<CommitteeMember> CommitteeMembers { get; set; } = new List<CommitteeMember>();
     }
 }

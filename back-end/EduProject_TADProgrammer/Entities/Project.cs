@@ -12,6 +12,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace EduProject_TADProgrammer.Entities
 {
@@ -39,9 +40,32 @@ namespace EduProject_TADProgrammer.Entities
         public User Lecturer { get; set; }
 
         [Required]
-        public string Status { get; set; } // PENDING, APPROVED, REJECTED
+        public long GroupId { get; set; }
+
+        public Group Group { get; set; } // Loại bỏ [ForeignKey("GroupId")]
+
+        [Required]
+        [StringLength(50)]
+        public string Status { get; set; } // PENDING, APPROVED, REJECTED, SUBMITTED, GRADED
+
+        [Required]
+        [StringLength(20)]
+        public string ProjectCode { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public virtual ICollection<ProjectVersion> ProjectVersions { get; set; } = new List<ProjectVersion>();
+        public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+        public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
+        public virtual ICollection<Resource> Resources { get; set; } = new List<Resource>();
+        public virtual ICollection<Discussion> Discussions { get; set; } = new List<Discussion>();
+        public virtual ICollection<DefenseSchedule> DefenseSchedules { get; set; } = new List<DefenseSchedule>();
+        public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
+        public virtual ICollection<AISuggestion> AISuggestions { get; set; } = new List<AISuggestion>();
+        public virtual ICollection<TimeTracking> TimeTrackings { get; set; } = new List<TimeTracking>();
+        public virtual ICollection<GradeSchedule> GradeSchedules { get; set; } = new List<GradeSchedule>();
     }
 }

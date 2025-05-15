@@ -40,5 +40,7 @@ namespace EduProject_TADProgrammer.Entities
         public User CreatedByUser { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public virtual ICollection<MeetingRecord> MeetingRecords { get; set; } = new List<MeetingRecord>();
     }
 }

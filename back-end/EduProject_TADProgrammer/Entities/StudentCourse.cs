@@ -21,6 +21,13 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("CourseId")]
         public Course Course { get; set; }
 
+        // Thuộc tính mới: Trạng thái tham gia (đã đăng ký, đã hoàn thành, v.v.)
+        [StringLength(50)]
+        public string Status { get; set; } // Thêm mới: Hỗ trợ chức năng 7 (Quản lý quy trình đồ án)
+
         public DateTime EnrolledAt { get; set; } = DateTime.UtcNow;
+
+        // Thuộc tính mới: Thời gian cập nhật
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Thêm mới: Theo dõi thay đổi
     }
 }

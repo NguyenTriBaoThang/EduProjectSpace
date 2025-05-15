@@ -21,5 +21,7 @@ namespace EduProject_TADProgrammer.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public string ?Description { get; set; } // Tùy chọn: Mô tả thêm về kỳ học
+
+        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }

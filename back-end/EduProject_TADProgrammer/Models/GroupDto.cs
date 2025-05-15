@@ -20,5 +20,6 @@ namespace EduProject_TADProgrammer.Models
         public string Name { get; set; }
         public long ProjectId { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<StudentDto> Students { get; set; }
     }
 }
