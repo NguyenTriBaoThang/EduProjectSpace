@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using EduProject_TADProgrammer.Entities;
 using System;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace EduProject_TADProgrammer.Data
 {
@@ -323,34 +324,34 @@ namespace EduProject_TADProgrammer.Data
 
             // 20. DefenseCommittee (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
             modelBuilder.Entity<DefenseCommittee>().HasData(
-                new DefenseCommittee { Id = 1, Name = "Hội đồng 1", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 2, Name = "Hội đồng 2", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 3, Name = "Hội đồng 3", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 4, Name = "Hội đồng 4", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 5, Name = "Hội đồng 5", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 6, Name = "Hội đồng 6", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 7, Name = "Hội đồng 7", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 8, Name = "Hội đồng 8", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 9, Name = "Hội đồng 9", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 10, Name = "Hội đồng 10", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 11, Name = "Hội đồng 11", CreatedAt = DateTime.UtcNow },
-                new DefenseCommittee { Id = 12, Name = "Hội đồng 12", CreatedAt = DateTime.UtcNow }
+                new DefenseCommittee { Id = 1, Name = "Hội đồng 1", SemesterId = 1,CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 2, Name = "Hội đồng 2", SemesterId = 1,CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 3, Name = "Hội đồng 3", SemesterId = 1,CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 4, Name = "Hội đồng 4", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 5, Name = "Hội đồng 5", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 6, Name = "Hội đồng 6", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 7, Name = "Hội đồng 7", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 8, Name = "Hội đồng 8", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 9, Name = "Hội đồng 9", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 10, Name = "Hội đồng 10", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 11, Name = "Hội đồng 11", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new DefenseCommittee { Id = 12, Name = "Hội đồng 12", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 21. CommitteeMember (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
             modelBuilder.Entity<CommitteeMember>().HasData(
-                new CommitteeMember { Id = 1, CommitteeId = 1, LecturerId = 2, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 2, CommitteeId = 1, LecturerId = 4, Role = "Thành viên", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 3, CommitteeId = 2, LecturerId = 3, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 4, CommitteeId = 2, LecturerId = 5, Role = "Thư ký", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 5, CommitteeId = 3, LecturerId = 6, Role = "Thành viên", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 6, CommitteeId = 4, LecturerId = 14, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 7, CommitteeId = 5, LecturerId = 15, Role = "Thư ký", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 8, CommitteeId = 6, LecturerId = 4, Role = "Thành viên", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 9, CommitteeId = 7, LecturerId = 5, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 10, CommitteeId = 8, LecturerId = 6, Role = "Thư ký", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 11, CommitteeId = 9, LecturerId = 14, Role = "Thành viên", CreatedAt = DateTime.UtcNow },
-                new CommitteeMember { Id = 12, CommitteeId = 10, LecturerId = 15, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow }
+                new CommitteeMember { Id = 1, CommitteeId = 1, LecturerId = 2, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 2, CommitteeId = 1, LecturerId = 4, Role = "Thành viên", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 3, CommitteeId = 2, LecturerId = 3, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 4, CommitteeId = 2, LecturerId = 5, Role = "Thư ký", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 5, CommitteeId = 3, LecturerId = 6, Role = "Thành viên", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 6, CommitteeId = 4, LecturerId = 14, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 7, CommitteeId = 5, LecturerId = 15, Role = "Thư ký", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 8, CommitteeId = 6, LecturerId = 4, Role = "Thành viên", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 9, CommitteeId = 7, LecturerId = 5, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 10, CommitteeId = 8, LecturerId = 6, Role = "Thư ký", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 11, CommitteeId = 9, LecturerId = 14, Role = "Thành viên", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CommitteeMember { Id = 12, CommitteeId = 10, LecturerId = 15, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 22. DefenseSchedule (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)

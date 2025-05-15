@@ -29,6 +29,7 @@ internal class Program
         builder.Services.AddScoped<JwtService>();
         builder.Services.AddScoped<LogService>();
         builder.Services.AddScoped<ProjectService>();
+        builder.Services.AddScoped<DefenseCommitteeService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<RoleService>();
         builder.Services.AddScoped<SemesterService>();

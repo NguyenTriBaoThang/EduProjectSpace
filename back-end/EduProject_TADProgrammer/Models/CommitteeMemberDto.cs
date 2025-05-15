@@ -6,10 +6,28 @@ namespace EduProject_TADProgrammer.Models
 {
     public class CommitteeMemberDto
     {
-        public long Id { get; set; }
-        public long CommitteeId { get; set; }
+        public long LecturerId { get; set; }
+        public string FullName { get; set; }
+        public string Role { get; set; }
+    }
+
+    public class CreateDefenseCommitteeRequest
+    {
+        public string Name { get; set; }
+        public long SemesterId { get; set; }
+        public List<CommitteeMemberRequest> Members { get; set; } = new List<CommitteeMemberRequest>();
+    }
+
+    public class UpdateDefenseCommitteeRequest
+    {
+        public string Name { get; set; }
+        public long SemesterId { get; set; }
+        public List<CommitteeMemberRequest> Members { get; set; } = new List<CommitteeMemberRequest>();
+    }
+
+    public class CommitteeMemberRequest
+    {
         public long LecturerId { get; set; }
         public string Role { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 }

@@ -8,6 +8,8 @@ namespace EduProject_TADProgrammer.Models
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public long SemesterId { get; set; }
+        public string SemesterName { get; set; }
+        public List<CommitteeMemberDto> Members { get; set; } = new List<CommitteeMemberDto>();
     }
 }
