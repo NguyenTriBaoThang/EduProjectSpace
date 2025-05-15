@@ -1,5 +1,5 @@
 ﻿// File: Data/ApplicationDbContext.cs
-// Mục đích: Cấu hình DbContext để ánh xạ 39 bảng cơ sở dữ liệu với Entity Framework Core.
+// Mục đích: Cấu hình DbContext để ánh xạ 40 bảng cơ sở dữ liệu với Entity Framework Core.
 // Hỗ trợ: Kết nối cơ sở dữ liệu và quản lý tất cả 90 chức năng của Hệ thống Quản lý Đồ án.
 
 using Microsoft.EntityFrameworkCore;
@@ -66,12 +66,12 @@ namespace EduProject_TADProgrammer.Data
             // Hỗ trợ chức năng: 1, 3, 4, 6, 9, 23, 27, 29, 30, 32-35, 39, 40, 43, 55, 60, 72, 78, 84
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)
-                .WithMany() // Định nghĩa tập hợp ngược lại
+                .WithMany(r => r.Users) // Thuộc tính navigation: Users trong Role
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict); // Không xóa Role nếu User còn tồn tại
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Course) // Liên kết với Course cho giảng viên
-                .WithMany() // Tập hợp giảng viên thuộc Course
+                .WithMany(c => c.Lecturers) // Thuộc tính navigation: Lecturers trong Course
                 .HasForeignKey(u => u.CourseId)
                 .OnDelete(DeleteBehavior.SetNull); // Nếu Course bị xóa, CourseId của User thành null
             modelBuilder.Entity<User>()
@@ -89,7 +89,7 @@ namespace EduProject_TADProgrammer.Data
             // 3. Courses: Liên kết với Semesters
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Semester)
-                .WithMany() // Tập hợp Course thuộc Semester
+                .WithMany(s => s.Courses) // Thuộc tính navigation: Courses trong Semester
                 .HasForeignKey(c => c.SemesterId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Course>()
@@ -98,12 +98,12 @@ namespace EduProject_TADProgrammer.Data
             // 4. StudentCourses: Liên kết giữa Users (sinh viên) và Courses
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Student)
-                .WithMany() // Tập hợp Course mà sinh viên đăng ký
+                .WithMany(u => u.StudentCourses) // Thuộc tính navigation: StudentCourses trong User
                 .HasForeignKey(sc => sc.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Course)
-                .WithMany() // Tập hợp sinh viên thuộc Course
+                .WithMany(c => c.StudentCourses) // Thuộc tính navigation: StudentCourses trong Course
                 .HasForeignKey(sc => sc.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StudentCourse>()
@@ -113,21 +113,29 @@ namespace EduProject_TADProgrammer.Data
             // 5. Projects: Liên kết với Courses và Users (Lecturer), ràng buộc CourseId và Lecturer.CourseId
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.Course)
-                .WithMany() // Tập hợp Project thuộc Course
+                .WithMany(c => c.Projects)
                 .HasForeignKey(p => p.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.Lecturer)
-                .WithMany() // Tập hợp Project mà giảng viên hướng dẫn
+                .WithMany(u => u.Projects)
                 .HasForeignKey(p => p.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Project>()
+                .HasOne(p => p.Group)
+                .WithOne(g => g.Project)
+                .HasForeignKey<Group>(g => g.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Project>()
                 .HasIndex(p => p.CourseId);
+            modelBuilder.Entity<Project>()
+                .HasIndex(p => p.ProjectCode)
+                .IsUnique();
 
             // 6. ProjectVersions: Liên kết với Projects
             modelBuilder.Entity<ProjectVersion>()
                 .HasOne(pv => pv.Project)
-                .WithMany() // Tập hợp phiên bản thuộc Project
+                .WithMany(p => p.ProjectVersions) // Thuộc tính navigation: ProjectVersions trong Project
                 .HasForeignKey(pv => pv.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ProjectVersion>()
@@ -135,22 +143,19 @@ namespace EduProject_TADProgrammer.Data
 
             // 7. Groups: Liên kết với Projects
             modelBuilder.Entity<Entities.Group>()
-                .HasOne(g => g.Project)
-                .WithMany() // Tập hợp Group thuộc Project
-                .HasForeignKey(g => g.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Entities.Group>()
-                .HasIndex(g => g.ProjectId);
+                .HasIndex(g => g.ProjectId)
+                .IsUnique(); // Đảm bảo mỗi Project chỉ có một Group
+
 
             // 8. GroupMembers: Liên kết với Groups và Users
             modelBuilder.Entity<GroupMember>()
                 .HasOne(gm => gm.Group)
-                .WithMany() // Tập hợp thành viên thuộc Group
+                .WithMany(g => g.GroupMembers) // Thuộc tính navigation: GroupMembers trong Group
                 .HasForeignKey(gm => gm.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GroupMember>()
                 .HasOne(gm => gm.Student)
-                .WithMany() // Tập hợp Group mà sinh viên tham gia
+                .WithMany(u => u.GroupMembers) // Thuộc tính navigation: GroupMembers trong User
                 .HasForeignKey(gm => gm.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<GroupMember>()
@@ -159,12 +164,12 @@ namespace EduProject_TADProgrammer.Data
             // 9. GroupRequests: Liên kết với Groups và Users
             modelBuilder.Entity<GroupRequest>()
                 .HasOne(gr => gr.Group)
-                .WithMany() // Tập hợp yêu cầu thuộc Group
+                .WithMany(g => g.GroupRequests) // Thuộc tính navigation: GroupRequests trong Group
                 .HasForeignKey(gr => gr.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GroupRequest>()
                 .HasOne(gr => gr.Student)
-                .WithMany() // Tập hợp yêu cầu của sinh viên
+                .WithMany(u => u.GroupRequests) // Thuộc tính navigation: GroupRequests trong User
                 .HasForeignKey(gr => gr.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<GroupRequest>()
@@ -173,17 +178,17 @@ namespace EduProject_TADProgrammer.Data
             // 10. Tasks: Liên kết với Projects, Groups, Users
             modelBuilder.Entity<Entities.Task>()
                 .HasOne(t => t.Project)
-                .WithMany() // Tập hợp Task thuộc Project
+                .WithMany(p => p.Tasks) // Thuộc tính navigation: Tasks trong Project
                 .HasForeignKey(t => t.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Entities.Task>()
                 .HasOne(t => t.Group)
-                .WithMany() // Tập hợp Task thuộc Group
+                .WithMany(g => g.Tasks) // Thuộc tính navigation: Tasks trong Group
                 .HasForeignKey(t => t.GroupId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Entities.Task>()
                 .HasOne(t => t.Student)
-                .WithMany() // Tập hợp Task được giao cho sinh viên
+                .WithMany(u => u.Tasks) // Thuộc tính navigation: Tasks trong User
                 .HasForeignKey(t => t.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Entities.Task>()
@@ -192,12 +197,12 @@ namespace EduProject_TADProgrammer.Data
             // 11. Submissions: Liên kết với Projects và Groups
             modelBuilder.Entity<Submission>()
                 .HasOne(s => s.Project)
-                .WithMany() // Tập hợp Submission thuộc Project
+                .WithMany(p => p.Submissions) // Thuộc tính navigation: Submissions trong Project
                 .HasForeignKey(s => s.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Submission>()
                 .HasOne(s => s.Group)
-                .WithMany() // Tập hợp Submission thuộc Group
+                .WithMany(g => g.Submissions) // Thuộc tính navigation: Submissions trong Group
                 .HasForeignKey(s => s.GroupId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Submission>()
@@ -206,7 +211,7 @@ namespace EduProject_TADProgrammer.Data
             // 12. SubmissionVersions: Liên kết với Submissions
             modelBuilder.Entity<SubmissionVersion>()
                 .HasOne(sv => sv.Submission)
-                .WithMany() // Tập hợp phiên bản thuộc Submission
+                .WithMany(s => s.SubmissionVersions) // Thuộc tính navigation: SubmissionVersions trong Submission
                 .HasForeignKey(sv => sv.SubmissionId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<SubmissionVersion>()
@@ -215,7 +220,7 @@ namespace EduProject_TADProgrammer.Data
             // 13. GradeCriteria: Liên kết với Courses
             modelBuilder.Entity<GradeCriteria>()
                 .HasOne(gc => gc.Course)
-                .WithMany() // Tập hợp tiêu chí thuộc Course
+                .WithMany(c => c.GradeCriteria) // Thuộc tính navigation: GradeCriteria trong Course
                 .HasForeignKey(gc => gc.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GradeCriteria>()
@@ -224,27 +229,27 @@ namespace EduProject_TADProgrammer.Data
             // 14. Grades: Liên kết với Projects, Groups, Users, GradeCriteria
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.Project)
-                .WithMany() // Tập hợp Grade thuộc Project
+                .WithMany(p => p.Grades) // Thuộc tính navigation: Grades trong Project
                 .HasForeignKey(g => g.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.Group)
-                .WithMany() // Tập hợp Grade thuộc Group
+                .WithMany(g => g.Grades) // Thuộc tính navigation: Grades trong Group
                 .HasForeignKey(g => g.GroupId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.Student)
-                .WithMany() // Tập hợp Grade của sinh viên
+                .WithMany(u => u.Grades) // Thuộc tính navigation: Grades trong User
                 .HasForeignKey(g => g.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.Criteria)
-                .WithMany() // Tập hợp Grade thuộc tiêu chí
+                .WithMany(gc => gc.Grades) // Thuộc tính navigation: Grades trong GradeCriteria
                 .HasForeignKey(g => g.CriteriaId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Grade>()
                 .HasOne(g => g.GradedByUser)
-                .WithMany() // Tập hợp Grade do giảng viên chấm
+                .WithMany(u => u.GradedGrades) // Thuộc tính navigation: GradedGrades trong User
                 .HasForeignKey(g => g.GradedBy)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Grade>()
@@ -253,7 +258,7 @@ namespace EduProject_TADProgrammer.Data
             // 15. GradeVersions: Liên kết với Grades
             modelBuilder.Entity<GradeVersion>()
                 .HasOne(gv => gv.Grade)
-                .WithMany() // Tập hợp phiên bản thuộc Grade
+                .WithMany(g => g.GradeVersions) // Thuộc tính navigation: GradeVersions trong Grade
                 .HasForeignKey(gv => gv.GradeId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GradeVersion>()
@@ -262,12 +267,12 @@ namespace EduProject_TADProgrammer.Data
             // 16. GradeAppeals: Liên kết với Grades và Users
             modelBuilder.Entity<GradeAppeal>()
                 .HasOne(ga => ga.Grade)
-                .WithMany() // Tập hợp phúc khảo thuộc Grade
+                .WithMany(g => g.GradeAppeals) // Thuộc tính navigation: GradeAppeals trong Grade
                 .HasForeignKey(ga => ga.GradeId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GradeAppeal>()
                 .HasOne(ga => ga.Student)
-                .WithMany() // Tập hợp phúc khảo của sinh viên
+                .WithMany(u => u.GradeAppeals) // Thuộc tính navigation: GradeAppeals trong User
                 .HasForeignKey(ga => ga.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<GradeAppeal>()
@@ -276,12 +281,12 @@ namespace EduProject_TADProgrammer.Data
             // 17. Notifications: Liên kết với Users và Groups
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)
-                .WithMany() // Tập hợp thông báo của User
+                .WithMany(u => u.Notifications) // Thuộc tính navigation: Notifications trong User
                 .HasForeignKey(n => n.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.Group)
-                .WithMany() // Tập hợp thông báo của Group
+                .WithMany(g => g.Notifications) // Thuộc tính navigation: Notifications trong Group
                 .HasForeignKey(n => n.GroupId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Notification>()
@@ -290,12 +295,12 @@ namespace EduProject_TADProgrammer.Data
             // 18. Meetings: Liên kết với Groups và Users
             modelBuilder.Entity<Meeting>()
                 .HasOne(m => m.Group)
-                .WithMany() // Tập hợp Meeting thuộc Group
+                .WithMany(g => g.Meetings) // Thuộc tính navigation: Meetings trong Group
                 .HasForeignKey(m => m.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Meeting>()
                 .HasOne(m => m.CreatedByUser)
-                .WithMany() // Tập hợp Meeting do User tạo
+                .WithMany(u => u.Meetings) // Thuộc tính navigation: Meetings trong User
                 .HasForeignKey(m => m.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Meeting>()
@@ -304,7 +309,7 @@ namespace EduProject_TADProgrammer.Data
             // 19. MeetingRecords: Liên kết với Meetings
             modelBuilder.Entity<MeetingRecord>()
                 .HasOne(mr => mr.Meeting)
-                .WithMany() // Tập hợp bản ghi thuộc Meeting
+                .WithMany(m => m.MeetingRecords) // Thuộc tính navigation: MeetingRecords trong Meeting
                 .HasForeignKey(mr => mr.MeetingId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<MeetingRecord>()
@@ -313,17 +318,17 @@ namespace EduProject_TADProgrammer.Data
             // 20. Resources: Liên kết với Projects, Groups, Users
             modelBuilder.Entity<Resource>()
                 .HasOne(r => r.Project)
-                .WithMany() // Tập hợp Resource thuộc Project
+                .WithMany(p => p.Resources) // Thuộc tính navigation: Resources trong Project
                 .HasForeignKey(r => r.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Resource>()
                 .HasOne(r => r.Group)
-                .WithMany() // Tập hợp Resource thuộc Group
+                .WithMany(g => g.Resources) // Thuộc tính navigation: Resources trong Group
                 .HasForeignKey(r => r.GroupId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Resource>()
                 .HasOne(r => r.CreatedByUser)
-                .WithMany() // Tập hợp Resource do User tạo
+                .WithMany(g => g.Resources) // Thuộc tính navigation: Resources trong Group
                 .HasForeignKey(r => r.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Resource>()
@@ -332,7 +337,7 @@ namespace EduProject_TADProgrammer.Data
             // 21. CodeRuns: Liên kết với Submissions
             modelBuilder.Entity<CodeRun>()
                 .HasOne(cr => cr.Submission)
-                .WithMany() // Tập hợp CodeRun thuộc Submission
+                .WithMany(s => s.CodeRuns) // Thuộc tính navigation: CodeRuns trong Submission
                 .HasForeignKey(cr => cr.SubmissionId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<CodeRun>()
@@ -341,12 +346,12 @@ namespace EduProject_TADProgrammer.Data
             // 22. Discussions: Liên kết với Projects và Users
             modelBuilder.Entity<Discussion>()
                 .HasOne(d => d.Project)
-                .WithMany() // Tập hợp Discussion thuộc Project
+                .WithMany(p => p.Discussions) // Thuộc tính navigation: Discussions trong Project
                 .HasForeignKey(d => d.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Discussion>()
                 .HasOne(d => d.User)
-                .WithMany() // Tập hợp Discussion của User
+                .WithMany(u => u.Discussions) // Thuộc tính navigation: Discussions trong User
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Discussion>()
@@ -355,12 +360,12 @@ namespace EduProject_TADProgrammer.Data
             // 23. Feedbacks: Liên kết với Submissions and Users
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Submission)
-                .WithMany() // Tập hợp Feedback thuộc Submission
+                .WithMany(s => s.Feedbacks) // Thuộc tính navigation: Feedbacks trong Submission
                 .HasForeignKey(f => f.SubmissionId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Lecturer)
-                .WithMany() // Tập hợp Feedback do Lecturer tạo
+                .WithMany(u => u.Feedbacks) // Thuộc tính navigation: Feedbacks trong User
                 .HasForeignKey(f => f.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Feedback>()
@@ -369,7 +374,7 @@ namespace EduProject_TADProgrammer.Data
             // 24. FeedbackSurveys: Liên kết với Users
             modelBuilder.Entity<FeedbackSurvey>()
                 .HasOne(fs => fs.User)
-                .WithMany() // Tập hợp khảo sát của User
+                .WithMany(u => u.FeedbackSurveys) // Thuộc tính navigation: FeedbackSurveys trong User
                 .HasForeignKey(fs => fs.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<FeedbackSurvey>()
@@ -378,7 +383,7 @@ namespace EduProject_TADProgrammer.Data
             // 25. DefenseSchedules: Liên kết with Projects
             modelBuilder.Entity<DefenseSchedule>()
                 .HasOne(ds => ds.Project)
-                .WithMany() // Tập hợp lịch bảo vệ thuộc Project
+                .WithMany(p => p.DefenseSchedules) // Thuộc tính navigation: DefenseSchedules trong Project
                 .HasForeignKey(ds => ds.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<DefenseSchedule>()
@@ -392,12 +397,12 @@ namespace EduProject_TADProgrammer.Data
             // 27. CommitteeMembers: Liên kết với DefenseCommittees và Users
             modelBuilder.Entity<CommitteeMember>()
                 .HasOne(cm => cm.Committee)
-                .WithMany() // Tập hợp thành viên thuộc Committee
+                .WithMany(dc => dc.CommitteeMembers) // Thuộc tính navigation: CommitteeMembers trong DefenseCommittee
                 .HasForeignKey(cm => cm.CommitteeId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<CommitteeMember>()
                 .HasOne(cm => cm.Lecturer)
-                .WithMany() // Tập hợp vai trò trong Committee của Lecturer
+                .WithMany(u => u.CommitteeMembers) // Thuộc tính navigation: CommitteeMembers trong User
                 .HasForeignKey(cm => cm.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<CommitteeMember>()
@@ -406,12 +411,12 @@ namespace EduProject_TADProgrammer.Data
             // 28. Questions: Liên kết với Projects và Users
             modelBuilder.Entity<Question>()
                 .HasOne(q => q.Project)
-                .WithMany() // Tập hợp câu hỏi thuộc Project
+                .WithMany(p => p.Questions) // Thuộc tính navigation: Questions trong Project
                 .HasForeignKey(q => q.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Question>()
                 .HasOne(q => q.CreatedByUser)
-                .WithMany() // Tập hợp câu hỏi do User tạo
+                .WithMany(u => u.Questions) // Thuộc tính navigation: Questions trong User
                 .HasForeignKey(q => q.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Question>()
@@ -424,7 +429,7 @@ namespace EduProject_TADProgrammer.Data
             // 30. SkillAssessments: Liên kết với Users
             modelBuilder.Entity<SkillAssessment>()
                 .HasOne(sa => sa.Student)
-                .WithMany() // Tập hợp đánh giá kỹ năng của sinh viên
+                .WithMany(u => u.SkillAssessments) // Thuộc tính navigation: SkillAssessments trong User
                 .HasForeignKey(sa => sa.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SkillAssessment>()
@@ -433,12 +438,12 @@ namespace EduProject_TADProgrammer.Data
             // 31. AISuggestions: Liên kết với Users và Projects
             modelBuilder.Entity<AISuggestion>()
                 .HasOne(ais => ais.User)
-                .WithMany() // Tập hợp gợi ý của User
+                .WithMany(u => u.AISuggestions) // Thuộc tính navigation: AISuggestions trong User
                 .HasForeignKey(ais => ais.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AISuggestion>()
                 .HasOne(ais => ais.Project)
-                .WithMany() // Tập hợp gợi ý thuộc Project
+                .WithMany(p => p.AISuggestions) // Thuộc tính navigation: AISuggestions trong Project
                 .HasForeignKey(ais => ais.ProjectId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AISuggestion>()
@@ -447,12 +452,12 @@ namespace EduProject_TADProgrammer.Data
             // 32. TimeTrackings: Liên kết với Users và Projects
             modelBuilder.Entity<TimeTracking>()
                 .HasOne(tt => tt.Student)
-                .WithMany() // Tập hợp thời gian làm việc của sinh viên
+                .WithMany(u => u.TimeTrackings) // Thuộc tính navigation: TimeTrackings trong User
                 .HasForeignKey(tt => tt.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TimeTracking>()
                 .HasOne(tt => tt.Project)
-                .WithMany() // Tập hợp thời gian làm việc thuộc Project
+                .WithMany(p => p.TimeTrackings) // Thuộc tính navigation: TimeTrackings trong Project
                 .HasForeignKey(tt => tt.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<TimeTracking>()
@@ -461,7 +466,7 @@ namespace EduProject_TADProgrammer.Data
             // 33. Logs: Liên kết với Users
             modelBuilder.Entity<Log>()
                 .HasOne(l => l.User)
-                .WithMany() // Tập hợp nhật ký của User
+                .WithMany(u => u.Logs) // Thuộc tính navigation: Logs trong User
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Log>()
@@ -470,12 +475,12 @@ namespace EduProject_TADProgrammer.Data
             // 34. GradeLogs: Liên kết với Grades và Users
             modelBuilder.Entity<GradeLog>()
                 .HasOne(gl => gl.Grade)
-                .WithMany() // Tập hợp nhật ký chấm điểm thuộc Grade
+                .WithMany(g => g.GradeLogs) // Thuộc tính navigation: GradeLogs trong Grade
                 .HasForeignKey(gl => gl.GradeId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GradeLog>()
                 .HasOne(gl => gl.Lecturer)
-                .WithMany() // Tập hợp nhật ký chấm điểm của Lecturer
+                .WithMany(u => u.GradeLogs) // Thuộc tính navigation: GradeLogs trong User
                 .HasForeignKey(gl => gl.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<GradeLog>()
@@ -484,12 +489,12 @@ namespace EduProject_TADProgrammer.Data
             // 35. GradeSchedules: Liên kết với Projects and Users
             modelBuilder.Entity<GradeSchedule>()
                 .HasOne(gs => gs.Project)
-                .WithMany() // Tập hợp lịch chấm điểm thuộc Project
+                .WithMany(p => p.GradeSchedules) // Thuộc tính navigation: GradeSchedules trong Project
                 .HasForeignKey(gs => gs.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GradeSchedule>()
                 .HasOne(gs => gs.Lecturer)
-                .WithMany() // Tập hợp lịch chấm điểm của Lecturer
+                .WithMany(u => u.GradeSchedules) // Thuộc tính navigation: GradeSchedules trong User
                 .HasForeignKey(gs => gs.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<GradeSchedule>()
@@ -511,12 +516,12 @@ namespace EduProject_TADProgrammer.Data
             // 39. Calendars: Liên kết với Users and Groups
             modelBuilder.Entity<Entities.Calendar>()
                 .HasOne(c => c.User)
-                .WithMany() // Tập hợp lịch của User
+                .WithMany(u => u.Calendars) // Thuộc tính navigation: Calendars trong User
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Entities.Calendar>()
                 .HasOne(c => c.Group)
-                .WithMany() // Tập hợp lịch của Group
+                .WithMany(g => g.Calendars) // Thuộc tính navigation: Calendars trong Group
                 .HasForeignKey(c => c.GroupId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Entities.Calendar>()
@@ -525,17 +530,17 @@ namespace EduProject_TADProgrammer.Data
             // 40. PeerReviews: Liên kết với Groups and Users
             modelBuilder.Entity<PeerReview>()
                 .HasOne(pr => pr.Group)
-                .WithMany() // Tập hợp đánh giá thuộc Group
+                .WithMany(g => g.PeerReviews) // Thuộc tính navigation: PeerReviews trong Group
                 .HasForeignKey(pr => pr.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<PeerReview>()
                 .HasOne(pr => pr.Reviewer)
-                .WithMany() // Tập hợp đánh giá do Reviewer thực hiện
+                .WithMany(u => u.PeerReviewsAsReviewer) // Thuộc tính navigation: PeerReviewsAsReviewer trong User
                 .HasForeignKey(pr => pr.ReviewerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PeerReview>()
                 .HasOne(pr => pr.Reviewee)
-                .WithMany() // Tập hợp đánh giá nhận được bởi Reviewee
+                .WithMany(u => u.PeerReviewsAsReviewee) // Thuộc tính navigation: PeerReviewsAsReviewee trong User
                 .HasForeignKey(pr => pr.RevieweeId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PeerReview>()

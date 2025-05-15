@@ -53,5 +53,9 @@ namespace EduProject_TADProgrammer.Entities
 
         [ForeignKey("GradedBy")]
         public User GradedByUser { get; set; }
+
+        public virtual ICollection<GradeVersion> GradeVersions { get; set; } = new List<GradeVersion>();
+        public virtual ICollection<GradeAppeal> GradeAppeals { get; set; } = new List<GradeAppeal>();
+        public virtual ICollection<GradeLog> GradeLogs { get; set; } = new List<GradeLog>();
     }
 }

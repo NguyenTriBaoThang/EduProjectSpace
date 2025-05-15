@@ -30,5 +30,7 @@ namespace EduProject_TADProgrammer.Entities
         public float Weight { get; set; }
 
         public string Description { get; set; }
+
+        public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
     }
 }

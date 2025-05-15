@@ -43,5 +43,9 @@ namespace EduProject_TADProgrammer.Entities
         public string Status { get; set; } // SUBMITTED, VALIDATED, REJECTED
 
         public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
+
+        public virtual ICollection<SubmissionVersion> SubmissionVersions { get; set; } = new List<SubmissionVersion>();
+        public virtual ICollection<CodeRun> CodeRuns { get; set; } = new List<CodeRun>();
+        public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
     }
 }

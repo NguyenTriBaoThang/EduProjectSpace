@@ -32,6 +32,26 @@ namespace EduProject_TADProgrammer.Entities
         [Required]
         public DateTime EndDate { get; set; }
 
+        // Thuộc tính mới: Mã môn học để dễ tra cứu
+        [Required]
+        [StringLength(20)]
+        public string CourseCode { get; set; } // Thêm mới: Hỗ trợ chức năng 17 (Quản lý danh sách môn học)
+
+        // Thuộc tính mới: Lịch bảo vệ đồ án
+        public DateTime? DefenseDate { get; set; } // Thêm mới: Hỗ trợ chức năng 56 (Quản lý lịch bảo vệ)
+
+        // Thuộc tính mới: Trạng thái môn học (đang mở, đã đóng, v.v.)
+        [StringLength(50)]
+        public string Status { get; set; } // Thêm mới: Hỗ trợ chức năng 18 (Thiết lập thời gian kỳ học)
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // Thuộc tính mới: Thời gian cập nhật
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Thêm mới: Theo dõi thay đổi
+
+        public virtual ICollection<User> Lecturers { get; set; } = new List<User>();
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
+        public virtual ICollection<GradeCriteria> GradeCriteria { get; set; } = new List<GradeCriteria>();
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
     }
 }
