@@ -30,5 +30,7 @@ namespace EduProject_TADProgrammer.Entities
         public string Role { get; set; } // Chủ tịch, Thư ký, Thành viên
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -392,7 +392,12 @@ namespace EduProject_TADProgrammer.Data
             // 26. DefenseCommittees: Không có khóa ngoại
             modelBuilder.Entity<DefenseCommittee>()
                 .HasIndex(dc => dc.Name)
-                .IsUnique();
+                .IsUnique(); // Đảm bảo tên hội đồng duy nhất
+            modelBuilder.Entity<DefenseCommittee>()
+                .HasOne(dc => dc.Semester)
+                .WithMany()
+                .HasForeignKey(dc => dc.SemesterId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // 27. CommitteeMembers: Liên kết với DefenseCommittees và Users
             modelBuilder.Entity<CommitteeMember>()
@@ -407,6 +412,9 @@ namespace EduProject_TADProgrammer.Data
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<CommitteeMember>()
                 .HasIndex(cm => cm.CommitteeId);
+            modelBuilder.Entity<CommitteeMember>()
+                .Property(cm => cm.Role)
+                .HasConversion<string>();
 
             // 28. Questions: Liên kết với Projects và Users
             modelBuilder.Entity<Question>()
