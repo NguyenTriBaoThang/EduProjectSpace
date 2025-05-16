@@ -56,6 +56,8 @@ namespace EduProject_TADProgrammer.Data
         public DbSet<PeerReview> PeerReviews { get; set; }
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<StudentCourse> StudentCourses { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -92,6 +94,10 @@ namespace EduProject_TADProgrammer.Data
                 .WithMany(s => s.Courses) // Thuộc tính navigation: Courses trong Semester
                 .HasForeignKey(c => c.SemesterId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Department)
+                .WithMany(d => d.Courses)
+                .HasForeignKey(c => c.DepartmentId);
             modelBuilder.Entity<Course>()
                 .HasIndex(c => c.SemesterId);
 
@@ -553,6 +559,12 @@ namespace EduProject_TADProgrammer.Data
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PeerReview>()
                 .HasIndex(pr => pr.GroupId);
+
+            // 41. RolePermission
+            modelBuilder.Entity<RolePermission>()
+                .HasOne(rp => rp.Role)
+                .WithMany() // Ghi chú: Role không cần navigation property ngược lại
+                .HasForeignKey(rp => rp.RoleId);
         }
     }
 }

@@ -5,6 +5,7 @@
 //   17: Quản lý danh sách môn học
 //   18: Thiết lập thời gian kỳ học
 //   77: So sánh điểm giữa các môn
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,6 +26,12 @@ namespace EduProject_TADProgrammer.Entities
 
         [ForeignKey("SemesterId")]
         public Semester Semester { get; set; }
+
+        [Required]
+        public long DepartmentId { get; set; } // Liên kết với khoa
+
+        [ForeignKey("DepartmentId")]
+        public Department Department { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }

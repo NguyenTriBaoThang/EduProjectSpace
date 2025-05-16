@@ -14,7 +14,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_ADMIN")] // Ghi chú: Chỉ admin được truy cập API này
+    [Authorize(Roles = "ROLE_ADMIN")] // Ghi chú: Chỉ admin được truy cập API này
     public class DefenseCommitteesController : ControllerBase
     {
         private readonly DefenseCommitteeService _service;

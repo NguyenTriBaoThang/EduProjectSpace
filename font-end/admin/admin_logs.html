@@ -195,8 +195,8 @@
             try {
                 const response = await fetch(`${API_URL}/api/Log`, {
                     headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
@@ -356,8 +356,8 @@
             try {
                 const response = await fetch(`${API_URL}/api/Log/export?search=${search}&roleFilter=${roleFilter}&actionFilter=${actionFilter}`, {
                     headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });

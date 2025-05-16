@@ -9,7 +9,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class LogController : ControllerBase
     {
         private readonly LogService _logService;

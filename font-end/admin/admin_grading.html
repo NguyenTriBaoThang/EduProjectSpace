@@ -8,6 +8,7 @@
     <title>Quản lý hội đồng chấm điểm | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
@@ -40,7 +41,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <input type="text" class="search-box me-3" id="searchInputFuse" placeholder="🔍 Tìm hội đồng...">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -52,8 +53,8 @@
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
-                <h6>Admin HUTECH</h6>
-                <p>admin@hutech.edu.vn</p>
+                <h6 id="adminName">Admin HUTECH</h6>
+                <p id="adminEmail">admin@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
@@ -88,7 +89,7 @@
             <!-- Grading Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm hội đồng..." onkeyup="filterTable()">
+                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm hội đồng..." onkeyup="filterTable()">
                     <select id="semesterFilter" class="form-select" onchange="filterTable()">
                         <option value="">📅 Kỳ học</option>
                         <!-- Populate động từ API -->
@@ -198,26 +199,92 @@
         //   19: Admin - Thành lập hội đồng chấm điểm
 
         const apiBaseUrl = 'https://localhost:7047/api/DefenseCommittees';
-        const semestersApiUrl = 'https://localhost:7047/api/Semesters'; // Giả định API lấy kỳ học
+        const semestersApiUrl = 'https://localhost:7047/api/Semesters';
         const lecturersApiUrl = 'https://localhost:7047/api/User/lecturers';
+        const authApiUrl = 'https://localhost:7047/api/Auth/logout';
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+        let councils = [];
         let lecturers = [];
         let semesters = [];
+        let fuse = null;
+
+        // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
+        function removeVietnameseTones(str) {
+            if (!str) return '';
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        // Hàm tạo chỉ mục cho Fuse.js
+        function createFuseIndex(data) {
+            return new Fuse(data, {
+                keys: [
+                    { name: 'name', weight: 0.4 },
+                    { name: 'semesterName', weight: 0.3 },
+                    { name: 'members.fullName', weight: 0.3 }
+                ],
+                includeScore: true,
+                threshold: 0.4, // Độ nhạy tìm kiếm mờ
+                ignoreLocation: true, // Tìm kiếm chuỗi con
+                useExtendedSearch: true,
+                getFn: (obj, path) => {
+                    const value = Fuse.config.getFn(obj, path);
+                    if (Array.isArray(value)) {
+                        return value.map(item => removeVietnameseTones(item.fullName || ''));
+                    }
+                    return removeVietnameseTones(value);
+                }
+            });
+        }
+
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_ADMIN") {
+                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            }
+            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+        }
 
         // Ghi chú: Lấy danh sách kỳ học
         async function loadSemesters() {
             try {
-                const response = await fetch(semestersApiUrl);
-                semesters = await response.json();
+                const response = await fetch(semestersApiUrl, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (response.status === 401) {
+                    throw new Error("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
+                }
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Lỗi tải danh sách kỳ học: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                semesters = JSON.parse(text);
+                if (!Array.isArray(semesters)) {
+                    throw new Error("Dữ liệu kỳ học không hợp lệ.");
+                }
                 populateSemesterOptions('semesterFilter', '');
                 populateSemesterOptions('gradingSemester', '');
                 populateSemesterOptions('editGradingSemester', '');
             } catch (error) {
                 console.error('Lỗi khi lấy danh sách kỳ học:', error);
-                alert('Không thể tải danh sách kỳ học.');
+                throw error;
             }
         }
 
@@ -233,25 +300,33 @@
         // Ghi chú: Lấy danh sách giảng viên
         async function loadLecturers() {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) throw new Error('No authentication token found. Please log in.');
                 const response = await fetch(lecturersApiUrl, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
-                    credentials: "include",
+                    credentials: "include"
                 });
+                if (response.status === 401) {
+                    throw new Error("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
+                }
                 if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
+                    throw new Error(`Lỗi tải danh sách giảng viên: ${errorText || response.statusText}`);
                 }
-                lecturers = await response.json();
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                lecturers = JSON.parse(text);
+                if (!Array.isArray(lecturers)) {
+                    throw new Error("Dữ liệu giảng viên không hợp lệ.");
+                }
                 populateLecturerCheckboxes('lecturerCheckboxes', []);
                 populateLecturerCheckboxes('editLecturerCheckboxes', []);
             } catch (error) {
                 console.error('Lỗi khi lấy danh sách giảng viên:', error);
-                alert(`Không thể tải danh sách giảng viên: ${error.message}`);
+                throw error;
             }
         }
 
@@ -288,7 +363,7 @@
         // Ghi chú: Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
-            window.location.href = "admin_notifications.html";
+            window.location.href = "/font-end/admin/admin_notifications.html";
         });
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
@@ -326,39 +401,72 @@
         }
 
         // Ghi chú: Lấy danh sách hội đồng từ API
-        async function getFilteredCouncils() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
-            const semesterFilter = document.getElementById("semesterFilter").value;
-
+        async function loadCouncils() {
             try {
-                const response = await fetch(apiBaseUrl);
-                let councils = await response.json();
-
-                councils = councils.filter(council =>
-                    (council.name.toLowerCase().includes(searchText) ||
-                    council.semesterName.toLowerCase().includes(searchText) ||
-                    council.members.map(m => m.fullName).join(", ").toLowerCase().includes(searchText)) &&
-                    (semesterFilter === "" || council.semesterId == semesterFilter)
-                );
-
-                if (sortColumn) {
-                    councils.sort((a, b) => {
-                        let valueA = sortColumn === 'members' ? a[sortColumn].map(m => m.fullName).join(", ").toLowerCase() : a[sortColumn].toLowerCase();
-                        let valueB = sortColumn === 'members' ? b[sortColumn].map(m => m.fullName).join(", ").toLowerCase() : b[sortColumn].toLowerCase();
-                        return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
-                    });
+                const response = await fetch(apiBaseUrl, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (response.status === 401) {
+                    alert("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
+                    window.location.href = "/font-end/login/login.html";
+                    return;
                 }
-
-                return councils;
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Lỗi tải danh sách hội đồng: ${errorText || response.statusText}`);
+                }
+                const text = await response.text();
+                if (!text) {
+                    throw new Error("Phản hồi từ server trống.");
+                }
+                councils = JSON.parse(text);
+                if (!Array.isArray(councils)) {
+                    throw new Error("Dữ liệu hội đồng không hợp lệ.");
+                }
+                fuse = createFuseIndex(councils); // Tạo chỉ mục Fuse.js
+                displayTable(currentPage);
             } catch (error) {
                 console.error('Lỗi khi lấy danh sách hội đồng:', error);
-                return [];
+                alert("Không thể tải danh sách hội đồng: " + error.message);
             }
         }
 
+        // Ghi chú: Lọc và sắp xếp hội đồng
+        function getFilteredCouncils() {
+            const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
+            const semesterFilter = document.getElementById("semesterFilter").value;
+
+            // Tìm kiếm bằng Fuse.js
+            let filtered = searchText
+                ? fuse.search(searchText).map(result => result.item)
+                : councils;
+
+            // Lọc theo kỳ học
+            filtered = filtered.filter(council =>
+                (semesterFilter === "" || council.semesterId == semesterFilter)
+            );
+
+            // Sắp xếp nếu có
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = sortColumn === 'members' ? a[sortColumn].map(m => m.fullName).join(", ") : a[sortColumn];
+                    let valueB = sortColumn === 'members' ? b[sortColumn].map(m => m.fullName).join(", ") : b[sortColumn];
+                    valueA = valueA ? valueA.toLowerCase() : '';
+                    valueB = valueB ? valueB.toLowerCase() : '';
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
         // Ghi chú: Hiển thị bảng hội đồng
-        async function displayTable(page) {
-            const filteredCouncils = await getFilteredCouncils();
+        function displayTable(page) {
+            const filteredCouncils = getFilteredCouncils();
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
             const paginatedData = filteredCouncils.slice(start, end);
@@ -461,12 +569,22 @@
                         credentials: "include",
                         body: JSON.stringify(request)
                     });
-                    if (!response.ok) throw new Error(await response.text());
+                    if (response.status === 401) {
+                        alert("Bạn không có quyền tạo hội đồng. Vui lòng đăng nhập lại.");
+                        window.location.href = "/font-end/login/login.html";
+                        return;
+                    }
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Không thể tạo hội đồng: ${errorText || response.statusText}`);
+                    }
                     alert("Đã thêm hội đồng: " + request.name);
                     bootstrap.Modal.getInstance(document.getElementById("addGradingModal")).hide();
-                    displayTable(currentPage);
+                    form.reset();
+                    await loadCouncils();
                 } catch (error) {
-                    alert("Lỗi khi thêm hội đồng: " + error.message);
+                    console.error("Lỗi khi thêm hội đồng:", error);
+                    alert("Không thể thêm hội đồng: " + error.message);
                 }
             } else {
                 form.reportValidity();
@@ -476,8 +594,22 @@
         // Ghi chú: Sửa hội đồng
         async function editGrading(id) {
             try {
-                const response = await fetch(`${apiBaseUrl}/${id}`);
-                if (!response.ok) throw new Error('Hội đồng không tồn tại.');
+                const response = await fetch(`${apiBaseUrl}/${id}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (response.status === 401) {
+                    alert("Bạn không có quyền truy cập. Vui lòng đăng nhập lại.");
+                    window.location.href = "/font-end/login/login.html";
+                    return;
+                }
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Hội đồng không tồn tại: ${errorText || response.statusText}`);
+                }
                 const council = await response.json();
 
                 document.getElementById("editGradingId").value = council.id;
@@ -488,7 +620,8 @@
                 const modal = new bootstrap.Modal(document.getElementById("editGradingModal"));
                 modal.show();
             } catch (error) {
-                alert("Lỗi khi tải hội đồng: " + error.message);
+                console.error("Lỗi khi tải hội đồng:", error);
+                alert("Không thể tải hội đồng: " + error.message);
             }
         }
 
@@ -523,12 +656,21 @@
                     credentials: "include",
                     body: JSON.stringify(request)
                 });
-                if (!response.ok) throw new Error(await response.text());
+                if (response.status === 401) {
+                    alert("Bạn không có quyền sửa hội đồng. Vui lòng đăng nhập lại.");
+                    window.location.href = "/font-end/login/login.html";
+                    return;
+                }
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể cập nhật hội đồng: ${errorText || response.statusText}`);
+                }
                 alert("Đã cập nhật hội đồng: " + request.name);
                 bootstrap.Modal.getInstance(document.getElementById("editGradingModal")).hide();
-                displayTable(currentPage);
+                await loadCouncils();
             } catch (error) {
-                alert("Lỗi khi cập nhật hội đồng: " + error.message);
+                console.error("Lỗi khi cập nhật hội đồng:", error);
+                alert("Không thể cập nhật hội đồng: " + error.message);
             }
         }
 
@@ -544,18 +686,27 @@
                         },
                         credentials: "include"
                     });
-                    if (!response.ok) throw new Error(await response.text());
+                    if (response.status === 401) {
+                        alert("Bạn không có quyền xóa hội đồng. Vui lòng đăng nhập lại.");
+                        window.location.href = "/font-end/login/login.html";
+                        return;
+                    }
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Không thể xóa hội đồng: ${errorText || response.statusText}`);
+                    }
                     alert("Đã xóa hội đồng!");
-                    displayTable(currentPage);
+                    await loadCouncils();
                 } catch (error) {
-                    alert("Lỗi khi xóa hội đồng: " + error.message);
+                    console.error("Lỗi khi xóa hội đồng:", error);
+                    alert("Không thể xóa hội đồng: " + error.message);
                 }
             }
         }
 
         // Ghi chú: Xuất Excel
-        async function exportGrading() {
-            const filteredCouncils = await getFilteredCouncils();
+        function exportGrading() {
+            const filteredCouncils = getFilteredCouncils();
             const worksheetData = [
                 ["Danh sách hội đồng chấm điểm - Hệ thống Sinh viên HUTECH"],
                 [],
@@ -578,35 +729,44 @@
             XLSX.writeFile(workbook, "danh_sach_hoi_dong.xlsx");
         }
 
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
-                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                const response = await fetch(authApiUrl, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
-                    credentials: "include",
+                    credentials: "include"
                 });
-
-                const data = await response.json();
+                const text = await response.text();
                 if (response.ok) {
-                    alert(data.message);
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
                 } else {
+                    const data = text ? JSON.parse(text) : {};
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
                 alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
             }
-
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
         // Ghi chú: Khởi chạy
         document.addEventListener("DOMContentLoaded", async () => {
-            await Promise.all([loadSemesters(), loadLecturers()]);
-            displayTable(currentPage);
+            try {
+                await loadUserProfile();
+                await Promise.all([loadSemesters(), loadLecturers(), loadCouncils()]);
+            } catch (error) {
+                console.error("Error loading grading page:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
         });
     </script>
 </body>

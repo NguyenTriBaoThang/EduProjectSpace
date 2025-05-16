@@ -8,25 +8,25 @@
     <title>Cài đặt hệ thống | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_admin.css" rel="stylesheet"> <!-- Ghi chú: Đường dẫn CSS từ cấu trúc dự án -->
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon"> <!-- Ghi chú: Icon HUTECH -->
 </head>
 <body>
     <!-- Sidebar -->
     <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
-        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
-        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
-        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
-        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
-        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
-        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
-        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
-        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
-        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
-        <a href="admin_settings.html" class="active"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
-        <a href="admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+        <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/admin/admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="/font-end/admin/admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="/font-end/admin/admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="/font-end/admin/admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="/font-end/admin/admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="/font-end/admin/admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="/font-end/admin/admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="/font-end/admin/admin_settings.html" class="active"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
     </div>
 
     <!-- Main Content -->
@@ -50,9 +50,10 @@
         </nav>
 
         <!-- Profile Dropdown -->
+        <!-- Ghi chú: Dropdown hiển thị thông tin admin và các tùy chọn như đăng xuất -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar"> <!-- Ghi chú: Ảnh avatar admin -->
                 <h6>Admin HUTECH</h6>
                 <p>admin@hutech.edu.vn</p>
             </div>
@@ -60,7 +61,7 @@
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -73,10 +74,11 @@
             </div>
 
             <!-- Breadcrumb -->
+            <!-- Ghi chú: Điều hướng breadcrumb để quay lại dashboard -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                        <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i></a>
                     </li>
                     <li class="breadcrumb-item active">
                         <i class="bi bi-gear"></i> Cài đặt hệ thống
@@ -85,6 +87,7 @@
             </nav>
 
             <!-- Permissions Configuration -->
+            <!-- Ghi chú: Bảng hiển thị và chỉnh sửa quyền truy cập, dữ liệu từ API -->
             <div class="card-dashboard">
                 <div class="card-header">
                     <h5>Quyền truy cập dữ liệu</h5>
@@ -102,34 +105,8 @@
                                 <th>Sửa hội đồng chấm điểm</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Admin</td>
-                                <td><input type="checkbox" id="adminViewUsers" checked disabled></td>
-                                <td><input type="checkbox" id="adminEditUsers" checked disabled></td>
-                                <td><input type="checkbox" id="adminViewProjects" checked disabled></td>
-                                <td><input type="checkbox" id="adminEditProjects" checked disabled></td>
-                                <td><input type="checkbox" id="adminViewGrading" checked disabled></td>
-                                <td><input type="checkbox" id="adminEditGrading" checked disabled></td>
-                            </tr>
-                            <tr>
-                                <td>Giảng viên</td>
-                                <td><input type="checkbox" id="lecturerViewUsers"></td>
-                                <td><input type="checkbox" id="lecturerEditUsers"></td>
-                                <td><input type="checkbox" id="lecturerViewProjects" checked></td>
-                                <td><input type="checkbox" id="lecturerEditProjects"></td>
-                                <td><input type="checkbox" id="lecturerViewGrading"></td>
-                                <td><input type="checkbox" id="lecturerEditGrading"></td>
-                            </tr>
-                            <tr>
-                                <td>Sinh viên</td>
-                                <td><input type="checkbox" id="studentViewUsers"></td>
-                                <td><input type="checkbox" id="studentEditUsers" disabled></td>
-                                <td><input type="checkbox" id="studentViewProjects" checked></td>
-                                <td><input type="checkbox" id="studentEditProjects"></td>
-                                <td><input type="checkbox" id="studentViewGrading"></td>
-                                <td><input type="checkbox" id="studentEditGrading" disabled></td>
-                            </tr>
+                        <tbody id="permissionsTable">
+                            <!-- Ghi chú: Dữ liệu sẽ được populate động từ API -->
                         </tbody>
                     </table>
                 </div>
@@ -137,109 +114,182 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <div class="footer">
         Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu cấu hình quyền mặc định
-        let permissions = {
-            admin: { viewUsers: true, editUsers: true, viewProjects: true, editProjects: true, viewGrading: true, editGrading: true },
-            lecturer: { viewUsers: false, editUsers: false, viewProjects: true, editProjects: false, viewGrading: false, editGrading: false },
-            student: { viewUsers: false, editUsers: false, viewProjects: true, editProjects: false, viewGrading: false, editGrading: false }
+        // File: wwwroot/font-end/static/js/admin_settings.js
+        // Mục đích: Xử lý logic giao diện và gọi API cho trang cài đặt hệ thống
+        // Ghi chú: Tích hợp API để quản lý quyền truy cập (4.7 - Phân quyền và bảo mật)
+
+        const apiBaseUrl = 'https://localhost:7047/api/RolePermissions';
+
+        window.onload = async () => {
+            try {
+                await loadPermissions();
+            } catch (error) {
+                console.error("Error loading users:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
         };
 
-        // Navbar Functions
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
-            toggleSidebar();
-        });
+        // Ghi chú: Lấy danh sách quyền từ API
+        async function loadPermissions() {
+            try {
+                const response = await fetch(apiBaseUrl, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
+                }
+                const permissions = await response.json();
+                displayPermissions(permissions);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách quyền:', error);
+                alert(`Không thể tải danh sách quyền: ${error.message}`);
+            }
+        }
 
+        // Ghi chú: Hiển thị danh sách quyền trong bảng
+        function displayPermissions(permissions) {
+            const tbody = document.getElementById('permissionsTable');
+            tbody.innerHTML = '';
+            permissions.forEach(perm => {
+                const isAdmin = perm.roleId === 1;
+                const isStudent = perm.roleId === 3;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${perm.roleName}</td> <!-- Ghi chú: Lấy từ Role.Name qua API -->
+                        <td><input type="checkbox" id="viewUsers_${perm.roleId}" ${isAdmin ? 'checked disabled' : ''} ${perm.viewUsers ? 'checked' : ''}></td>
+                        <td><input type="checkbox" id="editUsers_${perm.roleId}" ${isAdmin ? 'checked disabled' : isStudent ? 'disabled' : ''} ${perm.editUsers ? 'checked' : ''}></td>
+                        <td><input type="checkbox" id="viewProjects_${perm.roleId}" ${isAdmin ? 'checked disabled' : ''} ${perm.viewProjects ? 'checked' : ''}></td>
+                        <td><input type="checkbox" id="editProjects_${perm.roleId}" ${isAdmin ? 'checked disabled' : ''} ${perm.editProjects ? 'checked' : ''}></td>
+                        <td><input type="checkbox" id="viewGrading_${perm.roleId}" ${isAdmin ? 'checked disabled' : ''} ${perm.viewGrading ? 'checked' : ''}></td>
+                        <td><input type="checkbox" id="editGrading_${perm.roleId}" ${isAdmin ? 'checked disabled' : isStudent ? 'disabled' : ''} ${perm.editGrading ? 'checked' : ''}></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Ghi chú: Lưu cài đặt quyền
+        async function saveSettings() {
+            const permissions = [];
+            document.querySelectorAll('#permissionsTable tr').forEach(row => {
+                const roleId = parseInt(row.querySelector('input').id.split('_')[1]);
+                const roleName = row.cells[0].textContent;
+                permissions.push({
+                    roleId: roleId,
+                    roleName: roleName,
+                    viewUsers: document.getElementById(`viewUsers_${roleId}`).checked,
+                    editUsers: document.getElementById(`editUsers_${roleId}`).checked,
+                    viewProjects: document.getElementById(`viewProjects_${roleId}`).checked,
+                    editProjects: document.getElementById(`editProjects_${roleId}`).checked,
+                    viewGrading: document.getElementById(`viewGrading_${roleId}`).checked,
+                    editGrading: document.getElementById(`editGrading_${roleId}`).checked
+                });
+            });
+
+            try {
+                for (const perm of permissions) {
+                    if (perm.roleId === 1) continue; // Ghi chú: Bỏ qua Admin
+                    const response = await fetch(`${apiBaseUrl}/${perm.roleId}`, {
+                        method: 'PUT',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include",
+                        body: JSON.stringify(perm)
+                    });
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Cập nhật quyền cho vai trò ${perm.roleName} thất bại: ${errorText}`);
+                    }
+                }
+                alert('Đã lưu cài đặt quyền truy cập!');
+                loadPermissions(); // Ghi chú: Tải lại để cập nhật giao diện
+            } catch (error) {
+                console.error('Lỗi khi lưu quyền:', error);
+                alert(`Lỗi khi lưu cài đặt quyền: ${error.message}`);
+            }
+        }
+
+        // Ghi chú: Đăng xuất
+        async function logout() {
+            try {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const response = await fetch('https://localhost:7047/api/Auth/logout', {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        console.error('Đăng xuất thất bại:', data.message);
+                    }
+                }
+            } catch (error) {
+                console.error('Lỗi khi đăng xuất:', error);
+            } finally {
+                localStorage.removeItem('token'); // Ghi chú: Xóa token
+                localStorage.removeItem('user'); // Ghi chú: Xóa thông tin user
+                window.location.replace('/font-end/login/login.html');
+            }
+        }
+
+        // Ghi chú: Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
-            window.location.href = "admin_notifications.html";
+            window.location.href = "/font-end/admin/admin_notifications.html";
         });
-
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         });
-
         document.addEventListener("click", (event) => {
             const dropdown = document.getElementById("profileDropdown");
             if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
                 dropdown.style.display = "none";
             }
         });
-
         document.getElementById("toggleFullscreen").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleTheme").addEventListener("click", () => {
             document.body.classList.toggle("dark-mode");
             localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
         });
-
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
+        // Ghi chú: Hàm toggle sidebar
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
             let icon = document.getElementById("sidebarIcon");
-
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-
-            if (sidebar.classList.contains("collapsed")) {
-                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
-            } else {
-                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
-            }
+            icon.classList.replace(sidebar.classList.contains("collapsed") ? "bi-list" : "bi-layout-sidebar-inset",
+                                sidebar.classList.contains("collapsed") ? "bi-layout-sidebar-inset" : "bi-list");
         }
-
-        // Lưu cài đặt quyền
-        function saveSettings() {
-            permissions.lecturer.viewUsers = document.getElementById("lecturerViewUsers").checked;
-            permissions.lecturer.editUsers = document.getElementById("lecturerEditUsers").checked;
-            permissions.lecturer.viewProjects = document.getElementById("lecturerViewProjects").checked;
-            permissions.lecturer.editProjects = document.getElementById("lecturerEditProjects").checked;
-            permissions.lecturer.viewGrading = document.getElementById("lecturerViewGrading").checked;
-            permissions.lecturer.editGrading = document.getElementById("lecturerEditGrading").checked;
-
-            permissions.student.viewUsers = document.getElementById("studentViewUsers").checked;
-            permissions.student.editUsers = false; // Sinh viên không được sửa
-            permissions.student.viewProjects = document.getElementById("studentViewProjects").checked;
-            permissions.student.editProjects = document.getElementById("studentEditProjects").checked;
-            permissions.student.viewGrading = document.getElementById("studentViewGrading").checked;
-            permissions.student.editGrading = false; // Sinh viên không được sửa
-
-            alert("Đã lưu cài đặt quyền truy cập!");
-            console.log("Cấu hình quyền:", permissions); // Để kiểm tra, sẽ thay bằng logic thực tế khi tích hợp backend
-        }
-
-        // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            // Load cấu hình quyền hiện tại
-            document.getElementById("lecturerViewUsers").checked = permissions.lecturer.viewUsers;
-            document.getElementById("lecturerEditUsers").checked = permissions.lecturer.editUsers;
-            document.getElementById("lecturerViewProjects").checked = permissions.lecturer.viewProjects;
-            document.getElementById("lecturerEditProjects").checked = permissions.lecturer.editProjects;
-            document.getElementById("lecturerViewGrading").checked = permissions.lecturer.viewGrading;
-            document.getElementById("lecturerEditGrading").checked = permissions.lecturer.editGrading;
-
-            document.getElementById("studentViewUsers").checked = permissions.student.viewUsers;
-            document.getElementById("studentViewProjects").checked = permissions.student.viewProjects;
-            document.getElementById("studentEditProjects").checked = permissions.student.editProjects;
-            document.getElementById("studentViewGrading").checked = permissions.student.viewGrading;
-        });
     </script>
 </body>
 </html>

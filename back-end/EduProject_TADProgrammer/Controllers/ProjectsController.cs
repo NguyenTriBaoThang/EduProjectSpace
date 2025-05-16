@@ -12,7 +12,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_ADMIN")]
+    [Authorize(Roles = "ROLE_ADMIN")]
     public class ProjectsController : ControllerBase
     {
         private readonly ProjectService _projectService;
