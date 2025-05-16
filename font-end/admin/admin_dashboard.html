@@ -223,7 +223,11 @@
                 // Tải thống kê tổng quan
                 const summaryResponse = await fetch(`${API_URL}/api/Dashboard/summary`, {
                     method: "GET",
-                    headers: { "Accept": "*/*" },
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!summaryResponse.ok) {
@@ -237,7 +241,11 @@
                 // Tải trạng thái đồ án
                 const statusResponse = await fetch(`${API_URL}/api/Dashboard/project-status`, {
                     method: "GET",
-                    headers: { "Accept": "*/*" },
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!statusResponse.ok) {
@@ -249,7 +257,11 @@
                 // Tải thông báo gần đây
                 const notificationsResponse = await fetch(`${API_URL}/api/Notifications/recent`, {
                     method: "GET",
-                    headers: { "Accept": "*/*" },
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!notificationsResponse.ok) {
@@ -319,6 +331,10 @@
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
 

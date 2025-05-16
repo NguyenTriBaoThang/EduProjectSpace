@@ -9,25 +9,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
     <!-- Sidebar -->
     <!-- Ghi chú: 4.7 - Phân quyền và bảo mật hệ thống. Sidebar hiển thị các chức năng dành riêng cho Admin -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
-        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
-        <a href="admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
-        <a href="admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
-        <a href="admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
-        <a href="admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
-        <a href="admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
-        <a href="admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
-        <a href="admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
-        <a href="admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
-        <a href="admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
-        <a href="admin_reports.html" class="active"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
+        <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/admin/admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
+        <a href="/font-end/admin/admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
+        <a href="/font-end/admin/admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <a href="/font-end/admin/admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
+        <a href="/font-end/admin/admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
+        <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="/font-end/admin/admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
+        <a href="/font-end/admin/admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
+        <a href="/font-end/admin/admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
+        <a href="/font-end/admin/admin_reports.html" class="active"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
     </div>
 
     <!-- Main Content -->
@@ -53,7 +53,7 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Admin Avatar">
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
                 <h6>Admin HUTECH</h6>
                 <p>admin@hutech.edu.vn</p>
             </div>
@@ -61,7 +61,7 @@
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -78,7 +78,7 @@
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="admin_dashboard.html"><i class="bi bi-house-door"></i></a>
+                        <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i></a>
                     </li>
                     <li class="breadcrumb-item active">
                         <i class="bi bi-bar-chart"></i> Báo cáo thống kê
@@ -91,21 +91,12 @@
                 <div class="d-flex gap-3 mb-3">
                     <select id="semesterFilter" class="form-select" onchange="updateReport()">
                         <option value="">📅 Chọn kỳ học</option>
-                        <option value="HK20251">Học kỳ 1 - 2025</option>
-                        <option value="HK20252">Học kỳ 2 - 2025</option>
-                        <option value="HK20253">Học kỳ 3 - 2025</option>
-                        <option value="HK20241">Học kỳ 1 - 2024</option>
-                        <option value="HK20242">Học kỳ 2 - 2024</option>
                     </select>
                     <select id="facultyFilter" class="form-select" onchange="updateReport()">
                         <option value="">🏫 Chọn khoa</option>
-                        <option value="CNTT">Công nghệ Thông tin</option>
-                        <option value="KinhTe">Kinh tế</option>
                     </select>
                     <select id="departmentFilter" class="form-select" onchange="updateReport()">
                         <option value="">📚 Chọn bộ môn</option>
-                        <option value="CNTT">CNTT</option>
-                        <option value="Toan">Toán</option>
                     </select>
                 </div>
 
@@ -166,168 +157,173 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu từ các trang khác
-        const students = [
-            { id: 1, studentId: "21520001", name: "Nguyễn Tri Bão Thắng", class: "CNTT21A", faculty: "CNTT", department: "CNTT", semester: "HK20251" },
-            { id: 2, studentId: "21520002", name: "Trần Văn A", class: "CNTT21A", faculty: "CNTT", department: "CNTT", semester: "HK20251" },
-            { id: 3, studentId: "21520003", name: "Lê Thị B", class: "CNTT21B", faculty: "CNTT", department: "CNTT", semester: "HK20252" },
-            { id: 4, studentId: "21520004", name: "Phạm Văn C", class: "CNTT21B", faculty: "CNTT", department: "CNTT", semester: "HK20252" },
-            { id: 5, studentId: "21520005", name: "Nguyễn Thị D", class: "CNTT21A", faculty: "KinhTe", department: "Toan", semester: "HK20241" }
-        ];
+        // File: wwwroot/js/admin_reports.js
+        // Mục đích: Xử lý logic giao diện và gọi API cho trang báo cáo thống kê.
+        // Ghi chú: Tích hợp API để tải dữ liệu kỳ học, khoa, bộ môn và báo cáo.
 
-        const projects = [
-            { id: 1, projectId: "DT001", name: "Công nghệ phần mềm", student: "Nguyễn Tri Bão Thắng", lecturer: "Nguyễn Huy Cường", status: "Đã duyệt", semester: "HK20251", faculty: "CNTT", department: "CNTT" },
-            { id: 2, projectId: "DT002", name: "Ứng dụng AI trong y tế", student: "Trần Văn A", lecturer: "Trần Thị Vân Anh", status: "Chưa duyệt", semester: "HK20251", faculty: "CNTT", department: "CNTT" },
-            { id: 3, projectId: "DT003", name: "Lập trình Web", student: "Lê Thị B", lecturer: "Lê Văn Nam", status: "Hoàn thành", semester: "HK20252", faculty: "CNTT", department: "CNTT" },
-            { id: 4, projectId: "DT004", name: "Phân tích dữ liệu", student: "Phạm Văn C", lecturer: "Phạm Thị Hồng", status: "Đã duyệt", semester: "HK20252", faculty: "CNTT", department: "CNTT" },
-            { id: 5, projectId: "DT005", name: "IoT trong nông nghiệp", student: "Nguyễn Thị D", lecturer: "Nguyễn Văn Bình", status: "Chưa duyệt", semester: "HK20241", faculty: "KinhTe", department: "Toan" }
-        ];
+        const apiBaseUrl = 'https://localhost:7047/api/Reports';
+        let reportData = { summary: {}, students: [], projects: [], lecturers: [] }; // Ghi chú: Lưu dữ liệu báo cáo
 
-        const lecturers = [
-            { id: 1, lecturerId: "GV001", name: "Nguyễn Huy Cường", department: "CNTT", faculty: "CNTT" },
-            { id: 2, lecturerId: "GV002", name: "Trần Thị Vân Anh", department: "CNTT", faculty: "CNTT" },
-            { id: 3, lecturerId: "GV003", name: "Lê Văn Nam", department: "CNTT", faculty: "CNTT" },
-            { id: 4, lecturerId: "GV004", name: "Phạm Thị Hồng", department: "CNTT", faculty: "CNTT" },
-            { id: 5, lecturerId: "GV005", name: "Nguyễn Văn Bình", department: "Toan", faculty: "KinhTe" }
-        ];
-
-        // Navbar Functions
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
-            toggleSidebar();
-        });
-
+        // Ghi chú: Navbar Functions - Xử lý sự kiện cho navbar
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "admin_notifications.html";
         });
-
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         });
-
         document.addEventListener("click", (event) => {
             const dropdown = document.getElementById("profileDropdown");
             if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
                 dropdown.style.display = "none";
             }
         });
-
         document.getElementById("toggleFullscreen").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleTheme").addEventListener("click", () => {
             document.body.classList.toggle("dark-mode");
             localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
         });
-
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
+        // Ghi chú: Toggle Sidebar - Xử lý hiển thị/ẩn sidebar
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
             let icon = document.getElementById("sidebarIcon");
-
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
+            icon.classList.replace(
+                sidebar.classList.contains("collapsed") ? "bi-list" : "bi-layout-sidebar-inset",
+                sidebar.classList.contains("collapsed") ? "bi-layout-sidebar-inset" : "bi-list"
+            );
+        }
 
-            if (sidebar.classList.contains("collapsed")) {
-                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
-            } else {
-                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+        // Ghi chú: Tải danh sách kỳ học
+        async function loadSemesters() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/semesters`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const semesters = await response.json();
+                const semesterFilter = document.getElementById("semesterFilter");
+                semesters.forEach(sem => {
+                    const option = document.createElement("option");
+                    option.value = sem.name;
+                    option.textContent = sem.name;
+                    semesterFilter.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Lỗi khi tải kỳ học:', error);
+                alert(`Không thể tải danh sách kỳ học: ${error.message}`);
             }
         }
 
-        // Cập nhật báo cáo dựa trên bộ lọc
-        function updateReport() {
+        // Ghi chú: Tải danh sách khoa/bộ môn
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/departments`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const departments = await response.json();
+                const facultyFilter = document.getElementById("facultyFilter");
+                const departmentFilter = document.getElementById("departmentFilter");
+                departments.forEach(dep => {
+                    const facultyOption = document.createElement("option");
+                    facultyOption.value = dep.code;
+                    facultyOption.textContent = dep.name;
+                    facultyFilter.appendChild(facultyOption);
+
+                    const deptOption = document.createElement("option");
+                    deptOption.value = dep.code;
+                    deptOption.textContent = dep.name;
+                    departmentFilter.appendChild(deptOption);
+                });
+            } catch (error) {
+                console.error('Lỗi khi tải khoa/bộ môn:', error);
+                alert(`Không thể tải danh sách khoa/bộ môn: ${error.message}`);
+            }
+        }
+
+        // Ghi chú: Cập nhật báo cáo
+        async function updateReport() {
             const semesterFilter = document.getElementById("semesterFilter").value;
             const facultyFilter = document.getElementById("facultyFilter").value;
             const departmentFilter = document.getElementById("departmentFilter").value;
 
-            // Lọc dữ liệu
-            const filteredStudents = students.filter(student => 
-                (!semesterFilter || student.semester === semesterFilter) &&
-                (!facultyFilter || student.faculty === facultyFilter) &&
-                (!departmentFilter || student.department === departmentFilter)
-            );
+            try {
+                const query = new URLSearchParams();
+                if (semesterFilter) query.append("semesterCode", semesterFilter);
+                if (facultyFilter) query.append("facultyCode", facultyFilter);
+                if (departmentFilter) query.append("departmentCode", departmentFilter);
 
-            const filteredProjects = projects.filter(project => 
-                (!semesterFilter || project.semester === semesterFilter) &&
-                (!facultyFilter || project.faculty === facultyFilter) &&
-                (!departmentFilter || project.department === departmentFilter)
-            );
+                const response = await fetch(`${apiBaseUrl}?${query.toString()}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}, Message: ${await response.text()}`);
+                reportData = await response.json();
 
-            const filteredLecturers = lecturers.filter(lecturer => 
-                (!facultyFilter || lecturer.faculty === facultyFilter) &&
-                (!departmentFilter || lecturer.department === departmentFilter)
-            );
-
-            // Tính toán thống kê
-            const studentCount = filteredStudents.length;
-            const approvedProjects = filteredProjects.filter(p => p.status === "Đã duyệt" || p.status === "Hoàn thành").length;
-            const pendingProjects = filteredProjects.filter(p => p.status === "Chưa duyệt").length;
-            const lecturerCount = filteredLecturers.length;
-
-            // Cập nhật giao diện
-            document.getElementById("studentCount").textContent = studentCount;
-            document.getElementById("approvedProjects").textContent = approvedProjects;
-            document.getElementById("pendingProjects").textContent = pendingProjects;
-            document.getElementById("lecturerCount").textContent = lecturerCount;
+                // Ghi chú: Cập nhật giao diện
+                document.getElementById("studentCount").textContent = reportData.summary.studentCount;
+                document.getElementById("approvedProjects").textContent = reportData.summary.approvedProjects;
+                document.getElementById("pendingProjects").textContent = reportData.summary.pendingProjects;
+                document.getElementById("lecturerCount").textContent = reportData.summary.lecturerCount;
+            } catch (error) {
+                console.error('Lỗi khi tải báo cáo:', error);
+                alert(`Không thể tải báo cáo: ${error.message}`);
+            }
         }
 
-        // Xuất báo cáo sang Excel
+        // Ghi chú: Xuất báo cáo sang Excel
         function exportReport() {
             const semesterFilter = document.getElementById("semesterFilter").value;
             const facultyFilter = document.getElementById("facultyFilter").value;
             const departmentFilter = document.getElementById("departmentFilter").value;
-
-            const filteredStudents = students.filter(student => 
-                (!semesterFilter || student.semester === semesterFilter) &&
-                (!facultyFilter || student.faculty === facultyFilter) &&
-                (!departmentFilter || student.department === departmentFilter)
-            );
-
-            const filteredProjects = projects.filter(project => 
-                (!semesterFilter || project.semester === semesterFilter) &&
-                (!facultyFilter || project.faculty === facultyFilter) &&
-                (!departmentFilter || project.department === departmentFilter)
-            );
-
-            const filteredLecturers = lecturers.filter(lecturer => 
-                (!facultyFilter || lecturer.faculty === facultyFilter) &&
-                (!departmentFilter || lecturer.department === departmentFilter)
-            );
 
             const worksheetData = [
                 ["Báo cáo thống kê - Hệ thống Sinh viên HUTECH"],
                 ["Kỳ học:", semesterFilter || "Tất cả", "Khoa:", facultyFilter || "Tất cả", "Bộ môn:", departmentFilter || "Tất cả"],
                 [],
                 ["Thống kê tổng quan"],
-                ["Số lượng sinh viên:", filteredStudents.length],
-                ["Số đề tài đã duyệt:", filteredProjects.filter(p => p.status === "Đã duyệt" || p.status === "Hoàn thành").length],
-                ["Số đề tài chưa duyệt:", filteredProjects.filter(p => p.status === "Chưa duyệt").length],
-                ["Số giảng viên:", filteredLecturers.length],
+                ["Số lượng sinh viên:", reportData.summary.studentCount],
+                ["Số đề tài đã duyệt:", reportData.summary.approvedProjects],
+                ["Số đề tài chưa duyệt:", reportData.summary.pendingProjects],
+                ["Số giảng viên:", reportData.summary.lecturerCount],
                 [],
                 ["Danh sách sinh viên"],
                 ["Mã SV", "Họ và tên", "Lớp", "Khoa", "Bộ môn", "Kỳ học"]
             ];
 
-            filteredStudents.forEach(student => {
+            reportData.students.forEach(student => {
                 worksheetData.push([
                     student.studentId,
                     student.name,
-                    student.class,
-                    student.faculty,
-                    student.department,
-                    student.semester
+                    student.classCode,
+                    student.facultyCode,
+                    student.departmentCode,
+                    student.semesterCode
                 ]);
             });
 
@@ -337,14 +333,14 @@
                 ["Mã đề tài", "Tên đề tài", "Sinh viên", "Giảng viên hướng dẫn", "Trạng thái", "Kỳ học"]
             );
 
-            filteredProjects.forEach(project => {
+            reportData.projects.forEach(project => {
                 worksheetData.push([
                     project.projectId,
                     project.name,
-                    project.student,
-                    project.lecturer,
+                    project.studentName,
+                    project.lecturerName,
                     project.status,
-                    project.semester
+                    project.semesterCode
                 ]);
             });
 
@@ -354,12 +350,12 @@
                 ["Mã GV", "Họ và tên", "Bộ môn", "Khoa"]
             );
 
-            filteredLecturers.forEach(lecturer => {
+            reportData.lecturers.forEach(lecturer => {
                 worksheetData.push([
                     lecturer.lecturerId,
                     lecturer.name,
-                    lecturer.department,
-                    lecturer.faculty
+                    lecturer.departmentCode,
+                    lecturer.facultyCode
                 ]);
             });
 
@@ -369,10 +365,38 @@
             XLSX.writeFile(workbook, "bao_cao_thong_ke.xlsx");
         }
 
-        // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            updateReport();
+        //Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch("https://localhost:7047/api/Auth/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        // Ghi chú: Khởi chạy khi trang tải
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadSemesters(); // Ghi chú: Tải kỳ học
+            await loadDepartments(); // Ghi chú: Tải khoa/bộ môn
+            await updateReport(); // Ghi chú: Tải báo cáo ban đầu
         });
-    </script>
+    </script> <!-- Ghi chú: Tách logic JS sang file riêng -->
 </body>
 </html>

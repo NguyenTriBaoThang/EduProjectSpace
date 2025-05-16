@@ -28,13 +28,15 @@ internal class Program
         // Thêm các dịch vụ
         builder.Services.AddScoped<JwtService>();
         builder.Services.AddScoped<LogService>();
-        builder.Services.AddScoped<ProjectService>();
-        builder.Services.AddScoped<DefenseCommitteeService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<RoleService>();
+        builder.Services.AddScoped<ReportService>();
+        builder.Services.AddScoped<ProjectService>();
         builder.Services.AddScoped<SemesterService>();
         builder.Services.AddScoped<DashboardService>();
         builder.Services.AddScoped<NotificationService>();
+        builder.Services.AddScoped<RolePermissionService>();
+        builder.Services.AddScoped<DefenseCommitteeService>();
         builder.Services.AddHostedService<DeadlineReminderService>();
 
         // Thêm CORS policy

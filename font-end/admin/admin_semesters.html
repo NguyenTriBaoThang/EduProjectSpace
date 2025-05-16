@@ -252,7 +252,7 @@
                 const response = await fetch(`${API_URL}/api/Semesters`, {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
@@ -398,7 +398,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include",
                     body: JSON.stringify(newSemester)
@@ -450,7 +450,7 @@
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include",
                     body: JSON.stringify(updatedSemester)
@@ -479,7 +479,7 @@
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
@@ -502,7 +502,8 @@
             try {
                 const response = await fetch(`${API_URL}/api/Semesters/export`, {
                     headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
@@ -532,7 +533,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token") || ''}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });

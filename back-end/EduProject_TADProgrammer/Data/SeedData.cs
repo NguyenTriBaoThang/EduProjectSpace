@@ -47,18 +47,18 @@ namespace EduProject_TADProgrammer.Data
 
             // 3. Course (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
             modelBuilder.Entity<Course>().HasData(
-                new Course { Id = 1, Name = "Đồ án Tốt nghiệp CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_TN_2025", DefenseDate = new DateTime(2025, 6, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 2, Name = "Đồ án Cơ sở CNTT", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_CS_2025", DefenseDate = new DateTime(2025, 6, 10), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 3, Name = "Đồ án Tốt nghiệp KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "KTPM_TN_2025", DefenseDate = new DateTime(2025, 6, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 4, Name = "Đồ án Cơ sở KTPM", SemesterId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "KTPM_CS_2025", DefenseDate = new DateTime(2025, 6, 10), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 5, Name = "Đồ án Tốt nghiệp ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "ATTT_TN_2025", DefenseDate = new DateTime(2025, 4, 20), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 6, Name = "Đồ án Cơ sở ATTT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "ATTT_CS_2025", DefenseDate = new DateTime(2025, 4, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 7, Name = "Đồ án Tốt nghiệp KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "KHMT_TN_2025", DefenseDate = new DateTime(2025, 4, 20), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 8, Name = "Đồ án Cơ sở KHMT", SemesterId = 2, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "KHMT_CS_2025", DefenseDate = new DateTime(2025, 4, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 9, Name = "Đồ án Tốt nghiệp HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "HTTT_TN_2025", DefenseDate = new DateTime(2025, 10, 20), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 10, Name = "Đồ án Cơ sở HTTT", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "HTTT_CS_2025", DefenseDate = new DateTime(2025, 10, 15), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 11, Name = "Đồ án Tốt nghiệp CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "CNPM_TN_2025", DefenseDate = new DateTime(2025, 10, 20), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Course { Id = 12, Name = "Đồ án Cơ sở CNPM", SemesterId = 3, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "CNPM_CS_2025", DefenseDate = new DateTime(2025, 10, 15), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new Course { Id = 1, Name = "Đồ án Tốt nghiệp CNTT", SemesterId = 1, DepartmentId = 1,StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_TN_2025", DefenseDate = new DateTime(2025, 6, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 2, Name = "Đồ án Cơ sở CNTT", SemesterId = 1, DepartmentId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_CS_2025", DefenseDate = new DateTime(2025, 6, 10), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 3, Name = "Đồ án Tốt nghiệp KTPM", SemesterId = 1, DepartmentId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "KTPM_TN_2025", DefenseDate = new DateTime(2025, 6, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 4, Name = "Đồ án Cơ sở KTPM", SemesterId = 1, DepartmentId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "KTPM_CS_2025", DefenseDate = new DateTime(2025, 6, 10), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 5, Name = "Đồ án Tốt nghiệp ATTT", SemesterId = 2, DepartmentId = 1, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "ATTT_TN_2025", DefenseDate = new DateTime(2025, 4, 20), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 6, Name = "Đồ án Cơ sở ATTT", SemesterId = 2, DepartmentId = 1, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "ATTT_CS_2025", DefenseDate = new DateTime(2025, 4, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 7, Name = "Đồ án Tốt nghiệp KHMT", SemesterId = 2, DepartmentId = 1, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "KHMT_TN_2025", DefenseDate = new DateTime(2025, 4, 20), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 8, Name = "Đồ án Cơ sở KHMT", SemesterId = 2, DepartmentId = 1, StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CourseCode = "KHMT_CS_2025", DefenseDate = new DateTime(2025, 4, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 9, Name = "Đồ án Tốt nghiệp HTTT", SemesterId = 3, DepartmentId = 1, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "HTTT_TN_2025", DefenseDate = new DateTime(2025, 10, 20), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 10, Name = "Đồ án Cơ sở HTTT", SemesterId = 3, DepartmentId = 1, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "HTTT_CS_2025", DefenseDate = new DateTime(2025, 10, 15), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 11, Name = "Đồ án Tốt nghiệp CNPM", SemesterId = 3, DepartmentId = 1, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "CNPM_TN_2025", DefenseDate = new DateTime(2025, 10, 20), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Course { Id = 12, Name = "Đồ án Cơ sở CNPM", SemesterId = 3, DepartmentId = 1, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "CNPM_CS_2025", DefenseDate = new DateTime(2025, 10, 15), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 4. Project (Đã có 3 bản ghi, thêm 10 bản ghi để đủ 13)
@@ -691,6 +691,20 @@ namespace EduProject_TADProgrammer.Data
                 // Nhóm 13 (Project 13, Course 12)
                 new StudentCourse { Id = 26, StudentId = 11, CourseId = 12, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new StudentCourse { Id = 27, StudentId = 12, CourseId = 12, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+            );
+
+            // 42 RolePermissions
+            modelBuilder.Entity<RolePermission>().HasData(
+                new RolePermission { Id = 1, RoleId = 1, ViewUsers = true, EditUsers = true, ViewProjects = true, EditProjects = true, ViewGrading = true, EditGrading = true, UpdatedAt = DateTime.UtcNow },
+                new RolePermission { Id = 2, RoleId = 2, ViewUsers = false, EditUsers = false, ViewProjects = true, EditProjects = false, ViewGrading = false, EditGrading = false, UpdatedAt = DateTime.UtcNow },
+                new RolePermission { Id = 3, RoleId = 3, ViewUsers = false, EditUsers = false, ViewProjects = true, EditProjects = false, ViewGrading = false, EditGrading = false, UpdatedAt = DateTime.UtcNow },
+                new RolePermission { Id = 4, RoleId = 4, ViewUsers = false, EditUsers = false, ViewProjects = true, EditProjects = false, ViewGrading = false, EditGrading = false, UpdatedAt = DateTime.UtcNow }
+            );
+
+            // 43. Departments
+            modelBuilder.Entity<Department>().HasData(
+                new Department { Id = 1, FacultyCode = "CNTT", FacultyName = "Công nghệ Thông tin", DepartmentCode = "CNTT", DepartmentName = "CNTT" },
+                new Department { Id = 2, FacultyCode = "KinhTe", FacultyName = "Kinh tế", DepartmentCode = "Toan", DepartmentName = "Toán" }
             );
         }
     }

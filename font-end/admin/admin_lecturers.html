@@ -289,8 +289,8 @@
             try {
                 const response = await fetch(`${API_URL}/api/User/lecturers`, {
                     headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });

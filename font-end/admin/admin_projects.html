@@ -275,7 +275,10 @@
         async function loadCourses() {
             try {
                 const response = await fetch(`${API_URL}/api/Courses`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!response.ok) throw new Error(`Lỗi tải danh sách môn học: ${response.status}`);
@@ -299,7 +302,10 @@
         async function loadLecturers() {
             try {
                 const response = await fetch(`${API_URL}/api/User/lecturers`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!response.ok) throw new Error(`Lỗi tải danh sách giảng viên: ${response.status}`);
@@ -323,7 +329,10 @@
         async function loadProjects() {
             try {
                 const response = await fetch(`${API_URL}/api/Projects`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!response.ok) throw new Error(`Lỗi tải danh sách đề tài: ${response.status}`);
@@ -495,7 +504,10 @@
         async function editProject(id) {
             try {
                 const response = await fetch(`${API_URL}/api/Projects/${id}`, {
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!response.ok) throw new Error(`Lỗi tải thông tin đề tài: ${response.status}`);
@@ -566,7 +578,10 @@
             try {
                 const response = await fetch(`${API_URL}/api/Projects/${id}`, {
                     method: "DELETE",
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
                 if (!response.ok) throw new Error("Không xóa được đề tài.");
@@ -700,6 +715,10 @@
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
                     credentials: "include"
                 });
 
