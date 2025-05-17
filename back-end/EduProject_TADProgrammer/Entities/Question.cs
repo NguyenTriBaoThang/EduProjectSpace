@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Question.cs
+﻿// File: Entities/Question.cs
 // Mục đích: Định nghĩa entity Question để lưu câu hỏi kiểm tra trước bảo vệ.
 // Hỗ trợ chức năng: 
 //   33: Giảng viên - Tạo câu hỏi kiểm tra

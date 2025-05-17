@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/SkillAssessment.cs
+﻿// File: Entities/SkillAssessment.cs
 // Mục đích: Định nghĩa entity SkillAssessment để lưu kết quả tự đánh giá kỹ năng của sinh viên.
 // Hỗ trợ chức năng: 
 //   60: Đánh giá năng lực cá nhân

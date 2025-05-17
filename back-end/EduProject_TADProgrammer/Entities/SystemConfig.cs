@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/SystemConfig.cs
+﻿// File: Entities/SystemConfig.cs
 // Mục đích: Định nghĩa entity SystemConfig để lưu cấu hình hệ thống (logo, màu sắc).
 // Hỗ trợ chức năng: 
 //   16: Admin - Cấu hình hệ thống

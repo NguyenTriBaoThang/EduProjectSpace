@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/User.cs
+﻿// File: Entities/User.cs
 // Mục đích: Định nghĩa entity User để lưu thông tin người dùng (Admin, Giảng viên, Sinh viên).
 // Hỗ trợ chức năng: 
 //   1: Phân quyền và bảo mật

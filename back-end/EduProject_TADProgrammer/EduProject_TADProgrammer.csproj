@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\SeedData.cs~RF10ded13.TMP" />
     <None Remove="Data\SeedData.cs~RF7e0db4e.TMP" />
+    <None Remove="Entities\GradeLog.cs~RF431bfe.TMP" />
     <None Remove="Services\JwtService.cs~RF13682788.TMP" />
   </ItemGroup>
 

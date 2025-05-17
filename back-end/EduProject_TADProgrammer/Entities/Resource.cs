@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Resource.cs
+﻿// File: Entities/Resource.cs
 // Mục đích: Định nghĩa entity Resource để lưu tài liệu tham khảo, tài nguyên nhóm, hoặc mẫu.
 // Hỗ trợ chức năng: 
 //   31: Giảng viên - Quản lý tài liệu
@@ -15,6 +15,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa loại tài nguyên
+    public enum ResourceType
+    {
+        Reference,  // Tài liệu tham khảo
+        Group,      // Tài liệu của nhóm
+        Sample      // Mẫu ví dụ
+    }
+
     public class Resource
     {
         [Key]
@@ -39,7 +47,7 @@ namespace EduProject_TADProgrammer.Entities
         public string FilePath { get; set; }
 
         [Required]
-        public string Type { get; set; } // REFERENCE, GROUP, SAMPLE
+        public string Type { get; set; }
 
         [Required]
         public long CreatedBy { get; set; }

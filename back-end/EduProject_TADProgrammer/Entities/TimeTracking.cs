@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/TimeTracking.cs
+﻿// File: Entities/TimeTracking.cs
 // Mục đích: Định nghĩa entity TimeTracking để lưu thời gian làm việc của sinh viên.
 // Hỗ trợ chức năng: 
 //   37: Giảng viên - Phân tích mức độ tham gia

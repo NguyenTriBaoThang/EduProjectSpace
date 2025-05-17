@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/GradeLog.cs
+﻿// File: Entities/GradeLog.cs
 // Mục đích: Định nghĩa entity GradeLog để lưu nhật ký chấm điểm.
 // Hỗ trợ chức năng: 
 //   74: Nhật ký chấm điểm
@@ -8,6 +8,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa các hành động trên điểm số
+    public enum GradeAction
+    {
+        Create,    // Tạo điểm số mới
+        Update,    // Cập nhật điểm số
+        Delete     // Xóa điểm số (nếu cần)
+    }
+
     public class GradeLog
     {
         [Key]
@@ -27,7 +35,7 @@ namespace EduProject_TADProgrammer.Entities
 
         [Required]
         [StringLength(50)]
-        public string Action { get; set; } // CREATE, UPDATE
+        public string Action { get; set; }
 
         public string Details { get; set; }
 

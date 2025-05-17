@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Grade.cs
+﻿// File: Entities/Grade.cs
 // Mục đích: Định nghĩa entity Grade để lưu điểm số của nhóm hoặc sinh viên.
 // Hỗ trợ chức năng: 
 //   12: Hỗ trợ chấm điểm

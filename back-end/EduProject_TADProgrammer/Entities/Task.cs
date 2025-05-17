@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Task.cs
+﻿// File: Entities/Task.cs
 // Mục đích: Định nghĩa entity Task để lưu nhiệm vụ được giao cho nhóm hoặc sinh viên.
 // Hỗ trợ chức năng: 
 //   27: Giảng viên - Giao nhiệm vụ
@@ -11,6 +11,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa trạng thái của nhiệm vụ
+    public enum TaskStatus
+    {
+        Todo,       // Chưa bắt đầu
+        InProgress, // Đang thực hiện
+        Done        // Hoàn thành
+    }
+
     public class Task
     {
         [Key]
@@ -41,7 +49,7 @@ namespace EduProject_TADProgrammer.Entities
         public DateTime? Deadline { get; set; }
 
         [Required]
-        public string Status { get; set; } // TODO, IN_PROGRESS, DONE
+        public string Status { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

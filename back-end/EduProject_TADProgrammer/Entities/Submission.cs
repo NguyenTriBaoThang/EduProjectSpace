@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Submission.cs
+﻿// File: Entities/Submission.cs
 // Mục đích: Định nghĩa entity Submission để lưu bài nộp của nhóm (báo cáo, mã nguồn).
 // Hỗ trợ chức năng: 
 //   7: Quản lý quy trình đồ án
@@ -15,6 +15,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa trạng thái của bài nộp
+    public enum SubmissionStatus
+    {
+        Submitted,  // Đã nộp
+        Validated,  // Đã được xác nhận
+        Rejected    // Bị từ chối
+    }
+
     public class Submission
     {
         [Key]
@@ -40,7 +48,7 @@ namespace EduProject_TADProgrammer.Entities
         public int Version { get; set; }
 
         [Required]
-        public string Status { get; set; } // SUBMITTED, VALIDATED, REJECTED
+        public string Status { get; set; }
 
         public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
 

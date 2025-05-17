@@ -549,7 +549,7 @@
                     const workbook = XLSX.read(data, { type: 'array' });
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
                     const rows = XLSX.utils.sheet_to_json(sheet, { 
-                        header: ["Username", "FullName", "Email", "RoleId"], 
+                        header: ["Username", "FullName", "ClassCode","Email", "RoleId"], 
                         skipHeader: true 
                     });
 
@@ -561,9 +561,10 @@
                     const usersToImport = rows.map(row => ({
                         username: row.Username?.toString(),
                         fullName: row.FullName?.toString(),
+                        classCode: row.ClassCode?.toString(),
                         email: row.Email?.toString(),
                         roleId: parseInt(row.RoleId) || 3
-                    })).filter(user => user.username && user.fullName && user.email && [1, 2, 3, 4].includes(user.roleId));
+                    })).filter(user => user.username && user.fullName && user.classCode && user.email && [1, 2, 3, 4].includes(user.roleId));
 
                     if (usersToImport.length === 0) {
                         alert("Không có dữ liệu hợp lệ trong file Excel. Đảm bảo có Username, FullName, Email, RoleId (1-4).");

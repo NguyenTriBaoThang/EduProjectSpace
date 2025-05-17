@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/SubmissionVersion.cs
+﻿// File: Entities/SubmissionVersion.cs
 // Mục đích: Định nghĩa entity SubmissionVersion để lưu lịch sử phiên bản bài nộp.
 // Hỗ trợ chức năng: 
 //   59: Quản lý phiên bản tài liệu

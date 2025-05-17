@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/PeerReview.cs
+﻿// File: Entities/PeerReview.cs
 // Mục đích: Định nghĩa entity PeerReview để lưu đánh giá giữa các thành viên trong nhóm.
 // Hỗ trợ chức năng: 
 //   52: Đánh giá hiệu suất nhóm

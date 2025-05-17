@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/GroupMember.cs
+﻿// File: Entities/GroupMember.cs
 // Mục đích: Định nghĩa entity GroupMember để lưu danh sách thành viên trong mỗi nhóm.
 // Hỗ trợ chức năng: 
 //   39: Sinh viên - Tham gia nhóm
