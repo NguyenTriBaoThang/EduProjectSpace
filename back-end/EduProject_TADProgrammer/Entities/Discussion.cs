@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Discussion.cs
+﻿// File: Entities/Discussion.cs
 // Mục đích: Định nghĩa entity Discussion để lưu bài đăng và bình luận trên diễn đàn.
 // Hỗ trợ chức năng: 
 //   41: Sinh viên - Gửi câu hỏi thảo luận

@@ -12,7 +12,7 @@ namespace EduProject_TADProgrammer.Data
             // Mật khẩu mẫu đã mã hóa (password123)
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword("password123");
 
-            // 1. Role (Đã có 4 bản ghi, thêm 1 bản ghi để đủ 5)
+            // 1. Role
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "ROLE_ADMIN", Description = "Quản trị viên" },
                 new Role { Id = 2, Name = "ROLE_LECTURER_GUIDE", Description = "Giảng viên hướng dẫn" },
@@ -21,31 +21,26 @@ namespace EduProject_TADProgrammer.Data
                 new Role { Id = 5, Name = "ROLE_LECTURER_REVIEW", Description = "Giảng viên phản biện" }
             );
 
-            // 2. User (Đã có 11 bản ghi, thêm 4 bản ghi để đủ 15)
+            // 2. User
             modelBuilder.Entity<User>().HasData(
-                // Admin
                 new User { Id = 1, Username = "admin", Password = hashedPassword, Email = "admin@hutech.edu.vn", FullName = "Quản trị viên", RoleId = 1, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                // Trưởng bộ môn
                 new User { Id = 2, Username = "head1", Password = hashedPassword, Email = "head1@hutech.edu.vn", FullName = "Nguyễn Văn Hùng", RoleId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 3, Username = "head2", Password = hashedPassword, Email = "head2@hutech.edu.vn", FullName = "Trần Thị Lan", RoleId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                // Giảng viên hướng dẫn
                 new User { Id = 4, Username = "lecturer1", Password = hashedPassword, Email = "lecturer1@hutech.edu.vn", FullName = "Lê Văn Nam", RoleId = 2, CourseId = 1, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 5, Username = "lecturer2", Password = hashedPassword, Email = "lecturer2@hutech.edu.vn", FullName = "Phạm Thị Mai", RoleId = 2, CourseId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 6, Username = "lecturer3", Password = hashedPassword, Email = "lecturer3@hutech.edu.vn", FullName = "Hoàng Văn Tùng", RoleId = 2, CourseId = 3, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                // Sinh viên
                 new User { Id = 7, Username = "student1", Password = hashedPassword, Email = "student1@hutech.edu.vn", FullName = "Nguyễn Tri Bão Thắng", RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 8, Username = "student2", Password = hashedPassword, Email = "student2@hutech.edu.vn", FullName = "Trần Văn Bình", RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 9, Username = "student3", Password = hashedPassword, Email = "student3@hutech.edu.vn", FullName = "Lê Thị Cẩm", RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 10, Username = "student4", Password = hashedPassword, Email = "student4@hutech.edu.vn", FullName = "Phạm Văn Đức", RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 11, Username = "student5", Password = hashedPassword, Email = "student5@hutech.edu.vn", FullName = "Hoàng Thị Em", RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                // Thêm mới
                 new User { Id = 12, Username = "student6", Password = hashedPassword, Email = "student6@hutech.edu.vn", FullName = "Nguyễn Văn Phú", RoleId = 3, ClassCode = "21DTHA2", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 13, Username = "student7", Password = hashedPassword, Email = "student7@hutech.edu.vn", FullName = "Trần Thị Hồng", RoleId = 3, ClassCode = "21DTHA2", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 14, Username = "lecturer4", Password = hashedPassword, Email = "lecturer4@hutech.edu.vn", FullName = "Nguyễn Thị Ngọc", RoleId = 2, CourseId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 15, Username = "lecturer5", Password = hashedPassword, Email = "lecturer5@hutech.edu.vn", FullName = "Võ Văn Tài", RoleId = 2, CourseId = 5, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
-            // 3. Course (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 3. Course
             modelBuilder.Entity<Course>().HasData(
                 new Course { Id = 1, Name = "Đồ án Tốt nghiệp CNTT", SemesterId = 1, DepartmentId = 1,StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_TN_2025", DefenseDate = new DateTime(2025, 6, 15), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Course { Id = 2, Name = "Đồ án Cơ sở CNTT", SemesterId = 1, DepartmentId = 1, StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CourseCode = "CNTT_CS_2025", DefenseDate = new DateTime(2025, 6, 10), Status = "OPEN", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -61,7 +56,7 @@ namespace EduProject_TADProgrammer.Data
                 new Course { Id = 12, Name = "Đồ án Cơ sở CNPM", SemesterId = 3, DepartmentId = 1, StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CourseCode = "CNPM_CS_2025", DefenseDate = new DateTime(2025, 10, 15), Status = "PLANNED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
-            // 4. Project (Đã có 3 bản ghi, thêm 10 bản ghi để đủ 13)
+            // 4. Project
             modelBuilder.Entity<Project>().HasData(
                 new Project { Id = 1, Title = "Ứng dụng AI trong y tế", Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", CourseId = 1, LecturerId = 4, GroupId = 1, Status = "NOT_SUBMITTED", ProjectCode = "AI_YTE_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Project { Id = 2, Title = "Hệ thống quản lý đồ án", Description = "Xây dựng hệ thống quản lý đồ án sinh viên.", CourseId = 1, LecturerId = 5, GroupId = 2, Status = "NOT_SUBMITTED", ProjectCode = "QLDA_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -78,7 +73,7 @@ namespace EduProject_TADProgrammer.Data
                 new Project { Id = 13, Title = "Hệ thống phân tích tài chính", Description = "Xây dựng hệ thống phân tích tài chính cá nhân.", CourseId = 12, LecturerId = 6, GroupId = 13, Status = "PENDING", ProjectCode = "PTTC_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
-            // 5. ProjectVersion (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 5. ProjectVersion
             modelBuilder.Entity<ProjectVersion>().HasData(
                 new ProjectVersion { Id = 1, ProjectId = 1, Title = "Ứng dụng AI trong y tế", Description = "Phiên bản ban đầu.", VersionNumber = 1, CreatedAt = DateTime.UtcNow },
                 new ProjectVersion { Id = 2, ProjectId = 1, Title = "Ứng dụng AI trong y tế (Cập nhật)", Description = "Cập nhật mô tả.", VersionNumber = 2, CreatedAt = DateTime.UtcNow.AddDays(-1) },
@@ -94,7 +89,7 @@ namespace EduProject_TADProgrammer.Data
                 new ProjectVersion { Id = 12, ProjectId = 11, Title = "Hệ thống quản lý nhân sự", Description = "Phiên bản ban đầu.", VersionNumber = 1, CreatedAt = DateTime.UtcNow }
             );
 
-            // 6. Group (Đã có 3 bản ghi, thêm 10 bản ghi để đủ 13)
+            // 6. Group
             modelBuilder.Entity<Group>().HasData(
                 new Group { Id = 1, Name = "Nhóm 1", ProjectId = 1, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Group { Id = 2, Name = "Nhóm 2", ProjectId = 2, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -111,7 +106,7 @@ namespace EduProject_TADProgrammer.Data
                 new Group { Id = 13, Name = "Nhóm 13", ProjectId = 13, MaxMembers = 5, Status = "PENDING", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
-            // 7. GroupMember (Đã có 5 bản ghi, thêm 10 bản ghi để đủ 15)
+            // 7. GroupMember
             modelBuilder.Entity<GroupMember>().HasData(
                 new GroupMember { Id = 1, GroupId = 1, StudentId = 7, JoinedAt = DateTime.UtcNow },
                 new GroupMember { Id = 2, GroupId = 1, StudentId = 8, JoinedAt = DateTime.UtcNow },
@@ -130,7 +125,7 @@ namespace EduProject_TADProgrammer.Data
                 new GroupMember { Id = 15, GroupId = 12, StudentId = 7, JoinedAt = DateTime.UtcNow }
             );
 
-            // 8. GroupRequest (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 8. GroupRequest
             modelBuilder.Entity<GroupRequest>().HasData(
                 new GroupRequest { Id = 1, GroupId = 1, StudentId = 9, Status = "PENDING", CreatedAt = DateTime.UtcNow },
                 new GroupRequest { Id = 2, GroupId = 2, StudentId = 10, Status = "APPROVED", CreatedAt = DateTime.UtcNow },
@@ -146,7 +141,7 @@ namespace EduProject_TADProgrammer.Data
                 new GroupRequest { Id = 12, GroupId = 12, StudentId = 7, Status = "REJECTED", CreatedAt = DateTime.UtcNow }
             );
 
-            // 9. Task (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 9. Task
             modelBuilder.Entity<Entities.Task>().HasData(
                 new Entities.Task { Id = 1, ProjectId = 1, GroupId = 1, Title = "Phân tích yêu cầu", Description = "Phân tích yêu cầu hệ thống AI.", Deadline = new DateTime(2025, 2, 15), Status = "TODO", CreatedAt = DateTime.UtcNow },
                 new Entities.Task { Id = 2, ProjectId = 2, StudentId = 9, Title = "Thiết kế giao diện", Description = "Thiết kế giao diện quản lý đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
@@ -162,7 +157,7 @@ namespace EduProject_TADProgrammer.Data
                 new Entities.Task { Id = 12, ProjectId = 12, StudentId = 13, Title = "Tích hợp chat", Description = "Tích hợp tính năng chat nhóm.", Deadline = new DateTime(2025, 4, 1), Status = "TODO", CreatedAt = DateTime.UtcNow }
             );
 
-            // 10. Submission (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 10. Submission
             modelBuilder.Entity<Submission>().HasData(
                 new Submission { Id = 1, ProjectId = 1, GroupId = 1, FilePath = "submissions/dt001.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
                 new Submission { Id = 2, ProjectId = 2, GroupId = 2, FilePath = "submissions/dt002.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
@@ -178,7 +173,7 @@ namespace EduProject_TADProgrammer.Data
                 new Submission { Id = 12, ProjectId = 12, GroupId = 12, FilePath = "submissions/dt012.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow }
             );
 
-            // 11. SubmissionVersion (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 11. SubmissionVersion
             modelBuilder.Entity<SubmissionVersion>().HasData(
                 new SubmissionVersion { Id = 1, SubmissionId = 1, FilePath = "submissions/dt001_v1.pdf", VersionNumber = 1, CreatedAt = DateTime.UtcNow },
                 new SubmissionVersion { Id = 2, SubmissionId = 1, FilePath = "submissions/dt001_v2.pdf", VersionNumber = 2, CreatedAt = DateTime.UtcNow.AddDays(-1) },
@@ -194,7 +189,7 @@ namespace EduProject_TADProgrammer.Data
                 new SubmissionVersion { Id = 12, SubmissionId = 11, FilePath = "submissions/dt011_v1.pdf", VersionNumber = 1, CreatedAt = DateTime.UtcNow }
             );
 
-            // 12. Feedback (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 12. Feedback
             modelBuilder.Entity<Feedback>().HasData(
                 new Feedback { Id = 1, SubmissionId = 1, LecturerId = 4, Content = "Cần cải thiện phần phân tích dữ liệu.", CreatedAt = DateTime.UtcNow },
                 new Feedback { Id = 2, SubmissionId = 2, LecturerId = 5, Content = "Tốt, nhưng cần bổ sung tài liệu tham khảo.", CreatedAt = DateTime.UtcNow },
@@ -210,23 +205,23 @@ namespace EduProject_TADProgrammer.Data
                 new Feedback { Id = 12, SubmissionId = 12, LecturerId = 5, Content = "Bài nộp không đạt, cần làm lại.", CreatedAt = DateTime.UtcNow }
             );
 
-            // 13. CodeRun (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 13. CodeRun
             modelBuilder.Entity<CodeRun>().HasData(
-                new CodeRun { Id = 1, SubmissionId = 1, Code = "print('Hello World')", Language = "Python", Result = "Success", PlagiarismScore = 0.1f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 2, SubmissionId = 2, Code = "public class Main { public static void main(String[] args) { System.out.println('Hello'); } }", Language = "Java", Result = "Success", PlagiarismScore = 0.2f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 3, SubmissionId = 3, Code = "console.log('Hello World');", Language = "JavaScript", Result = "Success", PlagiarismScore = 0.15f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 4, SubmissionId = 4, Code = "print('Error Test')", Language = "Python", Result = "Failed", PlagiarismScore = 0.3f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 5, SubmissionId = 5, Code = "public class Test { public static void main(String[] args) { System.out.println('Test'); } }", Language = "Java", Result = "Success", PlagiarismScore = 0.1f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 6, SubmissionId = 6, Code = "print('IoT Security')", Language = "Python", Result = "Success", PlagiarismScore = 0.05f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 7, SubmissionId = 7, Code = "console.log('Social Media');", Language = "JavaScript", Result = "Success", PlagiarismScore = 0.2f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 8, SubmissionId = 8, Code = "print('Language Learning')", Language = "Python", Result = "Failed", PlagiarismScore = 0.4f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 9, SubmissionId = 9, Code = "public class Warehouse { public static void main(String[] args) { System.out.println('Warehouse'); } }", Language = "Java", Result = "Success", PlagiarismScore = 0.1f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 10, SubmissionId = 10, Code = "print('Booking System')", Language = "Python", Result = "Success", PlagiarismScore = 0.05f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 11, SubmissionId = 11, Code = "console.log('HR System');", Language = "JavaScript", Result = "Success", PlagiarismScore = 0.15f, CreatedAt = DateTime.UtcNow },
-                new CodeRun { Id = 12, SubmissionId = 12, Code = "print('Group Study')", Language = "Python", Result = "Failed", PlagiarismScore = 0.3f, CreatedAt = DateTime.UtcNow }
+                new CodeRun { Id = 1, SubmissionId = 1, Code = "print('Hello World')", Language = "Python", Status = "Success", Result = "Output: Hello World", PlagiarismScore = 0.1f, ExecutionTime = 50.5f, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new CodeRun { Id = 2, SubmissionId = 2, Code = "public class Main { public static void main(String[] args) { System.out.println(\"Hello\"); } }", Language = "Java", Status = "Success", Result = "Output: Hello", PlagiarismScore = 0.2f, ExecutionTime = 120.0f, CreatedAt = DateTime.UtcNow.AddHours(-1), UpdatedAt = DateTime.UtcNow.AddHours(-1) },
+                new CodeRun { Id = 3, SubmissionId = 3, Code = "console.log('Hello World');", Language = "JavaScript", Status = "Success", Result = "Output: Hello World", PlagiarismScore = 0.15f, ExecutionTime = 30.2f, CreatedAt = DateTime.UtcNow.AddHours(-2), UpdatedAt = DateTime.UtcNow.AddHours(-2) },
+                new CodeRun { Id = 4, SubmissionId = 4, Code = "print('Error Test')", Language = "Python", Status = "Failed", Result = "Error: Invalid syntax", ErrorMessage = "SyntaxError: unexpected EOF while parsing", PlagiarismScore = 0.3f, ExecutionTime = null, CreatedAt = DateTime.UtcNow.AddHours(-3), UpdatedAt = DateTime.UtcNow.AddHours(-3) },
+                new CodeRun { Id = 5, SubmissionId = 5, Code = "public class Test { public static void main(String[] args) { System.out.println(\"Test\"); } }", Language = "Java", Status = "Success", Result = "Output: Test", PlagiarismScore = 0.1f, ExecutionTime = 110.5f, CreatedAt = DateTime.UtcNow.AddHours(-4), UpdatedAt = DateTime.UtcNow.AddHours(-4) },
+                new CodeRun { Id = 6, SubmissionId = 6, Code = "print('IoT Security')", Language = "Python", Status = "Success", Result = "Output: IoT Security", PlagiarismScore = 0.05f, ExecutionTime = 45.0f, CreatedAt = DateTime.UtcNow.AddHours(-5), UpdatedAt = DateTime.UtcNow.AddHours(-5) },
+                new CodeRun { Id = 7, SubmissionId = 7, Code = "console.log('Social Media');", Language = "JavaScript", Status = "Success", Result = "Output: Social Media", PlagiarismScore = 0.2f, ExecutionTime = 25.8f, CreatedAt = DateTime.UtcNow.AddHours(-6), UpdatedAt = DateTime.UtcNow.AddHours(-6) },
+                new CodeRun { Id = 8, SubmissionId = 8, Code = "print('Language Learning')", Language = "Python", Status = "Timeout", Result = "Execution timed out", ErrorMessage = "Process exceeded 5-second limit", PlagiarismScore = 0.4f, ExecutionTime = null, CreatedAt = DateTime.UtcNow.AddHours(-7), UpdatedAt = DateTime.UtcNow.AddHours(-7) },
+                new CodeRun { Id = 9, SubmissionId = 9, Code = "public class Warehouse { public static void main(String[] args) { System.out.println(\"Warehouse\"); } }", Language = "Java", Status = "Success", Result = "Output: Warehouse", PlagiarismScore = 0.1f, ExecutionTime = 130.0f, CreatedAt = DateTime.UtcNow.AddHours(-8), UpdatedAt = DateTime.UtcNow.AddHours(-8) },
+                new CodeRun { Id = 10, SubmissionId = 10, Code = "print('Booking System')", Language = "Python", Status = "Success", Result = "Output: Booking System", PlagiarismScore = 0.05f, ExecutionTime = 48.3f, CreatedAt = DateTime.UtcNow.AddHours(-9), UpdatedAt = DateTime.UtcNow.AddHours(-9) },
+                new CodeRun { Id = 11, SubmissionId = 11, Code = "console.log('HR System');", Language = "JavaScript", Status = "Success", Result = "Output: HR System", PlagiarismScore = 0.15f, ExecutionTime = 28.7f, CreatedAt = DateTime.UtcNow.AddHours(-10), UpdatedAt = DateTime.UtcNow.AddHours(-10) },
+                new CodeRun { Id = 12, SubmissionId = 12, Code = "print('Group Study')", Language = "Python", Status = "Failed", Result = "Error: NameError", ErrorMessage = "NameError: name 'undefined_variable' is not defined", PlagiarismScore = 0.3f, ExecutionTime = null, CreatedAt = DateTime.UtcNow.AddHours(-11), UpdatedAt = DateTime.UtcNow.AddHours(-11) }
             );
 
-            // 14. GradeCriteria (Đã có 3 bản ghi, thêm 10 bản ghi để đủ 13)
+            // 14. GradeCriteria
             modelBuilder.Entity<GradeCriteria>().HasData(
                 new GradeCriteria { Id = 1, CourseId = 1, Name = "Nội dung", Weight = 0.4f, Description = "Chất lượng nội dung đồ án." },
                 new GradeCriteria { Id = 2, CourseId = 1, Name = "Trình bày", Weight = 0.3f, Description = "Cách trình bày báo cáo." },
@@ -243,7 +238,7 @@ namespace EduProject_TADProgrammer.Data
                 new GradeCriteria { Id = 13, CourseId = 10, Name = "Hiệu quả", Weight = 0.5f, Description = "Hiệu quả quản lý nhân sự." }
             );
 
-            // 15. Grade (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 15. Grade
             modelBuilder.Entity<Grade>().HasData(
                 new Grade { Id = 1, ProjectId = 1, GroupId = 1, CriteriaId = 1, Score = 8.5f, Comment = "Nội dung tốt.", GradedAt = DateTime.UtcNow, GradedBy = 4 },
                 new Grade { Id = 2, ProjectId = 1, GroupId = 1, CriteriaId = 2, Score = 8.0f, Comment = "Trình bày rõ ràng.", GradedAt = DateTime.UtcNow, GradedBy = 4 },
@@ -259,7 +254,7 @@ namespace EduProject_TADProgrammer.Data
                 new Grade { Id = 12, ProjectId = 11, GroupId = 11, CriteriaId = 13, Score = 7.0f, Comment = "Hiệu quả ổn.", GradedAt = DateTime.UtcNow, GradedBy = 4 }
             );
 
-            // 16. GradeVersion (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 16. GradeVersion
             modelBuilder.Entity<GradeVersion>().HasData(
                 new GradeVersion { Id = 1, GradeId = 1, Score = 8.0f, Comment = "Phiên bản đầu.", VersionNumber = 1, CreatedAt = DateTime.UtcNow.AddDays(-1) },
                 new GradeVersion { Id = 2, GradeId = 1, Score = 8.5f, Comment = "Cập nhật điểm.", VersionNumber = 2, CreatedAt = DateTime.UtcNow },
@@ -275,7 +270,7 @@ namespace EduProject_TADProgrammer.Data
                 new GradeVersion { Id = 12, GradeId = 11, Score = 8.0f, Comment = "Phiên bản đầu.", VersionNumber = 1, CreatedAt = DateTime.UtcNow }
             );
 
-            // 17. GradeLog (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 17. GradeLog
             modelBuilder.Entity<GradeLog>().HasData(
                 new GradeLog { Id = 1, GradeId = 1, LecturerId = 4, Action = "CREATE", Details = "Tạo điểm cho nhóm 1.", CreatedAt = DateTime.UtcNow },
                 new GradeLog { Id = 2, GradeId = 1, LecturerId = 4, Action = "UPDATE", Details = "Cập nhật điểm nhóm 1.", CreatedAt = DateTime.UtcNow },
@@ -291,7 +286,7 @@ namespace EduProject_TADProgrammer.Data
                 new GradeLog { Id = 12, GradeId = 11, LecturerId = 15, Action = "CREATE", Details = "Tạo điểm cho nhóm 10.", CreatedAt = DateTime.UtcNow }
             );
 
-            // 18. GradeSchedule (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 18. GradeSchedule
             modelBuilder.Entity<GradeSchedule>().HasData(
                 new GradeSchedule { Id = 1, ProjectId = 1, LecturerId = 4, Deadline = new DateTime(2025, 3, 1), Status = "PENDING", CreatedAt = DateTime.UtcNow },
                 new GradeSchedule { Id = 2, ProjectId = 2, LecturerId = 5, Deadline = new DateTime(2025, 3, 2), Status = "PENDING", CreatedAt = DateTime.UtcNow },
@@ -307,7 +302,7 @@ namespace EduProject_TADProgrammer.Data
                 new GradeSchedule { Id = 12, ProjectId = 12, LecturerId = 5, Deadline = new DateTime(2025, 3, 12), Status = "COMPLETED", CreatedAt = DateTime.UtcNow }
             );
 
-            // 19. GradeAppeal (Đã có 1 bản ghi, thêm 10 bản ghi để đủ 11)
+            // 19. GradeAppeal
             modelBuilder.Entity<GradeAppeal>().HasData(
                 new GradeAppeal { Id = 1, GradeId = 1, StudentId = 7, Reason = "Điểm nội dung chưa hợp lý.", Status = "PENDING", Response = null, CreatedAt = DateTime.UtcNow },
                 new GradeAppeal { Id = 2, GradeId = 2, StudentId = 8, Reason = "Điểm trình bày thấp.", Status = "APPROVED", Response = "Đã điều chỉnh điểm.", CreatedAt = DateTime.UtcNow },
@@ -322,7 +317,7 @@ namespace EduProject_TADProgrammer.Data
                 new GradeAppeal { Id = 11, GradeId = 11, StudentId = 12, Reason = "Điểm tiện ích thấp.", Status = "PENDING", Response = null, CreatedAt = DateTime.UtcNow }
             );
 
-            // 20. DefenseCommittee (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 20. DefenseCommittee
             modelBuilder.Entity<DefenseCommittee>().HasData(
                 new DefenseCommittee { Id = 1, Name = "Hội đồng 1", SemesterId = 1,CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new DefenseCommittee { Id = 2, Name = "Hội đồng 2", SemesterId = 1,CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -338,7 +333,7 @@ namespace EduProject_TADProgrammer.Data
                 new DefenseCommittee { Id = 12, Name = "Hội đồng 12", SemesterId = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
-            // 21. CommitteeMember (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 21. CommitteeMember
             modelBuilder.Entity<CommitteeMember>().HasData(
                 new CommitteeMember { Id = 1, CommitteeId = 1, LecturerId = 2, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new CommitteeMember { Id = 2, CommitteeId = 1, LecturerId = 4, Role = "Thành viên", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -354,7 +349,7 @@ namespace EduProject_TADProgrammer.Data
                 new CommitteeMember { Id = 12, CommitteeId = 10, LecturerId = 15, Role = "Chủ tịch", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
-            // 22. DefenseSchedule (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 22. DefenseSchedule
             modelBuilder.Entity<DefenseSchedule>().HasData(
                 new DefenseSchedule { Id = 1, ProjectId = 1, StartTime = new DateTime(2025, 3, 1, 8, 0, 0), EndTime = new DateTime(2025, 3, 1, 9, 0, 0), Room = "A101", CreatedAt = DateTime.UtcNow },
                 new DefenseSchedule { Id = 2, ProjectId = 2, StartTime = new DateTime(2025, 3, 2, 8, 0, 0), EndTime = new DateTime(2025, 3, 2, 9, 0, 0), Room = "A102", CreatedAt = DateTime.UtcNow },
@@ -370,7 +365,7 @@ namespace EduProject_TADProgrammer.Data
                 new DefenseSchedule { Id = 12, ProjectId = 12, StartTime = new DateTime(2025, 3, 12, 8, 0, 0), EndTime = new DateTime(2025, 3, 12, 9, 0, 0), Room = "A112", CreatedAt = DateTime.UtcNow }
             );
 
-            // 23. Meeting (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 23. Meeting
             modelBuilder.Entity<Meeting>().HasData(
                 new Meeting { Id = 1, GroupId = 1, Title = "Họp nhóm tuần 1", StartTime = new DateTime(2025, 2, 10, 14, 0, 0), EndTime = new DateTime(2025, 2, 10, 15, 0, 0), Location = "Phòng B101", CreatedBy = 4, CreatedAt = DateTime.UtcNow },
                 new Meeting { Id = 2, GroupId = 2, Title = "Họp nhóm tuần 2", StartTime = new DateTime(2025, 2, 17, 14, 0, 0), EndTime = new DateTime(2025, 2, 17, 15, 0, 0), Location = "Online", CreatedBy = 5, CreatedAt = DateTime.UtcNow },
@@ -386,7 +381,7 @@ namespace EduProject_TADProgrammer.Data
                 new Meeting { Id = 12, GroupId = 12, Title = "Họp nhóm tuần 12", StartTime = new DateTime(2025, 4, 28, 14, 0, 0), EndTime = new DateTime(2025, 4, 28, 15, 0, 0), Location = "Online", CreatedBy = 5, CreatedAt = DateTime.UtcNow }
             );
 
-            // 24. MeetingRecord (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 24. MeetingRecord
             modelBuilder.Entity<MeetingRecord>().HasData(
                 new MeetingRecord { Id = 1, MeetingId = 1, FilePath = "records/meeting1.mp3", CreatedAt = DateTime.UtcNow },
                 new MeetingRecord { Id = 2, MeetingId = 2, FilePath = "records/meeting2.mp4", CreatedAt = DateTime.UtcNow },
@@ -402,7 +397,7 @@ namespace EduProject_TADProgrammer.Data
                 new MeetingRecord { Id = 12, MeetingId = 12, FilePath = "records/meeting12.mp4", CreatedAt = DateTime.UtcNow }
             );
 
-            // 25. Notification (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 25. Notification
             modelBuilder.Entity<Notification>().HasData(
                 new Notification { Id = 1, UserId = 7, GroupId = null, Title = "Hạn nộp đồ án", Content = "Hạn nộp là 28/02/2025.", RecipientType = "user", Type = "WEB", Status = "SENT", CreatedAt = DateTime.UtcNow },
                 new Notification { Id = 2, UserId = 9, Title = "Phản hồi bài nộp", Content = "Bài nộp đã được phản hồi.", RecipientType = "group", Type = "EMAIL", Status = "SENT", CreatedAt = DateTime.UtcNow },
@@ -418,7 +413,7 @@ namespace EduProject_TADProgrammer.Data
                 new Notification { Id = 12, UserId = 11, GroupId = 11, Title = "Nhiệm vụ hoàn thành", Content = "Nhiệm vụ của Nhóm 11 đã hoàn thành.", RecipientType = "group", Type = "WEB", Status = "SENT", CreatedAt = DateTime.UtcNow }
             );
 
-            // 26. PeerReview (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 26. PeerReview
             modelBuilder.Entity<PeerReview>().HasData(
                 new PeerReview { Id = 1, GroupId = 1, ReviewerId = 7, RevieweeId = 8, Score = 8, Comment = "Làm việc tốt.", CreatedAt = DateTime.UtcNow },
                 new PeerReview { Id = 2, GroupId = 1, ReviewerId = 8, RevieweeId = 7, Score = 7, Comment = "Cần cải thiện giao tiếp.", CreatedAt = DateTime.UtcNow },
@@ -434,7 +429,7 @@ namespace EduProject_TADProgrammer.Data
                 new PeerReview { Id = 12, GroupId = 10, ReviewerId = 12, RevieweeId = 13, Score = 8, Comment = "Làm việc ổn.", CreatedAt = DateTime.UtcNow }
             );
 
-            // 27. Resource (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 27. Resource
             modelBuilder.Entity<Resource>().HasData(
                 new Resource { Id = 1, ProjectId = 1, Title = "Tài liệu AI", FilePath = "resources/ai_doc.pdf", Type = "REFERENCE", CreatedBy = 4, CreatedAt = DateTime.UtcNow },
                 new Resource { Id = 2, GroupId = 2, Title = "Mẫu báo cáo", FilePath = "resources/report_template.docx", Type = "SAMPLE", CreatedBy = 5, CreatedAt = DateTime.UtcNow },
@@ -450,7 +445,7 @@ namespace EduProject_TADProgrammer.Data
                 new Resource { Id = 12, ProjectId = 12, Title = "Hướng dẫn học tập nhóm", FilePath = "resources/group_study.pdf", Type = "REFERENCE", CreatedBy = 5, CreatedAt = DateTime.UtcNow }
             );
 
-            // 28. Question (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 28. Question
             modelBuilder.Entity<Question>().HasData(
                 new Question { Id = 1, ProjectId = 1, Content = "Ứng dụng AI của bạn giải quyết vấn đề gì?", CreatedBy = 4, CreatedAt = DateTime.UtcNow },
                 new Question { Id = 2, ProjectId = 2, Content = "Hệ thống quản lý đồ án có những tính năng gì?", CreatedBy = 5, CreatedAt = DateTime.UtcNow },
@@ -466,7 +461,7 @@ namespace EduProject_TADProgrammer.Data
                 new Question { Id = 12, ProjectId = 12, Content = "App học tập nhóm có tính năng chat không?", CreatedBy = 5, CreatedAt = DateTime.UtcNow }
             );
 
-            // 29. FAQ (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 29. FAQ
             modelBuilder.Entity<FAQ>().HasData(
                 new FAQ { Id = 1, Question = "Làm thế nào để nộp đồ án?", Answer = "Đăng nhập, vào mục Nộp bài, tải file lên.", Category = "Nộp bài", CreatedAt = DateTime.UtcNow },
                 new FAQ { Id = 2, Question = "Thời gian bảo vệ là khi nào?", Answer = "Xem lịch bảo vệ trong mục Lịch.", Category = "Bảo vệ", CreatedAt = DateTime.UtcNow },
@@ -482,7 +477,7 @@ namespace EduProject_TADProgrammer.Data
                 new FAQ { Id = 12, Question = "Làm sao để đổi mật khẩu?", Answer = "Vào Cài đặt, chọn Đổi mật khẩu.", Category = "Tài khoản", CreatedAt = DateTime.UtcNow }
             );
 
-            // 30. Discussion (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 30. Discussion
             modelBuilder.Entity<Discussion>().HasData(
                 new Discussion { Id = 1, ProjectId = 1, UserId = 7, Title = "Hỏi về AI trong y tế", Content = "Có ai biết cách tích hợp AI vào ứng dụng y tế?", Votes = 5, CreatedAt = DateTime.UtcNow },
                 new Discussion { Id = 2, UserId = 9, Title = "Thắc mắc về thiết kế giao diện", Content = "Nên dùng framework nào cho giao diện?", Votes = 3, CreatedAt = DateTime.UtcNow },
@@ -498,7 +493,7 @@ namespace EduProject_TADProgrammer.Data
                 new Discussion { Id = 12, ProjectId = 12, UserId = 7, Title = "Học tập nhóm", Content = "App học nhóm nên có tính năng gì?", Votes = 4, CreatedAt = DateTime.UtcNow }
             );
 
-            // 31. FeedbackSurvey (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 31. FeedbackSurvey
             modelBuilder.Entity<FeedbackSurvey>().HasData(
                 new FeedbackSurvey { Id = 1, UserId = 7, Content = "Hệ thống dễ sử dụng.", Rating = 4, CreatedAt = DateTime.UtcNow },
                 new FeedbackSurvey { Id = 2, UserId = 8, Content = "Cần cải thiện tốc độ tải.", Rating = 3, CreatedAt = DateTime.UtcNow },
@@ -514,7 +509,7 @@ namespace EduProject_TADProgrammer.Data
                 new FeedbackSurvey { Id = 12, UserId = 11, Content = "Hệ thống ổn định.", Rating = 4, CreatedAt = DateTime.UtcNow }
             );
 
-            // 32. SkillAssessment (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 32. SkillAssessment
             modelBuilder.Entity<SkillAssessment>().HasData(
                 new SkillAssessment { Id = 1, StudentId = 7, Skill = "Lập trình Python", Score = 8, CreatedAt = DateTime.UtcNow },
                 new SkillAssessment { Id = 2, StudentId = 8, Skill = "Thiết kế giao diện", Score = 7, CreatedAt = DateTime.UtcNow },
@@ -530,7 +525,7 @@ namespace EduProject_TADProgrammer.Data
                 new SkillAssessment { Id = 12, StudentId = 11, Skill = "Phân tích yêu cầu", Score = 9, CreatedAt = DateTime.UtcNow }
             );
 
-            // 33. TimeTracking (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 33. TimeTracking
             modelBuilder.Entity<TimeTracking>().HasData(
                 new TimeTracking { Id = 1, StudentId = 7, ProjectId = 1, StartTime = DateTime.UtcNow.AddHours(-2), EndTime = DateTime.UtcNow, Duration = 120, CreatedAt = DateTime.UtcNow },
                 new TimeTracking { Id = 2, StudentId = 8, ProjectId = 1, StartTime = DateTime.UtcNow.AddHours(-1), EndTime = DateTime.UtcNow, Duration = 60, CreatedAt = DateTime.UtcNow },
@@ -546,7 +541,7 @@ namespace EduProject_TADProgrammer.Data
                 new TimeTracking { Id = 12, StudentId = 11, ProjectId = 11, StartTime = DateTime.UtcNow.AddHours(-3), EndTime = DateTime.UtcNow, Duration = 180, CreatedAt = DateTime.UtcNow }
             );
 
-            // 34. SystemConfig (Đã có 9 bản ghi, thêm 3 bản ghi để đủ 12)
+            // 34. SystemConfig
             modelBuilder.Entity<SystemConfig>().HasData(
                 new SystemConfig { Id = 1, Key = "LOGO_URL", Value = "images/hutech_logo.png", CreatedAt = DateTime.UtcNow },
                 new SystemConfig { Id = 2, Key = "THEME_COLOR", Value = "#1976d2", CreatedAt = DateTime.UtcNow },
@@ -562,7 +557,7 @@ namespace EduProject_TADProgrammer.Data
                 new SystemConfig { Id = 12, Key = "CHAT_ENABLED", Value = "true", CreatedAt = DateTime.UtcNow }
             );
 
-            // 35. SystemMetric (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 35. SystemMetric
             modelBuilder.Entity<SystemMetric>().HasData(
                 new SystemMetric { Id = 1, MetricType = "CPU", Value = 45.5f, CreatedAt = DateTime.UtcNow },
                 new SystemMetric { Id = 2, MetricType = "RAM", Value = 60.0f, CreatedAt = DateTime.UtcNow },
@@ -578,23 +573,33 @@ namespace EduProject_TADProgrammer.Data
                 new SystemMetric { Id = 12, MetricType = "NETWORK", Value = 140.0f, CreatedAt = DateTime.UtcNow.AddHours(-2) }
             );
 
-            // 36. Calendar (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 36. Calendar
             modelBuilder.Entity<Calendar>().HasData(
-                new Calendar { Id = 1, UserId = 7, EventTitle = "Họp nhóm", StartTime = new DateTime(2025, 2, 10, 14, 0, 0), EndTime = new DateTime(2025, 2, 10, 15, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 2, UserId = 2, GroupId = 1, EventTitle = "Nộp bài", StartTime = new DateTime(2025, 2, 28, 23, 59, 0), EndTime = new DateTime(2025, 2, 28, 23, 59, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 3, UserId = 8, GroupId = 2, EventTitle = "Họp nhóm", StartTime = new DateTime(2025, 2, 17, 14, 0, 0), EndTime = new DateTime(2025, 2, 17, 15, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 4, UserId = 9, EventTitle = "Bảo vệ đồ án", StartTime = new DateTime(2025, 3, 1, 8, 0, 0), EndTime = new DateTime(2025, 3, 1, 9, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 5, UserId = 10, GroupId = 3, EventTitle = "Họp nhóm", StartTime = new DateTime(2025, 2, 24, 14, 0, 0), EndTime = new DateTime(2025, 2, 24, 15, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 6, UserId = 11, EventTitle = "Hạn nộp nhiệm vụ", StartTime = new DateTime(2025, 2, 25, 23, 59, 0), EndTime = new DateTime(2025, 2, 25, 23, 59, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 7, UserId = 12, GroupId = 4, EventTitle = "Họp nhóm", StartTime = new DateTime(2025, 3, 3, 14, 0, 0), EndTime = new DateTime(2025, 3, 3, 15, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 8, UserId = 13, EventTitle = "Bảo vệ đồ án", StartTime = new DateTime(2025, 3, 5, 8, 0, 0), EndTime = new DateTime(2025, 3, 5, 9, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 9, UserId = 7, GroupId = 5, EventTitle = "Họp nhóm", StartTime = new DateTime(2025, 3, 10, 14, 0, 0), EndTime = new DateTime(2025, 3, 10, 15, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 10, UserId = 8, EventTitle = "Hạn nộp nhiệm vụ", StartTime = new DateTime(2025, 3, 15, 23, 59, 0), EndTime = new DateTime(2025, 3, 15, 23, 59, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 11, UserId = 9, GroupId = 6, EventTitle = "Họp nhóm", StartTime = new DateTime(2025, 3, 17, 14, 0, 0), EndTime = new DateTime(2025, 3, 17, 15, 0, 0), CreatedAt = DateTime.UtcNow },
-                new Calendar { Id = 12, UserId = 10, EventTitle = "Bảo vệ đồ án", StartTime = new DateTime(2025, 3, 20, 8, 0, 0), EndTime = new DateTime(2025, 3, 20, 9, 0, 0), CreatedAt = DateTime.UtcNow }
+                new Calendar { Id = 1, UserId = 7, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 2, 10, 14, 0, 0), EndTime = new DateTime(2025, 2, 10, 15, 0, 0), Description = "Họp nhóm để thảo luận tiến độ dự án", Location = "Phòng họp A", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 2, UserId = 2, GroupId = 1, EventTitle = "Nộp bài", Type = "Deadline", Status = "Scheduled", StartTime = new DateTime(2025, 2, 28, 23, 59, 0), EndTime = new DateTime(2025, 2, 28, 23, 59, 0), Description = "Nộp bài tập lớn môn Lập trình", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 3, UserId = 8, GroupId = 2, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 2, 17, 14, 0, 0), EndTime = new DateTime(2025, 2, 17, 15, 0, 0), Description = "Họp nhóm để phân công nhiệm vụ", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 4, UserId = 9, EventTitle = "Bảo vệ đồ án", Type = "Other", Status = "Scheduled", StartTime = new DateTime(2025, 3, 1, 8, 0, 0), EndTime = new DateTime(2025, 3, 1, 9, 0, 0), Description = "Bảo vệ đồ án tốt nghiệp", Location = "Hội trường", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 5, UserId = 10, GroupId = 3, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 2, 24, 14, 0, 0), EndTime = new DateTime(2025, 2, 24, 15, 0, 0), Description = "Họp nhóm để kiểm tra tiến độ", Location = "Phòng họp C", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 6, UserId = 11, EventTitle = "Hạn nộp nhiệm vụ", Type = "Deadline", Status = "Scheduled", StartTime = new DateTime(2025, 2, 25, 23, 59, 0), EndTime = new DateTime(2025, 2, 25, 23, 59, 0), Description = "Nộp báo cáo nhiệm vụ cá nhân", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 7, UserId = 12, GroupId = 4, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 3, 3, 14, 0, 0), EndTime = new DateTime(2025, 3, 3, 15, 0, 0), Description = "Họp nhóm để chuẩn bị thuyết trình", Location = "Phòng họp A", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 8, UserId = 13, EventTitle = "Bảo vệ đồ án", Type = "Other", Status = "Scheduled", StartTime = new DateTime(2025, 3, 5, 8, 0, 0), EndTime = new DateTime(2025, 3, 5, 9, 0, 0), Description = "Bảo vệ đồ án chuyên ngành", Location = "Hội trường", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 9, UserId = 7, GroupId = 5, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 3, 10, 14, 0, 0), EndTime = new DateTime(2025, 3, 10, 15, 0, 0), Description = "Họp nhóm để hoàn thiện dự án", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 10, UserId = 8, EventTitle = "Hạn nộp nhiệm vụ", Type = "Deadline", Status = "Scheduled", StartTime = new DateTime(2025, 3, 15, 23, 59, 0), EndTime = new DateTime(2025, 3, 15, 23, 59, 0), Description = "Nộp báo cáo thực tập", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 11, UserId = 9, GroupId = 6, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 3, 17, 14, 0, 0), EndTime = new DateTime(2025, 3, 17, 15, 0, 0), Description = "Họp nhóm để đánh giá tiến độ", Location = "Phòng họp C", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 12, UserId = 10, EventTitle = "Bảo vệ đồ án", Type = "Other", Status = "Scheduled", StartTime = new DateTime(2025, 3, 20, 8, 0, 0), EndTime = new DateTime(2025, 3, 20, 9, 0, 0), Description = "Bảo vệ đồ án tốt nghiệp", Location = "Hội trường", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Calendar { Id = 13, UserId = 11, GroupId = 7, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 3, 24, 14, 0, 0), EndTime = new DateTime(2025, 3, 24, 15, 0, 0), Description = "Họp nhóm để phân tích yêu cầu dự án", Location = "Phòng họp A", CreatedAt = DateTime.UtcNow.AddDays(-1), UpdatedAt = DateTime.UtcNow.AddDays(-1) },
+                new Calendar { Id = 14, UserId = 12, EventTitle = "Hạn nộp bài tập", Type = "Deadline", Status = "Scheduled", StartTime = new DateTime(2025, 3, 25, 23, 59, 0), EndTime = new DateTime(2025, 3, 25, 23, 59, 0), Description = "Nộp bài tập môn Cấu trúc dữ liệu", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow.AddDays(-1), UpdatedAt = DateTime.UtcNow.AddDays(-1) },
+                new Calendar { Id = 15, UserId = 13, GroupId = 8, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 3, 31, 14, 0, 0), EndTime = new DateTime(2025, 3, 31, 15, 0, 0), Description = "Họp nhóm để chuẩn bị báo cáo", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow.AddDays(-2), UpdatedAt = DateTime.UtcNow.AddDays(-2) },
+                new Calendar { Id = 16, UserId = 7, EventTitle = "Thi cuối kỳ", Type = "Other", Status = "Scheduled", StartTime = new DateTime(2025, 4, 1, 8, 0, 0), EndTime = new DateTime(2025, 4, 1, 10, 0, 0), Description = "Thi cuối kỳ môn Lập trình nâng cao", Location = "Phòng thi 101", CreatedAt = DateTime.UtcNow.AddDays(-2), UpdatedAt = DateTime.UtcNow.AddDays(-2) },
+                new Calendar { Id = 17, UserId = 8, GroupId = 9, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Cancelled", StartTime = new DateTime(2025, 4, 7, 14, 0, 0), EndTime = new DateTime(2025, 4, 7, 15, 0, 0), Description = "Họp nhóm bị hủy do lịch trùng", Location = "Phòng họp C", CreatedAt = DateTime.UtcNow.AddDays(-3), UpdatedAt = DateTime.UtcNow.AddDays(-3) },
+                new Calendar { Id = 18, UserId = 9, EventTitle = "Hạn nộp báo cáo", Type = "Deadline", Status = "Scheduled", StartTime = new DateTime(2025, 4, 10, 23, 59, 0), EndTime = new DateTime(2025, 4, 10, 23, 59, 0), Description = "Nộp báo cáo dự án nhóm", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow.AddDays(-3), UpdatedAt = DateTime.UtcNow.AddDays(-3) },
+                new Calendar { Id = 19, UserId = 10, GroupId = 10, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 4, 14, 14, 0, 0), EndTime = new DateTime(2025, 4, 14, 15, 0, 0), Description = "Họp nhóm để hoàn thiện thuyết trình", Location = "Phòng họp A", CreatedAt = DateTime.UtcNow.AddDays(-4), UpdatedAt = DateTime.UtcNow.AddDays(-4) },
+                new Calendar { Id = 20, UserId = 11, EventTitle = "Thi cuối kỳ", Type = "Other", Status = "Scheduled", StartTime = new DateTime(2025, 4, 15, 8, 0, 0), EndTime = new DateTime(2025, 4, 15, 10, 0, 0), Description = "Thi cuối kỳ môn Cơ sở dữ liệu", Location = "Phòng thi 102", CreatedAt = DateTime.UtcNow.AddDays(-4), UpdatedAt = DateTime.UtcNow.AddDays(-4) },
+                new Calendar { Id = 21, UserId = 12, GroupId = 11, EventTitle = "Họp nhóm", Type = "Meeting", Status = "Scheduled", StartTime = new DateTime(2025, 4, 21, 14, 0, 0), EndTime = new DateTime(2025, 4, 21, 15, 0, 0), Description = "Họp nhóm để đánh giá dự án", Location = "Phòng họp B", CreatedAt = DateTime.UtcNow.AddDays(-5), UpdatedAt = DateTime.UtcNow.AddDays(-5) },
+                new Calendar { Id = 22, UserId = 13, EventTitle = "Bảo vệ đồ án", Type = "Other", Status = "Scheduled", StartTime = new DateTime(2025, 4, 25, 8, 0, 0), EndTime = new DateTime(2025, 4, 25, 9, 0, 0), Description = "Bảo vệ đồ án chuyên ngành", Location = "Hội trường", CreatedAt = DateTime.UtcNow.AddDays(-5), UpdatedAt = DateTime.UtcNow.AddDays(-5) }
             );
 
-            // 37. AISuggestion (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 37. AISuggestion
             modelBuilder.Entity<AISuggestion>().HasData(
                 new AISuggestion { Id = 1, UserId = 7, Type = "PROJECT", Content = "Đề xuất thêm tính năng phân tích dữ liệu thời gian thực.", CreatedAt = DateTime.UtcNow },
                 new AISuggestion { Id = 2, ProjectId = 1, Type = "GRADE", Content = "Điểm nội dung có thể tăng nếu bổ sung tài liệu tham khảo.", CreatedAt = DateTime.UtcNow },
@@ -610,7 +615,7 @@ namespace EduProject_TADProgrammer.Data
                 new AISuggestion { Id = 12, ProjectId = 6, Type = "GRADE", Content = "Điểm bảo mật có thể tăng nếu kiểm tra kỹ hơn.", CreatedAt = DateTime.UtcNow }
             );
 
-            // 38. Log (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 38. Log
             modelBuilder.Entity<Log>().HasData(
                 new Log { Id = 1, UserId = 1, Action = "LOGIN", Details = "Admin đăng nhập hệ thống.", CreatedAt = DateTime.UtcNow },
                 new Log { Id = 2, UserId = 7, Action = "SUBMISSION", Details = "Sinh viên nộp bài cho đồ án 1.", CreatedAt = DateTime.UtcNow },
@@ -626,30 +631,30 @@ namespace EduProject_TADProgrammer.Data
                 new Log { Id = 12, UserId = 14, Action = "UPDATE_PROJECT", Details = "Cập nhật đồ án 4.", CreatedAt = DateTime.UtcNow }
             );
 
-            // 39. Backup (Đã có 2 bản ghi, thêm 10 bản ghi để đủ 12)
+            // 39. Backup
             modelBuilder.Entity<Backup>().HasData(
-                new Backup { Id = 1, FilePath = "backups/db_backup_2025_02_01.sql", CreatedAt = DateTime.UtcNow },
-                new Backup { Id = 2, FilePath = "backups/db_backup_2025_02_02.sql", CreatedAt = DateTime.UtcNow.AddDays(-1) },
-                new Backup { Id = 3, FilePath = "backups/db_backup_2025_02_03.sql", CreatedAt = DateTime.UtcNow.AddDays(-2) },
-                new Backup { Id = 4, FilePath = "backups/db_backup_2025_02_04.sql", CreatedAt = DateTime.UtcNow.AddDays(-3) },
-                new Backup { Id = 5, FilePath = "backups/db_backup_2025_02_05.sql", CreatedAt = DateTime.UtcNow.AddDays(-4) },
-                new Backup { Id = 6, FilePath = "backups/db_backup_2025_02_06.sql", CreatedAt = DateTime.UtcNow.AddDays(-5) },
-                new Backup { Id = 7, FilePath = "backups/db_backup_2025_02_07.sql", CreatedAt = DateTime.UtcNow.AddDays(-6) },
-                new Backup { Id = 8, FilePath = "backups/db_backup_2025_02_08.sql", CreatedAt = DateTime.UtcNow.AddDays(-7) },
-                new Backup { Id = 9, FilePath = "backups/db_backup_2025_02_09.sql", CreatedAt = DateTime.UtcNow.AddDays(-8) },
-                new Backup { Id = 10, FilePath = "backups/db_backup_2025_02_10.sql", CreatedAt = DateTime.UtcNow.AddDays(-9) },
-                new Backup { Id = 11, FilePath = "backups/db_backup_2025_02_11.sql", CreatedAt = DateTime.UtcNow.AddDays(-10) },
-                new Backup { Id = 12, FilePath = "backups/db_backup_2025_02_12.sql", CreatedAt = DateTime.UtcNow.AddDays(-11) }
+                new Backup { Id = 1, FilePath = "backups/db_backup_2025_02_01.sql", Type = "Full", Status = "Success", FileSize = 104857600, Description = "Daily full database backup", CreatedBy = 1, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Backup { Id = 2, FilePath = "backups/db_backup_2025_02_02.sql", Type = "Incremental", Status = "Success", FileSize = 52428800, Description = "Incremental backup for Feb 2", CreatedBy = 1, CreatedAt = DateTime.UtcNow.AddDays(-1), UpdatedAt = DateTime.UtcNow.AddDays(-1) },
+                new Backup { Id = 3, FilePath = "backups/db_backup_2025_02_03.sql", Type = "Full", Status = "Success", FileSize = 110100480, Description = "Daily full database backup", CreatedBy = 2, CreatedAt = DateTime.UtcNow.AddDays(-2), UpdatedAt = DateTime.UtcNow.AddDays(-2) },
+                new Backup { Id = 4, FilePath = "backups/db_backup_2025_02_04.sql", Type = "Differential", Status = "Success", FileSize = 73400320, Description = "Differential backup for Feb 4", CreatedBy = null, CreatedAt = DateTime.UtcNow.AddDays(-3), UpdatedAt = DateTime.UtcNow.AddDays(-3) },
+                new Backup { Id = 5, FilePath = "backups/db_backup_2025_02_05.sql", Type = "Incremental", Status = "Failed", FileSize = null, Description = "Incremental backup failed due to disk space", CreatedBy = 1, CreatedAt = DateTime.UtcNow.AddDays(-4), UpdatedAt = DateTime.UtcNow.AddDays(-4) },
+                new Backup { Id = 6, FilePath = "backups/db_backup_2025_02_06.sql", Type = "Full", Status = "Success", FileSize = 115343360, Description = "Weekly full database backup", CreatedBy = 2, CreatedAt = DateTime.UtcNow.AddDays(-5), UpdatedAt = DateTime.UtcNow.AddDays(-5) },
+                new Backup { Id = 7, FilePath = "backups/db_backup_2025_02_07.sql", Type = "Incremental", Status = "Success", FileSize = 41943040, Description = "Incremental backup for Feb 7", CreatedBy = null, CreatedAt = DateTime.UtcNow.AddDays(-6), UpdatedAt = DateTime.UtcNow.AddDays(-6) },
+                new Backup { Id = 8, FilePath = "backups/db_backup_2025_02_08.sql", Type = "Differential", Status = "Pending", FileSize = null, Description = "Differential backup in progress", CreatedBy = 1, CreatedAt = DateTime.UtcNow.AddDays(-7), UpdatedAt = DateTime.UtcNow.AddDays(-7) },
+                new Backup { Id = 9, FilePath = "backups/db_backup_2025_02_09.sql", Type = "Full", Status = "Success", FileSize = 120586240, Description = "Daily full database backup", CreatedBy = 2, CreatedAt = DateTime.UtcNow.AddDays(-8), UpdatedAt = DateTime.UtcNow.AddDays(-8) },
+                new Backup { Id = 10, FilePath = "backups/db_backup_2025_02_10.sql", Type = "Incremental", Status = "Success", FileSize = 52428800, Description = "Incremental backup for Feb 10", CreatedBy = null, CreatedAt = DateTime.UtcNow.AddDays(-9), UpdatedAt = DateTime.UtcNow.AddDays(-9) },
+                new Backup { Id = 11, FilePath = "backups/db_backup_2025_02_11.sql", Type = "Differential", Status = "Success", FileSize = 83886080, Description = "Differential backup for Feb 11", CreatedBy = 1, CreatedAt = DateTime.UtcNow.AddDays(-10), UpdatedAt = DateTime.UtcNow.AddDays(-10) },
+                new Backup { Id = 12, FilePath = "backups/db_backup_2025_02_12.sql", Type = "Full", Status = "Success", FileSize = 125829120, Description = "Daily full database backup", CreatedBy = 2, CreatedAt = DateTime.UtcNow.AddDays(-11), UpdatedAt = DateTime.UtcNow.AddDays(-11) }
             );
 
-            // 40. Semester (Thêm 3 bản ghi)
+            // 40. Semester
             modelBuilder.Entity<Semester>().HasData(
                 new Semester { Id = 1, Name = "HK2-2025", StartDate = new DateTime(2025, 2, 1), EndDate = new DateTime(2025, 6, 30), CreatedAt = DateTime.UtcNow },
                 new Semester { Id = 2, Name = "HK1-2025", StartDate = new DateTime(2025, 1, 1), EndDate = new DateTime(2025, 4, 30), CreatedAt = DateTime.UtcNow },
                 new Semester { Id = 3, Name = "HK3-2025", StartDate = new DateTime(2025, 7, 1), EndDate = new DateTime(2025, 10, 31), CreatedAt = DateTime.UtcNow }
             );
 
-            // 41 StudentCourse (Thêm 15 bản ghi)
+            // 41 StudentCourse 
             modelBuilder.Entity<StudentCourse>().HasData(
                 // Nhóm 1 (Project 1, Course 1)
                 new StudentCourse { Id = 1, StudentId = 7, CourseId = 1, Status = "ENROLLED", EnrolledAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },

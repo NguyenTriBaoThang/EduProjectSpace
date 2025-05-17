@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Group.cs
+﻿// File: Entities/Group.cs
 // Mục đích: Định nghĩa entity Group để lưu thông tin nhóm sinh viên thực hiện đề tài.
 // Hỗ trợ chức năng: 
 //   7: Quản lý quy trình đồ án
@@ -19,6 +19,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa trạng thái của nhóm
+    public enum GroupStatus
+    {
+        Approved,
+        Pending
+    }
+
     public class Group
     {
         [Key]

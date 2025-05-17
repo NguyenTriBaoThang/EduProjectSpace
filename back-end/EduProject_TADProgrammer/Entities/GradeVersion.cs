@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/GradeVersion.cs
+﻿// File: Entities/GradeVersion.cs
 // Mục đích: Định nghĩa entity GradeVersion để lưu lịch sử chỉnh sửa điểm số.
 // Hỗ trợ chức năng: 
 //   81: Quản lý phiên bản điểm số

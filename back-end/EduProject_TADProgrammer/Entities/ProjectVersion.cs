@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/ProjectVersion.cs
+﻿// File: Entities/ProjectVersion.cs
 // Mục đích: Định nghĩa entity ProjectVersion để lưu lịch sử chỉnh sửa của các đề tài đồ án.
 // Hỗ trợ chức năng: 
 //   67: Theo dõi lịch sử chỉnh sửa đề tài

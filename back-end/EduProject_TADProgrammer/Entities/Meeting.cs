@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Meeting.cs
+﻿// File: Entities/Meeting.cs
 // Mục đích: Định nghĩa entity Meeting để lưu thông tin cuộc họp trực tuyến hoặc trực tiếp.
 // Hỗ trợ chức năng: 
 //   30: Giảng viên - Tạo lịch họp nhóm

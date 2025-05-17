@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Project.cs
+﻿// File: Entities/Project.cs
 // Mục đích: Định nghĩa entity Project để lưu thông tin đề tài đồ án (tiêu đề, mô tả, trạng thái).
 // Hỗ trợ chức năng: 
 //   7: Quản lý quy trình đồ án
@@ -16,6 +16,16 @@ using System.Collections.Generic;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa trạng thái của dự án
+    public enum ProjectStatus
+    {
+        Pending,    // Đang chờ phê duyệt
+        Approved,   // Đã được phê duyệt
+        Rejected,   // Bị từ chối
+        Submitted,  // Đã nộp
+        Graded      // Đã chấm điểm
+    }
+
     public class Project
     {
         [Key]
@@ -42,11 +52,10 @@ namespace EduProject_TADProgrammer.Entities
         [Required]
         public long GroupId { get; set; }
 
-        public Group Group { get; set; } // Loại bỏ [ForeignKey("GroupId")]
+        public Group Group { get; set; } 
 
         [Required]
-        [StringLength(50)]
-        public string Status { get; set; } // PENDING, APPROVED, REJECTED, SUBMITTED, GRADED
+        public string Status { get; set; }
 
         [Required]
         [StringLength(20)]

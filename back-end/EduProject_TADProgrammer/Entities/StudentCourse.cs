@@ -4,6 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa trạng thái tham gia môn học
+    public enum CourseEnrollmentStatus
+    {
+        Enrolled,   // Đã đăng ký
+        Completed,  // Đã hoàn thành
+        Withdrawn   // Đã rút khỏi môn học
+    }
+
     public class StudentCourse
     {
         [Key]
@@ -21,13 +29,13 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("CourseId")]
         public Course Course { get; set; }
 
-        // Thuộc tính mới: Trạng thái tham gia (đã đăng ký, đã hoàn thành, v.v.)
+        // Trạng thái tham gia (COMPLETED, ENROLLED)
         [StringLength(50)]
-        public string Status { get; set; } // Thêm mới: Hỗ trợ chức năng 7 (Quản lý quy trình đồ án)
+        public string Status { get; set; }
 
         public DateTime EnrolledAt { get; set; } = DateTime.UtcNow;
 
-        // Thuộc tính mới: Thời gian cập nhật
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Thêm mới: Theo dõi thay đổi
+        // Thời gian cập nhật
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

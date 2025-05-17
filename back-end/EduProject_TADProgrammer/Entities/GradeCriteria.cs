@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/GradeCriteria.cs
+﻿// File: Entities/GradeCriteria.cs
 // Mục đích: Định nghĩa entity GradeCriteria để lưu tiêu chí chấm điểm.
 // Hỗ trợ chức năng: 
 //   12: Hỗ trợ chấm điểm giảng viên

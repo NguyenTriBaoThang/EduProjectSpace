@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/MeetingRecord.cs
+﻿// File: Entities/MeetingRecord.cs
 // Mục đích: Định nghĩa entity MeetingRecord để lưu bản ghi âm hoặc tài liệu cuộc họp.
 // Hỗ trợ chức năng: 
 //   73: Hỗ trợ họp trực tuyến

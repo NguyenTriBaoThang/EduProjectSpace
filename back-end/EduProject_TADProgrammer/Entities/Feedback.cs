@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Feedback.cs
+﻿// File: Entities/Feedback.cs
 // Mục đích: Định nghĩa entity Feedback để lưu phản hồi của giảng viên về bài nộp.
 // Hỗ trợ chức năng: 
 //   14: Xem phản hồi và điểm số

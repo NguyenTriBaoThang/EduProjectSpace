@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/Notification.cs
+﻿// File: Entities/Notification.cs
 // Mục đích: Định nghĩa entity Notification để lưu thông báo gửi đến người dùng hoặc nhóm.
 // Hỗ trợ chức năng: 
 //   6: Hệ thống thông báo tự động
@@ -16,6 +16,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa loại người nhận thông báo
+    public enum NotificationRecipientType
+    {
+        Individual, // Cá nhân
+        Group,      // Nhóm
+        Course,     // Môn học
+        All         // Tất cả người dùng
+    }
+
+    // Enum để định nghĩa loại thông báo
+    public enum NotificationType
+    {
+        Email,   // Thông báo qua email
+        Web,     // Thông báo trên web
+        Urgent   // Thông báo khẩn cấp
+    }
+
+    // Enum để định nghĩa trạng thái thông báo
+    public enum NotificationStatus
+    {
+        Pending, // Đang chờ gửi
+        Sent,    // Đã gửi
+        Failed   // Gửi thất bại
+    }
+
     public class Notification
     {
         [Key]
@@ -44,10 +69,10 @@ namespace EduProject_TADProgrammer.Entities
         public string RecipientType { get; set; }
 
         [Required]
-        public string Type { get; set; } // EMAIL, WEB, URGENT
+        public string Type { get; set; }
 
         [Required]
-        public string Status { get; set; } // SENT, PENDING
+        public string Status { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

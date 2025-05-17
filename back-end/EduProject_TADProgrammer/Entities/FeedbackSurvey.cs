@@ -1,4 +1,4 @@
-﻿// File: Core/Entities/FeedbackSurvey.cs
+﻿// File: Entities/FeedbackSurvey.cs
 // Mục đích: Định nghĩa entity FeedbackSurvey để lưu khảo sát phản hồi của người dùng.
 // Hỗ trợ chức năng: 
 //   72: Phúc khảo và phản hồi điểm số (phần khảo sát)
