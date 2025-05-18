@@ -8,21 +8,21 @@
     <title>Tổng quan Trưởng bộ môn | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
-        <a href="lecturer_dashboard.html" class="active"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/head/head_dashboard.html" class="active"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section" id="headSection">
             <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
-            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
-            <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
-            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
-            <a href="head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
-            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
         </div>
     </div>
 
@@ -48,15 +48,15 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
-                <h6 id="userName">Nguyễn Huy Cường</h6>
-                <p id="userEmail">nguyenhuycuong@hutech.edu.vn</p>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
+                <h6 id="headName">Head HUTECH</h6>
+                <p id="headEmail">head@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -70,7 +70,7 @@
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a>
+                        <a href="/font-end/head/lecturer_dashboard.html"><i class="bi bi-house-door"></i></a>
                     </li>
                     <li class="breadcrumb-item active">
                         <i class="bi bi-house-door-fill"></i> Tổng quan
@@ -120,7 +120,7 @@
                             <h5>Thông báo mới</h5>
                         </div>
                         <div class="card-content">
-                            <h3 id="notificationCount">0</h3>
+                            <h3 id="recentNotificationsCount">0</h3>
                         </div>
                     </div>
                 </div>
@@ -133,16 +133,11 @@
                     <h5>Thông báo hệ thống</h5>
                 </div>
                 <div class="card-content">
-                    <ul class="list-group list-group-flush" id="notificationList">
+                    <ul class="list-group list-group-flush" id="recentNotifications">
                         <li class="dashboard-list-group-item">
                             <i class="bi bi-folder-check"></i>
-                            <span class="dashboard-notification-title" data-full-text="Hội đồng chấm điểm sẽ họp vào ngày 01/03/2025 tại phòng họp A">Họp hội đồng chấm điểm...</span>
-                            <span class="text-muted">24/02/2025</span>
-                        </li>
-                        <li class="dashboard-list-group-item">
-                            <i class="bi bi-calendar"></i>
-                            <span class="dashboard-notification-title" data-full-text="Lịch học kỳ mới đã được cập nhật, vui lòng kiểm tra">Cập nhật lịch học kỳ...</span>
-                            <span class="text-muted">23/02/2025</span>
+                            <span class="dashboard-notification-title">Đang tải thông báo...</span>
+                            <span class="text-muted"></span>
                         </li>
                     </ul>
                 </div>
@@ -155,51 +150,30 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        const userRole = "Trưởng bộ môn";
-        const projects = [
-            { id: 1, projectId: "DT001", name: "Công nghệ phần mềm", student: "Nguyễn Tri Bão Thắng", lecturer: "Nguyễn Huy Cường", status: "Đã duyệt" },
-            { id: 2, projectId: "DT002", name: "Ứng dụng AI trong y tế", student: "Trần Văn A", lecturer: "Trần Thị Vân Anh", status: "Chưa duyệt" },
-            { id: 3, projectId: "DT003", name: "Lập trình Web", student: "Lê Thị B", lecturer: "Lê Văn Nam", status: "Hoàn thành" }
-        ];
-        const notifications = [
-            { title: "Họp hội đồng chấm điểm", content: "Hội đồng chấm điểm sẽ họp vào ngày 01/03/2025 tại phòng họp A", date: "24/02/2025" },
-            { title: "Cập nhật lịch học kỳ", content: "Lịch học kỳ mới đã được cập nhật, vui lòng kiểm tra", date: "23/02/2025" }
-        ];
+        const API_URL = "https://localhost:7047";
 
         // Navbar Functions
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
-            toggleSidebar();
-        });
-
-        document.getElementById("notificationBtn").addEventListener("click", () => {
-            window.location.href = "lecturer_notifications.html";
-        });
-
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         });
-
         document.addEventListener("click", (event) => {
             const dropdown = document.getElementById("profileDropdown");
-            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
-                dropdown.style.display = "none";
-            }
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
         });
-
         document.getElementById("toggleFullscreen").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
             else document.exitFullscreen();
         });
-
         document.getElementById("toggleTheme").addEventListener("click", () => {
             document.body.classList.toggle("dark-mode");
             localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
@@ -207,7 +181,6 @@
 
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
@@ -223,30 +196,106 @@
             }
         }
 
-        // Cập nhật giao diện
-        function updateDashboard() {
-            const projectCount = projects.length;
-            const approvedProjects = projects.filter(p => p.status === "Đã duyệt" || p.status === "Hoàn thành").length;
-            const pendingProjects = projects.filter(p => p.status === "Chưa duyệt").length;
-            const notificationCount = notifications.length;
-
-            document.getElementById("projectCount").textContent = projectCount;
-            document.getElementById("approvedProjects").textContent = approvedProjects;
-            document.getElementById("pendingProjects").textContent = pendingProjects;
-            document.getElementById("notificationCount").textContent = notificationCount;
-
-            const notificationList = document.getElementById("notificationList");
-            notificationList.innerHTML = notifications.map(n => `
-                <li class="dashboard-list-group-item">
-                    <i class="bi bi-bell"></i>
-                    <span class="dashboard-notification-title" data-full-text="${n.content}">${n.title}...</span>
-                    <span class="text-muted">${n.date}</span>
-                </li>
-            `).join("");
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_HEAD") {
+                throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+            }
+            document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+            document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
         }
 
-        // Khởi chạy
+        // Cập nhật giao diện với dữ liệu từ API
+        async function updateDashboard() {
+            try {
+                const response = await fetch(`${API_URL}/api/HeadDashboard/summary`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                const summary = await response.json();
+                document.getElementById("projectCount").textContent = summary.projectCount;
+                document.getElementById("approvedProjects").textContent = summary.approvedProjects;
+                document.getElementById("pendingProjects").textContent = summary.pendingProjects;
+            } catch (error) {
+                console.error('Error fetching summary:', error);
+                alert('Không thể tải dữ liệu tổng quan.');
+            }
+
+            try {
+                 // Tải thông báo gần đây
+                const notificationsResponse = await fetch(`${API_URL}/api/Notifications/recent`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!notificationsResponse.ok) {
+                    throw new Error(`Lỗi tải thông báo gần đây: ${notificationsResponse.status}`);
+                }
+                const notifications = await notificationsResponse.json();
+                updateRecentNotifications(notifications);
+                document.getElementById("recentNotificationsCount").textContent = notifications.length;
+            } catch (error) {
+                throw new Error(`Lỗi API: ${error.message}`);
+            }
+        }
+
+        // Cập nhật thông báo gần đây
+        function updateRecentNotifications(notifications) {
+            const list = document.getElementById("recentNotifications");
+            list.innerHTML = "";
+            notifications.forEach(notification => {
+                const li = document.createElement("li");
+                li.className = "dashboard-list-group-item";
+                const details = notification.title || "";
+                li.innerHTML = `
+                    <i class="bi bi-bell"></i>
+                    <span class="dashboard-notification-title" data-full-text="${details}">${details.substring(0, 30)}...</span>
+                    <span class="text-muted">${new Date(notification.createdAt).toLocaleString()}</span>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        //Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        // Khởi chạy khi trang tải
         document.addEventListener("DOMContentLoaded", () => {
+            // Kiểm tra token trước khi gọi API
+            loadUserProfile();
             updateDashboard();
         });
     </script>

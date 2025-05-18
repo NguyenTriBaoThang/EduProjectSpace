@@ -1,4 +1,5 @@
-﻿using EduProject_TADProgrammer.Data;
+﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Middleware;
 using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,6 +36,7 @@ internal class Program
         builder.Services.AddScoped<SemesterService>();
         builder.Services.AddScoped<DashboardService>();
         builder.Services.AddScoped<NotificationService>();
+        builder.Services.AddScoped<HeadDashboardService>();
         builder.Services.AddScoped<RolePermissionService>();
         builder.Services.AddScoped<DefenseCommitteeService>();
         builder.Services.AddHostedService<DeadlineReminderService>();
