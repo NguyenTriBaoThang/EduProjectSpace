@@ -54,8 +54,8 @@
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar"> <!-- Ghi chú: Ảnh avatar admin -->
-                <h6>Admin HUTECH</h6>
-                <p>admin@hutech.edu.vn</p>
+                <h6 id="adminName">Admin HUTECH</h6>
+                <p id="adminEmail">admin@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
@@ -129,6 +129,7 @@
 
         window.onload = async () => {
             try {
+                loadUserProfile();
                 await loadPermissions();
             } catch (error) {
                 console.error("Error loading users:", error);
@@ -136,6 +137,16 @@
                 window.location.href = "/font-end/login/login.html";
             }
         };
+
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_ADMIN") {
+                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            }
+            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+        }
 
         // Ghi chú: Lấy danh sách quyền từ API
         async function loadPermissions() {
