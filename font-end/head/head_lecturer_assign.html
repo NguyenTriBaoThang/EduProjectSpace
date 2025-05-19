@@ -9,21 +9,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
-        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
-            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
-            <a href="head_lecturer_assign.html" class="active"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
-            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
-            <a href="head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
-            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="/font-end/head/head_lecturer_assign.html" class="active"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
         </div>
     </div>
 
@@ -38,7 +37,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
+                <input type="text" class="search-box me-3" id="searchInput" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -50,14 +49,14 @@
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="img/avatar.jpg" alt="Lecturer Avatar">
-                <h6>Nguyễn Huy Cường</h6>
-                <p>nguyenhuycuong@hutech.edu.vn</p>
+                <h6 id="headName">Head HUTECH</h6>
+                <p id="headEmail">head@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -71,7 +70,7 @@
             <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i></a></li>
                     <li class="breadcrumb-item active"><i class="bi bi-person-plus"></i> Danh sách GVHD</li>
                 </ol>
             </nav>
@@ -79,11 +78,7 @@
             <!-- Lecturers Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm giảng viên..." onkeyup="filterTable()">
-                    <select id="courseFilter" class="form-select" onchange="filterTable()">
-                        <option value="">Chọn môn học</option>
-                        ${courses.map(course => `<option value="${course.courseId}|${course.semester}|${course.classId}">${course.courseId} - ${course.classId} (${course.semester})</option>`).join("")}
-                    </select>
+                    <!-- Loại bỏ select filter -->
                 </div>
 
                 <div class="table-content">
@@ -92,9 +87,9 @@
                             <tr>
                                 <th>#</th>
                                 <th class="sortable" onclick="sortTable('lecturer')">Tên GVHD <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('courseId')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('semester')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('classId')">Mã lớp <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('courseCode')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('semesterName')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('classCode')">Mã lớp <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('studentCount')">Số SV <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('groupCount')">Số nhóm <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
@@ -116,41 +111,14 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        let courses = [
-            { courseId: "CS101", name: "Công nghệ phần mềm", semester: "HK1-2025", classId: "CNTT01", head: "Nguyễn Huy Cường" },
-            { courseId: "AI201", name: "Trí tuệ nhân tạo", semester: "HK1-2025", classId: "AI01", head: "Nguyễn Huy Cường" }
-        ];
-
-        let students = [
-            { id: "21520001", name: "Nguyễn Tri Bão Thắng", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
-            { id: "21520002", name: "Trần Văn A", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
-            { id: "21520003", name: "Lê Thị B", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 2 },
-            { id: "21520004", name: "Phạm Văn C", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
-            { id: "21520005", name: "Nguyễn Thị D", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
-            { id: "21520006", name: "Hoàng Văn E", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 },
-            { id: "21520007", name: "Trần Thị F", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 }
-        ];
-
-        let groups = [
-            { id: 1, name: "Nhóm 1", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["21520001", "21520002"] },
-            { id: 2, name: "Nhóm 2", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT002", members: ["21520003"] },
-            { id: 3, name: "Nhóm 3", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", members: ["21520004", "21520005"] },
-            { id: 4, name: "Nhóm 4", courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT004", members: ["21520006", "21520007"] }
-        ];
-
-        let projects = [
-            { projectId: "DT001", name: "Công nghệ phần mềm", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT002", name: "Ứng dụng AI trong y tế", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT003", name: "Lập trình Web", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT004", name: "Phân tích dữ liệu", courseId: "AI201", semester: "HK1-2025", classId: "AI01" }
-        ];
-
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+        let lecturers = [];
+        const API_URL = 'https://localhost:7047'; // Thay bằng URL API thực tế
         const currentHead = "Nguyễn Huy Cường";
 
         // Navbar Functions
@@ -195,78 +163,58 @@
             }
         }
 
-        // Lấy danh sách GVHD duy nhất trong lớp
-        function getLecturerList() {
-            const lecturerMap = new Map();
-            students.forEach(student => {
-                if (student.lecturer) {
-                    const key = `${student.lecturer}|${student.courseId}|${student.semester}|${student.classId}`;
-                    if (!lecturerMap.has(key)) {
-                        lecturerMap.set(key, {
-                            lecturer: student.lecturer,
-                            courseId: student.courseId,
-                            semester: student.semester,
-                            classId: student.classId,
-                            studentCount: 0,
-                            groupCount: 0
-                        });
-                    }
-                    lecturerMap.get(key).studentCount++;
+        // Tải thông tin người dùng từ localStorage
+        async function loadUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_HEAD") {
+                    throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
                 }
-            });
-
-            // Đếm số nhóm cho mỗi GVHD
-            lecturerMap.forEach((data, key) => {
-                data.groupCount = groups.filter(g => 
-                    g.courseId === data.courseId && 
-                    g.semester === data.semester && 
-                    g.classId === data.classId && 
-                    students.some(s => s.groupId === g.id && s.lecturer === data.lecturer)
-                ).length;
-            });
-
-            return Array.from(lecturerMap.values());
+                document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+                document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
+            }
         }
 
-        // Lọc và sắp xếp bảng
-        function getFilteredLecturers() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
-            const courseFilter = document.getElementById("courseFilter").value;
-
-            let filtered = getLecturerList();
-            if (courseFilter) {
-                const [courseId, semester, classId] = courseFilter.split("|");
-                filtered = filtered.filter(lecturer => 
-                    lecturer.courseId === courseId && 
-                    lecturer.semester === semester && 
-                    lecturer.classId === classId
-                );
+        // Load danh sách giảng viên từ API (không cần bộ lọc)
+        async function loadLecturers() {
+            try {
+                const response = await fetch(`${API_URL}/api/head/HeadLecturer`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi: ${response.statusText}`);
+                lecturers = await response.json();
+                displayTable(currentPage);
+            } catch (error) {
+                console.error("Lỗi khi tải danh sách giảng viên:", error);
+                document.getElementById("tableBody").innerHTML = '<tr><td colspan="8" class="text-center">Không thể tải danh sách giảng viên.</td></tr>';
             }
+        }
 
-            filtered = filtered.filter(lecturer => 
-                lecturer.lecturer.toLowerCase().includes(searchText) ||
-                lecturer.courseId.toLowerCase().includes(searchText) ||
-                lecturer.semester.toLowerCase().includes(searchText) ||
-                lecturer.classId.toLowerCase().includes(searchText)
-            );
+        // Hiển thị bảng
+        function displayTable(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            let paginatedData = [...lecturers];
 
+            // Sắp xếp nếu có sortColumn
             if (sortColumn) {
-                filtered.sort((a, b) => {
+                paginatedData.sort((a, b) => {
                     let valueA = sortColumn === 'studentCount' || sortColumn === 'groupCount' ? a[sortColumn] : a[sortColumn].toLowerCase();
                     let valueB = sortColumn === 'studentCount' || sortColumn === 'groupCount' ? b[sortColumn] : b[sortColumn].toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
 
-            return filtered;
-        }
-
-        // Hiển thị bảng
-        function displayTable(page) {
-            const filteredLecturers = getFilteredLecturers();
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const paginatedData = filteredLecturers.slice(start, end);
+            paginatedData = paginatedData.slice(start, end);
 
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
@@ -279,13 +227,13 @@
                         <tr>
                             <td>${start + index + 1}</td>
                             <td>${lecturerData.lecturer}</td>
-                            <td>${lecturerData.courseId}</td>
-                            <td>${lecturerData.semester}</td>
-                            <td>${lecturerData.classId}</td>
+                            <td>${lecturerData.courseCode}</td>
+                            <td>${lecturerData.semesterName}</td>
+                            <td>${lecturerData.classCode}</td>
                             <td>${lecturerData.studentCount}</td>
                             <td>${lecturerData.groupCount}</td>
                             <td>
-                                <button class="btn btn-sm btn-primary" onclick="viewDetails('${lecturerData.lecturer}', '${lecturerData.courseId}', '${lecturerData.semester}', '${lecturerData.classId}')">
+                                <button class="btn btn-sm btn-primary" onclick="viewDetails('${lecturerData.lecturer}', '${lecturerData.courseCode}', '${lecturerData.semesterName}', '${lecturerData.classCode}')">
                                     <i class="bi bi-eye"></i> Xem chi tiết
                                 </button>
                             </td>
@@ -294,7 +242,7 @@
                 });
             }
 
-            setupPagination(filteredLecturers.length);
+            setupPagination(lecturers.length);
         }
 
         // Thiết lập phân trang
@@ -334,34 +282,40 @@
             displayTable(currentPage);
         }
 
-        // Lọc bảng
+        // Lọc cơ bản theo search input
         function filterTable() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            lecturers = lecturers.filter(l =>
+                l.lecturer.toLowerCase().includes(searchText) ||
+                l.courseCode.toLowerCase().includes(searchText) ||
+                l.semesterName.toLowerCase().includes(searchText) ||
+                l.classCode.toLowerCase().includes(searchText)
+            );
             currentPage = 1;
             displayTable(currentPage);
         }
 
         // Điều hướng đến trang chi tiết
-        function viewDetails(lecturer, courseId, semester, classId) {
-            window.location.href = `head_lecturer_details.html?lecturer=${encodeURIComponent(lecturer)}&courseId=${courseId}&semester=${semester}&classId=${classId}`;
+        function viewDetails(lecturer, courseCode, semesterName, classCode) {
+            window.location.href = `head_lecturer_details.html?lecturer=${encodeURIComponent(lecturer)}&courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`;
         }
 
         // Xuất danh sách giảng viên sang Excel
         function exportLecturers() {
-            const filteredLecturers = getFilteredLecturers();
             const worksheetData = [
                 ["Danh sách giảng viên hướng dẫn - Hệ thống Sinh viên HUTECH"],
-                ["Trưởng bộ môn: Nguyễn Huy Cường"],
+                [`Trưởng bộ môn: ${currentHead}`],
                 [],
                 ["#", "Tên GVHD", "Mã môn học", "Học kỳ", "Mã lớp", "Số sinh viên", "Số nhóm"]
             ];
 
-            filteredLecturers.forEach((lecturerData, index) => {
+            lecturers.forEach((lecturerData, index) => {
                 worksheetData.push([
                     index + 1,
                     lecturerData.lecturer,
-                    lecturerData.courseId,
-                    lecturerData.semester,
-                    lecturerData.classId,
+                    lecturerData.courseCode,
+                    lecturerData.semesterName,
+                    lecturerData.classCode,
                     lecturerData.studentCount,
                     lecturerData.groupCount
                 ]);
@@ -373,9 +327,42 @@
             XLSX.writeFile(workbook, "danh_sach_gvhd.xlsx");
         }
 
+        // Đăng xuất
+        async function logout() {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    throw new Error("Chưa đăng nhập hoặc token không hợp lệ.");
+                }
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message || "Đăng xuất thành công!");
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+
         // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            displayTable(currentPage);
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadUserProfile();
+            await loadLecturers();
         });
     </script>
 </body>

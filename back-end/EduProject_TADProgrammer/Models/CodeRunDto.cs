@@ -11,13 +11,9 @@ namespace EduProject_TADProgrammer.Models
         public long Id { get; set; }
         public long SubmissionId { get; set; }
         public string Code { get; set; }
-        public string Language { get; set; } //Java, Python, CSharp, CPlusPlus, JavaScript, Ruby, Go, TypeScript, PHP
-        public string Status { get; set; } //Pending, Success, Failed, Timeout
+        public string Language { get; set; }
         public string Result { get; set; }
-        public string ErrorMessage { get; set; }
         public float? PlagiarismScore { get; set; }
-        public float? ExecutionTime { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

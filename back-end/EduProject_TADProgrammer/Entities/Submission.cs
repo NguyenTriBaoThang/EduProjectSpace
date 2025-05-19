@@ -12,17 +12,24 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
 
 namespace EduProject_TADProgrammer.Entities
 {
+    // Enum để định nghĩa trạng thái của bài nộp
+    public enum SubmissionStatus
+    {
+        Submitted,  // Đã nộp
+        Validated,  // Đã được xác nhận
+        Rejected    // Bị từ chối
+    }
+
     public class Submission
     {
         [Key]
         public long Id { get; set; }
 
         [Required]
-        public long ?ProjectId { get; set; }
+        public long ProjectId { get; set; }
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
@@ -41,7 +48,7 @@ namespace EduProject_TADProgrammer.Entities
         public int Version { get; set; }
 
         [Required]
-        public string Status { get; set; } // Submitted, Validated, Rejected
+        public string Status { get; set; }
 
         public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
 

@@ -1,7 +1,7 @@
 ﻿// File: Controllers/HeadCourseAssignmentController.cs
 // Mục đích: Xử lý yêu cầu HTTP để lấy danh sách môn học cần phân công giảng viên hướng dẫn.
 
-using EduProject_TADProgrammer.Dtos;
+using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -9,6 +9,9 @@
 //   56: Quản lý lịch bảo vệ
 //   67: Lịch sử chỉnh sửa đề tài
 //   75: Lịch trình chấm điểm
+using System;
+using System.Collections.Generic;
+
 namespace EduProject_TADProgrammer.Models
 {
     public class ProjectDto
@@ -16,26 +19,19 @@ namespace EduProject_TADProgrammer.Models
         public long Id { get; set; }
         public string ProjectCode { get; set; }
         public string Title { get; set; }
-        public long StudentCourseId { get; set; }
         public long CourseId { get; set; }
         public string CourseName { get; set; }
-        public long LecturerId { get; set; }
+        public long ?LecturerId { get; set; }
         public string LecturerName { get; set; }
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public GroupProjectDto Group { get; set; }
-    }
-
-    public class GroupProjectDto
-    {
-        public long Id { get; set; }
-        public List<StudentDto> Students { get; set; }
+        public GroupDto Group { get; set; }
     }
 
     public class StudentDto
     {
-        public long ?Id { get; set; }
-        public string ?FullName { get; set; }
+        public long Id { get; set; }
+        public string FullName { get; set; }
     }
 }
