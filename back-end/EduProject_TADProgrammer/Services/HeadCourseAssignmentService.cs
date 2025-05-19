@@ -1,7 +1,5 @@
-﻿// File: Services/HeadCourseAssignmentService.cs
-// Mục đích: Cung cấp logic nghiệp vụ để lấy danh sách môn học cần phân công giảng viên hướng dẫn, phân công thủ công/tự động/từ Excel.
-using EduProject_TADProgrammer.Data;
-using EduProject_TADProgrammer.Dtos;
+﻿using EduProject_TADProgrammer.Data;
+using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -20,30 +18,33 @@ namespace EduProject_TADProgrammer.Services
         public HeadCourseAssignmentService(ApplicationDbContext context)
         {
             _context = context;
-   
         }
 
         // Lấy toàn bộ danh sách môn học cần phân công
         public async Task<List<CourseAssignmentDto>> GetAllCoursesAsync()
         {
             var courses = await _context.Courses
+                .Include(c => c.Semester)
+                .Include(c => c.StudentCourses)
+                    .ThenInclude(sc => sc.Student)
                 .Select(c => new CourseAssignmentDto
                 {
                     CourseId = c.Id,
                     Name = c.Name,
                     Semester = c.Semester.Name,
                     // Lấy ClassCode từ StudentCourses -> Users (Student)
-                    ClassCode = _context.StudentCourses
-                        .Where(sc => sc.CourseId == c.Id)
-                        .Join(_context.Users,
-                            sc => sc.StudentId,
-                            u => u.Id,
-                            (sc, u) => u.ClassCode)
+                    ClassCode = c.StudentCourses
+                        .Select(sc => sc.Student.ClassCode)
                         .Distinct()
                         .FirstOrDefault() ?? "Unknown",
-                    StudentCount = _context.StudentCourses.Count(sc => sc.CourseId == c.Id),
-                    AssignedCount = _context.StudentCourses.Count(sc => sc.CourseId == c.Id && sc.LecturerId != null),
-                    AssignedNullCount = _context.StudentCourses.Count(sc => sc.CourseId == c.Id && sc.LecturerId == null)
+                    StudentCount = c.StudentCourses.Count(),
+                    // Count projects with assigned lecturers via Group
+                    AssignedCount = _context.Projects
+                        .Where(p => p.CourseId == c.Id && p.Group != null && p.Group.LecturerId != null)
+                        .Count(),
+                    AssignedNullCount = _context.Projects
+                        .Where(p => p.CourseId == c.Id && (p.Group == null || p.Group.LecturerId == null))
+                        .Count()
                 })
                 .ToListAsync();
 
@@ -51,24 +52,35 @@ namespace EduProject_TADProgrammer.Services
         }
 
         // Lấy danh sách sinh viên chưa có GVHD thuộc môn học
-        public async Task<List<StudentAssignmentDto>> GetUnassignedStudentsAsync(long courseCode, string semesterName, string classCode)
+        public async Task<List<StudentAssignmentDto>> GetUnassignedStudentsAsync(long courseId, string semesterName, string classCode)
         {
             var students = await _context.StudentCourses
                 .Include(sc => sc.Student)
                 .Include(sc => sc.Course)
-                .ThenInclude(c => c.Semester)
-                .Include(sc => sc.Lecturer)
-                .Where(sc => sc.Course.Id == courseCode &&
+                    .ThenInclude(c => c.Semester)
+                .Where(sc => sc.Course.Id == courseId &&
                              sc.Course.Semester.Name == semesterName &&
-                             sc.Student.ClassCode == classCode 
-                            )
-                .Select(sc => new StudentAssignmentDto
+                             sc.Student.ClassCode == classCode)
+                .Select(sc => new
                 {
-                    Id = sc.StudentId,
-                    StudentCode = sc.Student.Username,
-                    FullName = sc.Student.FullName,
-                    CourseCode = sc.Course.CourseCode,
-                    LecturerName = sc.Lecturer.FullName ?? ""
+                    sc.StudentId,
+                    sc.Student.Username,
+                    sc.Student.FullName,
+                    sc.Course.CourseCode,
+                    // Find lecturer through Project -> Group
+                    LecturerName = _context.Projects
+                        .Where(p => p.CourseId == sc.CourseId && p.Group != null && p.Group.GroupMembers.Any(gm => gm.StudentId == sc.StudentId))
+                        .Select(p => p.Group.Lecturer != null ? p.Group.Lecturer.FullName : null)
+                        .FirstOrDefault() ?? ""
+                })
+                //.Where(s => s.LecturerName == "") // Only unassigned students
+                .Select(s => new StudentAssignmentDto
+                {
+                    Id = s.StudentId,
+                    StudentCode = s.Username,
+                    FullName = s.FullName,
+                    CourseCode = s.CourseCode,
+                    LecturerName = s.LecturerName
                 })
                 .ToListAsync();
 
@@ -76,55 +88,71 @@ namespace EduProject_TADProgrammer.Services
         }
 
         // Phân công thủ công một sinh viên
-        public async Task AssignLecturerAsync(long studentId, string lecturerName)
+        public async System.Threading.Tasks.Task AssignLecturerAsync(long studentId, string lecturerName)
         {
             var lecturer = await _context.Users
                 .FirstOrDefaultAsync(u => u.FullName == lecturerName && u.Role.Name == "ROLE_LECTURER_GUIDE");
-            if (lecturer != null)
+            if (lecturer == null)
+                return;
+
+            // Find the student's group through their project
+            var groupMember = await _context.GroupMembers
+                .Include(gm => gm.Group)
+                    .ThenInclude(g => g.Project)
+                .FirstOrDefaultAsync(gm => gm.StudentId == studentId && gm.Group.Project != null);
+
+            if (groupMember != null && groupMember.Group.LecturerId == null)
             {
-                var studentCourse = await _context.StudentCourses
-                    .FirstOrDefaultAsync(sc => sc.StudentId == studentId && sc.LecturerId == null);
-                if (studentCourse != null)
-                {
-                    studentCourse.LecturerId = lecturer.Id;
-                    await _context.SaveChangesAsync();
-                }
+                groupMember.Group.LecturerId = lecturer.Id;
+                await _context.SaveChangesAsync();
             }
         }
 
         // Phân công tự động
-        public async Task AutoAssignLecturersAsync(long courseCode, string semesterName, string classCode)
+        public async System.Threading.Tasks.Task AutoAssignLecturersAsync(long courseId, string semesterName, string classCode)
         {
-            var unassignedStudents = await GetUnassignedStudentsAsync(courseCode, semesterName, classCode);
+            var unassignedStudents = await GetUnassignedStudentsAsync(courseId, semesterName, classCode);
             var lecturers = await _context.Users
                 .Where(u => u.Role.Name == "ROLE_LECTURER_GUIDE")
                 .ToListAsync();
 
-            if (unassignedStudents.Count == 0 || lecturers.Count == 0) return;
+            if (unassignedStudents.Count == 0 || lecturers.Count == 0)
+                return;
 
-            int studentsPerLecturer = unassignedStudents.Count / lecturers.Count;
-            int extraStudents = unassignedStudents.Count % lecturers.Count;
+            // Find groups associated with the unassigned students
+            var unassignedGroups = await _context.GroupMembers
+                .Include(gm => gm.Group)
+                    .ThenInclude(g => g.Project)
+                .Where(gm => unassignedStudents.Select(s => s.Id).Contains(gm.StudentId) &&
+                             gm.Group.Project != null &&
+                             gm.Group.Project.CourseId == courseId &&
+                             gm.Group.LecturerId == null)
+                .Select(gm => gm.Group)
+                .Distinct()
+                .ToListAsync();
+
+            if (unassignedGroups.Count == 0)
+                return;
+
+            int groupsPerLecturer = unassignedGroups.Count / lecturers.Count;
+            int extraGroups = unassignedGroups.Count % lecturers.Count;
 
             int index = 0;
             for (int i = 0; i < lecturers.Count; i++)
             {
-                int count = studentsPerLecturer + (i < extraStudents ? 1 : 0);
-                for (int j = 0; j < count; j++)
+                int count = groupsPerLecturer + (i < extraGroups ? 1 : 0);
+                for (int j = 0; j < count && index < unassignedGroups.Count; j++)
                 {
-                    var studentCourse = await _context.StudentCourses
-                        .FirstOrDefaultAsync(sc => sc.StudentId == unassignedStudents[index].Id && sc.LecturerId == null);
-                    if (studentCourse != null)
-                    {
-                        studentCourse.LecturerId = lecturers[i].Id;
-                        index++;
-                    }
+                    var group = unassignedGroups[index];
+                    group.LecturerId = lecturers[i].Id;
+                    index++;
                 }
             }
             await _context.SaveChangesAsync();
         }
 
         // Phân công từ file Excel
-        public async Task ImportAssignmentsAsync(IFormFile file)
+        public async System.Threading.Tasks.Task ImportAssignmentsAsync(IFormFile file)
         {
             using var stream = new MemoryStream();
             await file.CopyToAsync(stream);
@@ -144,16 +172,18 @@ namespace EduProject_TADProgrammer.Services
 
                 if (student != null && lecturer != null)
                 {
-                    var studentCourse = await _context.StudentCourses
-                        .Include(sc => sc.Course)
-                        .FirstOrDefaultAsync(sc => sc.StudentId == student.Id && sc.LecturerId == null);
-                    if (studentCourse != null)
+                    var groupMember = await _context.GroupMembers
+                        .Include(gm => gm.Group)
+                            .ThenInclude(g => g.Project)
+                        .FirstOrDefaultAsync(gm => gm.StudentId == student.Id && gm.Group.LecturerId == null);
+
+                    if (groupMember != null)
                     {
-                        studentCourse.LecturerId = lecturer.Id;
-                        await _context.SaveChangesAsync();
+                        groupMember.Group.LecturerId = lecturer.Id;
                     }
                 }
             }
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -17,8 +17,7 @@ internal class Program
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
                    .EnableSensitiveDataLogging()
-                   .EnableDetailedErrors()
-                   .EnableSensitiveDataLogging(false));
+                   .EnableDetailedErrors());
 
         // Thêm dịch vụ MVC và Razor Pages
         builder.Services.AddControllersWithViews();
@@ -43,7 +42,8 @@ internal class Program
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddScoped<RolePermissionService>();
         builder.Services.AddScoped<DefenseCommitteeService>();
-        
+
+        builder.Services.AddScoped<HeadLecturerService>();
         builder.Services.AddScoped<HeadDashboardService>();
         builder.Services.AddScoped<HeadCourseAssignmentService>();
 

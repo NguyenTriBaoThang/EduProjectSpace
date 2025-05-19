@@ -1,7 +1,7 @@
 ﻿// File: Dtos/CourseAssignmentDto.cs
 // Mục đích: Định nghĩa DTO để chuẩn hóa dữ liệu môn học cần phân công.
 
-namespace EduProject_TADProgrammer.Dtos
+namespace EduProject_TADProgrammer.Models
 {
     public class CourseAssignmentDto
     {

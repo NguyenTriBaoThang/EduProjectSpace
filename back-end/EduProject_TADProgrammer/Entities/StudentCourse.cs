@@ -4,14 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa trạng thái tham gia môn học
-    public enum CourseEnrollmentStatus
-    {
-        Enrolled,   // Đã đăng ký
-        Completed,  // Đã hoàn thành
-        Withdrawn   // Đã rút khỏi môn học
-    }
-
     public class StudentCourse
     {
         [Key]
@@ -37,13 +29,5 @@ namespace EduProject_TADProgrammer.Entities
 
         // Thời gian cập nhật
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public long ?LecturerId { get; set; }
-        [ForeignKey("LecturerId")]
-        public User Lecturer { get; set; }
-        public long? GroupId { get; set; }
-        [ForeignKey("GroupId")]
-        public Group Group { get; set; }
-
-        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
     }
 }

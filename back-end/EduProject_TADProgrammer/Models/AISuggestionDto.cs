@@ -14,7 +14,7 @@ namespace EduProject_TADProgrammer.Models
         public long Id { get; set; }
         public long? UserId { get; set; }
         public long? ProjectId { get; set; }
-        public string Type { get; set; } //Project, Grade, Resource, Schedule, Feedback
+        public string Type { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
     }

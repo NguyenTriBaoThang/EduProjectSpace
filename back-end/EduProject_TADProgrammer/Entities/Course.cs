@@ -13,15 +13,6 @@ using System.Collections.Generic;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa trạng thái môn học
-    public enum CourseStatus
-    {
-        Open,       // Đang mở (cho phép đăng ký, chỉnh sửa)
-        Active,     // Đang hoạt động (đang học)
-        Closed,     // Đã đóng (kết thúc môn học)
-        Cancelled   // Đã hủy
-    }
-
     public class Course
     {
         // Khóa chính của bản ghi môn học
@@ -77,6 +68,9 @@ namespace EduProject_TADProgrammer.Entities
 
         // Danh sách giảng viên giảng dạy môn học
         public virtual ICollection<User> Lecturers { get; set; } = new List<User>();
+
+        // Danh sách dự án liên quan đến môn học
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 
         // Danh sách tiêu chí chấm điểm của môn học
         public virtual ICollection<GradeCriteria> GradeCriteria { get; set; } = new List<GradeCriteria>();

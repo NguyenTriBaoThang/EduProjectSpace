@@ -78,12 +78,12 @@ namespace EduProject_TADProgrammer.Services
                     Id = p.Id,
                     ProjectId = p.ProjectCode,
                     Name = p.Title,
-                    StudentName = string.Join(", ", p.StudentCourse.Group.GroupMembers.Select(gm => gm.Student.FullName)),
-                    LecturerName = p.StudentCourse.Lecturer.FullName,
+                    StudentName = string.Join(", ", p.Group.GroupMembers.Select(gm => gm.Student.FullName)),
+                    LecturerName = p.Group.Lecturer.FullName,
                     Status = p.Status,
-                    SemesterCode = p.StudentCourse.Course.Semester.Name,
-                    FacultyCode = p.StudentCourse.Course.Department.FacultyCode,
-                    DepartmentCode = p.StudentCourse.Course.Department.DepartmentCode
+                    SemesterCode = p.Course.Semester.Name,
+                    FacultyCode = p.Course.Department.FacultyCode,
+                    DepartmentCode = p.Course.Department.DepartmentCode
                 });
 
             // Ghi chú: Lấy danh sách giảng viên (RoleId = 2 hoặc 4)
