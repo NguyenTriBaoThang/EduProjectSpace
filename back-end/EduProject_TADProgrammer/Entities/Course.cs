@@ -78,9 +78,6 @@ namespace EduProject_TADProgrammer.Entities
         // Danh sách giảng viên giảng dạy môn học
         public virtual ICollection<User> Lecturers { get; set; } = new List<User>();
 
-        // Danh sách dự án liên quan đến môn học
-        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
-
         // Danh sách tiêu chí chấm điểm của môn học
         public virtual ICollection<GradeCriteria> GradeCriteria { get; set; } = new List<GradeCriteria>();
 

@@ -101,39 +101,39 @@ namespace EduProject_TADProgrammer.Data
             modelBuilder.Entity<Course>()
                 .HasIndex(c => c.SemesterId);
 
-            // 4. StudentCourses: Liên kết giữa Users (sinh viên) và Courses
+            // 4. StudentCourses: Liên kết giữa Users (sinh viên), Courses, Lecturer, và Group
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Student)
-                .WithMany(u => u.StudentCourses) // Thuộc tính navigation: StudentCourses trong User
+                .WithMany(u => u.StudentCoursesAsStudent)
                 .HasForeignKey(sc => sc.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Course)
-                .WithMany(c => c.StudentCourses) // Thuộc tính navigation: StudentCourses trong Course
+                .WithMany(c => c.StudentCourses)
                 .HasForeignKey(sc => sc.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StudentCourse>()
+                .HasOne(sc => sc.Lecturer)
+                .WithMany(u => u.StudentCoursesAsLecturer)
+                .HasForeignKey(sc => sc.LecturerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<StudentCourse>()
+                .HasOne(sc => sc.Group)
+                .WithMany()
+                .HasForeignKey(sc => sc.GroupId)
+                .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<StudentCourse>()
                 .HasIndex(sc => new { sc.StudentId, sc.CourseId })
-                .IsUnique(); // Đảm bảo một sinh viên chỉ đăng ký một Course một lần
+                .IsUnique();
 
             // 5. Projects: Liên kết với Courses và Users (Lecturer), ràng buộc CourseId và Lecturer.CourseId
             modelBuilder.Entity<Project>()
-                .HasOne(p => p.Course)
-                .WithMany(c => c.Projects)
-                .HasForeignKey(p => p.CourseId)
+                .HasOne(p => p.StudentCourse)
+                .WithMany(sc => sc.Projects) // Chỉ định navigation ngược
+                .HasForeignKey(p => p.StudentCourseId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Project>()
-                .HasOne(p => p.Lecturer)
-                .WithMany(u => u.Projects)
-                .HasForeignKey(p => p.LecturerId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Project>()
-                .HasOne(p => p.Group)
-                .WithOne(g => g.Project)
-                .HasForeignKey<Group>(g => g.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Project>()
-                .HasIndex(p => p.CourseId);
+                .HasIndex(p => p.StudentCourseId);
             modelBuilder.Entity<Project>()
                 .HasIndex(p => p.ProjectCode)
                 .IsUnique();
@@ -149,8 +149,18 @@ namespace EduProject_TADProgrammer.Data
 
             // 7. Groups: Liên kết với Projects
             modelBuilder.Entity<Entities.Group>()
+                .HasOne(g => g.Project)
+                .WithOne(p => p.Group) // Chỉ định navigation ngược
+                .HasForeignKey<Group>(g => g.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Entities.Group>()
+                .HasOne(g => g.Lecturer)
+                .WithMany()
+                .HasForeignKey(g => g.LecturerId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Entities.Group>()
                 .HasIndex(g => g.ProjectId)
-                .IsUnique(); // Đảm bảo mỗi Project chỉ có một Group
+                .IsUnique();// Đảm bảo mỗi Project chỉ có một Group
 
 
             // 8. GroupMembers: Liên kết với Groups và Users

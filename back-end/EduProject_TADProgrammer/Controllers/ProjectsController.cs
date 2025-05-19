@@ -5,14 +5,13 @@ using EduProject_TADProgrammer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Security.Claims;
 
 namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "ROLE_ADMIN")]
+    //[Authorize(Roles = "ROLE_ADMIN")]
     public class ProjectsController : ControllerBase
     {
         private readonly ProjectService _projectService;
@@ -48,14 +47,13 @@ namespace EduProject_TADProgrammer.Controllers
             {
                 ProjectCode = request.ProjectCode,
                 Title = request.Title,
-                CourseId = request.CourseId,
-                LecturerId = request.LecturerId,
+                StudentCourseId = request.StudentCourseId,
                 Status = request.Status ?? "PENDING",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-            var createdProject = await _projectService.CreateProject(project);
-            await _projectService.LogAction(createdProject.Id, "CREATE_PROJECT", $"Project {createdProject.ProjectCode} created.");
+            var createdProject = await _projectService.CreateProject(project, request.LecturerId);
+            await _projectService.LogAction(createdProject.Id, "CREATE_PROJECT", $"Project {createdProject.ProjectCode} created.", GetCurrentUserId());
             return CreatedAtAction(nameof(GetProject), new { id = createdProject.Id }, createdProject);
         }
 
@@ -64,6 +62,7 @@ namespace EduProject_TADProgrammer.Controllers
         public async Task<ActionResult<ImportResult>> ImportProjects([FromBody] List<CreateProjectRequest> requests)
         {
             var result = new ImportResult { SuccessCount = 0, FailedCount = 0, Errors = new List<string>() };
+            var userId = GetCurrentUserId();
             foreach (var request in requests)
             {
                 try
@@ -72,14 +71,13 @@ namespace EduProject_TADProgrammer.Controllers
                     {
                         ProjectCode = request.ProjectCode,
                         Title = request.Title,
-                        CourseId = request.CourseId,
-                        LecturerId = request.LecturerId,
+                        StudentCourseId = request.StudentCourseId,
                         Status = request.Status ?? "PENDING",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
                     };
-                    var createdProject = await _projectService.CreateProject(project);
-                    await _projectService.LogAction(createdProject.Id, "CREATE_PROJECT", $"Project {createdProject.ProjectCode} created via import.");
+                    var createdProject = await _projectService.CreateProject(project, request.LecturerId);
+                    await _projectService.LogAction(createdProject.Id, "CREATE_PROJECT", $"Project {createdProject.ProjectCode} created via import.", userId);
                     result.SuccessCount++;
                 }
                 catch (Exception ex)
@@ -104,13 +102,12 @@ namespace EduProject_TADProgrammer.Controllers
 
             project.ProjectCode = request.ProjectCode;
             project.Title = request.Title;
-            project.CourseId = request.CourseId;
-            project.LecturerId = request.LecturerId;
+            project.StudentCourseId = request.StudentCourseId;
             project.Status = request.Status;
             project.UpdatedAt = DateTime.UtcNow;
 
-            await _projectService.UpdateProject(project);
-            await _projectService.LogAction(id, "UPDATE_PROJECT", $"Project {project.ProjectCode} updated.");
+            await _projectService.UpdateProject(project, request.LecturerId);
+            await _projectService.LogAction(id, "UPDATE_PROJECT", $"Project {project.ProjectCode} updated.", GetCurrentUserId());
             return NoContent();
         }
 
@@ -123,8 +120,15 @@ namespace EduProject_TADProgrammer.Controllers
                 return NotFound();
 
             await _projectService.DeleteProject(id);
-            await _projectService.LogAction(id, "DELETE_PROJECT", $"Project {project.ProjectCode} deleted.");
+            await _projectService.LogAction(id, "DELETE_PROJECT", $"Project {project.ProjectCode} deleted.", GetCurrentUserId());
             return NoContent();
+        }
+
+        // Helper to get current user ID from claims
+        private long GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return long.TryParse(userIdClaim, out var userId) ? userId : throw new Exception("Không thể xác định người dùng.");
         }
     }
 
@@ -132,7 +136,7 @@ namespace EduProject_TADProgrammer.Controllers
     {
         public string ProjectCode { get; set; }
         public string Title { get; set; }
-        public long CourseId { get; set; }
+        public long StudentCourseId { get; set; }
         public long LecturerId { get; set; }
         public string? Status { get; set; }
     }
@@ -142,7 +146,7 @@ namespace EduProject_TADProgrammer.Controllers
         public long Id { get; set; }
         public string ProjectCode { get; set; }
         public string Title { get; set; }
-        public long CourseId { get; set; }
+        public long StudentCourseId { get; set; }
         public long LecturerId { get; set; }
         public string Status { get; set; }
     }

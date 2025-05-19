@@ -10,10 +10,11 @@ namespace EduProject_TADProgrammer.Models
     public class CourseDto
     {
         public long Id { get; set; }
+        public string CourseCode { get; set; }
         public string Name { get; set; }
         public string Semester { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string ClassCode { get; set; } // Đổi từ ClassId thành ClassCode
+        public int StudentCount { get; set; }
+        public int AssignedCount { get; set; }
     }
 }
