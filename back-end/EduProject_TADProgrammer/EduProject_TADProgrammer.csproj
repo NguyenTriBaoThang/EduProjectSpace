@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\LecturerController.cs~RFdb98221.TMP" />
+    <None Remove="Controllers\y4lhpqvh.gig~" />
     <None Remove="Data\SeedData.cs~RF10ded13.TMP" />
     <None Remove="Data\SeedData.cs~RF7e0db4e.TMP" />
     <None Remove="Entities\GradeLog.cs~RF431bfe.TMP" />

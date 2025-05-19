@@ -23,19 +23,19 @@ namespace EduProject_TADProgrammer.Services
 
             // Đếm số đề tài đã có giáo viên hướng dẫn (ROLE_LECTURER_GUIDE)
             var projectCount = await _context.Projects
-                .Include(p => p.Lecturer)
-                .CountAsync(p => p.Lecturer != null && p.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE");
+                .Include(p => p.StudentCourse.Lecturer)
+                .CountAsync(p => p.StudentCourse.Lecturer != null && p.StudentCourse.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE");
 
             // Đếm số đề tài đã có giáo viên hướng dẫn và đã được duyệt
             var approvedProjects = await _context.Projects
-                .Include(p => p.Lecturer)
-                .CountAsync(p => p.Lecturer != null && p.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE" &&
+                .Include(p => p.StudentCourse.Lecturer)
+                .CountAsync(p => p.StudentCourse.Lecturer != null && p.StudentCourse.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE" &&
                                (p.Status == "APPROVED" || p.Status == "GRADED"));
 
             // Đếm số đề tài đã có giáo viên hướng dẫn nhưng chưa được duyệt
             var pendingProjects = await _context.Projects
-                .Include(p => p.Lecturer)
-                .CountAsync(p => p.Lecturer != null && p.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE" &&
+                .Include(p => p.StudentCourse.Lecturer)
+                .CountAsync(p => p.StudentCourse.Lecturer != null && p.StudentCourse.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE" &&
                                p.Status == "PENDING");
 
             return new

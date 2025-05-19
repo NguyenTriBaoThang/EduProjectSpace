@@ -9,6 +9,7 @@
 //   56: Quản lý lịch bảo vệ
 //   67: Lịch sử chỉnh sửa đề tài
 //   75: Lịch trình chấm điểm
+// File: Entities/Project.cs
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,16 +17,6 @@ using System.Collections.Generic;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa trạng thái của dự án
-    public enum ProjectStatus
-    {
-        Pending,    // Đang chờ phê duyệt
-        Approved,   // Đã được phê duyệt
-        Rejected,   // Bị từ chối
-        Submitted,  // Đã nộp
-        Graded      // Đã chấm điểm
-    }
-
     public class Project
     {
         [Key]
@@ -38,24 +29,13 @@ namespace EduProject_TADProgrammer.Entities
         public string Description { get; set; }
 
         [Required]
-        public long CourseId { get; set; }
+        public long StudentCourseId { get; set; }
 
-        [ForeignKey("CourseId")]
-        public Course Course { get; set; }
-
-        [Required]
-        public long LecturerId { get; set; }
-
-        [ForeignKey("LecturerId")]
-        public User Lecturer { get; set; }
+        [ForeignKey("StudentCourseId")]
+        public StudentCourse StudentCourse { get; set; }
 
         [Required]
-        public long GroupId { get; set; }
-
-        public Group Group { get; set; } 
-
-        [Required]
-        public string Status { get; set; }
+        public string Status { get; set; } // Pending, Approved, Rejected, Submitted, Graded
 
         [Required]
         [StringLength(20)]
@@ -64,6 +44,8 @@ namespace EduProject_TADProgrammer.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public Group Group { get; set; } // Added navigation property for one-to-one with Group
 
         public virtual ICollection<ProjectVersion> ProjectVersions { get; set; } = new List<ProjectVersion>();
         public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();

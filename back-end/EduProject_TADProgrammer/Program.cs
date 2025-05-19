@@ -17,7 +17,8 @@ internal class Program
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
                    .EnableSensitiveDataLogging()
-                   .EnableDetailedErrors());
+                   .EnableDetailedErrors()
+                   .EnableSensitiveDataLogging(false));
 
         // Thêm dịch vụ MVC và Razor Pages
         builder.Services.AddControllersWithViews();
@@ -28,6 +29,10 @@ internal class Program
 
         // Thêm các dịch vụ
         builder.Services.AddScoped<JwtService>();
+        builder.Services.AddScoped<LecturerService>();
+        builder.Services.AddScoped<CourseOptionsService>();
+        builder.Services.AddHostedService<DeadlineReminderService>();
+
         builder.Services.AddScoped<LogService>();
         builder.Services.AddScoped<UserService>();
         builder.Services.AddScoped<RoleService>();
@@ -36,10 +41,11 @@ internal class Program
         builder.Services.AddScoped<SemesterService>();
         builder.Services.AddScoped<DashboardService>();
         builder.Services.AddScoped<NotificationService>();
-        builder.Services.AddScoped<HeadDashboardService>();
         builder.Services.AddScoped<RolePermissionService>();
         builder.Services.AddScoped<DefenseCommitteeService>();
-        builder.Services.AddHostedService<DeadlineReminderService>();
+        
+        builder.Services.AddScoped<HeadDashboardService>();
+        builder.Services.AddScoped<HeadCourseAssignmentService>();
 
         // Thêm CORS policy
         builder.Services.AddCors(options =>

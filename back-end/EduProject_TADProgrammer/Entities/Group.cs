@@ -12,6 +12,7 @@
 //   87: Lập kế hoạch tài nguyên nhóm
 //   88: Theo dõi tiến độ nộp tài liệu
 //   89: Sinh viên - Xem tài nguyên nhóm
+// File: Entities/Group.cs
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,13 +20,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa trạng thái của nhóm
-    public enum GroupStatus
-    {
-        Approved,
-        Pending
-    }
-
     public class Group
     {
         [Key]
@@ -35,8 +29,7 @@ namespace EduProject_TADProgrammer.Entities
         [StringLength(50)]
         public string Name { get; set; }
 
-        [Required]
-        public long ProjectId { get; set; }
+        public long? ProjectId { get; set; } // Made nullable to break circular dependency
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
@@ -44,7 +37,11 @@ namespace EduProject_TADProgrammer.Entities
         public int MaxMembers { get; set; }
 
         [StringLength(50)]
-        public string Status { get; set; }
+        public string Status { get; set; } // Approved, Pending
+
+        public long? LecturerId { get; set; }
+        [ForeignKey("LecturerId")]
+        public User Lecturer { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

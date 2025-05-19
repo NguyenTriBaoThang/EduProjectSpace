@@ -11,7 +11,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using BCrypt.Net;
-
 namespace EduProject_TADProgrammer.Entities
 {
     public class User
@@ -43,10 +42,10 @@ namespace EduProject_TADProgrammer.Entities
         public Role Role { get; set; }
 
         [StringLength(255)]
-        public string ?AvatarUrl { get; set; }
+        public string? AvatarUrl { get; set; }
 
         [StringLength(50)]
-        public string ?ClassCode { get; set; } // For students only
+        public string? ClassCode { get; set; } // For students only
 
         [Required]
         public int FailedLoginAttempts { get; set; } = 0;
@@ -57,11 +56,13 @@ namespace EduProject_TADProgrammer.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        // Thêm quan hệ với Course cho giảng viên
-        public long? CourseId { get; set; } // Chỉ áp dụng cho ROLE_LECTURER
+        public long? CourseId { get; set; }
         [ForeignKey("CourseId")]
         public Course Course { get; set; }
 
+
+        public virtual ICollection<StudentCourse> StudentCoursesAsStudent { get; set; } = new List<StudentCourse>();
+        public virtual ICollection<StudentCourse> StudentCoursesAsLecturer { get; set; } = new List<StudentCourse>();
         public virtual ICollection<GroupMember> GroupMembers { get; set; } = new List<GroupMember>();
         public virtual ICollection<GroupRequest> GroupRequests { get; set; } = new List<GroupRequest>();
         public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
@@ -84,17 +85,14 @@ namespace EduProject_TADProgrammer.Entities
         public virtual ICollection<Calendar> Calendars { get; set; } = new List<Calendar>();
         public virtual ICollection<PeerReview> PeerReviewsAsReviewer { get; set; } = new List<PeerReview>();
         public virtual ICollection<PeerReview> PeerReviewsAsReviewee { get; set; } = new List<PeerReview>();
-        public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
-        public virtual ICollection<Project> Projects { get; set; } = new List<Project>(); 
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual ICollection<Grade> GradedGrades { get; set; } = new List<Grade>();
 
-        // Phương thức mã hóa mật khẩu
         public void HashPassword()
         {
             Password = BCrypt.Net.BCrypt.HashPassword(Password);
         }
 
-        // Phương thức kiểm tra mật khẩu
         public bool VerifyPassword(string password)
         {
             return BCrypt.Net.BCrypt.Verify(password, Password);

@@ -37,5 +37,13 @@ namespace EduProject_TADProgrammer.Entities
 
         // Thời gian cập nhật
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public long ?LecturerId { get; set; }
+        [ForeignKey("LecturerId")]
+        public User Lecturer { get; set; }
+        public long? GroupId { get; set; }
+        [ForeignKey("GroupId")]
+        public Group Group { get; set; }
+
+        public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
     }
 }

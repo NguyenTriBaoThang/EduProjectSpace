@@ -8,6 +8,12 @@ namespace EduProject_TADProgrammer.Models
     {
         public long Id { get; set; }
         public string FilePath { get; set; }
+        public string Type { get; set; } //Full, Incremental, Differential
+        public string Status { get; set; } //Pending, Success, Failed
+        public long? FileSize { get; set; }
+        public long? CreatedBy { get; set; }
+        public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }
