@@ -8,22 +8,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa loại sao lưu
-    public enum BackupType
-    {
-        Full,      // Sao lưu toàn bộ dữ liệu
-        Incremental, // Sao lưu gia tăng (chỉ dữ liệu thay đổi)
-        Differential // Sao lưu khác biệt (so với lần sao lưu đầy đủ cuối)
-    }
-
-    // Enum để định nghĩa trạng thái sao lưu
-    public enum BackupStatus
-    {
-        Pending,   // Đang chờ thực hiện
-        Success,   // Sao lưu thành công
-        Failed     // Sao lưu thất bại
-    }
-
     public class Backup
     {
         // Khóa chính của bản ghi sao lưu

@@ -221,7 +221,7 @@
         async function loadDashboardData() {
             try {
                 // Tải thống kê tổng quan
-                const summaryResponse = await fetch(`${API_URL}/api/Dashboard/summary`, {
+                const summaryResponse = await fetch(`${API_URL}/api/AdminDashboard/summary`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",
@@ -239,7 +239,7 @@
                 document.getElementById("pendingTopics").textContent = summary.pendingTopics || 0;
 
                 // Tải trạng thái đồ án
-                const statusResponse = await fetch(`${API_URL}/api/Dashboard/project-status`, {
+                const statusResponse = await fetch(`${API_URL}/api/AdminDashboard/project-status`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",

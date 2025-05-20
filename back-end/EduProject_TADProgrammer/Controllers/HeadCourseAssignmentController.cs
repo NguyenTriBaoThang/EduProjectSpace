@@ -11,7 +11,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/head/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_HEAD")]
+    [Authorize(Roles = "ROLE_HEAD")]
     public class HeadCourseAssignmentController : ControllerBase
     {
         private readonly HeadCourseAssignmentService _service;
@@ -39,7 +39,7 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // GET: api/HeadCourseAssignment/students
+        // GET: api/head/HeadCourseAssignment/students
         // Lấy danh sách sinh viên chưa phân công GVHD
         [HttpGet("students")]
         public async Task<IActionResult> GetUnassignedStudents([FromQuery] long courseCode, [FromQuery] string semesterName, [FromQuery] string classCode)
@@ -48,16 +48,25 @@ namespace EduProject_TADProgrammer.Controllers
             return Ok(students);
         }
 
-        // POST: api/HeadCourseAssignment/assign
+        // GET: api/head/HeadCourseAssignment/lecturers
+        // Lấy danh sách giảng viên
+        [HttpGet("lecturers")]
+        public async Task<IActionResult> GetLecturers(long? courseCode)
+        {
+            var lecturers = await _service.GetLecturersAsyn(courseCode);
+            return Ok(lecturers);
+        }
+
+        // POST: api/head/HeadCourseAssignment/assign
         // Phân công GVHD thủ công
         [HttpPost("assign")]
-        public async Task<IActionResult> AssignLecturer([FromBody] AssignRequest request)
+        public async Task<IActionResult> AssignLecturer([FromBody] HeadCourseAssignmentRequest request)
         {
             await _service.AssignLecturerAsync(request.StudentId, request.LecturerName);
             return Ok();
         }
 
-        // POST: api/HeadCourseAssignment/auto-assign
+        // POST: api/head/HeadCourseAssignment/auto-assign
         // Phân công GVHD tự động
         [HttpPost("auto-assign")]
         public async Task<IActionResult> AutoAssignLecturers([FromQuery] long courseCode, [FromQuery] string semesterName, [FromQuery] string classCode)
@@ -66,7 +75,7 @@ namespace EduProject_TADProgrammer.Controllers
             return Ok();
         }
 
-        // POST: api/HeadCourseAssignment/import
+        // POST: api/head/HeadCourseAssignment/import
         // Phân công từ file Excel
         [HttpPost("import")]
         public async Task<IActionResult> ImportAssignments([FromForm] IFormFile file)
@@ -75,12 +84,5 @@ namespace EduProject_TADProgrammer.Controllers
             await _service.ImportAssignmentsAsync(file);
             return Ok();
         }
-
-    }
-
-    public class AssignRequest
-    {
-        public long StudentId { get; set; }
-        public string LecturerName { get; set; }
     }
 }

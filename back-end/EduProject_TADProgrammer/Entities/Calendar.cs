@@ -9,23 +9,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa loại sự kiện
-    public enum EventType
-    {
-        Meeting,     // Cuộc họp (cá nhân hoặc nhóm)
-        Deadline,    // Hạn chót (nộp bài, bảo vệ)
-        Reminder,    // Nhắc nhở
-        Other        // Sự kiện khác
-    }
-
-    // Enum để định nghĩa trạng thái sự kiện
-    public enum EventStatus
-    {
-        Scheduled,   // Đã lên lịch
-        Completed,   // Đã hoàn thành
-        Cancelled    // Đã hủy
-    }
-
     public class Calendar
     {
         // Khóa chính của bản ghi sự kiện
@@ -48,7 +31,7 @@ namespace EduProject_TADProgrammer.Entities
 
         // Tiêu đề sự kiện (bắt buộc, tối đa 255 ký tự)
         [Required]
-        [StringLength(255, ErrorMessage = "EventTitle must not exceed 255 characters")]
+        [StringLength(255, ErrorMessage = "Tiêu đề sự kiện không được vượt quá 255 ký tự")]
         public string EventTitle { get; set; }
 
         // Mô tả chi tiết về sự kiện (tùy chọn, tối đa 1000 ký tự)
@@ -91,7 +74,7 @@ namespace EduProject_TADProgrammer.Entities
             var calendar = (Calendar)context.ObjectInstance;
             if (calendar.StartTime >= calendar.EndTime)
             {
-                return new ValidationResult("StartTime must be earlier than EndTime.");
+                return new ValidationResult("Thời gian bắt đầu phải sớm hơn thời gian kết thúc.");
             }
             return ValidationResult.Success;
         }

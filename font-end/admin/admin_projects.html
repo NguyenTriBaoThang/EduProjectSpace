@@ -301,7 +301,7 @@
 
         async function loadLecturers() {
             try {
-                const response = await fetch(`${API_URL}/api/User/lecturers`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/lecturers`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -328,7 +328,7 @@
 
         async function loadProjects() {
             try {
-                const response = await fetch(`${API_URL}/api/Projects`, {
+                const response = await fetch(`${API_URL}/api/AdminProjects`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -476,7 +476,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/Projects`, {
+                const response = await fetch(`${API_URL}/api/AdminProjects`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -503,7 +503,7 @@
 
         async function editProject(id) {
             try {
-                const response = await fetch(`${API_URL}/api/Projects/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminProjects/${id}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -550,7 +550,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/Projects/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminProjects/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -576,7 +576,7 @@
             if (!confirm("Bạn có chắc muốn xóa đề tài này không?")) return;
 
             try {
-                const response = await fetch(`${API_URL}/api/Projects/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminProjects/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
@@ -681,7 +681,7 @@
                     }
 
                     try {
-                        const response = await fetch(`${API_URL}/api/Projects/import`, {
+                        const response = await fetch(`${API_URL}/api/AdminProjects/import`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

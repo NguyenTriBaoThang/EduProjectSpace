@@ -188,7 +188,7 @@
             let courseCode = urlParams.get('courseId');
 
             try {
-                const response = await fetch(`${API_URL}/api/Lecturer?courseCode=${courseCode}`, {
+                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment/lecturers?courseCode=${courseCode}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

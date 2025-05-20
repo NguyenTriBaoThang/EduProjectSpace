@@ -9,7 +9,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CourseOptionsController : ControllerBase
     {
         private readonly CourseOptionsService _service;

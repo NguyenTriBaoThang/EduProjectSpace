@@ -28,23 +28,23 @@ internal class Program
 
         // Thêm các dịch vụ
         builder.Services.AddScoped<JwtService>();
-        builder.Services.AddScoped<LecturerService>();
+        builder.Services.AddScoped<LogService>();
+        builder.Services.AddScoped<NotificationService>();
         builder.Services.AddScoped<CourseOptionsService>();
         builder.Services.AddHostedService<DeadlineReminderService>();
 
-        builder.Services.AddScoped<LogService>();
-        builder.Services.AddScoped<UserService>();
-        builder.Services.AddScoped<RoleService>();
-        builder.Services.AddScoped<ReportService>();
-        builder.Services.AddScoped<ProjectService>();
-        builder.Services.AddScoped<SemesterService>();
-        builder.Services.AddScoped<DashboardService>();
-        builder.Services.AddScoped<NotificationService>();
-        builder.Services.AddScoped<RolePermissionService>();
-        builder.Services.AddScoped<DefenseCommitteeService>();
+        builder.Services.AddScoped<AdminUserService>();
+        builder.Services.AddScoped<AdminRoleService>();
+        builder.Services.AddScoped<AdminReportService>();
+        builder.Services.AddScoped<AdminProjectService>();
+        builder.Services.AddScoped<AdminSemesterService>();
+        builder.Services.AddScoped<AdminDashboardService>();
+        builder.Services.AddScoped<AdminRolePermissionService>();
+        builder.Services.AddScoped<AdminDefenseCommitteeService>();
 
         builder.Services.AddScoped<HeadLecturerService>();
         builder.Services.AddScoped<HeadDashboardService>();
+        builder.Services.AddScoped<HeadProgressCoursesService>();
         builder.Services.AddScoped<HeadCourseAssignmentService>();
 
         // Thêm CORS policy

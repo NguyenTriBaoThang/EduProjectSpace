@@ -9,14 +9,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa các vai trò trong hội đồng bảo vệ
-    public enum CommitteeRole
-    {
-        President,  // Chủ tịch hội đồng
-        Secretary,  // Thư ký hội đồng
-        Member      // Thành viên hội đồng
-    }
-
     public class CommitteeMember
     {
         // Khóa chính của bản ghi thành viên hội đồng
@@ -41,7 +33,7 @@ namespace EduProject_TADProgrammer.Entities
 
         // Vai trò của giảng viên trong hội đồng (bắt buộc, sử dụng enum CommitteeRole)
         [Required]
-        public string Role { get; set; }
+        public string Role { get; set; } //President, Secretary, Member
 
         // Thời gian tạo bản ghi (mặc định là thời gian hiện tại theo UTC)
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

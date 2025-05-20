@@ -287,7 +287,7 @@
         // Lấy danh sách giảng viên từ API
         async function loadLecturers() {
             try {
-                const response = await fetch(`${API_URL}/api/User/lecturers`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/lecturers`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -447,7 +447,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/User/lecturers`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/lecturers`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -506,7 +506,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/User/lecturers/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/lecturers/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -533,7 +533,7 @@
             if (!confirm("Bạn có chắc muốn xóa giảng viên này không?")) return;
 
             try {
-                const response = await fetch(`${API_URL}/api/User/lecturers/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/lecturers/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": `Bearer ${localStorage.getItem("token")}`,
@@ -637,7 +637,7 @@
                     }
 
                     try {
-                        const response = await fetch(`${API_URL}/api/User/lecturers/import`, {
+                        const response = await fetch(`${API_URL}/api/AdminUser/lecturers/import`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

@@ -15,10 +15,10 @@ namespace EduProject_TADProgrammer.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly AdminUserService _userService;
         private readonly JwtService _jwtService;
 
-        public AuthController(UserService userService, JwtService jwtService)
+        public AuthController(AdminUserService userService, JwtService jwtService)
         {
             _userService = userService;
             _jwtService = jwtService;
@@ -71,7 +71,7 @@ namespace EduProject_TADProgrammer.Controllers
 
                 return Ok(new
                 {
-                    user = new UserDto
+                    user = new AdminUserDto
                     {
                         Id = user.Id,
                         Username = user.Username,
@@ -131,12 +131,5 @@ namespace EduProject_TADProgrammer.Controllers
                 return StatusCode(500, new { message = "Đã xảy ra lỗi server khi đăng xuất." });
             }
         }
-    }
-
-    // Model cho request đăng nhập
-    public class LoginRequest
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
     }
 }
