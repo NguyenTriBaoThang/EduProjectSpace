@@ -11,29 +11,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa các ngôn ngữ lập trình được hỗ trợ
-    public enum ProgrammingLanguage
-    {
-        Java,        // Ngôn ngữ Java
-        Python,      // Ngôn ngữ Python
-        CSharp,      // Ngôn ngữ C#
-        CPlusPlus,   // Ngôn ngữ C++
-        JavaScript,  // Ngôn ngữ JavaScript
-        Ruby,        // Ngôn ngữ Ruby
-        Go,          // Ngôn ngữ Go
-        TypeScript,  // Ngôn ngữ TypeScript
-        PHP          // Ngôn ngữ PHP
-    }
-
-    // Enum để định nghĩa trạng thái thực thi mã nguồn
-    public enum RunStatus
-    {
-        Pending,    // Đang chờ thực thi
-        Success,    // Thực thi thành công
-        Failed,     // Thực thi thất bại
-        Timeout     // Hết thời gian thực thi
-    }
-
     public class CodeRun
     {
         // Khóa chính của bản ghi chạy mã nguồn

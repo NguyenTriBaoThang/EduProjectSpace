@@ -14,16 +14,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduProject_TADProgrammer.Entities
 {
-    // Enum để định nghĩa các loại gợi ý AI
-    public enum SuggestionType
-    {
-        Project,    // Gợi ý về đề tài hoặc dự án (chức năng 47)
-        Grade,      // Gợi ý liên quan đến chấm điểm/đánh giá (chức năng 71)
-        Resource,   // Gợi ý tài liệu hoặc công cụ lập trình (chức năng 54)
-        Schedule,   // Gợi ý lịch bảo vệ (chức năng 56)
-        Feedback    // Gợi ý dựa trên phân tích phản hồi giảng viên (chức năng 86)
-    }
-
     public class AISuggestion
     {
         // Khóa chính của bản ghi gợi ý
@@ -46,7 +36,7 @@ namespace EduProject_TADProgrammer.Entities
 
         // Loại gợi ý (bắt buộc, sử dụng enum SuggestionType)
         [Required]
-        public string Type { get; set; }
+        public string Type { get; set; } //Project, Grade, Resource, Schedule, Feedback
 
         // Nội dung gợi ý (bắt buộc, chứa chi tiết gợi ý từ AI)
         [Required]

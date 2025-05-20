@@ -277,7 +277,7 @@
         // Lấy danh sách sinh viên từ API
         async function fetchStudents() {
             try {
-                const response = await fetch(`${API_URL}/api/User/students`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/students`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -429,7 +429,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/User/students`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/students`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -485,7 +485,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/User/students/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/students/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -512,7 +512,7 @@
             if (!confirm("Bạn có chắc muốn xóa sinh viên này không?")) return;
 
             try {
-                const response = await fetch(`${API_URL}/api/User/students/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/students/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
@@ -613,7 +613,7 @@
                     }
 
                     try {
-                        const response = await fetch(`${API_URL}/api/User/students/import`, {
+                        const response = await fetch(`${API_URL}/api/AdminUser/students/import`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

@@ -275,7 +275,7 @@
 
         async function loadUsers() {
             try {
-                const response = await fetch(`${API_URL}/api/User`, {
+                const response = await fetch(`${API_URL}/api/AdminUser`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -415,7 +415,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/User`, {
+                const response = await fetch(`${API_URL}/api/AdminUser`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -471,7 +471,7 @@
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/User/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -497,7 +497,7 @@
             if (!confirm("Bạn có chắc muốn xóa người dùng này không?")) return;
 
             try {
-                const response = await fetch(`${API_URL}/api/User/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
@@ -594,7 +594,7 @@
                     }
 
                     try {
-                        const response = await fetch(`${API_URL}/api/User/import`, {
+                        const response = await fetch(`${API_URL}/api/AdminUser/import`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",

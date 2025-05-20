@@ -249,7 +249,7 @@
         // Lấy danh sách kỳ học từ API
         async function fetchSemesters() {
             try {
-                const response = await fetch(`${API_URL}/api/Semesters`, {
+                const response = await fetch(`${API_URL}/api/AdminSemesters`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -394,7 +394,7 @@
                 endDate: endDate.toISOString()
             };
             try {
-                const response = await fetch(`${API_URL}/api/Semesters`, {
+                const response = await fetch(`${API_URL}/api/AdminSemesters`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -446,7 +446,7 @@
                 endDate: endDate.toISOString()
             };
             try {
-                const response = await fetch(`${API_URL}/api/Semesters/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminSemesters/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -475,7 +475,7 @@
         async function deleteSemester(id) {
             if (!confirm("Bạn có chắc muốn xóa kỳ học này không?")) return;
             try {
-                const response = await fetch(`${API_URL}/api/Semesters/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminSemesters/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
@@ -500,7 +500,7 @@
         // Xuất danh sách kỳ học sang Excel
         async function exportSemesters() {
             try {
-                const response = await fetch(`${API_URL}/api/Semesters/export`, {
+                const response = await fetch(`${API_URL}/api/AdminSemesters/export`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`

@@ -13,7 +13,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_HEAD")] // Chỉ cho phép vai trò Trưởng bộ môn
+    [Authorize(Roles = "ROLE_HEAD")] // Chỉ cho phép vai trò Trưởng bộ môn
     public class HeadDashboardController : ControllerBase
     {
         private readonly HeadDashboardService _headDashboardService;

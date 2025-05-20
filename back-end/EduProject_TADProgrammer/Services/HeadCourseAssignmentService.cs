@@ -21,13 +21,13 @@ namespace EduProject_TADProgrammer.Services
         }
 
         // Lấy toàn bộ danh sách môn học cần phân công
-        public async Task<List<CourseAssignmentDto>> GetAllCoursesAsync()
+        public async Task<List<HeadCourseAssignmentDto>> GetAllCoursesAsync()
         {
             var courses = await _context.Courses
                 .Include(c => c.Semester)
                 .Include(c => c.StudentCourses)
                     .ThenInclude(sc => sc.Student)
-                .Select(c => new CourseAssignmentDto
+                .Select(c => new HeadCourseAssignmentDto
                 {
                     CourseId = c.Id,
                     Name = c.Name,
@@ -51,8 +51,27 @@ namespace EduProject_TADProgrammer.Services
             return courses;
         }
 
+        // Lấy danh sách giảng viên có vai trò ROLE_LECTURER_GUIDE
+        public async Task<List<HeadCourseAssignmentLecturerDto>> GetLecturersAsyn(long? courseCode)
+        {
+            var query = _context.Users
+            .Include(u => u.Role)
+            .Where(u => u.Role.Name == "ROLE_LECTURER_GUIDE" && u.CourseId == courseCode);
+
+
+            var lecturers = await query
+                .Select(u => new HeadCourseAssignmentLecturerDto
+                {
+                    Id = u.Id,
+                    FullName = u.FullName
+                })
+                .ToListAsync();
+
+            return lecturers;
+        }
+
         // Lấy danh sách sinh viên chưa có GVHD thuộc môn học
-        public async Task<List<StudentAssignmentDto>> GetUnassignedStudentsAsync(long courseId, string semesterName, string classCode)
+        public async Task<List<HeadCourseAssignmentStudentDto>> GetUnassignedStudentsAsync(long courseId, string semesterName, string classCode)
         {
             var students = await _context.StudentCourses
                 .Include(sc => sc.Student)
@@ -74,7 +93,7 @@ namespace EduProject_TADProgrammer.Services
                         .FirstOrDefault() ?? ""
                 })
                 //.Where(s => s.LecturerName == "") // Only unassigned students
-                .Select(s => new StudentAssignmentDto
+                .Select(s => new HeadCourseAssignmentStudentDto
                 {
                     Id = s.StudentId,
                     StudentCode = s.Username,
