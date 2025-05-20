@@ -132,8 +132,8 @@ namespace EduProject_TADProgrammer.Services
             var summary = new AdminReportSummaryDto
             {
                 StudentCount = students.Count,
-                ApprovedProjects = projects.Count(p => p.Status == "Đã duyệt" || p.Status == "Hoàn thành"),
-                PendingProjects = projects.Count(p => p.Status == "Chưa duyệt"),
+                ApprovedProjects = projects.Count(p => p.Status == "SUBMITTED" || p.Status == "GRADED"),
+                PendingProjects = projects.Count(p => p.Status == "PENDING"),
                 LecturerCount = lecturers.Count
             };
 

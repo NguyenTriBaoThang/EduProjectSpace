@@ -120,6 +120,8 @@
         let sortDirection = 'asc';
         let courses = [];
         const API_URL = 'https://localhost:7047'; // URL API
+        let currentHead = null; // Trưởng bộ môn hiện tại
+        let currentIdHead = null;
 
         // Gắn sự kiện cho thanh điều hướng
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
@@ -170,7 +172,9 @@
                 if (!user || user.roleName !== "ROLE_HEAD") {
                     throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
                 }
-                document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+                currentIdHead = user.id;
+                currentHead = user.fullName;
+                document.getElementById("headName").textContent = currentHead || "Head HUTECH";
                 document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
             } catch (error) {
                 console.error('Lỗi khi tải thông tin người dùng:', error);
@@ -183,7 +187,7 @@
         async function fetchCourses() {
             try {
                 
-                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment`, {
+                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment?headLecturer=${encodeURIComponent(currentIdHead)}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

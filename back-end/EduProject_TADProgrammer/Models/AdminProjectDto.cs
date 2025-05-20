@@ -21,6 +21,11 @@ namespace EduProject_TADProgrammer.Models
         public AdminProjectGroupDto Group { get; set; }
     }
 
+    public class CourseAdminProjectDto
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+    }
     public class AdminProjectGroupDto
     {
         public long Id { get; set; }

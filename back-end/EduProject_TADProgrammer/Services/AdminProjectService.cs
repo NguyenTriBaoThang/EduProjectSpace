@@ -50,6 +50,19 @@ namespace EduProject_TADProgrammer.Services
                 .ToListAsync();
         }
 
+        // Hàm lấy danh sách tất cả môn học
+        public async Task<List<CourseAdminProjectDto>> GetAllCoursesAsync()
+        {
+            return await _context.Courses
+                .AsNoTracking() // Tăng hiệu suất vì chỉ đọc dữ liệu
+                .Select(c => new CourseAdminProjectDto
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
+        }
+
         public async Task<AdminProjectDto> GetProjectById(long id)
         {
             var project = await _context.Projects

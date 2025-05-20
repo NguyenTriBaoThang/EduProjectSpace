@@ -21,12 +21,16 @@ namespace EduProject_TADProgrammer.Services
         }
 
         // Lấy toàn bộ danh sách môn học cần phân công
-        public async Task<List<HeadCourseAssignmentDto>> GetAllCoursesAsync()
+        public async Task<List<HeadCourseAssignmentDto>> GetAllCoursesAsync(long headLecturerName)
         {
+            var headLecturer = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == headLecturerName);
+
             var courses = await _context.Courses
                 .Include(c => c.Semester)
                 .Include(c => c.StudentCourses)
                     .ThenInclude(sc => sc.Student)
+                .Where(c => c.DepartmentId == headLecturer.DepartmentId)
                 .Select(c => new HeadCourseAssignmentDto
                 {
                     CourseId = c.Id,

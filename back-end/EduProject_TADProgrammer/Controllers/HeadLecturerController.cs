@@ -19,9 +19,9 @@ namespace EduProject_TADProgrammer.Controllers
 
         // GET: api/head/Headlecturer
         [HttpGet]
-        public async Task<IActionResult> GetLecturers()
+        public async Task<IActionResult> GetLecturers([FromQuery] long headLecturer)
         {
-            var lecturers = await _service.GetHeadLecturersAsync();
+            var lecturers = await _service.GetHeadLecturersAsync(headLecturer);
             return Ok(lecturers);
         }
 
