@@ -30,6 +30,16 @@ namespace EduProject_TADProgrammer.Controllers
             return Ok(projects);
         }
 
+        // API: GET api/Projects/courses
+        // Mục đích: Lấy danh sách tất cả môn học
+        [HttpGet("courses")]
+        public async Task<IActionResult> GetCourses()
+        {
+            var courses = await _projectService.GetAllCoursesAsync();
+            if (courses == null || !courses.Any()) return NotFound("Không tìm thấy môn học nào.");
+            return Ok(courses);
+        }
+
         // GET: api/Projects/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AdminProjectDto>> GetProject(long id)

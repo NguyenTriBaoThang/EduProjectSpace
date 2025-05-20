@@ -25,12 +25,13 @@ namespace EduProject_TADProgrammer.Controllers
         // GET: api/head/course-assignments
         // Lấy toàn bộ danh sách môn học cần phân công
         [HttpGet]
-        public async Task<IActionResult> GetAllCourses()
+        public async Task<IActionResult> GetAllCourses([FromQuery] long headLecturer)
         {
+
             try
             {
                 // Gọi service để lấy danh sách môn học
-                var courses = await _service.GetAllCoursesAsync();
+                var courses = await _service.GetAllCoursesAsync(headLecturer);
                 return Ok(new { Courses = courses });
             }
             catch

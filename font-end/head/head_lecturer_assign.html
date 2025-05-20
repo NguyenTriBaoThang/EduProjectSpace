@@ -119,7 +119,8 @@
         let sortDirection = 'asc';
         let lecturers = [];
         const API_URL = 'https://localhost:7047'; // Thay bằng URL API thực tế
-        const currentHead = "Nguyễn Huy Cường";
+        let currentHead = null; // Trưởng bộ môn hiện tại
+        let currentIdHead = null;
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
@@ -170,7 +171,9 @@
                 if (!user || user.roleName !== "ROLE_HEAD") {
                     throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
                 }
-                document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+                currentIdHead = user.id;
+                currentHead = user.fullName;
+                document.getElementById("headName").textContent = currentHead || "Head HUTECH";
                 document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
             } catch (error) {
                 console.error('Lỗi khi tải thông tin người dùng:', error);
@@ -182,7 +185,7 @@
         // Load danh sách giảng viên từ API (không cần bộ lọc)
         async function loadLecturers() {
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadLecturer`, {
+                const response = await fetch(`${API_URL}/api/head/HeadLecturer?headLecturer=${encodeURIComponent(currentIdHead)}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

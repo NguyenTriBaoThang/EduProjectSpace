@@ -18,8 +18,11 @@ namespace EduProject_TADProgrammer.Services
         }
 
         // Lấy toàn bộ danh sách giảng viên hướng dẫn
-        public async Task<List<HeadLecturerDto>> GetHeadLecturersAsync()
+        public async Task<List<HeadLecturerDto>> GetHeadLecturersAsync(long headLecturerName)
         {
+            var headLecturer = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == headLecturerName);
+
             var query = from g in _context.Groups
                         join p in _context.Projects on g.ProjectId equals p.Id
                         join c in _context.Courses on p.CourseId equals c.Id
@@ -27,7 +30,7 @@ namespace EduProject_TADProgrammer.Services
                         join gm in _context.GroupMembers on g.Id equals gm.GroupId
                         join u in _context.Users on gm.StudentId equals u.Id
                         join lecturer in _context.Users on g.LecturerId equals lecturer.Id
-                        where lecturer.Role.Name == "ROLE_LECTURER_GUIDE" // Chỉ lấy giảng viên hướng dẫn
+                        where lecturer.Role.Name == "ROLE_LECTURER_GUIDE" && c.DepartmentId == headLecturer.DepartmentId // Chỉ lấy giảng viên hướng dẫn
                         group new { g, gm, u } by new
                         {
                             LecturerName = lecturer.FullName,
