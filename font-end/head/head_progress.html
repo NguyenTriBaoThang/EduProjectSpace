@@ -9,21 +9,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
-        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
-            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
-            <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
-            <a href="head_progress_courses.html" class="active"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
-            <a href="head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
-            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_progress_courses.html" class="active"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
         </div>
     </div>
 
@@ -49,15 +48,15 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
-                <h6>Nguyễn Huy Cường</h6>
-                <p>nguyenhuycuong@hutech.edu.vn</p>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
+                <h6 id="headName">Head HUTECH</h6>
+                <p id="headEmail">head@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -71,8 +70,8 @@
             <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
-                    <li class="breadcrumb-item"><a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a></li>
                     <li class="breadcrumb-item active"><i class="bi bi-folder"></i> Chi tiết tiến độ</li>
                 </ol>
             </nav>
@@ -120,43 +119,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        let students = [
-            { id: "21520001", name: "Nguyễn Tri Bão Thắng", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
-            { id: "21520002", name: "Trần Văn A", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
-            { id: "21520003", name: "Lê Thị B", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 2 },
-            { id: "21520004", name: "Phạm Văn C", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
-            { id: "21520005", name: "Nguyễn Thị D", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
-            { id: "21520006", name: "Hoàng Văn E", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 },
-            { id: "21520007", name: "Trần Thị F", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 }
-        ];
-
-        let groups = [
-            { id: 1, name: "Nhóm 1", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["21520001", "21520002"], status: "Đã duyệt" },
-            { id: 2, name: "Nhóm 2", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT002", members: ["21520003"], status: "Chưa duyệt" },
-            { id: 3, name: "Nhóm 3", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", members: ["21520004", "21520005"], status: "Hoàn thành" },
-            { id: 4, name: "Nhóm 4", courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT004", members: ["21520006", "21520007"], status: "Đã duyệt" }
-        ];
-
-        let projects = [
-            { projectId: "DT001", name: "Công nghệ phần mềm", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT002", name: "Ứng dụng AI trong y tế", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT003", name: "Lập trình Web", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT004", name: "Phân tích dữ liệu", courseId: "AI201", semester: "HK1-2025", classId: "AI01" }
-        ];
-
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+        const API_URL = "https://localhost:7047"; // Thay bằng URL backend thực tế
 
-        // Lấy thông tin từ URL
         const urlParams = new URLSearchParams(window.location.search);
         const selectedCourseId = urlParams.get("courseId");
         const selectedSemester = urlParams.get("semester");
-        const selectedClassId = urlParams.get("classId");
+        const selectedFacultyCode = urlParams.get("facultyCode");
+        let allGroups = [];
 
-        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
         document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
@@ -182,15 +156,12 @@
         });
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
             let icon = document.getElementById("sidebarIcon");
-
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-
             if (sidebar.classList.contains("collapsed")) {
                 icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
             } else {
@@ -198,33 +169,51 @@
             }
         }
 
-        // Lấy thông tin nhóm
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_HEAD") {
+                throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+            }
+            document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+            document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
+        }
+
+        async function fetchGroups() {
+            try {
+                const response = await fetch(`${API_URL}/api/HeadProgressCourses/group?courseId=${encodeURIComponent(selectedCourseId)}&semester=${encodeURIComponent(selectedSemester)}&facultyCode=${encodeURIComponent(selectedFacultyCode)}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải tiến độ: ${response.status}`);
+                const groups = await response.json();
+                return groups;
+            } catch (error) {
+                console.error("Error loading groups:", error);
+                alert("Không thể tải danh sách nhóm. Vui lòng thử lại sau.");
+                return [];
+            }
+        }
+
         function getGroupDetails(group) {
-            const members = students.filter(s => group.members.includes(s.id)).map(s => s.name).join(", ");
-            const lecturer = students.find(s => group.members.includes(s.id))?.lecturer || "Chưa xác định";
-            const project = projects.find(p => p.projectId === group.projectId);
             return {
-                name: group.name,
-                projectId: group.projectId,
-                projectName: project ? project.name : "Chưa có đồ án",
-                members: members,
-                lecturer: lecturer,
-                status: group.status,
-                id: group.id
+                id: group.id,
+                name: group.name || "Không xác định",
+                projectId: group.projectId || "Không xác định",
+                projectName: group.projectName || "Chưa có đồ án",
+                members: group.members || "Chưa có thành viên",
+                lecturer: group.lecturer || "Chưa xác định",
+                status: group.status || "Chưa xác định"
             };
         }
 
-        // Lọc và sắp xếp bảng
         function getFilteredGroups() {
             const searchText = document.getElementById("searchInput").value.toLowerCase();
             const statusFilter = document.getElementById("statusFilter").value;
-
-            let filtered = groups.filter(group =>
-                group.courseId === selectedCourseId &&
-                group.semester === selectedSemester &&
-                group.classId === selectedClassId
-            ).map(group => getGroupDetails(group));
-
+            let filtered = allGroups.map(group => getGroupDetails(group));
             filtered = filtered.filter(group =>
                 (group.name.toLowerCase().includes(searchText) ||
                  group.projectId.toLowerCase().includes(searchText) ||
@@ -233,7 +222,6 @@
                  group.lecturer.toLowerCase().includes(searchText)) &&
                 (statusFilter === "" || group.status === statusFilter)
             );
-
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valueA = a[sortColumn].toLowerCase();
@@ -241,12 +229,11 @@
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
-
             return filtered;
         }
 
-        // Hiển thị bảng
-        function displayTable(page) {
+        async function displayTable(page) {
+            if (!allGroups.length) allGroups = await fetchGroups();
             const filteredGroups = getFilteredGroups();
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
@@ -255,7 +242,7 @@
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
 
-            if (!selectedCourseId || !selectedSemester || !selectedClassId) {
+            if (!selectedCourseId || !selectedSemester || !selectedFacultyCode) {
                 tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Vui lòng chọn một môn học từ danh sách để theo dõi tiến độ.</td></tr>';
             } else if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy nhóm nào.</td></tr>';
@@ -271,27 +258,19 @@
                             <td>${group.members}</td>
                             <td>${group.lecturer}</td>
                             <td><span class="badge ${statusClass}">${group.status}</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" onclick="viewProgress(${group.id})">
-                                    <i class="bi bi-eye"></i> Xem tiến độ
-                                </button>
-                            </td>
+                            <td><button class="btn btn-sm btn-primary" onclick="viewProgress(${group.id})"><i class="bi bi-eye"></i> Xem tiến độ</button></td>
                         </tr>
                     `;
                 });
             }
-
             setupPagination(filteredGroups.length);
         }
 
-        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
             pagination.innerHTML = "";
-
             if (totalPages <= 1) return;
-
             let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
             if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
             if (currentPage > 3) paginationHTML += `<li>...</li>`;
@@ -304,65 +283,73 @@
             pagination.innerHTML = paginationHTML;
         }
 
-        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
-        // Sắp xếp bảng
         function sortTable(column) {
-            if (sortColumn === column) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortColumn = column;
-                sortDirection = 'asc';
-            }
+            if (sortColumn === column) sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            else { sortColumn = column; sortDirection = 'asc'; }
             displayTable(currentPage);
         }
 
-        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
-        // Điều hướng đến trang tiến độ chi tiết
         function viewProgress(groupId) {
-            window.location.href = `head_progress_details.html?courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}&groupId=${groupId}`;
+            window.location.href = `head_progress_details.html?courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}&groupId=${groupId}`;
         }
 
-        // Xuất báo cáo tiến độ sang Excel
         function exportProgress() {
             const filteredGroups = getFilteredGroups();
             const worksheetData = [
                 ["Báo cáo tiến độ - Hệ thống Sinh viên HUTECH"],
-                [`Lớp: ${selectedCourseId} - ${selectedClassId} - ${selectedSemester}`],
+                [`Lớp: ${selectedCourseId} - ${selectedFacultyCode} - ${selectedSemester}`],
+                [`Ngày xuất: ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}`],
                 [],
                 ["#", "Tên nhóm", "Mã đồ án", "Tên đồ án", "Thành viên", "GVHD", "Trạng thái"]
             ];
-
             filteredGroups.forEach((group, index) => {
-                worksheetData.push([
-                    index + 1,
-                    group.name,
-                    group.projectId,
-                    group.projectName,
-                    group.members,
-                    group.lecturer,
-                    group.status
-                ]);
+                worksheetData.push([index + 1, group.name, group.projectId, group.projectName, group.members, group.lecturer, group.status]);
             });
-
             const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "BaoCaoTienDo");
-            XLSX.writeFile(workbook, `bao_cao_tien_do_${selectedCourseId}_${selectedClassId}_${selectedSemester}.xlsx`);
+            XLSX.writeFile(workbook, `bao_cao_tien_do_${selectedCourseId}_${selectedFacultyCode}_${selectedSemester}_${new Date().toISOString().slice(0, 10)}.xlsx`);
         }
 
-        // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            displayTable(currentPage);
+        // Đăng xuất tài khoản
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => { 
+            await loadUserProfile();
+            await displayTable(currentPage)
         });
     </script>
 </body>

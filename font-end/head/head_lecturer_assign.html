@@ -185,7 +185,7 @@
         // Load danh sách giảng viên từ API (không cần bộ lọc)
         async function loadLecturers() {
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadLecturer?headLecturer=${encodeURIComponent(currentIdHead)}`, {
+                const response = await fetch(`${API_URL}/api/HeadLecturer?headLecturer=${encodeURIComponent(currentIdHead)}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

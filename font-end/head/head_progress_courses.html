@@ -181,7 +181,7 @@
         // Hàm lấy danh sách môn học từ API
         async function fetchCourses() {
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadProgressCourses/?headLecturer=${encodeURIComponent(currentIdHead)}`,{
+                const response = await fetch(`${API_URL}/api/HeadProgressCourses/?headLecturer=${encodeURIComponent(currentIdHead)}`,{
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

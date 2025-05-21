@@ -5,7 +5,7 @@ using EduProject_TADProgrammer.Services;
 
 namespace EduProject_TADProgrammer.Controllers
 {
-    [Route("api/head/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "ROLE_HEAD")]
     public class HeadLecturerController : ControllerBase

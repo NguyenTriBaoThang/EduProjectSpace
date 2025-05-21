@@ -187,7 +187,7 @@
         async function fetchCourses() {
             try {
                 
-                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment?headLecturer=${encodeURIComponent(currentIdHead)}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment?headLecturer=${encodeURIComponent(currentIdHead)}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

@@ -227,7 +227,7 @@
         // Hàm lấy thông tin chi tiết nhóm từ API
         async function fetchGroupDetails() {
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadLecturer/groupdetails/?groupId=${selectedGroupId}&lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`,{
+                const response = await fetch(`${API_URL}/api/HeadLecturer/groupdetails/?groupId=${selectedGroupId}&lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`,{
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

@@ -188,7 +188,7 @@
             let courseCode = urlParams.get('courseId');
 
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment/lecturers?courseCode=${courseCode}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/lecturers?courseCode=${courseCode}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -229,7 +229,7 @@
             }
 
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment/students?courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/students?courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -355,7 +355,7 @@
                 const studentId = document.getElementById('assignStudentId').value;
                 const lecturerName = document.getElementById('assignLecturer').value;
                 try {
-                    const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment/assign`, {
+                    const response = await fetch(`${API_URL}/api/HeadCourseAssignment/assign`, {
                         method: 'POST',
                         headers: {
                             "Content-Type": "application/json",
@@ -388,7 +388,7 @@
             
 
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment/auto-assign?courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/auto-assign?courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`, {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
@@ -448,7 +448,7 @@
             const classCode = urlParams.get('classCode');
 
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadCourseAssignment/import?courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/import?courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`, {
                     method: 'POST',
                     headers: {
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
