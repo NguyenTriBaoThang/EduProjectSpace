@@ -196,7 +196,7 @@
         // Fetch lecturer details from API
         async function fetchLecturerDetails() {
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadLecturer/details?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`,{
+                const response = await fetch(`${API_URL}/api/HeadLecturer/details?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`,{
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -216,7 +216,7 @@
         // Fetch group details from API
         async function fetchGroups() {
             try {
-                const response = await fetch(`${API_URL}/api/head/HeadLecturer/groups?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`,{
+                const response = await fetch(`${API_URL}/api/HeadLecturer/groups?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`,{
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

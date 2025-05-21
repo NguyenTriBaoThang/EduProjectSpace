@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EduProject_TADProgrammer.Controllers
 {
-    [Route("api/head/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "ROLE_HEAD")]
     public class HeadCourseAssignmentController : ControllerBase
