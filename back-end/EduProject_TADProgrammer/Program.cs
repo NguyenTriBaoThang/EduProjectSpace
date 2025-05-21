@@ -44,6 +44,7 @@ internal class Program
 
         builder.Services.AddScoped<HeadLecturerService>();
         builder.Services.AddScoped<HeadDashboardService>();
+        builder.Services.AddScoped<HeadCourseGradingService>();
         builder.Services.AddScoped<HeadProgressCoursesService>();
         builder.Services.AddScoped<HeadCourseAssignmentService>();
 
