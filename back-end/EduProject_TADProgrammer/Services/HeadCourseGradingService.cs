@@ -1,6 +1,4 @@
-﻿// File: Services/HeadCourseGradingService.cs
-// Mục đích: Cung cấp logic nghiệp vụ để lấy danh sách môn học cần duyệt chấm điểm.
-using EduProject_TADProgrammer.Data;
+﻿using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -19,19 +17,16 @@ namespace EduProject_TADProgrammer.Services
             _context = context;
         }
 
-        // Đổi tên tham số từ headFullName thành headId để rõ nghĩa hơn
         public async Task<List<HeadCourseGradingDto>> GetCoursesForGradingAsync(long headId)
         {
-            // Lấy thông tin trưởng bộ môn
             var headLecturer = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == headId);
 
             if (headLecturer == null)
             {
-                return new List<HeadCourseGradingDto>(); // Trả về danh sách rỗng nếu không tìm thấy trưởng bộ môn
+                return new List<HeadCourseGradingDto>();
             }
 
-            // Lấy danh sách môn học do trưởng bộ môn phụ trách
             var courses = await _context.Courses
                 .Include(c => c.Semester)
                 .Include(c => c.Department)
@@ -47,25 +42,19 @@ namespace EduProject_TADProgrammer.Services
 
             foreach (var course in courses)
             {
-                // Lấy danh sách nhóm liên quan đến môn học
                 var groups = course.Projects
                     .Select(p => p.Group)
                     .Where(g => g != null)
                     .ToList();
 
-                // Tính số nhóm
                 int groupCount = groups.Count;
-
-                // Tính số nhóm đã chấm điểm (có ít nhất 1 Grade)
                 int gradedCount = groups.Count(g => g.Project.Grades != null && g.Project.Grades.Any());
-
-                // Tính số nhóm đã duyệt (Grade có trạng thái "Đã duyệt")
                 int approvedCount = groups.Count(g => g.Project.Grades != null && g.Project.GradeSchedules.Any(grade => grade.Status == "COMPLETED"));
 
                 var courseDTO = new HeadCourseGradingDto
                 {
                     CourseId = course.CourseCode,
-                    Name = course.Name, // Sửa từ course.Name thành CourseName để khớp với entity
+                    Name = course.Name,
                     Semester = course.Semester?.Name ?? "Chưa xác định",
                     FacultyCode = course.Department?.FacultyCode ?? "Không xác định",
                     Head = course.Projects.Any() && course.Projects.First().Group?.Lecturer != null
@@ -80,6 +69,191 @@ namespace EduProject_TADProgrammer.Services
             }
 
             return courseDTOs;
+        }
+
+        public async Task<List<GroupHeadCourseGradingDto>> GetGroupsForGradingAsync(string courseId, string semester, string facultyCode)
+        {
+            var groups = await _context.Groups
+                .Include(g => g.Project)
+                    .ThenInclude(p => p.Course)
+                        .ThenInclude(c => c.Semester)
+                .Include(g => g.GroupMembers)
+                    .ThenInclude(gm => gm.Student)
+                .Include(g => g.Lecturer)
+                .Include(g => g.Project)
+                    .ThenInclude(p => p.Grades)
+                        .ThenInclude(g => g.Criteria)
+                .Include(g => g.Project)
+                    .ThenInclude(p => p.Tasks)
+                .Where(g => g.Project.Course.CourseCode == courseId &&
+                            g.Project.Course.Semester.Name == semester &&
+                            g.Project.Course.Department.FacultyCode == facultyCode)
+                .ToListAsync();
+
+            var groupDTOs = new List<GroupHeadCourseGradingDto>();
+
+            foreach (var group in groups)
+            {
+                var members = group.GroupMembers?.Select(gm => gm.Student?.FullName).Where(name => name != null).ToList() ?? new List<string>();
+                var membersString = string.Join(", ", members);
+
+                // Tính điểm tổng dựa trên GradeCriteria
+                float? totalScore = null;
+                if (group.Project?.Grades != null && group.Project.Grades.Any())
+                {
+                    // Lấy CourseId từ Project
+                    var projectCourseId = group.Project.CourseId;
+
+                    // Lấy tất cả GradeCriteria có CourseId khớp
+                    var gradeCriteria = await _context.GradeCriteria
+                        .Where(gc => gc.CourseId == projectCourseId)
+                        .ToListAsync();
+
+                    float scoreSum = 0f;
+                    foreach (var grade in group.Project.Grades)
+                    {
+                        // Tìm GradeCriteria có Id khớp với Grade.CriteriaId
+                        var matchingCriteria = gradeCriteria.FirstOrDefault(gc => gc.Id == grade.CriteriaId);
+                        if (matchingCriteria != null)
+                        {
+                            // Nhân Score với Weight từ GradeCriteria
+                            scoreSum += grade.Score * matchingCriteria.Weight;
+                        }
+                    }
+                    totalScore = scoreSum;
+                }
+
+                var approvedStatus = group.Project.Grades?.Any(g => g.Comment == "Đã duyệt") == true
+                    ? "Đã duyệt"
+                    : "Chưa duyệt";
+
+                var finalReportTask = group.Project.Tasks?.FirstOrDefault(t => t.Title == "Báo cáo cuối kỳ");
+                var reportFiles = finalReportTask?.Submissions?.Select(s => s.FilePath).ToList() ?? new List<string>();
+
+                var gradeDetails = new HeadCourseGradeDetails
+                {
+                    TotalScore = totalScore,
+                    CouncilFeedback = group.Project.Grades?.FirstOrDefault()?.Comment ?? "Chưa có phản hồi",
+                    Approved = approvedStatus,
+                    ReportFiles = reportFiles
+                };
+
+                var groupDTO = new GroupHeadCourseGradingDto
+                {
+                    Id = group.Id,
+                    Name = group.Name,
+                    ProjectId = group.Project?.ProjectCode ?? "Chưa có mã",
+                    ProjectName = group.Project?.Title ?? "Chưa có đồ án",
+                    Members = membersString,
+                    Lecturer = group.Lecturer?.FullName ?? "Chưa xác định",
+                    Grade = totalScore?.ToString("F1") ?? "Chưa chấm",
+                    Status = group.Status ?? "Chưa xác định",
+                    Approved = approvedStatus,
+                    Grades = gradeDetails
+                };
+
+                groupDTOs.Add(groupDTO);
+            }
+
+            return groupDTOs;
+        }
+
+        public async Task<GroupHeadCourseGradingDetailDto> GetGroupGradingDetailsAsync(long groupId, string courseId, string semester, string facultyCode)
+        {
+            var group = await _context.Groups
+                .Include(g => g.Project)
+                    .ThenInclude(p => p.Course)
+                        .ThenInclude(c => c.Semester)
+                .Include(g => g.GroupMembers)
+                    .ThenInclude(gm => gm.Student)
+                .Include(g => g.Lecturer)
+                .Include(g => g.Project)
+                    .ThenInclude(p => p.Grades)
+                        .ThenInclude(g => g.Criteria)
+                .Include(g => g.Project)
+                    .ThenInclude(p => p.Tasks)
+                        .ThenInclude(t => t.Submissions)
+                .FirstOrDefaultAsync(g => g.Id == groupId &&
+                                          g.Project.Course.CourseCode == courseId &&
+                                          g.Project.Course.Semester.Name == semester &&
+                                          g.Project.Course.Department.FacultyCode == facultyCode);
+
+            if (group == null) return null;
+
+            var members = group.GroupMembers?.Select(gm => new GroupMemberDetail
+            {
+                StudentId = gm.StudentId,
+                FullName = gm.Student?.FullName ?? "Chưa xác định",
+                TotalScore = group.Project.Grades
+                    .Where(g => g.StudentId == gm.StudentId)
+                    .Sum(g =>
+                    {
+                        // Lấy CourseId từ Project
+                        var projectCourseId = group.Project.CourseId;
+
+                        // Lấy GradeCriteria có CourseId khớp
+                        var gradeCriteria = _context.GradeCriteria
+                            .Where(gc => gc.CourseId == projectCourseId)
+                            .ToList();
+
+                        // Tìm GradeCriteria có Id khớp với Grade.CriteriaId
+                        var matchingCriteria = gradeCriteria.FirstOrDefault(gc => gc.Id == g.CriteriaId);
+                        if (matchingCriteria != null)
+                        {
+                            return g.Score * matchingCriteria.Weight;
+                        }
+                        return 0f;
+                    }),
+                CouncilFeedback = group.Project.Grades
+                    .FirstOrDefault(g => g.StudentId == gm.StudentId)?.Comment ?? "Chưa có phản hồi"
+            }).ToList() ?? new List<GroupMemberDetail>();
+
+            var finalReportTask = group.Project.Tasks?.FirstOrDefault(t => t.Title == "Báo cáo cuối kỳ");
+            var reportFiles = finalReportTask?.Submissions?.Select(s => s.FilePath).ToList() ?? new List<string>();
+
+            float? totalGroupScore = null;
+            if (group.Project.Grades != null && group.Project.Grades.Any())
+            {
+                // Lấy CourseId từ Project
+                var projectCourseId = group.Project.CourseId;
+
+                // Lấy tất cả GradeCriteria có CourseId khớp
+                var gradeCriteria = await _context.GradeCriteria
+                    .Where(gc => gc.CourseId == projectCourseId)
+                    .ToListAsync();
+
+                float scoreSum = 0f;
+                foreach (var grade in group.Project.Grades)
+                {
+                    // Tìm GradeCriteria có Id khớp với Grade.CriteriaId
+                    var matchingCriteria = gradeCriteria.FirstOrDefault(gc => gc.Id == grade.CriteriaId);
+                    if (matchingCriteria != null)
+                    {
+                        scoreSum += grade.Score * matchingCriteria.Weight;
+                    }
+                }
+                totalGroupScore = scoreSum;
+            }
+
+            return new GroupHeadCourseGradingDetailDto
+            {
+                GroupId = group.Id,
+                GroupName = group.Name,
+                ProjectId = group.Project.ProjectCode,
+                ProjectName = group.Project.Title,
+                Members = members,
+                Lecturer = group.Lecturer?.FullName ?? "Chưa xác định",
+                Status = group.Status ?? "Chưa xác định",
+                Grades = new HeadCourseGradeDetails
+                {
+                    TotalScore = totalGroupScore,
+                    CouncilFeedback = group.Project.Grades?.FirstOrDefault()?.Comment ?? "Chưa có phản hồi",
+                    Approved = group.Project.Grades?.Any(g => g.Comment == "Đã duyệt") == true
+                        ? "Đã duyệt"
+                        : "Chưa duyệt",
+                    ReportFiles = reportFiles
+                }
+            };
         }
     }
 }

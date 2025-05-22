@@ -1,4 +1,4 @@
-﻿// File: Services/ProgressCoursesService.cs
+﻿// File: Services/HeadProgressCoursesService.cs
 // Mục đích: Cung cấp logic nghiệp vụ để lấy danh sách môn học cần theo dõi tiến độ từ cơ sở dữ liệu.
 using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
@@ -87,7 +87,7 @@ namespace EduProject_TADProgrammer.Services
             return groups ?? new List<HeadProgressCourseGroupDto>();
         }
 
-        public async Task<HeadProgressCourseDetailDTO> GetProgressDetailsAsync(string courseId, string semester, string facultyCode, long groupId)
+        public async Task<HeadProgressCourseDetailDto> GetProgressDetailsAsync(string courseId, string semester, string facultyCode, long groupId)
         {
             // Query the group with related data, including the ClassCode filter
             var group = await _context.Groups
@@ -97,12 +97,11 @@ namespace EduProject_TADProgrammer.Services
                 .Include(g => g.GroupMembers)
                     .ThenInclude(gm => gm.Student)
                 .Include(g => g.Lecturer)
+                // SỬA: Include Tasks thay vì Submissions và Grades để lấy thông tin giai đoạn
                 .Include(g => g.Project)
-                    .ThenInclude(p => p.Submissions)
-                        .ThenInclude(s => s.Feedbacks)
-                .Include(g => g.Project)
-                    .ThenInclude(p => p.Grades)
-                        .ThenInclude(g => g.Criteria)
+                    .ThenInclude(p => p.Tasks)
+                        // SỬA: Include Submissions liên quan đến Task để lấy tệp báo cáo
+                        .ThenInclude(t => t.Submissions)
                 .FirstOrDefaultAsync(g => g.Id == groupId &&
                                           g.Project.Course.CourseCode == courseId &&
                                           g.Project.Course.Semester.Name == semester &&
@@ -110,31 +109,28 @@ namespace EduProject_TADProgrammer.Services
 
             if (group == null) return null;
 
-            // Ensure submissions and grades are not null
-            var submissions = group.Project.Submissions?.OrderBy(s => s.SubmittedAt).ToList() ?? new List<Submission>();
-            var grades = group.Project.Grades?.ToList() ?? new List<Grade>();
+            // SỬA: Lấy danh sách Tasks thay vì Submissions để xác định các giai đoạn
+            var tasks = group.Project.Tasks?.OrderBy(t => t.CreatedAt).ToList() ?? new List<Entities.Task>();
 
             var progressPhases = new List<HeadProgressCoursePhase>();
-            foreach (var submission in submissions)
+            foreach (var task in tasks)
             {
-                // Find the grade associated with this submission (if any)
-                // Note: Since Grade does not have a direct SubmissionId in the schema, we assume a matching logic
-                // This might need adjustment based on your actual database relationships
-                var matchingGrade = grades.FirstOrDefault(g => g.ProjectId == submission.ProjectId && g.Id == submission.Id);
+                // SỬA: Lấy Submission liên quan đến Task (nếu có)
+                var submission = task.Submissions?.FirstOrDefault();
 
                 var phase = new HeadProgressCoursePhase
                 {
-                    Phase = $"Tuần {GetWeekNumber(submission.SubmittedAt)}",
-                    Description = submission.Feedbacks?.FirstOrDefault()?.Content ?? "Chưa có mô tả",
-                    Files = new List<string> { submission.FilePath },
-                    Date = submission.SubmittedAt.ToString("dd/MM/yyyy"),
-                    Deadline = submission.SubmittedAt.AddDays(7).ToString("dd/MM/yyyy"), // Replace with actual deadline logic
-                    Score = matchingGrade != null ? matchingGrade.Score.ToString("F1") : "Chưa chấm"
+                    Phase = task.Title, // SỬA: Sử dụng Title của Task làm tên giai đoạn
+                    Description = task.Description ?? "Chưa có mô tả", // SỬA: Sử dụng Description của Task
+                    Files = submission != null ? new List<string> { submission.FilePath } : new List<string>(), // SỬA: Lấy FilePath từ Submission liên quan
+                    Date = submission != null ? submission.SubmittedAt.ToString("dd/MM/yyyy") : "Chưa nộp", // SỬA: Ngày nộp từ Submission
+                    Deadline = task.Deadline?.ToString("dd/MM/yyyy") ?? "Không có hạn", // SỬA: Lấy Deadline từ Task
+                    // SỬA: Bỏ Score vì không cần chấm điểm
                 };
                 progressPhases.Add(phase);
             }
 
-            return new HeadProgressCourseDetailDTO
+            return new HeadProgressCourseDetailDto
             {
                 GroupId = group.Id,
                 GroupName = group.Name,

@@ -193,6 +193,17 @@ namespace EduProject_TADProgrammer.Data
                 .HasForeignKey(t => t.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Entities.Task>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.Tasks)
+                .HasForeignKey(t => t.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+            // Thêm cấu hình cho mối quan hệ với Submissions
+            modelBuilder.Entity<Entities.Task>()
+                .HasMany(t => t.Submissions)
+                .WithOne(s => s.Task)
+                .HasForeignKey(s => s.TaskId)
+                .OnDelete(DeleteBehavior.Restrict); // Không xóa Task nếu Submission còn tồn tại
+            modelBuilder.Entity<Entities.Task>()
                 .HasIndex(t => t.ProjectId);
 
             // 11. Submissions: Liên kết với Projects và Groups
