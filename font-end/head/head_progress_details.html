@@ -119,7 +119,7 @@
                                 <th>Tệp báo cáo</th>
                                 <th>Ngày nộp</th>
                                 <th>Hạn nộp</th>
-                                <th>Điểm</th>
+                                <!-- SỬA: Xóa cột Điểm -->
                             </tr>
                         </thead>
                         <tbody id="progressTableBody"></tbody>
@@ -211,7 +211,7 @@
         function displayProgressDetails(data) {
             if (!data) {
                 document.querySelector(".card-body").innerHTML = "<p>Không tìm thấy thông tin nhóm.</p>";
-                document.getElementById("progressTableBody").innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy tiến độ.</td></tr>';
+                document.getElementById("progressTableBody").innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy tiến độ.</td></tr>'; // SỬA: Đổi colspan từ 7 thành 6 vì đã xóa cột Điểm
                 return;
             }
 
@@ -231,10 +231,9 @@
                     <td><ul class="file-list">${p.files.length > 0 ? p.files.map(file => `<li><a href="#">${file}</a></li>`).join("") : "<li>Chưa nộp</li>"}</ul></td>
                     <td>${p.date}</td>
                     <td>${p.deadline}</td>
-                    <td>${p.score}</td>
+                    <!-- SỬA: Xóa cột điểm -->
                 </tr>
-            `).join("") : '<tr><td colspan="7" class="text-center">Chưa có tiến độ</td></tr>';
-
+            `).join("") : '<tr><td colspan="6" class="text-center">Chưa có tiến độ</td></tr>'; // SỬA: Đổi colspan từ 7 thành 6
             document.getElementById("backToProgressLink").href = `head_progress.html?courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}`;
         }
 
@@ -249,16 +248,16 @@
                 [`Thành viên: ${data.members}`],
                 [`GVHD: ${data.lecturer}`],
                 [`Trạng thái: ${data.status}`],
-                [`Ngày xuất: ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}`], // 01:38 PM +07, 21/05/2025
+                [`Ngày xuất: ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}`],
                 [],
-                ["#", "Giai đoạn", "Mô tả", "Tệp báo cáo", "Ngày nộp", "Hạn nộp", "Điểm"]
+                ["#", "Giai đoạn", "Mô tả", "Tệp báo cáo", "Ngày nộp", "Hạn nộp"] // SỬA: Xóa cột Điểm
             ];
 
             if (data.phases.length === 0) {
-                worksheetData.push(["", "Chưa có tiến độ", "", "", "", "", ""]);
+                worksheetData.push(["", "Chưa có tiến độ", "", "", "", ""]); // SỬA: Xóa cột Điểm
             } else {
                 data.phases.forEach((p, index) => {
-                    worksheetData.push([index + 1, p.phase, p.description, p.files.join(", ") || "Chưa nộp", p.date, p.deadline, p.score]);
+                    worksheetData.push([index + 1, p.phase, p.description, p.files.join(", ") || "Chưa nộp", p.date, p.deadline]); // SỬA: Xóa cột Điểm
                 });
             }
 

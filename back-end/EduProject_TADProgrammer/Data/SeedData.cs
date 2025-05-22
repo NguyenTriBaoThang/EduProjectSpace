@@ -143,34 +143,36 @@ namespace EduProject_TADProgrammer.Data
 
             // 9. Task
             modelBuilder.Entity<Entities.Task>().HasData(
-                new Entities.Task { Id = 1, ProjectId = 1, GroupId = 1, Title = "Phân tích yêu cầu", Description = "Phân tích yêu cầu hệ thống AI.", Deadline = new DateTime(2025, 2, 15), Status = "TODO", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 2, ProjectId = 2, StudentId = 9, Title = "Thiết kế giao diện", Description = "Thiết kế giao diện quản lý đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 3, ProjectId = 3, GroupId = 3, Title = "Xây dựng cơ sở dữ liệu", Description = "Thiết kế và triển khai CSDL.", Deadline = new DateTime(2025, 2, 25), Status = "DONE", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 4, ProjectId = 4, StudentId = 12, Title = "Tích hợp API", Description = "Tích hợp API phân tích dữ liệu.", Deadline = new DateTime(2025, 2, 28), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 5, ProjectId = 5, GroupId = 5, Title = "Phát triển tính năng", Description = "Phát triển tính năng quản lý lịch học.", Deadline = new DateTime(2025, 3, 1), Status = "TODO", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 6, ProjectId = 6, StudentId = 8, Title = "Kiểm tra bảo mật", Description = "Kiểm tra lỗ hổng bảo mật IoT.", Deadline = new DateTime(2025, 3, 5), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 7, ProjectId = 7, GroupId = 7, Title = "Thu thập dữ liệu", Description = "Thu thập dữ liệu từ mạng xã hội.", Deadline = new DateTime(2025, 3, 10), Status = "DONE", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 8, ProjectId = 8, StudentId = 10, Title = "Tích hợp AI", Description = "Tích hợp AI vào app học ngoại ngữ.", Deadline = new DateTime(2025, 3, 15), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 9, ProjectId = 9, GroupId = 9, Title = "Thiết kế hệ thống", Description = "Thiết kế hệ thống quản lý kho.", Deadline = new DateTime(2025, 3, 20), Status = "TODO", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 10, ProjectId = 10, StudentId = 12, Title = "Phát triển giao diện", Description = "Phát triển giao diện đặt lịch khám.", Deadline = new DateTime(2025, 3, 25), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 11, ProjectId = 11, GroupId = 11, Title = "Kiểm tra chức năng", Description = "Kiểm tra chức năng quản lý nhân sự.", Deadline = new DateTime(2025, 3, 30), Status = "DONE", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 12, ProjectId = 12, StudentId = 13, Title = "Tích hợp chat", Description = "Tích hợp tính năng chat nhóm.", Deadline = new DateTime(2025, 4, 1), Status = "TODO", CreatedAt = DateTime.UtcNow }
+                new Entities.Task { Id = 1, ProjectId = 1, GroupId = 1, Title = "Báo cáo tuần 1", Description = "Phân tích yêu cầu hệ thống AI.", Deadline = new DateTime(2025, 2, 15), Status = "TODO", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 2, ProjectId = 2, GroupId = 2, Title = "Báo cáo tuần 1", Description = "Thiết kế giao diện quản lý đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 3, ProjectId = 3, GroupId = 3, Title = "Báo cáo tuần 1", Description = "Thiết kế và triển khai CSDL.", Deadline = new DateTime(2025, 2, 25), Status = "DONE", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 4, ProjectId = 4, GroupId = 4, Title = "Báo cáo tuần 1", Description = "Tích hợp API phân tích dữ liệu.", Deadline = new DateTime(2025, 2, 28), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 5, ProjectId = 5, GroupId = 5, Title = "Báo cáo tuần 1", Description = "Phát triển tính năng quản lý lịch học.", Deadline = new DateTime(2025, 3, 1), Status = "TODO", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 6, ProjectId = 6, GroupId = 6, Title = "Báo cáo tuần 1", Description = "Kiểm tra lỗ hổng bảo mật IoT.", Deadline = new DateTime(2025, 3, 5), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 7, ProjectId = 7, GroupId = 7, Title = "Báo cáo tuần 1", Description = "Thu thập dữ liệu từ mạng xã hội.", Deadline = new DateTime(2025, 3, 10), Status = "DONE", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 8, ProjectId = 8, GroupId = 8, Title = "Báo cáo tuần 1", Description = "Tích hợp AI vào app học ngoại ngữ.", Deadline = new DateTime(2025, 3, 15), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 9, ProjectId = 9, GroupId = 9, Title = "Báo cáo tuần 1", Description = "Thiết kế hệ thống quản lý kho.", Deadline = new DateTime(2025, 3, 20), Status = "TODO", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 10, ProjectId = 10, GroupId = 10, Title = "Báo cáo tuần 1", Description = "Phát triển giao diện đặt lịch khám.", Deadline = new DateTime(2025, 3, 25), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 11, ProjectId = 11, GroupId = 11, Title = "Báo cáo tuần 1", Description = "Kiểm tra chức năng quản lý nhân sự.", Deadline = new DateTime(2025, 3, 30), Status = "DONE", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 12, ProjectId = 12, GroupId = 12, Title = "Báo cáo tuần 1", Description = "Tích hợp tính năng chat nhóm.", Deadline = new DateTime(2025, 4, 1), Status = "TODO", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 13, ProjectId = 1, GroupId = 1, Title = "Báo cáo tuần 2", Description = "Thiết kế giao diện quản lý đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow }
             );
 
             // 10. Submission
             modelBuilder.Entity<Submission>().HasData(
-                new Submission { Id = 1, ProjectId = 1, GroupId = 1, FilePath = "submissions/dt001.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 2, ProjectId = 2, GroupId = 2, FilePath = "submissions/dt002.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 3, ProjectId = 3, GroupId = 3, FilePath = "submissions/dt003.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 4, ProjectId = 4, GroupId = 4, FilePath = "submissions/dt004.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 5, ProjectId = 5, GroupId = 5, FilePath = "submissions/dt005.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 6, ProjectId = 6, GroupId = 6, FilePath = "submissions/dt006.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 7, ProjectId = 7, GroupId = 7, FilePath = "submissions/dt007.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 8, ProjectId = 8, GroupId = 8, FilePath = "submissions/dt008.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 9, ProjectId = 9, GroupId = 9, FilePath = "submissions/dt009.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 10, ProjectId = 10, GroupId = 10, FilePath = "submissions/dt010.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 11, ProjectId = 11, GroupId = 11, FilePath = "submissions/dt011.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 12, ProjectId = 12, GroupId = 12, FilePath = "submissions/dt012.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow }
+                new Submission { Id = 1, ProjectId = 1, GroupId = 1, TaskId = 1, FilePath = "submissions/dt001.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 2, ProjectId = 2, GroupId = 2, TaskId = 2, FilePath = "submissions/dt002.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 3, ProjectId = 3, GroupId = 3, TaskId = 3, FilePath = "submissions/dt003.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 4, ProjectId = 4, GroupId = 4, TaskId = 4, FilePath = "submissions/dt004.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 5, ProjectId = 5, GroupId = 5, TaskId = 5, FilePath = "submissions/dt005.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 6, ProjectId = 6, GroupId = 6, TaskId = 6, FilePath = "submissions/dt006.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 7, ProjectId = 7, GroupId = 7, TaskId = 7, FilePath = "submissions/dt007.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 8, ProjectId = 8, GroupId = 8, TaskId = 8, FilePath = "submissions/dt008.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 9, ProjectId = 9, GroupId = 9, TaskId = 9, FilePath = "submissions/dt009.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 10, ProjectId = 10, GroupId = 10, TaskId = 10, FilePath = "submissions/dt010.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 11, ProjectId = 11, GroupId = 11, TaskId = 11, FilePath = "submissions/dt011.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 12, ProjectId = 12, GroupId = 12, TaskId = 12, FilePath = "submissions/dt012.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 13, ProjectId = 1, GroupId = 1, TaskId = 1, FilePath = "submissions/dt013.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow }
             );
 
             // 11. SubmissionVersion
@@ -710,7 +712,9 @@ namespace EduProject_TADProgrammer.Data
             modelBuilder.Entity<Department>().HasData(
                 new Department { Id = 1, FacultyCode = "CNPM", FacultyName = "Công nghệ phần mềm" },
                 new Department { Id = 2, FacultyCode = "ATTT", FacultyName = "An toàn thông tin" },
-                new Department { Id = 3, FacultyCode = "MMT", FacultyName = "Mạng máy tính" }
+                new Department { Id = 3, FacultyCode = "MMT", FacultyName = "Mạng máy tính" },
+                new Department { Id = 4, FacultyCode = "HTTT", FacultyName = "Hệ thống thông tin" },
+                new Department { Id = 5, FacultyCode = "TTNT", FacultyName = "Trí tuệ nhân tạo" }
             );
         }
     }

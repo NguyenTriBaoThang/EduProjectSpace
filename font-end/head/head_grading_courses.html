@@ -118,7 +118,7 @@
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
-        let currentHead = null; // Trưởng bộ môn hiện tại
+        let currentHead = null;
         let currentIdHead = null;
         let allCourses = [];
 
@@ -160,7 +160,6 @@
             }
         }
 
-        // Tải thông tin người dùng
         async function loadUserProfile() {
             const user = JSON.parse(localStorage.getItem("user"));
             if (!user || user.roleName !== "ROLE_HEAD") {
@@ -174,7 +173,7 @@
 
         async function fetchCourses() {
             try {
-                const response = await fetch(`${API_URL}/api/HeadCourseGrading/courses-for-grading?headFullName=${encodeURIComponent(currentIdHead)}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseGrading/courses-for-grading?headId=${encodeURIComponent(currentIdHead)}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -295,7 +294,7 @@
             const worksheetData = [
                 ["Danh sách môn học cần duyệt chấm điểm - Hệ thống Sinh viên HUTECH"],
                 ["Trưởng bộ môn: Nguyễn Huy Cường"],
-                [`Ngày xuất: ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}`], // 03:46 PM +07, 21/05/2025
+                [`Ngày xuất: ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}`], // 03:23 AM +07, 22/05/2025
                 [],
                 ["#", "Mã môn học", "Tên môn học", "Học kỳ", "Mã lớp", "Số nhóm", "Số nhóm đã chấm", "Số nhóm đã duyệt"]
             ];
@@ -319,7 +318,6 @@
             XLSX.writeFile(workbook, "mon_hoc_duyet_cham_diem.xlsx");
         }
 
-        // Đăng xuất tài khoản
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -351,4 +349,4 @@
         });
     </script>
 </body>
-</html>
+</html> 

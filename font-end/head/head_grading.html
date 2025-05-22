@@ -9,27 +9,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
-        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
             <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
-            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
-            <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
-            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
-            <a href="head_grading_courses.html" class="active"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
-            <a href="head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="/font-end/head/head_grading_courses.html" class="active"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg px-3">
             <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
                 <i id="sidebarIcon" class="bi bi-list"></i>
@@ -46,38 +43,34 @@
             </div>
         </nav>
 
-        <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
-                <h6>Nguyễn Huy Cường</h6>
-                <p>nguyenhuycuong@hutech.edu.vn</p>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
+                <h6 id="headName">Head HUTECH</h6>
+                <p id="headEmail">head@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
-        <!-- Grading Section -->
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">🏆 Xem và duyệt chấm điểm</h2>
                 <button class="btn btn-info" onclick="exportGrades()">Xuất báo cáo <i class="bi bi-file-earmark-excel"></i></button>
             </div>
 
-            <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
-                    <li class="breadcrumb-item"><a href="head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a></li>
                     <li class="breadcrumb-item active"><i class="bi bi-folder"></i> Chi tiết chấm điểm</li>
                 </ol>
             </nav>
 
-            <!-- Grading Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
                     <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm nhóm..." onkeyup="filterTable()">
@@ -104,9 +97,9 @@
                                 <th class="sortable" onclick="sortTable('projectName')">Tên đồ án <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('members')">Thành viên <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('lecturer')">GVHD <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('grade')">Điểm số <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('approved')">Duyệt <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Điểm tổng <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Duyệt <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -127,43 +120,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        let students = [
-            { id: "21520001", name: "Nguyễn Tri Bão Thắng", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
-            { id: "21520002", name: "Trần Văn A", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 1 },
-            { id: "21520003", name: "Lê Thị B", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường", groupId: 2 },
-            { id: "21520004", name: "Phạm Văn C", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
-            { id: "21520005", name: "Nguyễn Thị D", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", lecturer: "Lê Văn Nam", groupId: 3 },
-            { id: "21520006", name: "Hoàng Văn E", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 },
-            { id: "21520007", name: "Trần Thị F", courseId: "AI201", semester: "HK1-2025", classId: "AI01", lecturer: "Phạm Thị Hồng", groupId: 4 }
-        ];
-
-        let groups = [
-            { id: 1, name: "Nhóm 1", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["21520001", "21520002"], status: "Đã duyệt", grades: { lecturerScore: 8.5, councilScore: 8.0, councilFeedback: "Đề tài sáng tạo, cần cải thiện giao diện", approved: "Chưa duyệt" } },
-            { id: 2, name: "Nhóm 2", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT002", members: ["21520003"], status: "Chưa duyệt", grades: null },
-            { id: 3, name: "Nhóm 3", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", members: ["21520004", "21520005"], status: "Hoàn thành", grades: { lecturerScore: 9.0, councilScore: 8.8, councilFeedback: "Hoàn thiện tốt", approved: "Đã duyệt" } },
-            { id: 4, name: "Nhóm 4", courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT004", members: ["21520006", "21520007"], status: "Đã duyệt", grades: { lecturerScore: 7.5, councilScore: 7.8, councilFeedback: "Cần thêm phân tích sâu", approved: "Chưa duyệt" } }
-        ];
-
-        let projects = [
-            { projectId: "DT001", name: "Công nghệ phần mềm", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT002", name: "Ứng dụng AI trong y tế", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT003", name: "Lập trình Web", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT004", name: "Phân tích dữ liệu", courseId: "AI201", semester: "HK1-2025", classId: "AI01" }
-        ];
-
+        const API_URL = "https://localhost:7047";
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
 
-        // Lấy thông tin từ URL
         const urlParams = new URLSearchParams(window.location.search);
         const selectedCourseId = urlParams.get("courseId");
         const selectedSemester = urlParams.get("semester");
-        const selectedClassId = urlParams.get("classId");
+        const selectedFacultyCode = urlParams.get("facultyCode");
 
-        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
         document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
@@ -189,15 +156,12 @@
         });
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
             let icon = document.getElementById("sidebarIcon");
-
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-
             if (sidebar.classList.contains("collapsed")) {
                 icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
             } else {
@@ -205,39 +169,40 @@
             }
         }
 
-        // Lấy thông tin nhóm
-        function getGroupDetails(group) {
-            const members = students.filter(s => group.members.includes(s.id)).map(s => s.name).join(", ");
-            const lecturer = students.find(s => group.members.includes(s.id))?.lecturer || "Chưa xác định";
-            const project = projects.find(p => p.projectId === group.projectId);
-            const gradeDisplay = group.grades ? `${group.grades.lecturerScore || "Chưa có"} / ${group.grades.councilScore || "Chưa có"}` : "Chưa chấm";
-            return {
-                id: group.id,
-                name: group.name,
-                projectId: group.projectId,
-                projectName: project ? project.name : "Chưa có đồ án",
-                members: members,
-                lecturer: lecturer,
-                grade: gradeDisplay,
-                status: group.status,
-                approved: group.grades ? group.grades.approved : "Chưa duyệt",
-                grades: group.grades // Giữ nguyên grades để kiểm tra
-            };
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_HEAD") {
+                throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+            }
+            document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+            document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
         }
 
-        // Lọc và sắp xếp bảng
+        async function fetchGroups() {
+            try {
+                const response = await fetch(`${API_URL}/api/HeadCourseGrading/groups-for-grading?courseId=${encodeURIComponent(selectedCourseId)}&semester=${encodeURIComponent(selectedSemester)}&facultyCode=${encodeURIComponent(selectedFacultyCode)}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải danh sách nhóm: ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error("Error loading groups:", error);
+                alert("Không thể tải danh sách nhóm. Vui lòng thử lại sau.");
+                return [];
+            }
+        }
+
         function getFilteredGroups() {
             const searchText = document.getElementById("searchInput").value.toLowerCase();
             const statusFilter = document.getElementById("statusFilter").value;
             const approvalFilter = document.getElementById("approvalFilter").value;
 
-            let filtered = groups.filter(group =>
-                group.courseId === selectedCourseId &&
-                group.semester === selectedSemester &&
-                group.classId === selectedClassId
-            ).map(group => getGroupDetails(group));
-
-            filtered = filtered.filter(group =>
+            let filtered = allGroups.filter(group =>
                 (group.name.toLowerCase().includes(searchText) ||
                  group.projectId.toLowerCase().includes(searchText) ||
                  group.projectName.toLowerCase().includes(searchText) ||
@@ -249,8 +214,8 @@
 
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = sortColumn === 'grade' ? (a.grades ? (a.grades.lecturerScore || 0) : 0) : a[sortColumn].toLowerCase();
-                    let valueB = sortColumn === 'grade' ? (b.grades ? (b.grades.lecturerScore || 0) : 0) : b[sortColumn].toLowerCase();
+                    let valueA = a[sortColumn].toLowerCase();
+                    let valueB = b[sortColumn].toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -258,8 +223,8 @@
             return filtered;
         }
 
-        // Hiển thị bảng
-        function displayTable(page) {
+        async function displayTable(page) {
+            if (!allGroups.length) allGroups = await fetchGroups();
             const filteredGroups = getFilteredGroups();
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
@@ -268,7 +233,7 @@
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
 
-            if (!selectedCourseId || !selectedSemester || !selectedClassId) {
+            if (!selectedCourseId || !selectedSemester || !selectedFacultyCode) {
                 tableBody.innerHTML = '<tr><td colspan="10" class="text-center">Vui lòng chọn một môn học từ danh sách để xem và duyệt điểm.</td></tr>';
             } else if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="10" class="text-center">Không tìm thấy nhóm nào.</td></tr>';
@@ -276,8 +241,7 @@
                 paginatedData.forEach((group, index) => {
                     const statusClass = group.status === "Hoàn thành" ? "bg-success" : group.status === "Đã duyệt" ? "bg-info" : "bg-warning";
                     const approvalClass = group.approved === "Đã duyệt" ? "bg-success" : "bg-warning";
-                    const isBothNotApproved = group.status === "Chưa duyệt" && (!group.grades || group.grades.approved === "Chưa duyệt");
-                    console.log(`Nhóm ${group.name}: status = ${group.status}, approved = ${group.approved}, isBothNotApproved = ${isBothNotApproved}`);
+                    const isBothNotApproved = group.status === "Chưa duyệt" && group.approved === "Chưa duyệt";
                     tableBody.innerHTML += `
                         <tr>
                             <td>${start + index + 1}</td>
@@ -302,7 +266,6 @@
             setupPagination(filteredGroups.length);
         }
 
-        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
@@ -322,13 +285,11 @@
             pagination.innerHTML = paginationHTML;
         }
 
-        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
-        // Sắp xếp bảng
         function sortTable(column) {
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -339,25 +300,22 @@
             displayTable(currentPage);
         }
 
-        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
-        // Điều hướng đến trang chi tiết duyệt điểm
         function viewGradingDetails(groupId) {
-            window.location.href = `head_grading_details.html?courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}&groupId=${groupId}`;
+            window.location.href = `head_grading_details.html?courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}&groupId=${groupId}`;
         }
 
-        // Xuất báo cáo điểm sang Excel
         function exportGrades() {
             const filteredGroups = getFilteredGroups();
             const worksheetData = [
                 ["Báo cáo chấm điểm - Hệ thống Sinh viên HUTECH"],
-                [`Lớp: ${selectedCourseId} - ${selectedClassId} - ${selectedSemester}`],
+                [`Lớp: ${selectedCourseId} - ${selectedFacultyCode} - ${selectedSemester}`],
                 [],
-                ["#", "Tên nhóm", "Mã đồ án", "Tên đồ án", "Thành viên", "GVHD", "Điểm GVHD", "Điểm hội đồng", "Trạng thái duyệt", "Trạng thái đồ án"]
+                ["#", "Tên nhóm", "Mã đồ án", "Tên đồ án", "Thành viên", "GVHD", "Điểm tổng", "Trạng thái duyệt", "Trạng thái đồ án"]
             ];
 
             filteredGroups.forEach((group, index) => {
@@ -368,9 +326,8 @@
                     group.projectName,
                     group.members,
                     group.lecturer,
-                    group.grades ? group.grades.lecturerScore || "Chưa chấm" : "Chưa chấm",
-                    group.grades ? group.grades.councilScore || "Chưa chấm" : "Chưa chấm",
-                    group.grades ? group.grades.approved : "Chưa duyệt",
+                    group.grade,
+                    group.approved,
                     group.status
                 ]);
             });
@@ -378,12 +335,38 @@
             const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "BaoCaoChamDiem");
-            XLSX.writeFile(workbook, `bao_cao_cham_diem_${selectedCourseId}_${selectedClassId}_${selectedSemester}.xlsx`);
+            XLSX.writeFile(workbook, `bao_cao_cham_diem_${selectedCourseId}_${selectedFacultyCode}_${selectedSemester}.xlsx`);
         }
 
-        // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            displayTable(currentPage);
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        let allGroups = [];
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadUserProfile();
+            await displayTable(currentPage);
         });
     </script>
 </body>

@@ -57,5 +57,8 @@ namespace EduProject_TADProgrammer.Entities
 
         // Thời gian tạo bản ghi (mặc định là thời gian hiện tại theo UTC)
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // Thêm danh sách các Submission liên quan đến Task
+        public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
     }
 }

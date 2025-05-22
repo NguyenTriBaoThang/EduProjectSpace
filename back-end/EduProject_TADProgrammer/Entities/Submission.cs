@@ -39,6 +39,11 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("GroupId")]
         public Group Group { get; set; }
 
+        // Thêm trường TaskId để liên kết với Task
+        public long? TaskId { get; set; } // Nullable vì không phải Submission nào cũng cần liên kết với Task
+        [ForeignKey("TaskId")]
+        public Task Task { get; set; }
+
         // Đường dẫn đến file bài nộp (bắt buộc, tối đa 255 ký tự)
         [Required]
         [StringLength(255)]
