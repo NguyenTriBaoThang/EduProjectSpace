@@ -307,12 +307,19 @@
 
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_HEAD") {
-                throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_HEAD") {
+                    throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+                document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
-            document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
         }
 
         async function fetchGroupDetails() {

@@ -195,26 +195,21 @@
 
         const API_URL = "https://localhost:7047";
 
-        // Tải dữ liệu khi trang được load
-        window.onload = async () => {
-            try {
-                await loadUserProfile();
-                await loadDashboardData();
-            } catch (error) {
-                console.error("Error loading dashboard:", error);
-                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
-                window.location.href = "/font-end/login/login.html";
-            }
-        };
-
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_ADMIN") {
-                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_ADMIN") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+                document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
-            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
         // Tải dữ liệu tổng quan từ API
@@ -326,33 +321,32 @@
             });
         }
 
-        // Đăng xuất
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-
-                const data = await response.json();
+                const text = await response.text();
                 if (response.ok) {
-                    alert(data.message);
-                    console.log(data.message); // Ví dụ: "Đăng xuất thành công."
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
                 } else {
+                    const data = text ? JSON.parse(text) : {};
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                    console.error(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
-                alert("Đăng xuất bị lỗi:", error);
+                alert("Đăng xuất bị lỗi: " + error.message);
                 console.error("Đăng xuất bị lỗi:", error);
             }
-
-            // Xóa thông tin người dùng và chuyển hướng
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
@@ -434,6 +428,18 @@
                 icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
             }
         }
+
+        // Tải dữ liệu khi trang được load
+        window.onload = async () => {
+            try {
+                await loadUserProfile();
+                await loadDashboardData();
+            } catch (error) {
+                console.error("Lỗi khi tải bảng điều khiển:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
+        };
     </script>
 </body>
 </html>

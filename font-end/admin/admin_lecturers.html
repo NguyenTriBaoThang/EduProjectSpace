@@ -262,18 +262,6 @@
             });
         }
 
-        // Tải dữ liệu khi trang được load
-        window.onload = async () => {
-            try {
-                await loadUserProfile();
-                await loadLecturers();
-            } catch (error) {
-                console.error("Error loading data:", error);
-                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
-                window.location.href = "/font-end/login/login.html";
-            }
-        };
-
         // Tải thông tin người dùng
         async function loadUserProfile() {
             const user = JSON.parse(localStorage.getItem("user"));
@@ -288,7 +276,9 @@
         async function loadLecturers() {
             try {
                 const response = await fetch(`${API_URL}/api/AdminUser/lecturers`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -450,6 +440,7 @@
                 const response = await fetch(`${API_URL}/api/AdminUser/lecturers`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -509,6 +500,7 @@
                 const response = await fetch(`${API_URL}/api/AdminUser/lecturers/${id}`, {
                     method: "PUT",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -536,6 +528,7 @@
                 const response = await fetch(`${API_URL}/api/AdminUser/lecturers/${id}`, {
                     method: "DELETE",
                     headers: {
+                        "Accept": "*/*",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`,
                         "Content-Type": "application/json"
                     },
@@ -640,6 +633,7 @@
                         const response = await fetch(`${API_URL}/api/AdminUser/lecturers/import`, {
                             method: "POST",
                             headers: {
+                                "Accept": "*/*",
                                 "Content-Type": "application/json",
                                 "Authorization": `Bearer ${localStorage.getItem("token")}`
                             },
@@ -671,12 +665,13 @@
             }
         }
 
-        // Đăng xuất
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -741,6 +736,18 @@
                 icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
             }
         }
+
+        // Tải dữ liệu khi trang được load
+        window.onload = async () => {
+            try {
+                await loadUserProfile();
+                await loadLecturers();
+            } catch (error) {
+                console.error("Error loading data:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
+        };
     </script>
 </body>
 </html>

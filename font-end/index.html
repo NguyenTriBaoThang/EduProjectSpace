@@ -11,6 +11,56 @@
     <link rel="stylesheet" href="/font-end/static/css/styles_index.css">
     <link rel="icon" href="/font-end/static/img/img_logohutech.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .user-profile {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        .user-profile span {
+            margin-right: 15px;
+            font-weight: 500;
+        }
+        .user-profile .btn {
+            margin-left: 10px;
+        }
+        .btn-logout {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-logout:hover {
+            background-color: #b02a37;
+            border-color: #b02a37;
+        }
+        .hero-image {
+            max-width: 300px; /* Giới hạn chiều rộng tối đa của hình ảnh */
+            width: 100%; /* Đảm bảo responsive */
+            height: auto; /* Giữ tỷ lệ hình ảnh */
+            margin: 0 auto; /* Căn giữa */
+            transition: transform 0.3s ease; /* Hiệu ứng mượt mà khi hover */
+        }
+        .hero-image:hover {
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        }
+        @media (max-width: 768px) {
+            .hero-image {
+                max-width: 200px; /* Giảm kích thước trên màn hình nhỏ */
+            }
+        }
+        @media (max-width: 576px) {
+            .user-profile span {
+                display: none;
+            }
+            .user-profile .btn {
+                margin-left: 5px;
+                padding: 5px 10px;
+                font-size: 14px;
+            }
+            .hero-image {
+                max-width: 150px; /* Giảm kích thước hơn nữa trên điện thoại */
+            }
+        }
+    </style>
 </head>
 <body>
 <!-- Header -->
@@ -20,9 +70,14 @@
             <img src="/font-end/static/img/img_logohutech.png" alt="HUTECH Logo" width="40" class="me-2 logo">
             Hệ thống Sinh viên HUTECH
         </a>
-        <div class="ms-auto d-flex align-items-center">
+        <div class="ms-auto d-flex align-items-center" id="headerActions">
             <button id="toggleTheme" class="btn btn-outline-light me-3"><i class="bi bi-moon-stars"></i></button>
-            <a href="/font-end/login/login.html" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
+            <a href="/font-end/login/login.html" class="btn btn-primary" id="loginButton"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a>
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <span id="userName">Tên người dùng</span>
+                <a href="#" class="btn btn-primary" id="dashboardButton"><i class="bi bi-speedometer2"></i> Trang chủ</a>
+                <button class="btn btn-logout" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+            </div>
         </div>
     </div>
 </header>
@@ -37,7 +92,7 @@
                     Quản lý đồ án môn học, theo dõi tiến độ, nộp bài tập và đề xuất đề tài dễ dàng. 
                     Được phát triển bởi Team TAD Programmer, Khoa Công nghệ Thông tin.
                 </p>
-                <a href="/font-end/login/login.html" class="btn btn-primary btn-lg"><i class="bi bi-rocket-takeoff"></i> Bắt đầu ngay</a>
+                <a href="/font-end/login/login.html" class="btn btn-primary btn-lg" id="startButton"><i class="bi bi-rocket-takeoff"></i> Bắt đầu ngay</a>
             </div>
             <div class="col-md-6 text-center">
                 <img src="/font-end/static/img/mobile.png" alt="HUTECH System" class="img-fluid hero-image">
@@ -85,15 +140,90 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    const API_URL = 'https://localhost:7047';
+
+    // Tải thông tin người dùng
+    function loadUserProfile() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const loginButton = document.getElementById("loginButton");
+        const userProfile = document.getElementById("userProfile");
+        const userName = document.getElementById("userName");
+        const dashboardButton = document.getElementById("dashboardButton");
+        const startButton = document.getElementById("startButton");
+
+        if (user && user.roleName) {
+            // Hiển thị thông tin người dùng
+            loginButton.style.display = "none";
+            userProfile.style.display = "flex";
+            userName.textContent = user.fullName || "Người dùng";
+            startButton.style.display = "none"; // Ẩn nút "Bắt đầu ngay"
+
+            // Cấu hình nút dashboard theo vai trò
+            let dashboardUrl = "";
+            switch (user.roleName) {
+                case "ROLE_ADMIN":
+                    dashboardUrl = "/font-end/admin/admin_dashboard.html";
+                    break;
+                case "ROLE_LECTURER_GUIDE":
+                    dashboardUrl = "/font-end/lecturer/lecturer_dashboard.html";
+                    break;
+                case "ROLE_STUDENT":
+                    dashboardUrl = "/font-end/student/student_dashboard.html";
+                    break;
+                case "ROLE_HEAD":
+                    dashboardUrl = "/font-end/head/head_dashboard.html";
+                    break;
+                default:
+                    dashboardUrl = "#";
+            }
+            dashboardButton.setAttribute("href", dashboardUrl);
+        } else {
+            // Hiển thị nút đăng nhập
+            loginButton.style.display = "inline-block";
+            userProfile.style.display = "none";
+            startButton.style.display = "inline-block";
+        }
+    }
+
+    // Đăng xuất tài khoản
+    async function logout() {
+        try {
+            const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || "Đăng xuất thất bại");
+            }
+        } catch (error) {
+            console.error("Logout error:", error);
+        } finally {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
+        }
+    }
+
     // Theme toggle
     document.getElementById("toggleTheme")?.addEventListener("click", () => {
         document.body.classList.toggle("dark-mode");
         localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
     });
 
+    // Xử lý nút đăng xuất
+    document.getElementById("logoutButton")?.addEventListener("click", logout);
+
+    // Tải trạng thái theme và thông tin người dùng khi tải trang
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
     }
+    window.addEventListener("load", loadUserProfile);
 </script>
 </body>
 </html>

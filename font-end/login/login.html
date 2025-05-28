@@ -21,6 +21,46 @@
             font-size: 14px;
             margin-bottom: 10px;
         }
+        .logged-in-section {
+            text-align: center;
+            padding: 40px;
+            background-color: #f0f4f8;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .logged-in-section h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .logged-in-section p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .logged-in-section button {
+            width: 48%;
+            margin: 0 1%;
+            padding: 12px;
+            background-color: #1976d2;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .logged-in-section button:hover {
+            background-color: #0d47a1;
+            transform: translateY(-2px);
+        }
+        .logged-in-section button.logout {
+            background-color: #dc3545;
+        }
+        .logged-in-section button.logout:hover {
+            background-color: #b02a37;
+        }
     </style>
 </head>
 <body>
@@ -49,7 +89,8 @@
         </div>
 
         <!-- Phần bên phải -->
-        <div class="right-section">
+        <div class="right-section" id="rightSection">
+            <!-- Form đăng nhập -->
             <div class="login" id="loginSection">
                 <form id="loginForm">
                     <div class="input-group">
@@ -65,6 +106,13 @@
                 </form>
                 <a href="#">Đăng nhập không được? Xem hướng dẫn tại đây</a>
             </div>
+            <!-- Phần hiển thị khi đã đăng nhập -->
+            <div class="logged-in-section" id="loggedInSection" style="display: none;">
+                <h2>Bạn đã đăng nhập</h2>
+                <p>Chào mừng bạn trở lại! Vui lòng chọn một hành động bên dưới.</p>
+                <button id="dashboardButton">Về trang chủ</button>
+                <button id="logoutButton" class="logout">Đăng xuất</button>
+            </div>
         </div>
     </div>
 
@@ -74,10 +122,75 @@
     </footer>
 
     <script>
-        // Mục đích: Xử lý đăng nhập, gọi API /api/Auth/login, lưu user và token, chuyển hướng theo vai trò.
-        // Hỗ trợ chức năng: 1 (Phân quyền và Bảo mật).
+        // Mục đích: Kiểm tra trạng thái đăng nhập, hiển thị giao diện phù hợp, xử lý đăng nhập và đăng xuất.
 
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        // Hàm kiểm tra trạng thái đăng nhập
+        function checkLoginStatus() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            const loginSection = document.getElementById("loginSection");
+            const loggedInSection = document.getElementById("loggedInSection");
+            const dashboardButton = document.getElementById("dashboardButton");
+
+            if (user && user.roleName) {
+                loginSection.style.display = "none";
+                loggedInSection.style.display = "block";
+
+                // Cấu hình nút "Về trang chủ" theo vai trò
+                const role = user.roleName;
+                let dashboardUrl = "";
+                switch (role) {
+                    case "ROLE_ADMIN":
+                        dashboardUrl = "../admin/admin_dashboard.html";
+                        break;
+                    case "ROLE_LECTURER_GUIDE":
+                        dashboardUrl = "../lecturer/lecturer_dashboard.html";
+                        break;
+                    case "ROLE_STUDENT":
+                        dashboardUrl = "../student/student_dashboard.html";
+                        break;
+                    case "ROLE_HEAD":
+                        dashboardUrl = "../head/head_dashboard.html";
+                        break;
+                    default:
+                        dashboardUrl = "#"; // Fallback
+                }
+                dashboardButton.addEventListener("click", () => {
+                    window.location.href = dashboardUrl;
+                });
+            } else {
+                loginSection.style.display = "block";
+                loggedInSection.style.display = "none";
+            }
+        }
+
+        // Hàm xử lý đăng xuất
+        document.getElementById("logoutButton")?.addEventListener("click", async () => {
+            try {
+                const response = await fetch("https://localhost:7047/api/Auth/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
+        });
+
+        // Xử lý đăng nhập
+        document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             const usernameInput = document.getElementById("username");
@@ -104,7 +217,7 @@
                 const response = await fetch("https://localhost:7047/api/Auth/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    credentials: "include", // Gửi HttpOnly cookie
+                    credentials: "include",
                     body: JSON.stringify({ username, password })
                 });
 
@@ -122,8 +235,8 @@
                 }
 
                 const data = await response.json();
-                const user = data.user || data; // Linh hoạt với response
-                const token = data.token; // Lưu token nếu có
+                const user = data.user || data;
+                const token = data.token;
 
                 if (user.locked) {
                     throw new Error("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.");
@@ -160,6 +273,9 @@
                 loginSection.classList.remove("disabled");
             }
         });
+
+        // Kiểm tra trạng thái đăng nhập khi tải trang
+        window.addEventListener("load", checkLoginStatus);
     </script>
 </body>
 </html>
