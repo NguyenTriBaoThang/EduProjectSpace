@@ -60,7 +60,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Content = "Đề xuất thêm tính năng phân tích dữ liệu thời gian thực.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7177),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3447),
                             Type = "PROJECT",
                             UserId = 7L
                         },
@@ -68,7 +68,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Content = "Điểm nội dung có thể tăng nếu bổ sung tài liệu tham khảo.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7179),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3450),
                             ProjectId = 1L,
                             Type = "GRADE"
                         },
@@ -76,7 +76,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Content = "Nên tích hợp tính năng chat vào hệ thống quản lý.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7181),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3453),
                             Type = "PROJECT",
                             UserId = 8L
                         },
@@ -84,7 +84,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Content = "Điểm trình bày có thể tăng nếu cải thiện bố cục.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7183),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3455),
                             ProjectId = 2L,
                             Type = "GRADE"
                         },
@@ -92,7 +92,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Content = "Đề xuất thêm cổng thanh toán cho website thương mại.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7184),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3459),
                             Type = "PROJECT",
                             UserId = 9L
                         },
@@ -100,7 +100,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Content = "Điểm nội dung có thể tăng nếu bổ sung ví dụ thực tế.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7186),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3462),
                             ProjectId = 3L,
                             Type = "GRADE"
                         },
@@ -108,7 +108,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Content = "Nên tích hợp công cụ phân tích dữ liệu mạnh hơn.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7187),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3465),
                             Type = "PROJECT",
                             UserId = 10L
                         },
@@ -116,7 +116,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Content = "Điểm phân tích có thể tăng nếu cải thiện độ chính xác.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7189),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3468),
                             ProjectId = 4L,
                             Type = "GRADE"
                         },
@@ -124,7 +124,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Content = "Đề xuất thêm chế độ offline cho app quản lý học tập.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7190),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3471),
                             Type = "PROJECT",
                             UserId = 11L
                         },
@@ -132,7 +132,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Content = "Điểm thực hành có thể tăng nếu bổ sung tính năng.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7192),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3473),
                             ProjectId = 5L,
                             Type = "GRADE"
                         },
@@ -140,7 +140,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Content = "Nên tăng cường bảo mật cho hệ thống IoT.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7194),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3477),
                             Type = "PROJECT",
                             UserId = 12L
                         },
@@ -148,7 +148,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Content = "Điểm bảo mật có thể tăng nếu kiểm tra kỹ hơn.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7195),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3480),
                             ProjectId = 6L,
                             Type = "GRADE"
                         });
@@ -204,141 +204,141 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7304),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3637),
                             CreatedBy = 1L,
                             Description = "Daily full database backup",
                             FilePath = "backups/db_backup_2025_02_01.sql",
                             FileSize = 104857600L,
                             Status = "Success",
                             Type = "Full",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7304)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3637)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7308),
+                            CreatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3642),
                             CreatedBy = 1L,
                             Description = "Incremental backup for Feb 2",
                             FilePath = "backups/db_backup_2025_02_02.sql",
                             FileSize = 52428800L,
                             Status = "Success",
                             Type = "Incremental",
-                            UpdatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7308)
+                            UpdatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3643)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 19, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7311),
+                            CreatedAt = new DateTime(2025, 5, 25, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3647),
                             CreatedBy = 2L,
                             Description = "Daily full database backup",
                             FilePath = "backups/db_backup_2025_02_03.sql",
                             FileSize = 110100480L,
                             Status = "Success",
                             Type = "Full",
-                            UpdatedAt = new DateTime(2025, 5, 19, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7312)
+                            UpdatedAt = new DateTime(2025, 5, 25, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3648)
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 18, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7359),
+                            CreatedAt = new DateTime(2025, 5, 24, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3652),
                             Description = "Differential backup for Feb 4",
                             FilePath = "backups/db_backup_2025_02_04.sql",
                             FileSize = 73400320L,
                             Status = "Success",
                             Type = "Differential",
-                            UpdatedAt = new DateTime(2025, 5, 18, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7359)
+                            UpdatedAt = new DateTime(2025, 5, 24, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3653)
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 17, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7362),
+                            CreatedAt = new DateTime(2025, 5, 23, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3656),
                             CreatedBy = 1L,
                             Description = "Incremental backup failed due to disk space",
                             FilePath = "backups/db_backup_2025_02_05.sql",
                             Status = "Failed",
                             Type = "Incremental",
-                            UpdatedAt = new DateTime(2025, 5, 17, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7366)
+                            UpdatedAt = new DateTime(2025, 5, 23, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3664)
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 16, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7369),
+                            CreatedAt = new DateTime(2025, 5, 22, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3667),
                             CreatedBy = 2L,
                             Description = "Weekly full database backup",
                             FilePath = "backups/db_backup_2025_02_06.sql",
                             FileSize = 115343360L,
                             Status = "Success",
                             Type = "Full",
-                            UpdatedAt = new DateTime(2025, 5, 16, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7370)
+                            UpdatedAt = new DateTime(2025, 5, 22, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3668)
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 15, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7372),
+                            CreatedAt = new DateTime(2025, 5, 21, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3672),
                             Description = "Incremental backup for Feb 7",
                             FilePath = "backups/db_backup_2025_02_07.sql",
                             FileSize = 41943040L,
                             Status = "Success",
                             Type = "Incremental",
-                            UpdatedAt = new DateTime(2025, 5, 15, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7373)
+                            UpdatedAt = new DateTime(2025, 5, 21, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3673)
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 14, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7376),
+                            CreatedAt = new DateTime(2025, 5, 20, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3675),
                             CreatedBy = 1L,
                             Description = "Differential backup in progress",
                             FilePath = "backups/db_backup_2025_02_08.sql",
                             Status = "Pending",
                             Type = "Differential",
-                            UpdatedAt = new DateTime(2025, 5, 14, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7376)
+                            UpdatedAt = new DateTime(2025, 5, 20, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3676)
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 13, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7379),
+                            CreatedAt = new DateTime(2025, 5, 19, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3679),
                             CreatedBy = 2L,
                             Description = "Daily full database backup",
                             FilePath = "backups/db_backup_2025_02_09.sql",
                             FileSize = 120586240L,
                             Status = "Success",
                             Type = "Full",
-                            UpdatedAt = new DateTime(2025, 5, 13, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7380)
+                            UpdatedAt = new DateTime(2025, 5, 19, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3680)
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 12, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7382),
+                            CreatedAt = new DateTime(2025, 5, 18, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3683),
                             Description = "Incremental backup for Feb 10",
                             FilePath = "backups/db_backup_2025_02_10.sql",
                             FileSize = 52428800L,
                             Status = "Success",
                             Type = "Incremental",
-                            UpdatedAt = new DateTime(2025, 5, 12, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7383)
+                            UpdatedAt = new DateTime(2025, 5, 18, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3684)
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 11, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7386),
+                            CreatedAt = new DateTime(2025, 5, 17, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3687),
                             CreatedBy = 1L,
                             Description = "Differential backup for Feb 11",
                             FilePath = "backups/db_backup_2025_02_11.sql",
                             FileSize = 83886080L,
                             Status = "Success",
                             Type = "Differential",
-                            UpdatedAt = new DateTime(2025, 5, 11, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7386)
+                            UpdatedAt = new DateTime(2025, 5, 17, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3688)
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 10, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7389),
+                            CreatedAt = new DateTime(2025, 5, 16, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3692),
                             CreatedBy = 2L,
                             Description = "Daily full database backup",
                             FilePath = "backups/db_backup_2025_02_12.sql",
                             FileSize = 125829120L,
                             Status = "Success",
                             Type = "Full",
-                            UpdatedAt = new DateTime(2025, 5, 10, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7390)
+                            UpdatedAt = new DateTime(2025, 5, 16, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3693)
                         });
                 });
 
@@ -406,7 +406,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7037),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3221),
                             Description = "Họp nhóm để thảo luận tiến độ dự án",
                             EndTime = new DateTime(2025, 2, 10, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -415,13 +415,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 2, 10, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7038),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3222),
                             UserId = 7L
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7043),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3228),
                             Description = "Nộp bài tập lớn môn Lập trình",
                             EndTime = new DateTime(2025, 2, 28, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Nộp bài",
@@ -431,13 +431,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 2, 28, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Deadline",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7044),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3229),
                             UserId = 2L
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7048),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3234),
                             Description = "Họp nhóm để phân công nhiệm vụ",
                             EndTime = new DateTime(2025, 2, 17, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -447,13 +447,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 2, 17, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7048),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3234),
                             UserId = 8L
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7051),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3239),
                             Description = "Bảo vệ đồ án tốt nghiệp",
                             EndTime = new DateTime(2025, 3, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Bảo vệ đồ án",
@@ -462,13 +462,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Other",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7052),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3240),
                             UserId = 9L
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7055),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3246),
                             Description = "Họp nhóm để kiểm tra tiến độ",
                             EndTime = new DateTime(2025, 2, 24, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -478,13 +478,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 2, 24, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7056),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3247),
                             UserId = 10L
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7058),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3251),
                             Description = "Nộp báo cáo nhiệm vụ cá nhân",
                             EndTime = new DateTime(2025, 2, 25, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Hạn nộp nhiệm vụ",
@@ -493,13 +493,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 2, 25, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Deadline",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7059),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3251),
                             UserId = 11L
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7062),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3269),
                             Description = "Họp nhóm để chuẩn bị thuyết trình",
                             EndTime = new DateTime(2025, 3, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -509,13 +509,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 3, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7063),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3270),
                             UserId = 12L
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7066),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3274),
                             Description = "Bảo vệ đồ án chuyên ngành",
                             EndTime = new DateTime(2025, 3, 5, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Bảo vệ đồ án",
@@ -524,13 +524,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 5, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Other",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7066),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3274),
                             UserId = 13L
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7070),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3279),
                             Description = "Họp nhóm để hoàn thiện dự án",
                             EndTime = new DateTime(2025, 3, 10, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -540,13 +540,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 10, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7070),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3279),
                             UserId = 7L
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7073),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3283),
                             Description = "Nộp báo cáo thực tập",
                             EndTime = new DateTime(2025, 3, 15, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Hạn nộp nhiệm vụ",
@@ -555,13 +555,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 15, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Deadline",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7074),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3284),
                             UserId = 8L
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7077),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3289),
                             Description = "Họp nhóm để đánh giá tiến độ",
                             EndTime = new DateTime(2025, 3, 17, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -571,13 +571,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 17, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7077),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3289),
                             UserId = 9L
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7080),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3293),
                             Description = "Bảo vệ đồ án tốt nghiệp",
                             EndTime = new DateTime(2025, 3, 20, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Bảo vệ đồ án",
@@ -586,13 +586,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 20, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Other",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7081),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3294),
                             UserId = 10L
                         },
                         new
                         {
                             Id = 13L,
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7084),
+                            CreatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3298),
                             Description = "Họp nhóm để phân tích yêu cầu dự án",
                             EndTime = new DateTime(2025, 3, 24, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -602,13 +602,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 24, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7085),
+                            UpdatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3300),
                             UserId = 11L
                         },
                         new
                         {
                             Id = 14L,
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7088),
+                            CreatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3307),
                             Description = "Nộp bài tập môn Cấu trúc dữ liệu",
                             EndTime = new DateTime(2025, 3, 25, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Hạn nộp bài tập",
@@ -617,13 +617,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 25, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Deadline",
-                            UpdatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7089),
+                            UpdatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3308),
                             UserId = 12L
                         },
                         new
                         {
                             Id = 15L,
-                            CreatedAt = new DateTime(2025, 5, 19, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7092),
+                            CreatedAt = new DateTime(2025, 5, 25, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3312),
                             Description = "Họp nhóm để chuẩn bị báo cáo",
                             EndTime = new DateTime(2025, 3, 31, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -633,13 +633,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 3, 31, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 19, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7093),
+                            UpdatedAt = new DateTime(2025, 5, 25, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3314),
                             UserId = 13L
                         },
                         new
                         {
                             Id = 16L,
-                            CreatedAt = new DateTime(2025, 5, 19, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7096),
+                            CreatedAt = new DateTime(2025, 5, 25, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3319),
                             Description = "Thi cuối kỳ môn Lập trình nâng cao",
                             EndTime = new DateTime(2025, 4, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Thi cuối kỳ",
@@ -648,13 +648,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 4, 1, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Other",
-                            UpdatedAt = new DateTime(2025, 5, 19, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7097),
+                            UpdatedAt = new DateTime(2025, 5, 25, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3320),
                             UserId = 7L
                         },
                         new
                         {
                             Id = 17L,
-                            CreatedAt = new DateTime(2025, 5, 18, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7100),
+                            CreatedAt = new DateTime(2025, 5, 24, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3324),
                             Description = "Họp nhóm bị hủy do lịch trùng",
                             EndTime = new DateTime(2025, 4, 7, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -664,13 +664,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 4, 7, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Cancelled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 18, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7101),
+                            UpdatedAt = new DateTime(2025, 5, 24, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3325),
                             UserId = 8L
                         },
                         new
                         {
                             Id = 18L,
-                            CreatedAt = new DateTime(2025, 5, 18, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7104),
+                            CreatedAt = new DateTime(2025, 5, 24, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3330),
                             Description = "Nộp báo cáo dự án nhóm",
                             EndTime = new DateTime(2025, 4, 10, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Hạn nộp báo cáo",
@@ -679,13 +679,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 4, 10, 23, 59, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Deadline",
-                            UpdatedAt = new DateTime(2025, 5, 18, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7104),
+                            UpdatedAt = new DateTime(2025, 5, 24, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3331),
                             UserId = 9L
                         },
                         new
                         {
                             Id = 19L,
-                            CreatedAt = new DateTime(2025, 5, 17, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7108),
+                            CreatedAt = new DateTime(2025, 5, 23, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3335),
                             Description = "Họp nhóm để hoàn thiện thuyết trình",
                             EndTime = new DateTime(2025, 4, 14, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -695,13 +695,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 4, 14, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 17, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7108),
+                            UpdatedAt = new DateTime(2025, 5, 23, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3336),
                             UserId = 10L
                         },
                         new
                         {
                             Id = 20L,
-                            CreatedAt = new DateTime(2025, 5, 17, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7111),
+                            CreatedAt = new DateTime(2025, 5, 23, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3340),
                             Description = "Thi cuối kỳ môn Cơ sở dữ liệu",
                             EndTime = new DateTime(2025, 4, 15, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Thi cuối kỳ",
@@ -710,13 +710,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 4, 15, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Other",
-                            UpdatedAt = new DateTime(2025, 5, 17, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7112),
+                            UpdatedAt = new DateTime(2025, 5, 23, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3341),
                             UserId = 11L
                         },
                         new
                         {
                             Id = 21L,
-                            CreatedAt = new DateTime(2025, 5, 16, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7115),
+                            CreatedAt = new DateTime(2025, 5, 22, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3345),
                             Description = "Họp nhóm để đánh giá dự án",
                             EndTime = new DateTime(2025, 4, 21, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Họp nhóm",
@@ -726,13 +726,13 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 4, 21, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Meeting",
-                            UpdatedAt = new DateTime(2025, 5, 16, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7116),
+                            UpdatedAt = new DateTime(2025, 5, 22, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3346),
                             UserId = 12L
                         },
                         new
                         {
                             Id = 22L,
-                            CreatedAt = new DateTime(2025, 5, 16, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7119),
+                            CreatedAt = new DateTime(2025, 5, 22, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3350),
                             Description = "Bảo vệ đồ án chuyên ngành",
                             EndTime = new DateTime(2025, 4, 25, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             EventTitle = "Bảo vệ đồ án",
@@ -741,7 +741,7 @@ namespace EduProject_TADProgrammer.Migrations
                             StartTime = new DateTime(2025, 4, 25, 8, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "Scheduled",
                             Type = "Other",
-                            UpdatedAt = new DateTime(2025, 5, 16, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7120),
+                            UpdatedAt = new DateTime(2025, 5, 22, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3351),
                             UserId = 13L
                         });
                 });
@@ -799,157 +799,157 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Code = "print('Hello World')",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3828),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(278),
                             ExecutionTime = 50.5f,
                             Language = "Python",
                             PlagiarismScore = 0.1f,
                             Result = "Output: Hello World",
                             Status = "Success",
                             SubmissionId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3829)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(279)
                         },
                         new
                         {
                             Id = 2L,
                             Code = "public class Main { public static void main(String[] args) { System.out.println(\"Hello\"); } }",
-                            CreatedAt = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(3834),
+                            CreatedAt = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(283),
                             ExecutionTime = 120f,
                             Language = "Java",
                             PlagiarismScore = 0.2f,
                             Result = "Output: Hello",
                             Status = "Success",
                             SubmissionId = 2L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(3836)
+                            UpdatedAt = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(288)
                         },
                         new
                         {
                             Id = 3L,
                             Code = "console.log('Hello World');",
-                            CreatedAt = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(3840),
+                            CreatedAt = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(292),
                             ExecutionTime = 30.2f,
                             Language = "JavaScript",
                             PlagiarismScore = 0.15f,
                             Result = "Output: Hello World",
                             Status = "Success",
                             SubmissionId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(3841)
+                            UpdatedAt = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(293)
                         },
                         new
                         {
                             Id = 4L,
                             Code = "print('Error Test')",
-                            CreatedAt = new DateTime(2025, 5, 21, 17, 4, 20, 893, DateTimeKind.Utc).AddTicks(3845),
+                            CreatedAt = new DateTime(2025, 5, 27, 0, 50, 7, 466, DateTimeKind.Utc).AddTicks(297),
                             ErrorMessage = "SyntaxError: unexpected EOF while parsing",
                             Language = "Python",
                             PlagiarismScore = 0.3f,
                             Result = "Error: Invalid syntax",
                             Status = "Failed",
                             SubmissionId = 4L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 17, 4, 20, 893, DateTimeKind.Utc).AddTicks(3846)
+                            UpdatedAt = new DateTime(2025, 5, 27, 0, 50, 7, 466, DateTimeKind.Utc).AddTicks(298)
                         },
                         new
                         {
                             Id = 5L,
                             Code = "public class Test { public static void main(String[] args) { System.out.println(\"Test\"); } }",
-                            CreatedAt = new DateTime(2025, 5, 21, 16, 4, 20, 893, DateTimeKind.Utc).AddTicks(3850),
+                            CreatedAt = new DateTime(2025, 5, 26, 23, 50, 7, 466, DateTimeKind.Utc).AddTicks(302),
                             ExecutionTime = 110.5f,
                             Language = "Java",
                             PlagiarismScore = 0.1f,
                             Result = "Output: Test",
                             Status = "Success",
                             SubmissionId = 5L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 16, 4, 20, 893, DateTimeKind.Utc).AddTicks(3851)
+                            UpdatedAt = new DateTime(2025, 5, 26, 23, 50, 7, 466, DateTimeKind.Utc).AddTicks(303)
                         },
                         new
                         {
                             Id = 6L,
                             Code = "print('IoT Security')",
-                            CreatedAt = new DateTime(2025, 5, 21, 15, 4, 20, 893, DateTimeKind.Utc).AddTicks(3855),
+                            CreatedAt = new DateTime(2025, 5, 26, 22, 50, 7, 466, DateTimeKind.Utc).AddTicks(306),
                             ExecutionTime = 45f,
                             Language = "Python",
                             PlagiarismScore = 0.05f,
                             Result = "Output: IoT Security",
                             Status = "Success",
                             SubmissionId = 6L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 15, 4, 20, 893, DateTimeKind.Utc).AddTicks(3856)
+                            UpdatedAt = new DateTime(2025, 5, 26, 22, 50, 7, 466, DateTimeKind.Utc).AddTicks(307)
                         },
                         new
                         {
                             Id = 7L,
                             Code = "console.log('Social Media');",
-                            CreatedAt = new DateTime(2025, 5, 21, 14, 4, 20, 893, DateTimeKind.Utc).AddTicks(3860),
+                            CreatedAt = new DateTime(2025, 5, 26, 21, 50, 7, 466, DateTimeKind.Utc).AddTicks(310),
                             ExecutionTime = 25.8f,
                             Language = "JavaScript",
                             PlagiarismScore = 0.2f,
                             Result = "Output: Social Media",
                             Status = "Success",
                             SubmissionId = 7L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 14, 4, 20, 893, DateTimeKind.Utc).AddTicks(3860)
+                            UpdatedAt = new DateTime(2025, 5, 26, 21, 50, 7, 466, DateTimeKind.Utc).AddTicks(311)
                         },
                         new
                         {
                             Id = 8L,
                             Code = "print('Language Learning')",
-                            CreatedAt = new DateTime(2025, 5, 21, 13, 4, 20, 893, DateTimeKind.Utc).AddTicks(3864),
+                            CreatedAt = new DateTime(2025, 5, 26, 20, 50, 7, 466, DateTimeKind.Utc).AddTicks(314),
                             ErrorMessage = "Process exceeded 5-second limit",
                             Language = "Python",
                             PlagiarismScore = 0.4f,
                             Result = "Execution timed out",
                             Status = "Timeout",
                             SubmissionId = 8L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 13, 4, 20, 893, DateTimeKind.Utc).AddTicks(3865)
+                            UpdatedAt = new DateTime(2025, 5, 26, 20, 50, 7, 466, DateTimeKind.Utc).AddTicks(315)
                         },
                         new
                         {
                             Id = 9L,
                             Code = "public class Warehouse { public static void main(String[] args) { System.out.println(\"Warehouse\"); } }",
-                            CreatedAt = new DateTime(2025, 5, 21, 12, 4, 20, 893, DateTimeKind.Utc).AddTicks(3868),
+                            CreatedAt = new DateTime(2025, 5, 26, 19, 50, 7, 466, DateTimeKind.Utc).AddTicks(319),
                             ExecutionTime = 130f,
                             Language = "Java",
                             PlagiarismScore = 0.1f,
                             Result = "Output: Warehouse",
                             Status = "Success",
                             SubmissionId = 9L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 12, 4, 20, 893, DateTimeKind.Utc).AddTicks(3869)
+                            UpdatedAt = new DateTime(2025, 5, 26, 19, 50, 7, 466, DateTimeKind.Utc).AddTicks(320)
                         },
                         new
                         {
                             Id = 10L,
                             Code = "print('Booking System')",
-                            CreatedAt = new DateTime(2025, 5, 21, 11, 4, 20, 893, DateTimeKind.Utc).AddTicks(3872),
+                            CreatedAt = new DateTime(2025, 5, 26, 18, 50, 7, 466, DateTimeKind.Utc).AddTicks(323),
                             ExecutionTime = 48.3f,
                             Language = "Python",
                             PlagiarismScore = 0.05f,
                             Result = "Output: Booking System",
                             Status = "Success",
                             SubmissionId = 10L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 11, 4, 20, 893, DateTimeKind.Utc).AddTicks(3873)
+                            UpdatedAt = new DateTime(2025, 5, 26, 18, 50, 7, 466, DateTimeKind.Utc).AddTicks(324)
                         },
                         new
                         {
                             Id = 11L,
                             Code = "console.log('HR System');",
-                            CreatedAt = new DateTime(2025, 5, 21, 10, 4, 20, 893, DateTimeKind.Utc).AddTicks(3877),
+                            CreatedAt = new DateTime(2025, 5, 26, 17, 50, 7, 466, DateTimeKind.Utc).AddTicks(327),
                             ExecutionTime = 28.7f,
                             Language = "JavaScript",
                             PlagiarismScore = 0.15f,
                             Result = "Output: HR System",
                             Status = "Success",
                             SubmissionId = 11L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 10, 4, 20, 893, DateTimeKind.Utc).AddTicks(3877)
+                            UpdatedAt = new DateTime(2025, 5, 26, 17, 50, 7, 466, DateTimeKind.Utc).AddTicks(328)
                         },
                         new
                         {
                             Id = 12L,
                             Code = "print('Group Study')",
-                            CreatedAt = new DateTime(2025, 5, 21, 9, 4, 20, 893, DateTimeKind.Utc).AddTicks(3881),
+                            CreatedAt = new DateTime(2025, 5, 26, 16, 50, 7, 466, DateTimeKind.Utc).AddTicks(331),
                             ErrorMessage = "NameError: name 'undefined_variable' is not defined",
                             Language = "Python",
                             PlagiarismScore = 0.3f,
                             Result = "Error: NameError",
                             Status = "Failed",
                             SubmissionId = 12L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 9, 4, 20, 893, DateTimeKind.Utc).AddTicks(3882)
+                            UpdatedAt = new DateTime(2025, 5, 26, 16, 50, 7, 466, DateTimeKind.Utc).AddTicks(332)
                         });
                 });
 
@@ -990,109 +990,109 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             CommitteeId = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4776),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1284),
                             LecturerId = 2L,
                             Role = "Chủ tịch",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4777)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1285)
                         },
                         new
                         {
                             Id = 2L,
                             CommitteeId = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4780),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1288),
                             LecturerId = 4L,
                             Role = "Thành viên",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4781)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1289)
                         },
                         new
                         {
                             Id = 3L,
                             CommitteeId = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4784),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1292),
                             LecturerId = 3L,
                             Role = "Chủ tịch",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4785)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1293)
                         },
                         new
                         {
                             Id = 4L,
                             CommitteeId = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4787),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1295),
                             LecturerId = 5L,
                             Role = "Thư ký",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4788)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1296)
                         },
                         new
                         {
                             Id = 5L,
                             CommitteeId = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4791),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1298),
                             LecturerId = 6L,
                             Role = "Thành viên",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4791)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1299)
                         },
                         new
                         {
                             Id = 6L,
                             CommitteeId = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4794),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1302),
                             LecturerId = 14L,
                             Role = "Chủ tịch",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4795)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1302)
                         },
                         new
                         {
                             Id = 7L,
                             CommitteeId = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4797),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1305),
                             LecturerId = 15L,
                             Role = "Thư ký",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4798)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1305)
                         },
                         new
                         {
                             Id = 8L,
                             CommitteeId = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4800),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1307),
                             LecturerId = 4L,
                             Role = "Thành viên",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4801)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1308)
                         },
                         new
                         {
                             Id = 9L,
                             CommitteeId = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4803),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1311),
                             LecturerId = 5L,
                             Role = "Chủ tịch",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4804)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1311)
                         },
                         new
                         {
                             Id = 10L,
                             CommitteeId = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4806),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1313),
                             LecturerId = 6L,
                             Role = "Thư ký",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4807)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1314)
                         },
                         new
                         {
                             Id = 11L,
                             CommitteeId = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4809),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1316),
                             LecturerId = 14L,
                             Role = "Thành viên",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4810)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1317)
                         },
                         new
                         {
                             Id = 12L,
                             CommitteeId = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4813),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1319),
                             LecturerId = 15L,
                             Role = "Chủ tịch",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4813)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1320)
                         });
                 });
 
@@ -1152,7 +1152,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             CourseCode = "CNTT_TN_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2336),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8910),
                             DefenseDate = new DateTime(2025, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1160,13 +1160,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 1L,
                             StartDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2337)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8911)
                         },
                         new
                         {
                             Id = 2L,
                             CourseCode = "CNTT_CS_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2344),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8917),
                             DefenseDate = new DateTime(2025, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1174,13 +1174,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 1L,
                             StartDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2345)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8918)
                         },
                         new
                         {
                             Id = 3L,
                             CourseCode = "KTPM_TN_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2350),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8923),
                             DefenseDate = new DateTime(2025, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1188,13 +1188,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 1L,
                             StartDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2351)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8923)
                         },
                         new
                         {
                             Id = 4L,
                             CourseCode = "KTPM_CS_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2356),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8927),
                             DefenseDate = new DateTime(2025, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1202,13 +1202,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 1L,
                             StartDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2357)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8928)
                         },
                         new
                         {
                             Id = 5L,
                             CourseCode = "ATTT_TN_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2362),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8932),
                             DefenseDate = new DateTime(2025, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2L,
                             EndDate = new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1216,13 +1216,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 2L,
                             StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2362)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8933)
                         },
                         new
                         {
                             Id = 6L,
                             CourseCode = "ATTT_CS_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2367),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8940),
                             DefenseDate = new DateTime(2025, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2L,
                             EndDate = new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1230,13 +1230,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 2L,
                             StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2368)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8941)
                         },
                         new
                         {
                             Id = 7L,
                             CourseCode = "KHMT_TN_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2373),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8945),
                             DefenseDate = new DateTime(2025, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1244,13 +1244,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 2L,
                             StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2373)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8946)
                         },
                         new
                         {
                             Id = 8L,
                             CourseCode = "KHMT_CS_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2378),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8951),
                             DefenseDate = new DateTime(2025, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1258,13 +1258,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 2L,
                             StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "OPEN",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2379)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8951)
                         },
                         new
                         {
                             Id = 9L,
                             CourseCode = "HTTT_TN_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2384),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8956),
                             DefenseDate = new DateTime(2025, 10, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1272,13 +1272,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 3L,
                             StartDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PLANNED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2385)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8957)
                         },
                         new
                         {
                             Id = 10L,
                             CourseCode = "HTTT_CS_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2396),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8972),
                             DefenseDate = new DateTime(2025, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1286,13 +1286,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 3L,
                             StartDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PLANNED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2396)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8972)
                         },
                         new
                         {
                             Id = 11L,
                             CourseCode = "CNPM_TN_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2401),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8978),
                             DefenseDate = new DateTime(2025, 10, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1300,13 +1300,13 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 3L,
                             StartDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PLANNED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2402)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8979)
                         },
                         new
                         {
                             Id = 12L,
                             CourseCode = "CNPM_CS_2025",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2406),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8997),
                             DefenseDate = new DateTime(2025, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1L,
                             EndDate = new DateTime(2025, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1314,7 +1314,7 @@ namespace EduProject_TADProgrammer.Migrations
                             SemesterId = 3L,
                             StartDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Status = "PLANNED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2407)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8998)
                         });
                 });
 
@@ -1353,98 +1353,98 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4604),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1168),
                             Name = "Hội đồng 1",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4605)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1169)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4608),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1173),
                             Name = "Hội đồng 2",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4609)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1174)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4612),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1177),
                             Name = "Hội đồng 3",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4612)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1177)
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4615),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1180),
                             Name = "Hội đồng 4",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4616)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1181)
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4618),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1183),
                             Name = "Hội đồng 5",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4619)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1184)
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4621),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1187),
                             Name = "Hội đồng 6",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4622)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1187)
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4624),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1190),
                             Name = "Hội đồng 7",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4625)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1191)
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4627),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1194),
                             Name = "Hội đồng 8",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4628)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1194)
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4630),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1197),
                             Name = "Hội đồng 9",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4631)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1201)
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4633),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1203),
                             Name = "Hội đồng 10",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4634)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1204)
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4636),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1206),
                             Name = "Hội đồng 11",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4637)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1207)
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4639),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1209),
                             Name = "Hội đồng 12",
                             SemesterId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4640)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1210)
                         });
                 });
 
@@ -1462,6 +1462,9 @@ namespace EduProject_TADProgrammer.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<long?>("MeetingId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("ProjectId")
                         .HasColumnType("bigint");
 
@@ -1475,6 +1478,8 @@ namespace EduProject_TADProgrammer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MeetingId");
+
                     b.HasIndex("ProjectId");
 
                     b.ToTable("DefenseSchedules");
@@ -1483,8 +1488,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4877),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1404),
                             EndTime = new DateTime(2025, 3, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            MeetingId = 1L,
                             ProjectId = 1L,
                             Room = "A101",
                             StartTime = new DateTime(2025, 3, 1, 8, 0, 0, 0, DateTimeKind.Unspecified)
@@ -1492,7 +1498,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4881),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1408),
                             EndTime = new DateTime(2025, 3, 2, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 2L,
                             Room = "A102",
@@ -1501,7 +1507,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4884),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1411),
                             EndTime = new DateTime(2025, 3, 3, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 3L,
                             Room = "A103",
@@ -1510,7 +1516,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4887),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1414),
                             EndTime = new DateTime(2025, 3, 4, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 4L,
                             Room = "A104",
@@ -1519,7 +1525,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4890),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1417),
                             EndTime = new DateTime(2025, 3, 5, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 5L,
                             Room = "A105",
@@ -1528,7 +1534,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4894),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1419),
                             EndTime = new DateTime(2025, 3, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 6L,
                             Room = "A106",
@@ -1537,7 +1543,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4897),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1422),
                             EndTime = new DateTime(2025, 3, 7, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 7L,
                             Room = "A107",
@@ -1546,7 +1552,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4900),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1424),
                             EndTime = new DateTime(2025, 3, 8, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 8L,
                             Room = "A108",
@@ -1555,7 +1561,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4903),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1427),
                             EndTime = new DateTime(2025, 3, 9, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 9L,
                             Room = "A109",
@@ -1564,7 +1570,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4905),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1430),
                             EndTime = new DateTime(2025, 3, 10, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 10L,
                             Room = "A110",
@@ -1573,7 +1579,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4908),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1435),
                             EndTime = new DateTime(2025, 3, 11, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 11L,
                             Room = "A111",
@@ -1582,7 +1588,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4911),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1437),
                             EndTime = new DateTime(2025, 3, 12, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             ProjectId = 12L,
                             Room = "A112",
@@ -1687,7 +1693,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Content = "Có ai biết cách tích hợp AI vào ứng dụng y tế?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6393),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2467),
                             ProjectId = 1L,
                             Title = "Hỏi về AI trong y tế",
                             UserId = 7L,
@@ -1697,7 +1703,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Content = "Nên dùng framework nào cho giao diện?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6396),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2470),
                             Title = "Thắc mắc về thiết kế giao diện",
                             UserId = 9L,
                             Votes = 3
@@ -1706,7 +1712,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Content = "Nên dùng cổng thanh toán nào?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6399),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2472),
                             ProjectId = 3L,
                             Title = "Thanh toán thương mại điện tử",
                             UserId = 10L,
@@ -1716,7 +1722,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Content = "Có công cụ nào tốt để phân tích dữ liệu?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6493),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2475),
                             ProjectId = 4L,
                             Title = "Phân tích dữ liệu",
                             UserId = 12L,
@@ -1726,7 +1732,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Content = "App quản lý học tập nên có tính năng gì?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6495),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2478),
                             ProjectId = 5L,
                             Title = "Quản lý học tập",
                             UserId = 7L,
@@ -1736,7 +1742,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Content = "Làm sao để tăng cường bảo mật IoT?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6497),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2480),
                             ProjectId = 6L,
                             Title = "Bảo mật IoT",
                             UserId = 8L,
@@ -1746,7 +1752,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Content = "Có công cụ nào miễn phí để phân tích?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6499),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2483),
                             ProjectId = 7L,
                             Title = "Phân tích mạng xã hội",
                             UserId = 9L,
@@ -1756,7 +1762,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Content = "App học ngoại ngữ nên có gì đặc biệt?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6500),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2486),
                             ProjectId = 8L,
                             Title = "Học ngoại ngữ",
                             UserId = 10L,
@@ -1766,7 +1772,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Content = "Hệ thống quản lý kho nên tự động hóa thế nào?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6502),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2489),
                             ProjectId = 9L,
                             Title = "Quản lý kho",
                             UserId = 11L,
@@ -1776,7 +1782,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Content = "App đặt lịch nên có thông báo không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6504),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2492),
                             ProjectId = 10L,
                             Title = "Đặt lịch khám bệnh",
                             UserId = 12L,
@@ -1786,7 +1792,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Content = "Hệ thống nhân sự cần báo cáo gì?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6506),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2495),
                             ProjectId = 11L,
                             Title = "Quản lý nhân sự",
                             UserId = 13L,
@@ -1796,7 +1802,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Content = "App học nhóm nên có tính năng gì?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6508),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2497),
                             ProjectId = 12L,
                             Title = "Học tập nhóm",
                             UserId = 7L,
@@ -1839,7 +1845,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 1L,
                             Answer = "Đăng nhập, vào mục Nộp bài, tải file lên.",
                             Category = "Nộp bài",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6152),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2202),
                             Question = "Làm thế nào để nộp đồ án?"
                         },
                         new
@@ -1847,7 +1853,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 2L,
                             Answer = "Xem lịch bảo vệ trong mục Lịch.",
                             Category = "Bảo vệ",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6156),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2205),
                             Question = "Thời gian bảo vệ là khi nào?"
                         },
                         new
@@ -1855,7 +1861,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 3L,
                             Answer = "Vào mục Nhóm, gửi yêu cầu tham gia.",
                             Category = "Nhóm",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6160),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2208),
                             Question = "Làm sao để tham gia nhóm?"
                         },
                         new
@@ -1863,7 +1869,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 4L,
                             Answer = "Vào mục Điểm số, chọn đồ án của bạn.",
                             Category = "Điểm số",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6167),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2210),
                             Question = "Cách xem điểm đồ án?"
                         },
                         new
@@ -1871,7 +1877,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 5L,
                             Answer = "Vào mục Phản hồi, điền nội dung.",
                             Category = "Phản hồi",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6169),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2212),
                             Question = "Làm sao để gửi phản hồi?"
                         },
                         new
@@ -1879,7 +1885,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 6L,
                             Answer = "Có, AI hỗ trợ gợi ý và đánh giá.",
                             Category = "Hỗ trợ",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6172),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2215),
                             Question = "Hệ thống có hỗ trợ AI không?"
                         },
                         new
@@ -1887,7 +1893,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 7L,
                             Answer = "Vào mục Nhiệm vụ, nhấn Tạo mới.",
                             Category = "Nhiệm vụ",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6174),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2217),
                             Question = "Làm sao để tạo nhiệm vụ?"
                         },
                         new
@@ -1895,7 +1901,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 8L,
                             Answer = "Vào mục Tài liệu, chọn tài liệu và tải.",
                             Category = "Tài liệu",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6176),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2219),
                             Question = "Cách tải tài liệu tham khảo?"
                         },
                         new
@@ -1903,7 +1909,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 9L,
                             Answer = "Vào mục Lịch, chọn lịch họp nhóm.",
                             Category = "Họp nhóm",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6178),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2221),
                             Question = "Làm sao để xem lịch họp?"
                         },
                         new
@@ -1911,7 +1917,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 10L,
                             Answer = "Vào mục Điểm số, chọn Kháng nghị.",
                             Category = "Kháng nghị",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6180),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2223),
                             Question = "Cách gửi kháng nghị điểm?"
                         },
                         new
@@ -1919,7 +1925,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 11L,
                             Answer = "Có, vào mục Chat để trò chuyện nhóm.",
                             Category = "Chat",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6181),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2225),
                             Question = "Hệ thống có hỗ trợ chat không?"
                         },
                         new
@@ -1927,7 +1933,7 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 12L,
                             Answer = "Vào Cài đặt, chọn Đổi mật khẩu.",
                             Category = "Tài khoản",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6183),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2227),
                             Question = "Làm sao để đổi mật khẩu?"
                         });
                 });
@@ -1966,7 +1972,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Content = "Cần cải thiện phần phân tích dữ liệu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3674),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(171),
                             LecturerId = 4L,
                             SubmissionId = 1L
                         },
@@ -1974,7 +1980,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Content = "Tốt, nhưng cần bổ sung tài liệu tham khảo.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3676),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(178),
                             LecturerId = 5L,
                             SubmissionId = 2L
                         },
@@ -1982,7 +1988,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Content = "Cần chỉnh sửa bố cục báo cáo.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3679),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(179),
                             LecturerId = 6L,
                             SubmissionId = 3L
                         },
@@ -1990,7 +1996,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Content = "Bài nộp chưa đạt yêu cầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3681),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(181),
                             LecturerId = 14L,
                             SubmissionId = 4L
                         },
@@ -1998,7 +2004,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Content = "Cần bổ sung hình ảnh minh họa.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3683),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(183),
                             LecturerId = 15L,
                             SubmissionId = 5L
                         },
@@ -2006,7 +2012,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Content = "Tốt, nội dung đầy đủ.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3685),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(188),
                             LecturerId = 4L,
                             SubmissionId = 6L
                         },
@@ -2014,7 +2020,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Content = "Cần cải thiện phần kết luận.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3746),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(190),
                             LecturerId = 5L,
                             SubmissionId = 7L
                         },
@@ -2022,7 +2028,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Content = "Bài nộp không đúng định dạng.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3748),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(191),
                             LecturerId = 6L,
                             SubmissionId = 8L
                         },
@@ -2030,7 +2036,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Content = "Cần bổ sung tài liệu tham khảo.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3750),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(193),
                             LecturerId = 14L,
                             SubmissionId = 9L
                         },
@@ -2038,7 +2044,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Content = "Tốt, đạt yêu cầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3752),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(194),
                             LecturerId = 15L,
                             SubmissionId = 10L
                         },
@@ -2046,7 +2052,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Content = "Cần chỉnh sửa phần giới thiệu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3754),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(196),
                             LecturerId = 4L,
                             SubmissionId = 11L
                         },
@@ -2054,7 +2060,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Content = "Bài nộp không đạt, cần làm lại.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3756),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(199),
                             LecturerId = 5L,
                             SubmissionId = 12L
                         });
@@ -2092,7 +2098,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Content = "Hệ thống dễ sử dụng.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6597),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2656),
                             Rating = 4,
                             UserId = 7L
                         },
@@ -2100,7 +2106,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Content = "Cần cải thiện tốc độ tải.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6599),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2659),
                             Rating = 3,
                             UserId = 8L
                         },
@@ -2108,7 +2114,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Content = "Giao diện thân thiện.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6600),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2661),
                             Rating = 5,
                             UserId = 9L
                         },
@@ -2116,7 +2122,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Content = "Chat nhóm bị lỗi.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6602),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2663),
                             Rating = 2,
                             UserId = 10L
                         },
@@ -2124,7 +2130,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Content = "Hỗ trợ tốt.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6603),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2666),
                             Rating = 4,
                             UserId = 11L
                         },
@@ -2132,7 +2138,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Content = "Cần thêm hướng dẫn sử dụng.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6605),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2668),
                             Rating = 3,
                             UserId = 12L
                         },
@@ -2140,7 +2146,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Content = "Tính năng quản lý nhóm tốt.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6606),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2669),
                             Rating = 5,
                             UserId = 13L
                         },
@@ -2148,7 +2154,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Content = "Thông báo không hoạt động.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6608),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2672),
                             Rating = 2,
                             UserId = 7L
                         },
@@ -2156,7 +2162,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Content = "Rất hài lòng với hệ thống.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6609),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2674),
                             Rating = 5,
                             UserId = 8L
                         },
@@ -2164,7 +2170,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Content = "Cần cải thiện tốc độ.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6611),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2676),
                             Rating = 3,
                             UserId = 9L
                         },
@@ -2172,7 +2178,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Content = "Giao diện đẹp.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6612),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2678),
                             Rating = 4,
                             UserId = 10L
                         },
@@ -2180,7 +2186,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Content = "Hệ thống ổn định.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6614),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2682),
                             Rating = 4,
                             UserId = 11L
                         });
@@ -2237,31 +2243,33 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            Comment = "Nội dung tốt.",
+                            Comment = "Đã duyệt",
                             CriteriaId = 1L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4061),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(655),
                             GradedBy = 4L,
                             GroupId = 1L,
                             ProjectId = 1L,
-                            Score = 8.5f
+                            Score = 8.5f,
+                            StudentId = 7L
                         },
                         new
                         {
                             Id = 2L,
-                            Comment = "Trình bày rõ ràng.",
+                            Comment = "Đã duyệt",
                             CriteriaId = 2L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4065),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(660),
                             GradedBy = 4L,
                             GroupId = 1L,
                             ProjectId = 1L,
-                            Score = 8f
+                            Score = 8f,
+                            StudentId = 7L
                         },
                         new
                         {
                             Id = 3L,
-                            Comment = "Nội dung ổn.",
+                            Comment = "Đã duyệt",
                             CriteriaId = 1L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4068),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(663),
                             GradedBy = 5L,
                             GroupId = 2L,
                             ProjectId = 2L,
@@ -2270,9 +2278,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            Comment = "Nội dung tốt.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 4L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4071),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(665),
                             GradedBy = 6L,
                             GroupId = 3L,
                             ProjectId = 3L,
@@ -2281,9 +2289,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            Comment = "Cần cải thiện.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 6L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4075),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(668),
                             GradedBy = 14L,
                             GroupId = 4L,
                             ProjectId = 4L,
@@ -2292,9 +2300,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            Comment = "Thực hành tốt.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 7L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4078),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(671),
                             GradedBy = 15L,
                             GroupId = 5L,
                             ProjectId = 5L,
@@ -2303,9 +2311,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            Comment = "Bảo mật tốt.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 8L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4081),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(673),
                             GradedBy = 4L,
                             GroupId = 6L,
                             ProjectId = 6L,
@@ -2314,9 +2322,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            Comment = "Phân tích chưa sâu.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 9L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4085),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(676),
                             GradedBy = 5L,
                             GroupId = 7L,
                             ProjectId = 7L,
@@ -2325,9 +2333,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            Comment = "Ứng dụng ổn.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 10L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4088),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(678),
                             GradedBy = 6L,
                             GroupId = 8L,
                             ProjectId = 8L,
@@ -2336,9 +2344,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            Comment = "Quản lý tốt.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 11L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4091),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(681),
                             GradedBy = 14L,
                             GroupId = 9L,
                             ProjectId = 9L,
@@ -2347,9 +2355,9 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            Comment = "Tiện ích cao.",
+                            Comment = "Chưa duyệt",
                             CriteriaId = 12L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4094),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(684),
                             GradedBy = 15L,
                             GroupId = 10L,
                             ProjectId = 10L,
@@ -2358,13 +2366,61 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            Comment = "Hiệu quả ổn.",
+                            Comment = "Đã duyệt",
                             CriteriaId = 13L,
-                            GradedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4097),
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(686),
                             GradedBy = 4L,
                             GroupId = 11L,
                             ProjectId = 11L,
                             Score = 7f
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            Comment = "Đã duyệt",
+                            CriteriaId = 3L,
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(689),
+                            GradedBy = 4L,
+                            GroupId = 1L,
+                            ProjectId = 1L,
+                            Score = 8f,
+                            StudentId = 8L
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            Comment = "Đã duyệt",
+                            CriteriaId = 1L,
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(692),
+                            GradedBy = 4L,
+                            GroupId = 1L,
+                            ProjectId = 1L,
+                            Score = 8f,
+                            StudentId = 8L
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            Comment = "Đã duyệt",
+                            CriteriaId = 2L,
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(695),
+                            GradedBy = 4L,
+                            GroupId = 1L,
+                            ProjectId = 1L,
+                            Score = 8f,
+                            StudentId = 8L
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            Comment = "Đã duyệt",
+                            CriteriaId = 3L,
+                            GradedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(698),
+                            GradedBy = 4L,
+                            GroupId = 1L,
+                            ProjectId = 1L,
+                            Score = 8.5f,
+                            StudentId = 7L
                         });
                 });
 
@@ -2408,7 +2464,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4507),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1070),
                             GradeId = 1L,
                             Reason = "Điểm nội dung chưa hợp lý.",
                             Status = "PENDING",
@@ -2417,7 +2473,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4510),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1073),
                             GradeId = 2L,
                             Reason = "Điểm trình bày thấp.",
                             Response = "Đã điều chỉnh điểm.",
@@ -2427,7 +2483,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4512),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1075),
                             GradeId = 3L,
                             Reason = "Điểm nội dung không hợp lý.",
                             Response = "Điểm đã hợp lý.",
@@ -2437,7 +2493,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4515),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1077),
                             GradeId = 4L,
                             Reason = "Điểm nội dung thấp.",
                             Status = "PENDING",
@@ -2446,7 +2502,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4517),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1079),
                             GradeId = 5L,
                             Reason = "Cần xem lại điểm.",
                             Status = "PENDING",
@@ -2455,7 +2511,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4519),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1080),
                             GradeId = 6L,
                             Reason = "Điểm thực hành chưa đúng.",
                             Response = "Đã điều chỉnh.",
@@ -2465,7 +2521,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4523),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1083),
                             GradeId = 7L,
                             Reason = "Điểm bảo mật không hợp lý.",
                             Response = "Điểm hợp lý.",
@@ -2475,7 +2531,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4525),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1085),
                             GradeId = 8L,
                             Reason = "Điểm phân tích thấp.",
                             Status = "PENDING",
@@ -2484,7 +2540,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4527),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1087),
                             GradeId = 9L,
                             Reason = "Điểm ứng dụng chưa đúng.",
                             Response = "Đã điều chỉnh.",
@@ -2494,7 +2550,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4530),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1089),
                             GradeId = 10L,
                             Reason = "Điểm quản lý chưa hợp lý.",
                             Response = "Điểm hợp lý.",
@@ -2504,7 +2560,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4533),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1091),
                             GradeId = 11L,
                             Reason = "Điểm tiện ích thấp.",
                             Status = "PENDING",
@@ -2687,7 +2743,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4322),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(884),
                             Details = "Tạo điểm cho nhóm 1.",
                             GradeId = 1L,
                             LecturerId = 4L
@@ -2696,7 +2752,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Action = "UPDATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4326),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(887),
                             Details = "Cập nhật điểm nhóm 1.",
                             GradeId = 1L,
                             LecturerId = 4L
@@ -2705,7 +2761,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4328),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(889),
                             Details = "Tạo điểm cho nhóm 1.",
                             GradeId = 2L,
                             LecturerId = 4L
@@ -2714,7 +2770,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4331),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(891),
                             Details = "Tạo điểm cho nhóm 2.",
                             GradeId = 3L,
                             LecturerId = 5L
@@ -2723,7 +2779,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4333),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(893),
                             Details = "Tạo điểm cho nhóm 3.",
                             GradeId = 4L,
                             LecturerId = 6L
@@ -2732,7 +2788,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4335),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(895),
                             Details = "Tạo điểm cho nhóm 4.",
                             GradeId = 5L,
                             LecturerId = 14L
@@ -2741,7 +2797,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4337),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(897),
                             Details = "Tạo điểm cho nhóm 5.",
                             GradeId = 6L,
                             LecturerId = 15L
@@ -2750,7 +2806,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4340),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(899),
                             Details = "Tạo điểm cho nhóm 6.",
                             GradeId = 7L,
                             LecturerId = 4L
@@ -2759,7 +2815,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4342),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(901),
                             Details = "Tạo điểm cho nhóm 7.",
                             GradeId = 8L,
                             LecturerId = 5L
@@ -2768,7 +2824,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4344),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(903),
                             Details = "Tạo điểm cho nhóm 8.",
                             GradeId = 9L,
                             LecturerId = 6L
@@ -2777,7 +2833,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4346),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(904),
                             Details = "Tạo điểm cho nhóm 9.",
                             GradeId = 10L,
                             LecturerId = 14L
@@ -2786,7 +2842,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Action = "CREATE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4349),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(907),
                             Details = "Tạo điểm cho nhóm 10.",
                             GradeId = 11L,
                             LecturerId = 15L
@@ -2829,7 +2885,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4415),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(974),
                             Deadline = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 4L,
                             ProjectId = 1L,
@@ -2838,7 +2894,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4418),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(980),
                             Deadline = new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 5L,
                             ProjectId = 2L,
@@ -2847,7 +2903,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4421),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(983),
                             Deadline = new DateTime(2025, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 6L,
                             ProjectId = 3L,
@@ -2856,7 +2912,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4424),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(985),
                             Deadline = new DateTime(2025, 3, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 14L,
                             ProjectId = 4L,
@@ -2865,7 +2921,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4426),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(987),
                             Deadline = new DateTime(2025, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 15L,
                             ProjectId = 5L,
@@ -2874,7 +2930,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4429),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(990),
                             Deadline = new DateTime(2025, 3, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 4L,
                             ProjectId = 6L,
@@ -2883,7 +2939,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4431),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(992),
                             Deadline = new DateTime(2025, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 5L,
                             ProjectId = 7L,
@@ -2892,7 +2948,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4434),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(994),
                             Deadline = new DateTime(2025, 3, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 6L,
                             ProjectId = 8L,
@@ -2901,7 +2957,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4436),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(996),
                             Deadline = new DateTime(2025, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 14L,
                             ProjectId = 9L,
@@ -2910,7 +2966,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4438),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(998),
                             Deadline = new DateTime(2025, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 15L,
                             ProjectId = 10L,
@@ -2919,7 +2975,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4441),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1001),
                             Deadline = new DateTime(2025, 3, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 4L,
                             ProjectId = 11L,
@@ -2928,7 +2984,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4444),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1003),
                             Deadline = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LecturerId = 5L,
                             ProjectId = 12L,
@@ -2971,7 +3027,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4233),
+                            CreatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(786),
                             GradeId = 1L,
                             Score = 8f,
                             VersionNumber = 1
@@ -2980,7 +3036,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Comment = "Cập nhật điểm.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4238),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(791),
                             GradeId = 1L,
                             Score = 8.5f,
                             VersionNumber = 2
@@ -2989,7 +3045,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4240),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(793),
                             GradeId = 2L,
                             Score = 8f,
                             VersionNumber = 1
@@ -2998,7 +3054,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4242),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(794),
                             GradeId = 3L,
                             Score = 7.5f,
                             VersionNumber = 1
@@ -3007,7 +3063,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4245),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(797),
                             GradeId = 4L,
                             Score = 8f,
                             VersionNumber = 1
@@ -3016,7 +3072,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4247),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(799),
                             GradeId = 5L,
                             Score = 7f,
                             VersionNumber = 1
@@ -3025,7 +3081,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4249),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(801),
                             GradeId = 6L,
                             Score = 8.5f,
                             VersionNumber = 1
@@ -3034,7 +3090,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4251),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(803),
                             GradeId = 7L,
                             Score = 9f,
                             VersionNumber = 1
@@ -3043,7 +3099,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4253),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(805),
                             GradeId = 8L,
                             Score = 6.5f,
                             VersionNumber = 1
@@ -3052,7 +3108,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4255),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(807),
                             GradeId = 9L,
                             Score = 8f,
                             VersionNumber = 1
@@ -3061,7 +3117,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4258),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(809),
                             GradeId = 10L,
                             Score = 7.5f,
                             VersionNumber = 1
@@ -3070,7 +3126,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Comment = "Phiên bản đầu.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4260),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(811),
                             GradeId = 11L,
                             Score = 8f,
                             VersionNumber = 1
@@ -3123,132 +3179,132 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2851),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9389),
                             MaxMembers = 5,
                             Name = "Nhóm 1",
                             ProjectId = 1L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2853)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9389)
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2859),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9395),
                             MaxMembers = 5,
                             Name = "Nhóm 2",
                             ProjectId = 2L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2860)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9396)
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2865),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9401),
                             MaxMembers = 5,
                             Name = "Nhóm 3",
                             ProjectId = 3L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2866)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9401)
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2871),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9406),
                             MaxMembers = 5,
                             Name = "Nhóm 4",
                             ProjectId = 4L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2871)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9407)
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2876),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9411),
                             MaxMembers = 5,
                             Name = "Nhóm 5",
                             ProjectId = 5L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2877)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9412)
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2939),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9417),
                             MaxMembers = 5,
                             Name = "Nhóm 6",
                             ProjectId = 6L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2939)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9417)
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2945),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9422),
                             MaxMembers = 5,
                             Name = "Nhóm 7",
                             ProjectId = 7L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2945)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9423)
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2950),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9428),
                             MaxMembers = 5,
                             Name = "Nhóm 8",
                             ProjectId = 8L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2951)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9428)
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2956),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9434),
                             MaxMembers = 5,
                             Name = "Nhóm 9",
                             ProjectId = 9L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2957)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9435)
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2962),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9439),
                             MaxMembers = 5,
                             Name = "Nhóm 10",
                             ProjectId = 10L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2963)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9440)
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2968),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9445),
                             MaxMembers = 5,
                             Name = "Nhóm 11",
                             ProjectId = 11L,
                             Status = "APPROVED",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2968)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9446)
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2974),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9460),
                             MaxMembers = 5,
                             Name = "Nhóm 12",
                             ProjectId = 12L,
                             Status = "PENDING",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2975)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9460)
                         },
                         new
                         {
                             Id = 13L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2980),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9467),
                             MaxMembers = 5,
                             Name = "Nhóm 13",
                             ProjectId = 13L,
                             Status = "PENDING",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2980)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9467)
                         });
                 });
 
@@ -3262,6 +3318,9 @@ namespace EduProject_TADProgrammer.Migrations
 
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsLeader")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("JoinedAt")
                         .HasColumnType("datetime2");
@@ -3282,105 +3341,120 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             GroupId = 1L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3047),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9533),
                             StudentId = 7L
                         },
                         new
                         {
                             Id = 2L,
                             GroupId = 1L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3050),
+                            IsLeader = false,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9536),
                             StudentId = 8L
                         },
                         new
                         {
                             Id = 3L,
                             GroupId = 2L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3052),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9538),
                             StudentId = 9L
                         },
                         new
                         {
                             Id = 4L,
                             GroupId = 3L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3054),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9539),
                             StudentId = 10L
                         },
                         new
                         {
                             Id = 5L,
                             GroupId = 3L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3056),
+                            IsLeader = false,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9541),
                             StudentId = 11L
                         },
                         new
                         {
                             Id = 6L,
                             GroupId = 4L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3058),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9544),
                             StudentId = 12L
                         },
                         new
                         {
                             Id = 7L,
                             GroupId = 4L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3060),
+                            IsLeader = false,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9546),
                             StudentId = 13L
                         },
                         new
                         {
                             Id = 8L,
                             GroupId = 5L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3062),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9549),
                             StudentId = 7L
                         },
                         new
                         {
                             Id = 9L,
                             GroupId = 6L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3064),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9551),
                             StudentId = 8L
                         },
                         new
                         {
                             Id = 10L,
                             GroupId = 7L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3065),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9556),
                             StudentId = 9L
                         },
                         new
                         {
                             Id = 11L,
                             GroupId = 8L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3067),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9558),
                             StudentId = 10L
                         },
                         new
                         {
                             Id = 12L,
                             GroupId = 9L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3069),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9560),
                             StudentId = 11L
                         },
                         new
                         {
                             Id = 13L,
                             GroupId = 10L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3071),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9562),
                             StudentId = 12L
                         },
                         new
                         {
                             Id = 14L,
                             GroupId = 11L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3072),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9564),
                             StudentId = 13L
                         },
                         new
                         {
                             Id = 15L,
                             GroupId = 12L,
-                            JoinedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3074),
+                            IsLeader = true,
+                            JoinedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9565),
                             StudentId = 7L
                         });
                 });
@@ -3418,7 +3492,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3143),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9655),
                             GroupId = 1L,
                             Status = "PENDING",
                             StudentId = 9L
@@ -3426,7 +3500,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3146),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9658),
                             GroupId = 2L,
                             Status = "APPROVED",
                             StudentId = 10L
@@ -3434,7 +3508,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3148),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9660),
                             GroupId = 3L,
                             Status = "REJECTED",
                             StudentId = 12L
@@ -3442,7 +3516,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3150),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9661),
                             GroupId = 4L,
                             Status = "PENDING",
                             StudentId = 13L
@@ -3450,7 +3524,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3152),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9663),
                             GroupId = 5L,
                             Status = "APPROVED",
                             StudentId = 7L
@@ -3458,7 +3532,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3154),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9665),
                             GroupId = 6L,
                             Status = "PENDING",
                             StudentId = 8L
@@ -3466,7 +3540,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3156),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9667),
                             GroupId = 7L,
                             Status = "APPROVED",
                             StudentId = 9L
@@ -3474,7 +3548,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3158),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9669),
                             GroupId = 8L,
                             Status = "REJECTED",
                             StudentId = 10L
@@ -3482,7 +3556,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3160),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9670),
                             GroupId = 9L,
                             Status = "PENDING",
                             StudentId = 11L
@@ -3490,7 +3564,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3162),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9672),
                             GroupId = 10L,
                             Status = "APPROVED",
                             StudentId = 12L
@@ -3498,7 +3572,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3164),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9674),
                             GroupId = 11L,
                             Status = "PENDING",
                             StudentId = 13L
@@ -3506,7 +3580,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3166),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9676),
                             GroupId = 12L,
                             Status = "REJECTED",
                             StudentId = 7L
@@ -3546,7 +3620,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Action = "LOGIN",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7242),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3551),
                             Details = "Admin đăng nhập hệ thống.",
                             UserId = 1L
                         },
@@ -3554,7 +3628,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Action = "SUBMISSION",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7243),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3554),
                             Details = "Sinh viên nộp bài cho đồ án 1.",
                             UserId = 7L
                         },
@@ -3562,7 +3636,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Action = "JOIN_GROUP",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7245),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3557),
                             Details = "Sinh viên tham gia Nhóm 1.",
                             UserId = 8L
                         },
@@ -3570,7 +3644,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Action = "SEND_MESSAGE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7247),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3559),
                             Details = "Gửi tin nhắn trong Nhóm 2.",
                             UserId = 9L
                         },
@@ -3578,7 +3652,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Action = "SUBMISSION",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7248),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3561),
                             Details = "Sinh viên nộp bài cho đồ án 3.",
                             UserId = 10L
                         },
@@ -3586,7 +3660,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Action = "CREATE_TASK",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7250),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3563),
                             Details = "Tạo nhiệm vụ mới trong đồ án 4.",
                             UserId = 11L
                         },
@@ -3594,7 +3668,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Action = "JOIN_GROUP",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7251),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3566),
                             Details = "Sinh viên tham gia Nhóm 5.",
                             UserId = 12L
                         },
@@ -3602,7 +3676,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Action = "SEND_MESSAGE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7253),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3568),
                             Details = "Gửi tin nhắn trong Nhóm 6.",
                             UserId = 13L
                         },
@@ -3610,7 +3684,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Action = "GRADE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7254),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3570),
                             Details = "Chấm điểm cho Nhóm 1.",
                             UserId = 4L
                         },
@@ -3618,7 +3692,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Action = "GRADE",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7256),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3571),
                             Details = "Chấm điểm cho Nhóm 2.",
                             UserId = 5L
                         },
@@ -3626,7 +3700,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Action = "CREATE_PROJECT",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7257),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3573),
                             Details = "Tạo đồ án mới.",
                             UserId = 6L
                         },
@@ -3634,7 +3708,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Action = "UPDATE_PROJECT",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7259),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3575),
                             Details = "Cập nhật đồ án 4.",
                             UserId = 14L
                         });
@@ -3685,7 +3759,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4985),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1519),
                             CreatedBy = 4L,
                             EndTime = new DateTime(2025, 2, 10, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 1L,
@@ -3696,7 +3770,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(4990),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1523),
                             CreatedBy = 5L,
                             EndTime = new DateTime(2025, 2, 17, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 2L,
@@ -3707,7 +3781,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5001),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1535),
                             CreatedBy = 6L,
                             EndTime = new DateTime(2025, 2, 24, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 3L,
@@ -3718,7 +3792,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5005),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1539),
                             CreatedBy = 14L,
                             EndTime = new DateTime(2025, 3, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 4L,
@@ -3729,7 +3803,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5008),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1542),
                             CreatedBy = 15L,
                             EndTime = new DateTime(2025, 3, 10, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 5L,
@@ -3740,7 +3814,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5012),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1546),
                             CreatedBy = 4L,
                             EndTime = new DateTime(2025, 3, 17, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 6L,
@@ -3751,7 +3825,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5015),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1550),
                             CreatedBy = 5L,
                             EndTime = new DateTime(2025, 3, 24, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 7L,
@@ -3762,7 +3836,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5019),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1553),
                             CreatedBy = 6L,
                             EndTime = new DateTime(2025, 3, 31, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 8L,
@@ -3773,7 +3847,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5022),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1556),
                             CreatedBy = 14L,
                             EndTime = new DateTime(2025, 4, 7, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 9L,
@@ -3784,7 +3858,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5026),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1559),
                             CreatedBy = 15L,
                             EndTime = new DateTime(2025, 4, 14, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 10L,
@@ -3795,7 +3869,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5029),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1562),
                             CreatedBy = 4L,
                             EndTime = new DateTime(2025, 4, 21, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 11L,
@@ -3806,7 +3880,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5033),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1565),
                             CreatedBy = 5L,
                             EndTime = new DateTime(2025, 4, 28, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             GroupId = 12L,
@@ -3845,84 +3919,84 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5097),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1631),
                             FilePath = "records/meeting1.mp3",
                             MeetingId = 1L
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5100),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1635),
                             FilePath = "records/meeting2.mp4",
                             MeetingId = 2L
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5102),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1638),
                             FilePath = "records/meeting3.mp3",
                             MeetingId = 3L
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5104),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1642),
                             FilePath = "records/meeting4.mp4",
                             MeetingId = 4L
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5106),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1645),
                             FilePath = "records/meeting5.mp3",
                             MeetingId = 5L
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5108),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1648),
                             FilePath = "records/meeting6.mp4",
                             MeetingId = 6L
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5110),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1651),
                             FilePath = "records/meeting7.mp3",
                             MeetingId = 7L
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5112),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1654),
                             FilePath = "records/meeting8.mp4",
                             MeetingId = 8L
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5114),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1657),
                             FilePath = "records/meeting9.mp3",
                             MeetingId = 9L
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5115),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1660),
                             FilePath = "records/meeting10.mp4",
                             MeetingId = 10L
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5117),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1663),
                             FilePath = "records/meeting11.mp3",
                             MeetingId = 11L
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5119),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1666),
                             FilePath = "records/meeting12.mp4",
                             MeetingId = 12L
                         });
@@ -3980,7 +4054,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Content = "Hạn nộp là 28/02/2025.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5206),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1785),
                             RecipientType = "user",
                             Status = "SENT",
                             Title = "Hạn nộp đồ án",
@@ -3991,7 +4065,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Content = "Bài nộp đã được phản hồi.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5210),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1789),
                             RecipientType = "group",
                             Status = "SENT",
                             Title = "Phản hồi bài nộp",
@@ -4002,7 +4076,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Content = "Bạn được thêm vào Nhóm 1.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5214),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1792),
                             GroupId = 1L,
                             RecipientType = "user",
                             Status = "SENT",
@@ -4014,7 +4088,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Content = "Họp nhóm vào 14:00, 03/03/2025.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5217),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1795),
                             GroupId = 3L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4026,7 +4100,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Content = "Đồ án Nhóm 4 cần chỉnh sửa.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5221),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1798),
                             GroupId = 4L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4038,7 +4112,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Content = "Bạn được giao nhiệm vụ mới.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5224),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1801),
                             GroupId = 5L,
                             RecipientType = "user",
                             Status = "SENT",
@@ -4050,7 +4124,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Content = "Điểm của Nhóm 6 đã được cập nhật.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5227),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1804),
                             GroupId = 6L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4062,7 +4136,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Content = "Hạn chót nhiệm vụ là 10/03/2025.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5230),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1807),
                             GroupId = 7L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4074,7 +4148,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Content = "Lịch bảo vệ: 08/03/2025, A108.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5232),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1810),
                             GroupId = 8L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4086,7 +4160,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Content = "Nhóm 9 nhận phản hồi mới.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5277),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1813),
                             GroupId = 9L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4098,7 +4172,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Content = "Đồ án Nhóm 10 đã được phê duyệt.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5280),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1816),
                             GroupId = 10L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4110,7 +4184,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Content = "Nhiệm vụ của Nhóm 11 đã hoàn thành.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5283),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1819),
                             GroupId = 11L,
                             RecipientType = "group",
                             Status = "SENT",
@@ -4162,7 +4236,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Comment = "Làm việc tốt.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5357),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1885),
                             GroupId = 1L,
                             RevieweeId = 8L,
                             ReviewerId = 7L,
@@ -4172,7 +4246,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Comment = "Cần cải thiện giao tiếp.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5360),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1902),
                             GroupId = 1L,
                             RevieweeId = 7L,
                             ReviewerId = 8L,
@@ -4182,7 +4256,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Comment = "Hỗ trợ nhóm tốt.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5362),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1904),
                             GroupId = 3L,
                             RevieweeId = 11L,
                             ReviewerId = 10L,
@@ -4192,7 +4266,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Comment = "Cần chủ động hơn.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5365),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1906),
                             GroupId = 3L,
                             RevieweeId = 10L,
                             ReviewerId = 11L,
@@ -4202,7 +4276,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Comment = "Đóng góp tích cực.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5367),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1909),
                             GroupId = 4L,
                             RevieweeId = 13L,
                             ReviewerId = 12L,
@@ -4212,7 +4286,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Comment = "Cần cải thiện kỹ năng.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5370),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1912),
                             GroupId = 4L,
                             RevieweeId = 12L,
                             ReviewerId = 13L,
@@ -4222,7 +4296,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Comment = "Làm việc hiệu quả.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5372),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1914),
                             GroupId = 5L,
                             RevieweeId = 8L,
                             ReviewerId = 7L,
@@ -4232,7 +4306,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Comment = "Cần tập trung hơn.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5374),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1917),
                             GroupId = 6L,
                             RevieweeId = 9L,
                             ReviewerId = 8L,
@@ -4242,7 +4316,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Comment = "Hợp tác tốt.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5377),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1919),
                             GroupId = 7L,
                             RevieweeId = 10L,
                             ReviewerId = 9L,
@@ -4252,7 +4326,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Comment = "Cần cải thiện thái độ.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5379),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1921),
                             GroupId = 8L,
                             RevieweeId = 11L,
                             ReviewerId = 10L,
@@ -4262,7 +4336,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Comment = "Đóng góp lớn.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5381),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1924),
                             GroupId = 9L,
                             RevieweeId = 12L,
                             ReviewerId = 11L,
@@ -4272,7 +4346,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Comment = "Làm việc ổn.",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5385),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(1926),
                             GroupId = 10L,
                             RevieweeId = 13L,
                             ReviewerId = 12L,
@@ -4332,157 +4406,157 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             CourseId = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2506),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9122),
                             Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.",
                             GroupId = 1L,
                             ProjectCode = "AI_YTE_2025_01",
                             Status = "NOT_SUBMITTED",
                             Title = "Ứng dụng AI trong y tế",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2506)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9123)
                         },
                         new
                         {
                             Id = 2L,
                             CourseId = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2512),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9132),
                             Description = "Xây dựng hệ thống quản lý đồ án sinh viên.",
                             GroupId = 2L,
                             ProjectCode = "QLDA_2025_01",
                             Status = "NOT_SUBMITTED",
                             Title = "Hệ thống quản lý đồ án",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2513)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9133)
                         },
                         new
                         {
                             Id = 3L,
                             CourseId = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2518),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9139),
                             Description = "Phát triển website bán hàng trực tuyến.",
                             GroupId = 3L,
                             ProjectCode = "TMĐT_2025_01",
                             Status = "NOT_SUBMITTED",
                             Title = "Ứng dụng thương mại điện tử",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2519)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9139)
                         },
                         new
                         {
                             Id = 4L,
                             CourseId = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2524),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9144),
                             Description = "Xây dựng hệ thống phân tích dữ liệu thời gian thực.",
                             GroupId = 4L,
                             ProjectCode = "PTDL_2025_01",
                             Status = "SUBMITTED",
                             Title = "Phân tích dữ liệu thời gian thực",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2525)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9145)
                         },
                         new
                         {
                             Id = 5L,
                             CourseId = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2530),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9150),
                             Description = "Phát triển app quản lý học tập cho sinh viên.",
                             GroupId = 5L,
                             ProjectCode = "QLHT_2025_01",
                             Status = "SUBMITTED",
                             Title = "Ứng dụng quản lý học tập",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2530)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9150)
                         },
                         new
                         {
                             Id = 6L,
                             CourseId = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2535),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9155),
                             Description = "Xây dựng giải pháp bảo mật cho thiết bị IoT.",
                             GroupId = 6L,
                             ProjectCode = "BM_IOT_2025_01",
                             Status = "SUBMITTED",
                             Title = "Hệ thống bảo mật IoT",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2536)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9156)
                         },
                         new
                         {
                             Id = 7L,
                             CourseId = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2542),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9161),
                             Description = "Phân tích hành vi người dùng trên mạng xã hội.",
                             GroupId = 7L,
                             ProjectCode = "PTMXH_2025_01",
                             Status = "SUBMITTED",
                             Title = "Phân tích dữ liệu mạng xã hội",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2542)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9161)
                         },
                         new
                         {
                             Id = 8L,
                             CourseId = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2630),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9166),
                             Description = "Phát triển app học ngoại ngữ với AI.",
                             GroupId = 9L,
                             ProjectCode = "HNN_2025_01",
                             Status = "GRADED",
                             Title = "Ứng dụng học ngoại ngữ",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2631)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9167)
                         },
                         new
                         {
                             Id = 9L,
                             CourseId = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2636),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9171),
                             Description = "Xây dựng hệ thống quản lý kho hàng tự động.",
                             GroupId = 8L,
                             ProjectCode = "QLK_2025_01",
                             Status = "GRADED",
                             Title = "Hệ thống quản lý kho",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2637)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9171)
                         },
                         new
                         {
                             Id = 10L,
                             CourseId = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2642),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9177),
                             Description = "Phát triển app đặt lịch khám bệnh trực tuyến.",
                             GroupId = 10L,
                             ProjectCode = "DLKB_2025_01",
                             Status = "GRADED",
                             Title = "Ứng dụng đặt lịch khám bệnh",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2643)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9177)
                         },
                         new
                         {
                             Id = 11L,
                             CourseId = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2648),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9183),
                             Description = "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.",
                             GroupId = 12L,
                             ProjectCode = "QLNS_2025_01",
                             Status = "GRADED",
                             Title = "Hệ thống quản lý nhân sự",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2649)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9183)
                         },
                         new
                         {
                             Id = 12L,
                             CourseId = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2654),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9188),
                             Description = "Phát triển app hỗ trợ học tập nhóm.",
                             GroupId = 11L,
                             ProjectCode = "HTN_2025_01",
                             Status = "PENDING",
                             Title = "Ứng dụng học tập nhóm",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2654)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9189)
                         },
                         new
                         {
                             Id = 13L,
                             CourseId = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2659),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9193),
                             Description = "Xây dựng hệ thống phân tích tài chính cá nhân.",
                             GroupId = 13L,
                             ProjectCode = "PTTC_2025_01",
                             Status = "PENDING",
                             Title = "Hệ thống phân tích tài chính",
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2660)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9194)
                         });
                 });
 
@@ -4522,7 +4596,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2737),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9276),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 1L,
                             Title = "Ứng dụng AI trong y tế",
@@ -4531,7 +4605,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2739),
+                            CreatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9279),
                             Description = "Cập nhật mô tả.",
                             ProjectId = 1L,
                             Title = "Ứng dụng AI trong y tế (Cập nhật)",
@@ -4540,7 +4614,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2748),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9290),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 2L,
                             Title = "Hệ thống quản lý đồ án",
@@ -4549,7 +4623,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2751),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9293),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 3L,
                             Title = "Ứng dụng thương mại điện tử",
@@ -4558,7 +4632,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2753),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9295),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 4L,
                             Title = "Phân tích dữ liệu thời gian thực",
@@ -4567,7 +4641,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2756),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9298),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 5L,
                             Title = "Ứng dụng quản lý học tập",
@@ -4576,7 +4650,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2758),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9299),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 6L,
                             Title = "Hệ thống bảo mật IoT",
@@ -4585,7 +4659,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2760),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9301),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 7L,
                             Title = "Phân tích dữ liệu mạng xã hội",
@@ -4594,7 +4668,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2762),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9303),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 8L,
                             Title = "Ứng dụng học ngoại ngữ",
@@ -4603,7 +4677,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2764),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9305),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 9L,
                             Title = "Hệ thống quản lý kho",
@@ -4612,7 +4686,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2766),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9307),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 10L,
                             Title = "Ứng dụng đặt lịch khám bệnh",
@@ -4621,7 +4695,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2768),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9309),
                             Description = "Phiên bản ban đầu.",
                             ProjectId = 11L,
                             Title = "Hệ thống quản lý nhân sự",
@@ -4663,7 +4737,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             Content = "Ứng dụng AI của bạn giải quyết vấn đề gì?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5572),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2098),
                             CreatedBy = 4L,
                             ProjectId = 1L
                         },
@@ -4671,7 +4745,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 2L,
                             Content = "Hệ thống quản lý đồ án có những tính năng gì?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5575),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2100),
                             CreatedBy = 5L,
                             ProjectId = 2L
                         },
@@ -4679,7 +4753,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 3L,
                             Content = "Website thương mại điện tử có tích hợp thanh toán không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5579),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2103),
                             CreatedBy = 6L,
                             ProjectId = 3L
                         },
@@ -4687,7 +4761,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 4L,
                             Content = "Phân tích dữ liệu thời gian thực dùng công nghệ gì?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5582),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2105),
                             CreatedBy = 14L,
                             ProjectId = 4L
                         },
@@ -4695,7 +4769,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 5L,
                             Content = "App quản lý học tập có hỗ trợ offline không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5585),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2108),
                             CreatedBy = 15L,
                             ProjectId = 5L
                         },
@@ -4703,7 +4777,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 6L,
                             Content = "Hệ thống bảo mật IoT đã kiểm tra lỗ hổng chưa?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5588),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2110),
                             CreatedBy = 4L,
                             ProjectId = 6L
                         },
@@ -4711,7 +4785,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 7L,
                             Content = "Phân tích dữ liệu mạng xã hội có chính xác không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5591),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2112),
                             CreatedBy = 5L,
                             ProjectId = 7L
                         },
@@ -4719,7 +4793,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 8L,
                             Content = "App học ngoại ngữ hỗ trợ bao nhiêu ngôn ngữ?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5593),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2114),
                             CreatedBy = 6L,
                             ProjectId = 8L
                         },
@@ -4727,7 +4801,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 9L,
                             Content = "Hệ thống quản lý kho có tự động hóa không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5596),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2116),
                             CreatedBy = 14L,
                             ProjectId = 9L
                         },
@@ -4735,7 +4809,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 10L,
                             Content = "App đặt lịch khám bệnh có thông báo nhắc nhở không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5600),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2118),
                             CreatedBy = 15L,
                             ProjectId = 10L
                         },
@@ -4743,7 +4817,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 11L,
                             Content = "Hệ thống quản lý nhân sự có báo cáo không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5603),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2120),
                             CreatedBy = 4L,
                             ProjectId = 11L
                         },
@@ -4751,7 +4825,7 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 12L,
                             Content = "App học tập nhóm có tính năng chat không?",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5605),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2123),
                             CreatedBy = 5L,
                             ProjectId = 12L
                         });
@@ -4805,7 +4879,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5463),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2000),
                             CreatedBy = 4L,
                             FilePath = "resources/ai_doc.pdf",
                             ProjectId = 1L,
@@ -4815,7 +4889,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5467),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2003),
                             CreatedBy = 5L,
                             FilePath = "resources/report_template.docx",
                             GroupId = 2L,
@@ -4825,7 +4899,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5469),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2005),
                             CreatedBy = 6L,
                             FilePath = "resources/ecommerce.pdf",
                             ProjectId = 3L,
@@ -4835,7 +4909,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5472),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2008),
                             CreatedBy = 14L,
                             FilePath = "resources/data_analysis.pdf",
                             ProjectId = 4L,
@@ -4845,7 +4919,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5474),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2010),
                             CreatedBy = 15L,
                             FilePath = "resources/study_management.pdf",
                             ProjectId = 5L,
@@ -4855,7 +4929,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5477),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2012),
                             CreatedBy = 4L,
                             FilePath = "resources/iot_security.pdf",
                             ProjectId = 6L,
@@ -4865,7 +4939,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5479),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2015),
                             CreatedBy = 5L,
                             FilePath = "resources/social_media_analysis.pdf",
                             ProjectId = 7L,
@@ -4875,7 +4949,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5482),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2017),
                             CreatedBy = 6L,
                             FilePath = "resources/language_learning.pdf",
                             ProjectId = 8L,
@@ -4885,7 +4959,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5485),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2019),
                             CreatedBy = 14L,
                             FilePath = "resources/warehouse_management.pdf",
                             ProjectId = 9L,
@@ -4895,7 +4969,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5488),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2021),
                             CreatedBy = 15L,
                             FilePath = "resources/booking_system.pdf",
                             ProjectId = 10L,
@@ -4905,7 +4979,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5490),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2023),
                             CreatedBy = 4L,
                             FilePath = "resources/hr_management.pdf",
                             ProjectId = 11L,
@@ -4915,7 +4989,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(5493),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2026),
                             CreatedBy = 5L,
                             FilePath = "resources/group_study.pdf",
                             ProjectId = 12L,
@@ -5024,7 +5098,7 @@ namespace EduProject_TADProgrammer.Migrations
                             EditProjects = true,
                             EditUsers = true,
                             RoleId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7612),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(4025),
                             ViewGrading = true,
                             ViewProjects = true,
                             ViewUsers = true
@@ -5036,7 +5110,7 @@ namespace EduProject_TADProgrammer.Migrations
                             EditProjects = false,
                             EditUsers = false,
                             RoleId = 2L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7614),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(4028),
                             ViewGrading = false,
                             ViewProjects = true,
                             ViewUsers = false
@@ -5048,7 +5122,7 @@ namespace EduProject_TADProgrammer.Migrations
                             EditProjects = false,
                             EditUsers = false,
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7616),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(4031),
                             ViewGrading = false,
                             ViewProjects = true,
                             ViewUsers = false
@@ -5060,7 +5134,7 @@ namespace EduProject_TADProgrammer.Migrations
                             EditProjects = false,
                             EditUsers = false,
                             RoleId = 4L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7618),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(4033),
                             ViewGrading = false,
                             ViewProjects = true,
                             ViewUsers = false
@@ -5103,7 +5177,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7449),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3794),
                             EndDate = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "HK2-2025",
                             StartDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -5111,7 +5185,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7452),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3798),
                             EndDate = new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "HK1-2025",
                             StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -5119,7 +5193,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7454),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3801),
                             EndDate = new DateTime(2025, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "HK3-2025",
                             StartDate = new DateTime(2025, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -5158,7 +5232,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6669),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2766),
                             Score = 8,
                             Skill = "Lập trình Python",
                             StudentId = 7L
@@ -5166,7 +5240,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6671),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2770),
                             Score = 7,
                             Skill = "Thiết kế giao diện",
                             StudentId = 8L
@@ -5174,7 +5248,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6673),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2772),
                             Score = 9,
                             Skill = "Phân tích dữ liệu",
                             StudentId = 9L
@@ -5182,7 +5256,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6674),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2774),
                             Score = 6,
                             Skill = "Lập trình Java",
                             StudentId = 10L
@@ -5190,7 +5264,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6676),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2776),
                             Score = 8,
                             Skill = "Quản lý dự án",
                             StudentId = 11L
@@ -5198,7 +5272,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6677),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2778),
                             Score = 7,
                             Skill = "Kiểm thử phần mềm",
                             StudentId = 12L
@@ -5206,7 +5280,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6679),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2781),
                             Score = 9,
                             Skill = "Lập trình JavaScript",
                             StudentId = 13L
@@ -5214,7 +5288,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6680),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2783),
                             Score = 6,
                             Skill = "Giao tiếp nhóm",
                             StudentId = 7L
@@ -5222,7 +5296,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6682),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2785),
                             Score = 8,
                             Skill = "Thiết kế cơ sở dữ liệu",
                             StudentId = 8L
@@ -5230,7 +5304,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6683),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2787),
                             Score = 7,
                             Skill = "Tích hợp API",
                             StudentId = 9L
@@ -5238,7 +5312,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6684),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2790),
                             Score = 8,
                             Skill = "Lập trình C#",
                             StudentId = 10L
@@ -5246,7 +5320,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6686),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2792),
                             Score = 9,
                             Skill = "Phân tích yêu cầu",
                             StudentId = 11L
@@ -5292,244 +5366,244 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             CourseId = 1L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7497),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3865),
                             Status = "ENROLLED",
                             StudentId = 7L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7497)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3865)
                         },
                         new
                         {
                             Id = 2L,
                             CourseId = 1L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7499),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3869),
                             Status = "ENROLLED",
                             StudentId = 8L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7500)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3870)
                         },
                         new
                         {
                             Id = 3L,
                             CourseId = 1L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7502),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3872),
                             Status = "ENROLLED",
                             StudentId = 9L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7502)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3873)
                         },
                         new
                         {
                             Id = 4L,
                             CourseId = 1L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7504),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3875),
                             Status = "ENROLLED",
                             StudentId = 10L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7505)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3875)
                         },
                         new
                         {
                             Id = 5L,
                             CourseId = 1L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7506),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3878),
                             Status = "ENROLLED",
                             StudentId = 11L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7507)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3879)
                         },
                         new
                         {
                             Id = 6L,
                             CourseId = 2L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7509),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3881),
                             Status = "ENROLLED",
                             StudentId = 12L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7509)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3882)
                         },
                         new
                         {
                             Id = 7L,
                             CourseId = 2L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7511),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3885),
                             Status = "ENROLLED",
                             StudentId = 13L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7512)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3885)
                         },
                         new
                         {
                             Id = 8L,
                             CourseId = 3L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7513),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3888),
                             Status = "ENROLLED",
                             StudentId = 7L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7514)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3888)
                         },
                         new
                         {
                             Id = 9L,
                             CourseId = 3L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7516),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3891),
                             Status = "ENROLLED",
                             StudentId = 8L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7516)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3891)
                         },
                         new
                         {
                             Id = 10L,
                             CourseId = 4L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7518),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3894),
                             Status = "ENROLLED",
                             StudentId = 9L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7518)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3895)
                         },
                         new
                         {
                             Id = 11L,
                             CourseId = 4L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7520),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3897),
                             Status = "ENROLLED",
                             StudentId = 10L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7521)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3899)
                         },
                         new
                         {
                             Id = 12L,
                             CourseId = 5L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7523),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3901),
                             Status = "ENROLLED",
                             StudentId = 11L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7523)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3902)
                         },
                         new
                         {
                             Id = 13L,
                             CourseId = 5L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7525),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3904),
                             Status = "ENROLLED",
                             StudentId = 12L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7525)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3905)
                         },
                         new
                         {
                             Id = 14L,
                             CourseId = 6L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7527),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3907),
                             Status = "ENROLLED",
                             StudentId = 13L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7528)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3908)
                         },
                         new
                         {
                             Id = 15L,
                             CourseId = 6L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7529),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3910),
                             Status = "ENROLLED",
                             StudentId = 7L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7530)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3911)
                         },
                         new
                         {
                             Id = 16L,
                             CourseId = 7L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7532),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3914),
                             Status = "COMPLETED",
                             StudentId = 8L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7532)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3914)
                         },
                         new
                         {
                             Id = 17L,
                             CourseId = 7L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7534),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3917),
                             Status = "COMPLETED",
                             StudentId = 9L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7535)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3918)
                         },
                         new
                         {
                             Id = 18L,
                             CourseId = 8L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7537),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3920),
                             Status = "COMPLETED",
                             StudentId = 10L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7537)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3921)
                         },
                         new
                         {
                             Id = 19L,
                             CourseId = 8L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7539),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3923),
                             Status = "COMPLETED",
                             StudentId = 11L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7539)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3924)
                         },
                         new
                         {
                             Id = 20L,
                             CourseId = 9L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7541),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3926),
                             Status = "COMPLETED",
                             StudentId = 12L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7542)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3927)
                         },
                         new
                         {
                             Id = 21L,
                             CourseId = 9L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7544),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3929),
                             Status = "COMPLETED",
                             StudentId = 13L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7544)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3930)
                         },
                         new
                         {
                             Id = 22L,
                             CourseId = 10L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7546),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3932),
                             Status = "COMPLETED",
                             StudentId = 7L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7546)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3933)
                         },
                         new
                         {
                             Id = 23L,
                             CourseId = 10L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7548),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3935),
                             Status = "COMPLETED",
                             StudentId = 8L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7549)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3936)
                         },
                         new
                         {
                             Id = 24L,
                             CourseId = 11L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7551),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3938),
                             Status = "ENROLLED",
                             StudentId = 9L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7551)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3939)
                         },
                         new
                         {
                             Id = 25L,
                             CourseId = 11L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7553),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3941),
                             Status = "ENROLLED",
                             StudentId = 10L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7553)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3942)
                         },
                         new
                         {
                             Id = 26L,
                             CourseId = 12L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7555),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3944),
                             Status = "ENROLLED",
                             StudentId = 11L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7556)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3945)
                         },
                         new
                         {
                             Id = 27L,
                             CourseId = 12L,
-                            EnrolledAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7558),
+                            EnrolledAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3948),
                             Status = "ENROLLED",
                             StudentId = 12L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(7558)
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3948)
                         });
                 });
 
@@ -5583,7 +5657,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 1L,
                             ProjectId = 1L,
                             Status = "SUBMITTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3459),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9929),
                             TaskId = 1L,
                             Version = 1
                         },
@@ -5594,7 +5668,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 2L,
                             ProjectId = 2L,
                             Status = "VALIDATED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3464),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9951),
                             TaskId = 2L,
                             Version = 1
                         },
@@ -5605,7 +5679,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 3L,
                             ProjectId = 3L,
                             Status = "SUBMITTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3467),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9955),
                             TaskId = 3L,
                             Version = 1
                         },
@@ -5616,7 +5690,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 4L,
                             ProjectId = 4L,
                             Status = "REJECTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3471),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9959),
                             TaskId = 4L,
                             Version = 1
                         },
@@ -5627,7 +5701,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 5L,
                             ProjectId = 5L,
                             Status = "SUBMITTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3474),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9963),
                             TaskId = 5L,
                             Version = 1
                         },
@@ -5638,7 +5712,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 6L,
                             ProjectId = 6L,
                             Status = "VALIDATED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3477),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9967),
                             TaskId = 6L,
                             Version = 1
                         },
@@ -5649,7 +5723,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 7L,
                             ProjectId = 7L,
                             Status = "SUBMITTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3481),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9970),
                             TaskId = 7L,
                             Version = 1
                         },
@@ -5660,7 +5734,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 8L,
                             ProjectId = 8L,
                             Status = "REJECTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3484),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9973),
                             TaskId = 8L,
                             Version = 1
                         },
@@ -5671,7 +5745,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 9L,
                             ProjectId = 9L,
                             Status = "SUBMITTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3487),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9977),
                             TaskId = 9L,
                             Version = 1
                         },
@@ -5682,7 +5756,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 10L,
                             ProjectId = 10L,
                             Status = "VALIDATED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3491),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9981),
                             TaskId = 10L,
                             Version = 1
                         },
@@ -5693,7 +5767,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 11L,
                             ProjectId = 11L,
                             Status = "SUBMITTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3494),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9985),
                             TaskId = 11L,
                             Version = 1
                         },
@@ -5704,7 +5778,7 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 12L,
                             ProjectId = 12L,
                             Status = "REJECTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3497),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9989),
                             TaskId = 12L,
                             Version = 1
                         },
@@ -5715,8 +5789,19 @@ namespace EduProject_TADProgrammer.Migrations
                             GroupId = 1L,
                             ProjectId = 1L,
                             Status = "SUBMITTED",
-                            SubmittedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3502),
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9992),
                             TaskId = 1L,
+                            Version = 1
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            FilePath = "submissions/dt014.pdf",
+                            GroupId = 1L,
+                            ProjectId = 1L,
+                            Status = "SUBMITTED",
+                            SubmittedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9996),
+                            TaskId = 15L,
                             Version = 1
                         });
                 });
@@ -5753,7 +5838,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3586),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(83),
                             FilePath = "submissions/dt001_v1.pdf",
                             SubmissionId = 1L,
                             VersionNumber = 1
@@ -5761,7 +5846,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3589),
+                            CreatedAt = new DateTime(2025, 5, 26, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(86),
                             FilePath = "submissions/dt001_v2.pdf",
                             SubmissionId = 1L,
                             VersionNumber = 2
@@ -5769,7 +5854,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3593),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(90),
                             FilePath = "submissions/dt002_v1.pdf",
                             SubmissionId = 2L,
                             VersionNumber = 1
@@ -5777,7 +5862,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3594),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(93),
                             FilePath = "submissions/dt003_v1.pdf",
                             SubmissionId = 3L,
                             VersionNumber = 1
@@ -5785,7 +5870,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3596),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(94),
                             FilePath = "submissions/dt004_v1.pdf",
                             SubmissionId = 4L,
                             VersionNumber = 1
@@ -5793,7 +5878,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3598),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(96),
                             FilePath = "submissions/dt005_v1.pdf",
                             SubmissionId = 5L,
                             VersionNumber = 1
@@ -5801,7 +5886,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3600),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(98),
                             FilePath = "submissions/dt006_v1.pdf",
                             SubmissionId = 6L,
                             VersionNumber = 1
@@ -5809,7 +5894,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3603),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(99),
                             FilePath = "submissions/dt007_v1.pdf",
                             SubmissionId = 7L,
                             VersionNumber = 1
@@ -5817,7 +5902,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3605),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(101),
                             FilePath = "submissions/dt008_v1.pdf",
                             SubmissionId = 8L,
                             VersionNumber = 1
@@ -5825,7 +5910,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3607),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(103),
                             FilePath = "submissions/dt009_v1.pdf",
                             SubmissionId = 9L,
                             VersionNumber = 1
@@ -5833,7 +5918,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3608),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(105),
                             FilePath = "submissions/dt010_v1.pdf",
                             SubmissionId = 10L,
                             VersionNumber = 1
@@ -5841,7 +5926,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3610),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(106),
                             FilePath = "submissions/dt011_v1.pdf",
                             SubmissionId = 11L,
                             VersionNumber = 1
@@ -5879,84 +5964,84 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6829),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3018),
                             Key = "LOGO_URL",
                             Value = "images/hutech_logo.png"
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6830),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3020),
                             Key = "THEME_COLOR",
                             Value = "#1976d2"
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6832),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3022),
                             Key = "EMAIL_SERVER",
                             Value = "smtp.hutech.edu.vn"
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6833),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3024),
                             Key = "MAX_FILE_SIZE",
                             Value = "10485760"
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6835),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3026),
                             Key = "DEFAULT_LANGUAGE",
                             Value = "vi"
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6836),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3028),
                             Key = "NOTIFICATION_DURATION",
                             Value = "7"
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6837),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3030),
                             Key = "SESSION_TIMEOUT",
                             Value = "30"
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6839),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3032),
                             Key = "BACKUP_FREQUENCY",
                             Value = "daily"
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6840),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3033),
                             Key = "ALLOWED_FILE_TYPES",
                             Value = "pdf,docx,zip"
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6841),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3035),
                             Key = "TIMEZONE",
                             Value = "Asia/Ho_Chi_Minh"
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6842),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3037),
                             Key = "MAX_LOGIN_ATTEMPTS",
                             Value = "5"
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6844),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3039),
                             Key = "CHAT_ENABLED",
                             Value = "true"
                         });
@@ -5990,84 +6075,84 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6900),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3119),
                             MetricType = "CPU",
                             Value = 45.5f
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6902),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3121),
                             MetricType = "RAM",
                             Value = 60f
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6904),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3123),
                             MetricType = "DISK",
                             Value = 75f
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6905),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(3126),
                             MetricType = "NETWORK",
                             Value = 120.5f
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6906),
+                            CreatedAt = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(3128),
                             MetricType = "CPU",
                             Value = 50f
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6908),
+                            CreatedAt = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(3131),
                             MetricType = "RAM",
                             Value = 65f
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6909),
+                            CreatedAt = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(3133),
                             MetricType = "DISK",
                             Value = 80f
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6911),
+                            CreatedAt = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(3136),
                             MetricType = "NETWORK",
                             Value = 130f
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6913),
+                            CreatedAt = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(3139),
                             MetricType = "CPU",
                             Value = 55f
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6914),
+                            CreatedAt = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(3141),
                             MetricType = "RAM",
                             Value = 70f
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6916),
+                            CreatedAt = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(3143),
                             MetricType = "DISK",
                             Value = 85f
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6917),
+                            CreatedAt = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(3146),
                             MetricType = "NETWORK",
                             Value = 140f
                         });
@@ -6123,7 +6208,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3246),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9752),
                             Deadline = new DateTime(2025, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Phân tích yêu cầu hệ thống AI.",
                             GroupId = 1L,
@@ -6134,7 +6219,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3311),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9756),
                             Deadline = new DateTime(2025, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Thiết kế giao diện quản lý đồ án.",
                             GroupId = 2L,
@@ -6145,7 +6230,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3314),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9759),
                             Deadline = new DateTime(2025, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Thiết kế và triển khai CSDL.",
                             GroupId = 3L,
@@ -6156,7 +6241,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3318),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9763),
                             Deadline = new DateTime(2025, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Tích hợp API phân tích dữ liệu.",
                             GroupId = 4L,
@@ -6167,7 +6252,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3322),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9767),
                             Deadline = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Phát triển tính năng quản lý lịch học.",
                             GroupId = 5L,
@@ -6178,7 +6263,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3325),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9770),
                             Deadline = new DateTime(2025, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Kiểm tra lỗ hổng bảo mật IoT.",
                             GroupId = 6L,
@@ -6189,7 +6274,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3328),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9773),
                             Deadline = new DateTime(2025, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Thu thập dữ liệu từ mạng xã hội.",
                             GroupId = 7L,
@@ -6200,7 +6285,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3332),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9777),
                             Deadline = new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Tích hợp AI vào app học ngoại ngữ.",
                             GroupId = 8L,
@@ -6211,7 +6296,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3336),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9780),
                             Deadline = new DateTime(2025, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Thiết kế hệ thống quản lý kho.",
                             GroupId = 9L,
@@ -6222,7 +6307,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3339),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9784),
                             Deadline = new DateTime(2025, 3, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Phát triển giao diện đặt lịch khám.",
                             GroupId = 10L,
@@ -6233,7 +6318,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3343),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9788),
                             Deadline = new DateTime(2025, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Kiểm tra chức năng quản lý nhân sự.",
                             GroupId = 11L,
@@ -6244,7 +6329,7 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3346),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9791),
                             Deadline = new DateTime(2025, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Tích hợp tính năng chat nhóm.",
                             GroupId = 12L,
@@ -6255,13 +6340,35 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 13L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(3351),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9796),
                             Deadline = new DateTime(2025, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Thiết kế giao diện quản lý đồ án.",
                             GroupId = 1L,
                             ProjectId = 1L,
                             Status = "IN_PROGRESS",
                             Title = "Báo cáo tuần 2"
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9806),
+                            Deadline = new DateTime(2025, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Thiết kế giao diện quản lý đồ án.",
+                            GroupId = 1L,
+                            ProjectId = 1L,
+                            Status = "IN_PROGRESS",
+                            Title = "Báo cáo tuần 3"
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(9809),
+                            Deadline = new DateTime(2025, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Báo cáo đồ án.",
+                            GroupId = 1L,
+                            ProjectId = 1L,
+                            Status = "IN_PROGRESS",
+                            Title = "Báo cáo cuối kỳ"
                         });
                 });
 
@@ -6303,121 +6410,121 @@ namespace EduProject_TADProgrammer.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6743),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2876),
                             Duration = 120,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6740),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2874),
                             ProjectId = 1L,
-                            StartTime = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6736),
+                            StartTime = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(2870),
                             StudentId = 7L
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6746),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2883),
                             Duration = 60,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6745),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2882),
                             ProjectId = 1L,
-                            StartTime = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6744),
+                            StartTime = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(2881),
                             StudentId = 8L
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6749),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2893),
                             Duration = 180,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6748),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2886),
                             ProjectId = 2L,
-                            StartTime = new DateTime(2025, 5, 21, 17, 4, 20, 893, DateTimeKind.Utc).AddTicks(6747),
+                            StartTime = new DateTime(2025, 5, 27, 0, 50, 7, 466, DateTimeKind.Utc).AddTicks(2885),
                             StudentId = 9L
                         },
                         new
                         {
                             Id = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6752),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2897),
                             Duration = 60,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6751),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2896),
                             ProjectId = 3L,
-                            StartTime = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6750),
+                            StartTime = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(2894),
                             StudentId = 10L
                         },
                         new
                         {
                             Id = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6762),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2905),
                             Duration = 120,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6758),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2903),
                             ProjectId = 4L,
-                            StartTime = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6753),
+                            StartTime = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(2899),
                             StudentId = 11L
                         },
                         new
                         {
                             Id = 6L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6765),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2910),
                             Duration = 240,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6764),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2909),
                             ProjectId = 5L,
-                            StartTime = new DateTime(2025, 5, 21, 16, 4, 20, 893, DateTimeKind.Utc).AddTicks(6763),
+                            StartTime = new DateTime(2025, 5, 26, 23, 50, 7, 466, DateTimeKind.Utc).AddTicks(2908),
                             StudentId = 12L
                         },
                         new
                         {
                             Id = 7L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6768),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2913),
                             Duration = 60,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6767),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2912),
                             ProjectId = 6L,
-                            StartTime = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6766),
+                            StartTime = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(2911),
                             StudentId = 13L
                         },
                         new
                         {
                             Id = 8L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6773),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2927),
                             Duration = 120,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6772),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2925),
                             ProjectId = 7L,
-                            StartTime = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6769),
+                            StartTime = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(2915),
                             StudentId = 7L
                         },
                         new
                         {
                             Id = 9L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6776),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2931),
                             Duration = 180,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6775),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2930),
                             ProjectId = 8L,
-                            StartTime = new DateTime(2025, 5, 21, 17, 4, 20, 893, DateTimeKind.Utc).AddTicks(6774),
+                            StartTime = new DateTime(2025, 5, 27, 0, 50, 7, 466, DateTimeKind.Utc).AddTicks(2929),
                             StudentId = 8L
                         },
                         new
                         {
                             Id = 10L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6779),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2935),
                             Duration = 60,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6778),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2934),
                             ProjectId = 9L,
-                            StartTime = new DateTime(2025, 5, 21, 19, 4, 20, 893, DateTimeKind.Utc).AddTicks(6777),
+                            StartTime = new DateTime(2025, 5, 27, 2, 50, 7, 466, DateTimeKind.Utc).AddTicks(2933),
                             StudentId = 9L
                         },
                         new
                         {
                             Id = 11L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6781),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2938),
                             Duration = 120,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6781),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2938),
                             ProjectId = 10L,
-                            StartTime = new DateTime(2025, 5, 21, 18, 4, 20, 893, DateTimeKind.Utc).AddTicks(6780),
+                            StartTime = new DateTime(2025, 5, 27, 1, 50, 7, 466, DateTimeKind.Utc).AddTicks(2937),
                             StudentId = 10L
                         },
                         new
                         {
                             Id = 12L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6784),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2942),
                             Duration = 180,
-                            EndTime = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(6783),
+                            EndTime = new DateTime(2025, 5, 27, 3, 50, 7, 466, DateTimeKind.Utc).AddTicks(2941),
                             ProjectId = 11L,
-                            StartTime = new DateTime(2025, 5, 21, 17, 4, 20, 893, DateTimeKind.Utc).AddTicks(6783),
+                            StartTime = new DateTime(2025, 5, 27, 0, 50, 7, 466, DateTimeKind.Utc).AddTicks(2940),
                             StudentId = 11L
                         });
                 });
@@ -6505,44 +6612,44 @@ namespace EduProject_TADProgrammer.Migrations
                         {
                             Id = 1L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1754),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8452),
                             Email = "admin@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Quản trị viên",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 1L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1755),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8453),
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2L,
                             AvatarUrl = "/font-end/static/medit/imgUser/avatar.jpg",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1908),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8468),
                             DepartmentId = 1L,
                             Email = "AND123456789@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Nguyễn Đình Ánh",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 4L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1909),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8469),
                             Username = "AND123456789"
                         },
                         new
                         {
                             Id = 3L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1919),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8477),
                             DepartmentId = 2L,
                             Email = "HVT123456789@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Văn Thiên Hoàng",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 4L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1920),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8478),
                             Username = "HVT123456789"
                         },
                         new
@@ -6550,14 +6657,14 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 4L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             CourseId = 1L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1931),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8487),
                             Email = "CNH123456789@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Nguyễn Huy Cường",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 2L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1931),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8487),
                             Username = "CNH123456789"
                         },
                         new
@@ -6565,14 +6672,14 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 5L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             CourseId = 2L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1944),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8584),
                             Email = "TNT123456789@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Nguyễn Thanh Tùng",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 2L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1945),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8585),
                             Username = "TNT123456789"
                         },
                         new
@@ -6580,14 +6687,14 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 6L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             CourseId = 3L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1955),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8595),
                             Email = "KBP123456789@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Bùi Phú Khuyên",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 2L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1955),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8595),
                             Username = "KBP123456789"
                         },
                         new
@@ -6595,15 +6702,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 7L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             ClassCode = "21DTHA1",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1965),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8605),
                             DepartmentId = 1L,
                             Email = "2180601452@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Nguyễn Tri Bão Thắng",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1965),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8605),
                             Username = "2180601452"
                         },
                         new
@@ -6611,15 +6718,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 8L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             ClassCode = "21DTHA1",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1986),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8637),
                             DepartmentId = 1L,
                             Email = "2180600307@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Huỳnh Thành Đô",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(1987),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8638),
                             Username = "2180600307"
                         },
                         new
@@ -6627,15 +6734,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 9L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             ClassCode = "21DTHA1",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2036),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8648),
                             DepartmentId = 1L,
                             Email = "1911256118@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Nguyễn Thuận An",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2037),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8649),
                             Username = "1911256118"
                         },
                         new
@@ -6643,15 +6750,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 10L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             ClassCode = "21DTHA1",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2049),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8658),
                             DepartmentId = 2L,
                             Email = "2180603746@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Võ Thành Trung",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2050),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8659),
                             Username = "2180603746"
                         },
                         new
@@ -6659,15 +6766,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 11L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             ClassCode = "21DTHA1",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2060),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8668),
                             DepartmentId = 3L,
                             Email = "2180603747@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Lê Quang Vinh",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2060),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8669),
                             Username = "2180603747"
                         },
                         new
@@ -6675,15 +6782,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 12L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             ClassCode = "21DTHA2",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2070),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8689),
                             DepartmentId = 3L,
                             Email = "2180603748@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Trần Quang Tài",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2071),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8690),
                             Username = "2180603748"
                         },
                         new
@@ -6691,15 +6798,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 13L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             ClassCode = "21DTHA2",
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2080),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8700),
                             DepartmentId = 3L,
                             Email = "2180603749@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Trần Văn Tuệ",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 3L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2081),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8700),
                             Username = "2180603749"
                         },
                         new
@@ -6707,15 +6814,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 14L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             CourseId = 4L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2090),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8713),
                             DepartmentId = 2L,
                             Email = "TDTT123456789@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Đặng Thị Thạch Thảo",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 2L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2091),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8714),
                             Username = "TDTT123456789"
                         },
                         new
@@ -6723,15 +6830,15 @@ namespace EduProject_TADProgrammer.Migrations
                             Id = 15L,
                             AvatarUrl = "/static/medit/imgUser/avatar.jpg",
                             CourseId = 5L,
-                            CreatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2100),
+                            CreatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8723),
                             DepartmentId = 3L,
                             Email = "CHM123456789@hutech.edu.vn",
                             FailedLoginAttempts = 0,
                             FullName = "Hàn Minh Châu",
                             Locked = false,
-                            Password = "$2a$11$gv1QjVtS5v2mvb1pFf7kLOy0k5xfTszQvZO00Bw8wOi7TXepMc3I.",
+                            Password = "$2a$11$MmTOc1jf3rBjKFC.8v5XfeFTeV5mEemXGLLFKFKddKenYqKoE0X12",
                             RoleId = 2L,
-                            UpdatedAt = new DateTime(2025, 5, 21, 20, 4, 20, 893, DateTimeKind.Utc).AddTicks(2101),
+                            UpdatedAt = new DateTime(2025, 5, 27, 3, 50, 7, 465, DateTimeKind.Utc).AddTicks(8724),
                             Username = "CHM123456789"
                         });
                 });
@@ -6841,11 +6948,18 @@ namespace EduProject_TADProgrammer.Migrations
 
             modelBuilder.Entity("EduProject_TADProgrammer.Entities.DefenseSchedule", b =>
                 {
+                    b.HasOne("EduProject_TADProgrammer.Entities.Meeting", "Meeting")
+                        .WithMany("DefenseSchedules")
+                        .HasForeignKey("MeetingId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("EduProject_TADProgrammer.Entities.Project", "Project")
                         .WithMany("DefenseSchedules")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Meeting");
 
                     b.Navigation("Project");
                 });
@@ -7440,6 +7554,8 @@ namespace EduProject_TADProgrammer.Migrations
 
             modelBuilder.Entity("EduProject_TADProgrammer.Entities.Meeting", b =>
                 {
+                    b.Navigation("DefenseSchedules");
+
                     b.Navigation("MeetingRecords");
                 });
 

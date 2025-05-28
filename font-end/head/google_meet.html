@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang quản lý Google Meet của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>Quản lý Google Meet | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        .nav-link.active { background-color: #007bff; color: white; }
+        .form-check-input:checked { background-color: #007bff; border-color: #007bff; }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <div class="sidebar-section">
+            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
+            <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="head_defense_list.html" class="active"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>            
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <h6>Nguyễn Huy Cường</h6>
+                <p>nguyenhuycuong@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <!-- Google Meet Section -->
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">📅 Quản lý Google Meet</h2>
+                <button class="btn btn-info" onclick="exportMeetings()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+            </div>
+
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="create-tab" data-bs-toggle="tab" href="#create">Tạo cuộc họp</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="list-tab" data-bs-toggle="tab" href="#list">Danh sách cuộc họp</a>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Create Meeting Tab -->
+                <div class="tab-pane fade show active" id="create">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Tạo cuộc họp Google Meet</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="createMeetingForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tiêu đề cuộc họp</label>
+                                            <input type="text" id="meetingTitle" class="form-control" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Học kỳ</label>
+                                            <select id="semesterId" class="form-select" required>
+                                                <option value="">Chọn học kỳ</option>
+                                                <option value="HK1-2024">HK1-2024</option>
+                                                <option value="HK2-2024">HK2-2024</option>
+                                                <option value="HK3-2024">HK3-2024</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Môn học</label>
+                                            <select id="courseId" class="form-select" required>
+                                                <option value="">Chọn môn học</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Giảng viên</label>
+                                            <select id="lecturerId" class="form-select" required>
+                                                <option value="">Chọn giảng viên</option>
+                                                <option value="lecturer123">Nguyễn Văn A</option>
+                                                <option value="lecturer456">Trần Thị B</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Nhóm</label>
+                                            <select id="groupIds" class="form-select" multiple required>
+                                                <option value="">Chọn nhóm</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Ngày bắt đầu</label>
+                                            <input type="date" id="startTime" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Thời gian bắt đầu</label>
+                                            <input type="time" id="startTimeHour" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Thời gian kết thúc</label>
+                                            <input type="time" id="endTimeHour" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Địa điểm</label>
+                                            <input type="text" id="location" class="form-control" value="Online" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-check-label">Tự động ghi hình</label>
+                                            <input type="checkbox" id="autoRecord" class="form-check-input" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="submit" class="btn btn-primary">Tạo cuộc họp</button>
+                                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('createMeetingForm').reset()">Hủy</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meeting List Tab -->
+                <div class="tab-pane fade" id="list">
+                    <div class="table-container">
+                        <div class="table-header d-flex gap-2">
+                            <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm cuộc họp..." onkeyup="filterMeetings()">
+                        </div>
+                        <div class="table-content">
+                            <table class="table-custom table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="sortable" onclick="sortMeetings('title')">Tiêu đề <i class="bi bi-arrow-down-up"></i></th>
+                                        <th class="sortable" onclick="sortMeetings('startTime')">Thời gian bắt đầu <i class="bi bi-arrow-down-up"></i></th>
+                                        <th class="sortable" onclick="sortMeetings('endTime')">Thời gian kết thúc <i class="bi bi-arrow-down-up"></i></th>
+                                        <th>Link cuộc họp</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="meetingTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <ul id="pagination" class="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let mockMeetings = [];
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+        let courses = [];
+        let groups = [];
+
+        // Navbar Functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("profileBtn").addEventListener("click", (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+        document.addEventListener("click", (event) => {
+            const dropdown = document.getElementById("profileDropdown");
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
+        });
+        document.getElementById("toggleFullscreen").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.querySelector(".sidebar");
+            let content = document.querySelector(".content");
+            let icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Load dữ liệu từ API
+        async function loadData() {
+            try {
+                const responseCourses = await fetch('/api/Courses');
+                courses = await responseCourses.json();
+                updateCourseOptions('');
+
+                const responseGroups = await fetch('/api/Groups');
+                groups = await responseGroups.json();
+
+                const responseMeetings = await fetch('/api/GoogleMeet');
+                mockMeetings = await responseMeetings.json();
+                renderMeetings(currentPage);
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu:", error);
+            }
+        }
+
+        // Cập nhật danh sách môn học
+        function updateCourseOptions(searchText) {
+            const courseSelect = document.getElementById("courseId");
+            courseSelect.innerHTML = '<option value="">Chọn môn học</option>';
+            courses.filter(course => course.name.toLowerCase().includes(searchText.toLowerCase()))
+                .forEach(course => {
+                    courseSelect.innerHTML += `<option value="${course.courseId}">${course.name}</option>`;
+                });
+
+            courseSelect.addEventListener("change", () => {
+                const selectedCourseId = courseSelect.value;
+                updateGroupOptions(selectedCourseId);
+            });
+        }
+
+        // Cập nhật danh sách nhóm theo môn học
+        function updateGroupOptions(courseId) {
+            const groupSelect = document.getElementById("groupIds");
+            groupSelect.innerHTML = '<option value="">Chọn nhóm</option>';
+            if (courseId) {
+                const semesterId = document.getElementById("semesterId").value;
+                groups.filter(group => group.courseId === courseId && group.semester === semesterId)
+                    .forEach(group => {
+                        groupSelect.innerHTML += `<option value="${group.projectId}">${group.groupName}</option>`;
+                    });
+            }
+        }
+
+        // Tạo cuộc họp
+        document.getElementById('createMeetingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const date = document.getElementById('startTime').value;
+            const startTime = document.getElementById('startTimeHour').value;
+            const endTime = document.getElementById('endTimeHour').value;
+
+            const startDateTime = new Date(`${date}T${startTime}:00Z`);
+            const endDateTime = new Date(`${date}T${endTime}:00Z`);
+
+            if (startDateTime >= endDateTime) {
+                alert("Thời gian bắt đầu phải sớm hơn thời gian kết thúc!");
+                return;
+            }
+
+            const dto = {
+                title: document.getElementById('meetingTitle').value,
+                semesterId: document.getElementById('semesterId').value,
+                courseId: document.getElementById('courseId').value,
+                lecturerId: document.getElementById('lecturerId').value,
+                groupIds: Array.from(document.getElementById('groupIds').selectedOptions).map(option => parseInt(option.value)),
+                startTime: startDateTime.toISOString(),
+                endTime: endDateTime.toISOString(),
+                location: document.getElementById('location').value,
+                autoRecord: document.getElementById('autoRecord').checked
+            };
+
+            try {
+                const response = await fetch('/api/GoogleMeet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dto)
+                });
+                if (!response.ok) throw new Error("Lỗi khi tạo cuộc họp");
+                const newMeeting = await response.json();
+                mockMeetings.push(newMeeting);
+                currentPage = Math.ceil(mockMeetings.length / itemsPerPage);
+                renderMeetings(currentPage);
+                this.reset();
+                updateCourseOptions('');
+                alert('Tạo cuộc họp thành công!');
+                document.getElementById('list-tab').click();
+            } catch (error) {
+                alert("Lỗi khi tạo cuộc họp: " + error.message);
+            }
+        });
+
+        // Hiển thị danh sách cuộc họp
+        function renderMeetings(page) {
+            const filteredMeetings = getFilteredMeetings();
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedMeetings = filteredMeetings.slice(start, end);
+
+            const tableBody = document.getElementById("meetingTableBody");
+            tableBody.innerHTML = "";
+
+            if (paginatedMeetings.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy cuộc họp nào.</td></tr>';
+            } else {
+                paginatedMeetings.forEach((meeting, index) => {
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${meeting.title}</td>
+                            <td>${formatDateTime(meeting.startTime)}</td>
+                            <td>${formatDateTime(meeting.endTime)}</td>
+                            <td><a href="${meeting.meetingLink}" target="_blank">Tham gia</a></td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" onclick="deleteMeeting(${meeting.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            setupPagination(filteredMeetings.length);
+        }
+
+        // Lọc danh sách cuộc họp
+        function getFilteredMeetings() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            let filtered = mockMeetings.filter(meeting =>
+                meeting.title.toLowerCase().includes(searchText) ||
+                formatDateTime(meeting.startTime).toLowerCase().includes(searchText) ||
+                formatDateTime(meeting.endTime).toLowerCase().includes(searchText) ||
+                meeting.meetingLink.toLowerCase().includes(searchText)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = sortColumn === 'startTime' || sortColumn === 'endTime' ? new Date(a[sortColumn]) : a[sortColumn].toLowerCase();
+                    let valueB = sortColumn === 'startTime' || sortColumn === 'endTime' ? new Date(b[sortColumn]) : b[sortColumn].toLowerCase();
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            return filtered;
+        }
+
+        // Thiết lập phân trang
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li>...</li>`;
+            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Chuyển trang
+        function changePage(page) {
+            currentPage = page;
+            renderMeetings(currentPage);
+        }
+
+        // Sắp xếp danh sách
+        function sortMeetings(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            renderMeetings(currentPage);
+        }
+
+        // Lọc danh sách
+        function filterMeetings() {
+            currentPage = 1;
+            renderMeetings(currentPage);
+        }
+
+        // Xóa cuộc họp
+        async function deleteMeeting(id) {
+            if (confirm("Bạn có chắc muốn xóa cuộc họp này không?")) {
+                try {
+                    await fetch(`/api/GoogleMeet/${id}`, { method: 'DELETE' });
+                    mockMeetings = mockMeetings.filter(m => m.id !== id);
+                    alert("Đã xóa cuộc họp!");
+                    renderMeetings(currentPage);
+                } catch (error) {
+                    alert("Lỗi khi xóa cuộc họp: " + error.message);
+                }
+            }
+        }
+
+        // Xuất danh sách cuộc họp sang Excel
+        function exportMeetings() {
+            const filteredMeetings = getFilteredMeetings();
+            const worksheetData = [
+                ["Danh sách cuộc họp Google Meet - Hệ thống Sinh viên HUTECH"],
+                [],
+                ["#", "Tiêu đề", "Thời gian bắt đầu", "Thời gian kết thúc", "Link cuộc họp"]
+            ];
+
+            filteredMeetings.forEach((meeting, index) => {
+                worksheetData.push([
+                    index + 1,
+                    meeting.title,
+                    formatDateTime(meeting.startTime),
+                    formatDateTime(meeting.endTime),
+                    meeting.meetingLink
+                ]);
+            });
+
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "GoogleMeet");
+            XLSX.writeFile(workbook, "google_meet_meetings.xlsx");
+        }
+
+        // Hàm định dạng ngày giờ
+        function formatDateTime(isoDate) {
+            const date = new Date(isoDate);
+            return date.toLocaleString('vi-VN');
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            loadData();
+        });
+    </script>
+</body>
+</html>

@@ -9,23 +9,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_lecturer.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
-        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Giảng viên hướng dẫn</h6>
-            <a href="lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
-            <a href="lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
-            <a href="lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
-            <a href="lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
-            <a href="lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
-            <a href="lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
-            <a href="lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
+            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
+            <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
+            <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
+            <a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
+            <a href="/font-end/lecturer/lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
+            <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
         </div>
     </div>
 
@@ -51,15 +50,15 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
-                <h6>Nguyễn Huy Cường</h6>
-                <p>nguyenhuycuong@hutech.edu.vn</p>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
+                <h6 id="userName">Nguyễn Huy Cường</h6>
+                <p id="userEmail">nguyenhuycuong@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -79,8 +78,8 @@
             <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
-                    <li class="breadcrumb-item"><a href="lecturer_course_groups.html"><i class="bi bi-people"></i> Danh sách môn cần chia nhóm</a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Danh sách môn cần chia nhóm</a></li>
                     <li class="breadcrumb-item active"><i class="bi bi-folder"></i> Chia nhóm sinh viên</li>
                 </ol>
             </nav>
@@ -131,19 +130,8 @@
                 <div class="modal-body">
                     <form id="addGroupForm">
                         <div class="mb-3">
-                            <label class="form-label">Mã nhóm</label>
-                            <input type="text" id="newGroupId" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Tên nhóm</label>
                             <input type="text" id="newGroupName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Đồ án</label>
-                            <select id="newGroupProject" class="form-select">
-                                <option value="">Chọn đồ án</option>
-                                ${projects.filter(p => p.courseId === selectedCourseId && p.semester === selectedSemester && p.classId === selectedClassId).map(p => `<option value="${p.projectId}">${p.projectId} - ${p.name}</option>`).join("")}
-                            </select>
                         </div>
                     </form>
                 </div>
@@ -155,45 +143,42 @@
         </div>
     </div>
 
+    <!-- Modal Chỉnh sửa Tên Nhóm -->
+    <div class="modal fade" id="editGroupModal" tabindex="-1" aria-labelledby="editGroupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGroupModalLabel">Chỉnh sửa tên nhóm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editGroupForm">
+                        <input type="hidden" id="editGroupId">
+                        <div class="mb-3">
+                            <label class="form-label">Tên nhóm mới</label>
+                            <input type="text" id="editGroupName" class="form-control" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="updateGroupName()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="footer">
         Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        let courses = [
-            { courseId: "CS101", name: "Công nghệ phần mềm", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường" },
-            { courseId: "AI201", name: "Trí tuệ nhân tạo", semester: "HK1-2025", classId: "AI01", lecturer: "Nguyễn Huy Cường" }
-        ];
-
-        let students = [
-            { id: "21520001", name: "Nguyễn Tri Bão Thắng", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", groupId: "G01", isLeader: true },
-            { id: "21520002", name: "Trần Văn A", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", groupId: "G01", isLeader: false },
-            { id: "21520003", name: "Lê Thị B", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", groupId: null, isLeader: false },
-            { id: "21520004", name: "Phạm Văn C", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", groupId: null, isLeader: false },
-            { id: "21520005", name: "Nguyễn Thị D", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", groupId: null, isLeader: false },
-            { id: "21520006", name: "Hoàng Văn E", courseId: "AI201", semester: "HK1-2025", classId: "AI01", groupId: null, isLeader: false }
-        ];
-
-        let groups = [
-            { id: "G01", name: "Nhóm Alpha", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["21520001", "21520002"] }
-        ];
-
-        let projects = [
-            { projectId: "DT001", name: "Công nghệ phần mềm", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT002", name: "Ứng dụng AI trong y tế", courseId: "AI201", semester: "HK1-2025", classId: "AI01" },
-            { projectId: "DT003", name: "Lập trình Web", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" },
-            { projectId: "DT006", name: "Blockchain trong tài chính", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01" }
-        ];
-
-        const currentLecturer = "Nguyễn Huy Cường";
-
-        // Lấy thông tin từ URL
+        const API_URL = 'https://localhost:7047';
         const urlParams = new URLSearchParams(window.location.search);
-        const selectedCourseId = urlParams.get("courseId");
-        const selectedSemester = urlParams.get("semester");
-        const selectedClassId = urlParams.get("classId");
+        let selectedCourseId = urlParams.get("courseId");
+        let groups = [];
+        let students = [];
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
@@ -241,11 +226,9 @@
         function showImportInstructions() {
             const instructions = `
                 Vui lòng chuẩn bị file Excel với cấu trúc sau:\n
-                - Cột A: Mã nhóm (VD: G01) - Bắt buộc\n
-                - Cột B: Mã đồ án (VD: DT001) - Không bắt buộc\n
-                - Cột C: Tên nhóm (VD: Nhóm Alpha) - Bắt buộc\n
-                - Cột D: Thành viên (VD: 21520001 - Nguyễn Tri Bão Thắng, 21520002 - Trần Văn A) - Bắt buộc\n
-                - Cột E: Nhóm trưởng (VD: 21520001) - Không bắt buộc (nếu trống, chọn SV đầu tiên; chỉ 1 người)\n
+                - Cột A: Tên nhóm (VD: Nhóm Alpha) - Bắt buộc\n
+                - Cột B: Thành viên (VD: 21520001 - Nguyễn Tri Bão Thắng, 21520002 - Trần Văn A) - Bắt buộc\n
+                - Cột C: Nhóm trưởng (VD: 21520001) - Không bắt buộc (nếu trống, chọn SV đầu tiên; chỉ 1 người)\n
                 Dòng 1-3 có thể là tiêu đề, dữ liệu bắt đầu từ dòng 4.
             `;
             if (confirm(instructions + "\nNhấn OK để chọn file Excel.")) {
@@ -254,24 +237,27 @@
         }
 
         // Lọc danh sách sinh viên chưa chia nhóm
-        function filterStudents() {
+        async function filterStudents() {
             const searchText = document.querySelector(".search-box").value.toLowerCase();
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/ungrouped-students?courseId=${selectedCourseId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
+            });
+            students = await response.json();
             const studentList = document.getElementById("studentList");
-            const ungroupedStudents = students.filter(s => 
-                s.courseId === selectedCourseId && 
-                s.semester === selectedSemester && 
-                s.classId === selectedClassId && 
-                s.groupId === null
-            );
+            const ungroupedStudents = students.filter(s => !s.GroupId);
 
             studentList.innerHTML = ungroupedStudents.map(student => {
                 if (student.name.toLowerCase().includes(searchText) || student.id.toLowerCase().includes(searchText)) {
                     return `
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            ${student.id} - ${student.name} ${student.isLeader ? "(Nhóm trưởng)" : ""}
+                            ${student.username} - ${student.name} ${student.isLeader ? "(Nhóm trưởng)" : ""}
                             <select class="form-select w-50" onchange="addToGroup('${student.id}', this.value)">
                                 <option value="">Chọn nhóm</option>
-                                ${groups.filter(g => g.courseId === selectedCourseId && g.semester === selectedSemester && g.classId === selectedClassId).map(g => `<option value="${g.id}">${g.name} (${g.id})</option>`).join("")}
+                                ${groups.map(g => `<option value="${g.id}">${g.name} (${g.id})</option>`).join("")}
                             </select>
                         </li>
                     `;
@@ -285,45 +271,44 @@
         }
 
         // Hiển thị danh sách nhóm
-        function displayGroups() {
-            if (!selectedCourseId || !selectedSemester || !selectedClassId) {
+        async function displayGroups() {
+            if (!selectedCourseId) {
                 document.getElementById("studentList").innerHTML = '<li class="list-group-item text-center">Vui lòng chọn một môn học từ danh sách để chia nhóm.</li>';
                 document.getElementById("groupList").innerHTML = '<p class="text-center">Vui lòng chọn một môn học từ danh sách để chia nhóm.</p>';
                 return;
             }
 
             const groupSize = parseInt(document.getElementById("groupSize").value) || 3;
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/groups?courseId=${selectedCourseId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
+            });
+            groups = await response.json();
             const groupList = document.getElementById("groupList");
-            const filteredGroups = groups.filter(g => 
-                g.courseId === selectedCourseId && 
-                g.semester === selectedSemester && 
-                g.classId === selectedClassId
-            );
             groupList.innerHTML = "";
 
-            filteredGroups.forEach(group => {
-                const project = projects.find(p => p.projectId === group.projectId && p.courseId === selectedCourseId && p.semester === selectedSemester && p.classId === selectedClassId);
-                const memberList = group.members.map(memberId => {
-                    const student = students.find(s => s.id === memberId);
-                    return student ? `
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            ${student.id} - ${student.name} ${student.isLeader ? "(Nhóm trưởng)" : ""}
-                            <div>
-                                <button class="btn btn-sm btn-warning me-1" onclick="toggleLeader('${student.id}', '${group.id}')">${student.isLeader ? "Bỏ nhóm trưởng" : "Chọn nhóm trưởng"}</button>
-                                <button class="btn btn-sm btn-danger" onclick="removeFromGroup('${student.id}', '${group.id}')">Xóa</button>
-                            </div>
-                        </li>
-                    ` : "";
-                }).join("");
+            groups.forEach(group => {
+                const memberList = group.members.map(member => `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${member.username} - ${member.name} ${member.isLeader ? "(Nhóm trưởng)" : ""}
+                        <div>
+                            <button class="btn btn-sm btn-warning me-1" onclick="toggleLeader('${member.id}', '${group.id}')">${member.isLeader ? "Bỏ nhóm trưởng" : "Chọn nhóm trưởng"}</button>
+                            <button class="btn btn-sm btn-danger" onclick="removeFromGroup('${member.id}', '${group.id}')">Xóa</button>
+                        </div>
+                    </li>
+                `).join("");
 
                 groupList.innerHTML += `
                     <div class="card mb-3">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h6>${group.name} (${group.id}) - ${project ? project.name : "Chưa gán đồ án"}</h6>
-                            <select class="form-select w-50" onchange="assignProject('${group.id}', this.value)">
-                                <option value="">Chọn đồ án</option>
-                                ${projects.filter(p => p.courseId === selectedCourseId && p.semester === selectedSemester && p.classId === selectedClassId).map(p => `<option value="${p.projectId}" ${p.projectId === group.projectId ? "selected" : ""}>${p.projectId} - ${p.name}</option>`).join("")}
-                            </select>
+                            <h6>${group.name} (${group.id}) - ${group.projectId || "Chưa gán đồ án"}</h6>
+                            <div>
+                                <button class="btn btn-sm btn-primary me-1" onclick="showEditGroupModal('${group.id}', '${group.name}')">Chỉnh sửa</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteGroup('${group.id}')">Xóa</button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <ul class="list-group">
@@ -335,162 +320,100 @@
                 `;
             });
 
-            filterStudents();
+            await filterStudents();
         }
 
         // Thêm nhóm mới
-        function addNewGroup() {
+        async function addNewGroup() {
             const form = document.getElementById("addGroupForm");
             if (form.checkValidity()) {
-                const groupId = document.getElementById("newGroupId").value.trim();
                 const groupName = document.getElementById("newGroupName").value.trim();
-                const projectId = document.getElementById("newGroupProject").value;
 
-                if (groups.some(g => g.id === groupId && g.courseId === selectedCourseId && g.semester === selectedSemester && g.classId === selectedClassId)) {
-                    alert("Mã nhóm đã tồn tại trong lớp này!");
-                    return;
+                const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-group?groupName=${groupName}&courseId=${selectedCourseId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                if (response.ok) {
+                    bootstrap.Modal.getInstance(document.getElementById("addGroupModal")).hide();
+                    await displayGroups();
+                    alert(`Đã thêm nhóm: ${groupName}`);
                 }
-
-                const newGroup = {
-                    id: groupId,
-                    name: groupName,
-                    courseId: selectedCourseId,
-                    semester: selectedSemester,
-                    classId: selectedClassId,
-                    projectId: projectId || "",
-                    members: []
-                };
-                groups.push(newGroup);
-                bootstrap.Modal.getInstance(document.getElementById("addGroupModal")).hide();
-                displayGroups();
-                alert(`Đã thêm nhóm: ${groupName} (${groupId})`);
             } else {
                 form.reportValidity();
             }
         }
 
         // Thêm sinh viên vào nhóm
-        function addToGroup(studentId, groupId) {
+        async function addToGroup(studentId, groupId) {
             const groupSize = parseInt(document.getElementById("groupSize").value) || 3;
-            const student = students.find(s => s.id === studentId);
-            const group = groups.find(g => g.id === groupId);
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-to-group?studentId=${studentId}&groupId=${groupId}&groupSize=${groupSize}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
+            });
 
-            if (student && student.groupId === null && group) {
-                if (group.members.length < groupSize) {
-                    group.members.push(studentId);
-                    student.groupId = groupId;
-                    displayGroups();
-                } else {
-                    alert(`Nhóm ${group.name} (${group.id}) đã đủ ${groupSize} thành viên!`);
-                }
+            if (response.ok) {
+                await displayGroups();
             }
         }
 
         // Xóa sinh viên khỏi nhóm
-        function removeFromGroup(studentId, groupId) {
-            const group = groups.find(g => g.id === groupId);
-            const student = students.find(s => s.id === studentId);
-            if (group && student) {
-                group.members = group.members.filter(id => id !== studentId);
-                student.groupId = null;
-                student.isLeader = false;
-                displayGroups();
+        async function removeFromGroup(studentId, groupId) {
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/remove-from-group?studentId=${studentId}&groupId=${groupId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
+            });
+
+            if (response.ok) {
+                await displayGroups();
             }
         }
 
         // Chọn/bỏ nhóm trưởng
-        function toggleLeader(studentId, groupId) {
-            const group = groups.find(g => g.id === groupId);
-            const student = students.find(s => s.id === studentId);
-            if (group && student && group.members.includes(studentId)) {
-                // Bỏ nhóm trưởng hiện tại trong nhóm (nếu có)
-                students.filter(s => s.groupId === groupId && s.isLeader && s.id !== studentId).forEach(s => {
-                    s.isLeader = false;
-                });
+        async function toggleLeader(studentId, groupId) {
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/toggle-leader?studentId=${studentId}&groupId=${groupId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
+            });
 
-                // Đặt trạng thái nhóm trưởng cho sinh viên được chọn
-                student.isLeader = !student.isLeader; // Chuyển đổi trạng thái: nếu đã là nhóm trưởng thì bỏ, nếu chưa thì chọn
-
-                // Nếu bỏ nhóm trưởng và nhóm còn thành viên, chọn người đầu tiên làm nhóm trưởng mặc định
-                if (!student.isLeader && group.members.length > 0) {
-                    const firstMember = students.find(s => s.id === group.members[0]);
-                    if (firstMember) firstMember.isLeader = true;
-                }
-
-                displayGroups();
-            }
-        }
-
-        // Gán đồ án cho nhóm
-        function assignProject(groupId, projectId) {
-            const group = groups.find(g => g.id === groupId);
-            if (group) {
-                group.projectId = projectId;
-                displayGroups();
+            if (response.ok) {
+                await displayGroups();
             }
         }
 
         // Chia nhóm tự động
-        function autoGroup() {
+        async function autoGroup() {
             const groupSize = parseInt(document.getElementById("groupSize").value) || 3;
-            const ungroupedStudents = students.filter(s => 
-                s.courseId === selectedCourseId && 
-                s.semester === selectedSemester && 
-                s.classId === selectedClassId && 
-                s.groupId === null
-            );
-            const filteredGroups = groups.filter(g => 
-                g.courseId === selectedCourseId && 
-                g.semester === selectedSemester && 
-                g.classId === selectedClassId
-            );
-
-            // Giữ nguyên các nhóm đã có thành viên
-            filteredGroups.forEach(g => {
-                g.members.forEach(id => {
-                    const student = students.find(s => s.id === id);
-                    if (student) student.groupId = g.id;
-                });
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/auto-group`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include",
+                body: JSON.stringify({ courseId: selectedCourseId, groupSize: groupSize })
             });
 
-            // Xóa các nhóm rỗng
-            groups = groups.filter(g => 
-                !(g.courseId === selectedCourseId && g.semester === selectedSemester && g.classId === selectedClassId && g.members.length === 0)
-            );
-
-            // Chia nhóm tự động
-            let groupIndex = Math.max(...groups.map(g => parseInt(g.id.replace("G", "")) || 0), 0) + 1;
-            const availableProjects = projects.filter(p => 
-                p.courseId === selectedCourseId && 
-                p.semester === selectedSemester && 
-                p.classId === selectedClassId && 
-                !groups.some(g => g.projectId === p.projectId)
-            );
-
-            for (let i = 0; i < ungroupedStudents.length; i += groupSize) {
-                const groupMembers = ungroupedStudents.slice(i, i + groupSize).map(s => s.id);
-                const newGroupId = `G${String(groupIndex++).padStart(2, "0")}`;
-                const newGroup = {
-                    id: newGroupId,
-                    name: `Nhóm ${newGroupId}`,
-                    courseId: selectedCourseId,
-                    semester: selectedSemester,
-                    classId: selectedClassId,
-                    projectId: availableProjects[Math.floor(i / groupSize)] ? availableProjects[Math.floor(i / groupSize)].projectId : "",
-                    members: groupMembers
-                };
-                groups.push(newGroup);
-                groupMembers.forEach((id, index) => {
-                    const student = students.find(s => s.id === id);
-                    if (student) {
-                        student.groupId = newGroup.id;
-                        student.isLeader = index === 0; // Chỉ chọn SV đầu tiên làm nhóm trưởng
-                    }
-                });
+            if (response.ok) {
+                await displayGroups();
+                alert("Đã chia nhóm tự động!");
             }
-
-            displayGroups();
-            alert("Đã chia nhóm tự động!");
         }
 
         // Nhập từ file Excel
@@ -499,120 +422,180 @@
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: "array" });
                 const sheet = workbook.Sheets[workbook.SheetNames[0]];
                 const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-                // Xóa dữ liệu nhóm hiện tại cho lớp
-                students.filter(s => 
-                    s.courseId === selectedCourseId && 
-                    s.semester === selectedSemester && 
-                    s.classId === selectedClassId
-                ).forEach(s => { s.groupId = null; s.isLeader = false; });
-                groups = groups.filter(g => 
-                    !(g.courseId === selectedCourseId && g.semester === selectedSemester && g.classId === selectedClassId)
-                );
+                rows.slice(3).forEach(async (row) => {
+                    const groupName = row[0];
+                    const membersStr = row[1];
+                    const leaderId = row[2];
 
-                // Đọc dữ liệu từ Excel
-                rows.slice(3).forEach((row) => {
-                    const groupId = row[0]; // Mã nhóm
-                    const projectId = row[1]; // Mã đồ án
-                    const groupName = row[2]; // Tên nhóm
-                    const membersStr = row[3]; // Thành viên
-                    const leaderId = row[4]; // Nhóm trưởng
-
-                    if (groupId && membersStr) {
+                    if (groupName && membersStr) {
                         const members = membersStr.split(", ").map(m => {
                             const [id] = m.split(" - ");
                             return id;
                         });
 
-                        members.forEach(id => {
-                            const student = students.find(s => s.id === id);
-                            if (!student) {
-                                students.push({ 
-                                    id: id, 
-                                    name: id, 
-                                    courseId: selectedCourseId, 
-                                    semester: selectedSemester, 
-                                    classId: selectedClassId, 
-                                    groupId: groupId, 
-                                    isLeader: id === leaderId 
+                        const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-group?groupName=${groupName}&courseId=${selectedCourseId}`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                            },
+                            credentials: "include"
+                        });
+
+                        if (response.ok) {
+                            const newGroup = await response.json();
+                            const groupId = newGroup.id;
+
+                            members.forEach(async memberId => {
+                                await fetch(`${API_URL}/api/LecturerCourseGroup/add-to-group?studentId=${memberId}&groupId=${groupId}&groupSize=5`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                                    },
+                                    credentials: "include"
                                 });
-                            } else {
-                                student.groupId = groupId;
-                                student.isLeader = id === leaderId;
+                            });
+
+                            if (leaderId) {
+                                await fetch(`${API_URL}/api/LecturerCourseGroup/toggle-leader?studentId=${leaderId}&groupId=${groupId}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                                    },
+                                    credentials: "include"
+                                });
                             }
-                        });
-
-                        // Đảm bảo chỉ có 1 nhóm trưởng
-                        const leaders = students.filter(s => s.groupId === groupId && s.isLeader);
-                        if (leaders.length > 1) {
-                            leaders.slice(1).forEach(s => s.isLeader = false); // Giữ nhóm trưởng đầu tiên
-                        } else if (leaders.length === 0 && members.length > 0) {
-                            const firstStudent = students.find(s => s.id === members[0]);
-                            if (firstStudent) firstStudent.isLeader = true; // Chọn SV đầu tiên nếu không có nhóm trưởng
                         }
-
-                        groups.push({
-                            id: groupId,
-                            name: groupName || `Nhóm ${groupId}`,
-                            courseId: selectedCourseId,
-                            semester: selectedSemester,
-                            classId: selectedClassId,
-                            projectId: projectId || "",
-                            members: members
-                        });
                     }
                 });
 
-                displayGroups();
+                await displayGroups();
                 alert("Đã nhập danh sách nhóm từ Excel!");
             };
             reader.readAsArrayBuffer(file);
         }
 
         // Xuất danh sách nhóm sang Excel
-        function exportGroups() {
-            const filteredGroups = groups.filter(g => 
-                g.courseId === selectedCourseId && 
-                g.semester === selectedSemester && 
-                g.classId === selectedClassId
-            );
-            const worksheetData = [
-                ["Danh sách nhóm sinh viên - Hệ thống Sinh viên HUTECH"],
-                [`Lớp: ${selectedCourseId} - ${selectedClassId}`],
-                [],
-                ["Mã nhóm", "Mã đồ án", "Tên nhóm", "Thành viên", "Nhóm trưởng"]
-            ];
+        async function exportGroups() {
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/export-excel?courseId=${selectedCourseId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
+            });
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `nhom_sinh_vien_${selectedCourseId}.xlsx`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
 
-            filteredGroups.forEach((group) => {
-                const project = projects.find(p => p.projectId === group.projectId);
-                const members = group.members.map(id => {
-                    const student = students.find(s => s.id === id);
-                    return student ? `${student.id} - ${student.name}${student.isLeader ? " (Nhóm trưởng)" : ""}` : "";
-                }).join(", ");
-                const leader = students.find(s => s.groupId === group.id && s.isLeader);
-                worksheetData.push([
-                    group.id,
-                    group.projectId || "Chưa gán",
-                    group.name,
-                    members || "Chưa có thành viên",
-                    leader ? leader.id : "Chưa chọn"
-                ]);
+        // Tải thông tin người dùng
+        function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user && user.roleName === "ROLE_LECTURER_GUIDE") {
+                lecturerId = user.id;
+                document.getElementById("userName").textContent = user.fullName || "Nguyễn Huy Cường";
+                document.getElementById("userEmail").textContent = user.email || "nguyenhuycuong@hutech.edu.vn";
+            } else {
+                alert("Không có quyền Giảng viên hướng dẫn hoặc chưa đăng nhập.");
+                window.location.replace("/font-end/login/login.html");
+            }
+        }
+
+        // Đăng xuất tài khoản
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        // Hiển thị modal chỉnh sửa tên nhóm
+        function showEditGroupModal(groupId, groupName) {
+            document.getElementById("editGroupId").value = groupId;
+            document.getElementById("editGroupName").value = groupName;
+            new bootstrap.Modal(document.getElementById("editGroupModal")).show();
+        }
+
+        // Cập nhật tên nhóm
+        async function updateGroupName() {
+            const groupId = document.getElementById("editGroupId").value;
+            const newGroupName = document.getElementById("editGroupName").value.trim();
+
+            const response = await fetch(`${API_URL}/api/LecturerCourseGroup/update-group-name?groupId=${groupId}&newGroupName=${newGroupName}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                credentials: "include"
             });
 
-            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "NhomSinhVien");
-            XLSX.writeFile(workbook, `nhom_sinh_vien_${selectedCourseId}_${selectedClassId}.xlsx`);
+            if (response.ok) {
+                bootstrap.Modal.getInstance(document.getElementById("editGroupModal")).hide();
+                await displayGroups();
+                alert(`Đã cập nhật tên nhóm thành: ${newGroupName}`);
+            }
+        }
+
+        // Xóa nhóm
+        async function deleteGroup(groupId) {
+            if (confirm("Bạn có chắc chắn muốn xóa nhóm này? Các thành viên sẽ được chuyển về chưa có nhóm.")) {
+                const response = await fetch(`${API_URL}/api/LecturerCourseGroup/delete-group?groupId=${groupId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                if (response.ok) {
+                    await displayGroups();
+                    alert("Đã xóa nhóm thành công!");
+                }
+            }
         }
 
         // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            displayGroups();
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (!selectedCourseId) {
+                alert("Vui lòng chọn một môn học từ danh sách để chia nhóm!");
+                window.location.href = "lecturer_course_groups.html";
+                return;
+            }
+            await loadUserProfile();
+            await displayGroups();
         });
     </script>
 </body>

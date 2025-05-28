@@ -58,17 +58,17 @@ namespace EduProject_TADProgrammer.Data
 
             // 4. Project
             modelBuilder.Entity<Project>().HasData(
-                new Project { Id = 1, Title = "Ứng dụng AI trong y tế", Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", CourseId = 1, GroupId = 1, Status = "NOT_SUBMITTED", ProjectCode = "AI_YTE_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 2, Title = "Hệ thống quản lý đồ án", Description = "Xây dựng hệ thống quản lý đồ án sinh viên.", CourseId = 1, GroupId = 2, Status = "NOT_SUBMITTED", ProjectCode = "QLDA_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 3, Title = "Ứng dụng thương mại điện tử", Description = "Phát triển website bán hàng trực tuyến.", CourseId = 2,  GroupId = 3, Status = "NOT_SUBMITTED", ProjectCode = "TMĐT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 4, Title = "Phân tích dữ liệu thời gian thực", Description = "Xây dựng hệ thống phân tích dữ liệu thời gian thực.", CourseId = 3, GroupId = 4, Status = "SUBMITTED", ProjectCode = "PTDL_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 5, Title = "Ứng dụng quản lý học tập", Description = "Phát triển app quản lý học tập cho sinh viên.", CourseId = 4, GroupId = 5, Status = "SUBMITTED", ProjectCode = "QLHT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 6, Title = "Hệ thống bảo mật IoT", Description = "Xây dựng giải pháp bảo mật cho thiết bị IoT.", CourseId = 5, GroupId = 6, Status = "SUBMITTED", ProjectCode = "BM_IOT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 7, Title = "Phân tích dữ liệu mạng xã hội", Description = "Phân tích hành vi người dùng trên mạng xã hội.", CourseId = 6, GroupId = 7, Status = "SUBMITTED", ProjectCode = "PTMXH_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 8, Title = "Ứng dụng học ngoại ngữ", Description = "Phát triển app học ngoại ngữ với AI.", CourseId = 7, GroupId = 9, Status = "GRADED", ProjectCode = "HNN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 9, Title = "Hệ thống quản lý kho", Description = "Xây dựng hệ thống quản lý kho hàng tự động.", CourseId = 8, GroupId = 8, Status = "GRADED", ProjectCode = "QLK_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 10, Title = "Ứng dụng đặt lịch khám bệnh", Description = "Phát triển app đặt lịch khám bệnh trực tuyến.", CourseId = 9, GroupId = 10, Status = "GRADED", ProjectCode = "DLKB_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 11, Title = "Hệ thống quản lý nhân sự", Description = "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", CourseId = 10, GroupId = 12, Status = "GRADED", ProjectCode = "QLNS_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 1, Title = "Ứng dụng AI trong y tế", Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", CourseId = 1, GroupId = 1, Status = "APPROVED", ProjectCode = "AI_YTE_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 2, Title = "Hệ thống quản lý đồ án", Description = "Xây dựng hệ thống quản lý đồ án sinh viên.", CourseId = 1, GroupId = 2, Status = "APPROVED", ProjectCode = "QLDA_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 3, Title = "Ứng dụng thương mại điện tử", Description = "Phát triển website bán hàng trực tuyến.", CourseId = 2,  GroupId = 3, Status = "PENDING", ProjectCode = "TMĐT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 4, Title = "Phân tích dữ liệu thời gian thực", Description = "Xây dựng hệ thống phân tích dữ liệu thời gian thực.", CourseId = 3, GroupId = 4, Status = "PENDING", ProjectCode = "PTDL_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 5, Title = "Ứng dụng quản lý học tập", Description = "Phát triển app quản lý học tập cho sinh viên.", CourseId = 4, GroupId = 5, Status = "PENDING", ProjectCode = "QLHT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 6, Title = "Hệ thống bảo mật IoT", Description = "Xây dựng giải pháp bảo mật cho thiết bị IoT.", CourseId = 5, GroupId = 6, Status = "NOT_SUBMITTED", ProjectCode = "BM_IOT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 7, Title = "Phân tích dữ liệu mạng xã hội", Description = "Phân tích hành vi người dùng trên mạng xã hội.", CourseId = 6, GroupId = 7, Status = "NOT_SUBMITTED", ProjectCode = "PTMXH_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 8, Title = "Ứng dụng học ngoại ngữ", Description = "Phát triển app học ngoại ngữ với AI.", CourseId = 7, GroupId = 9, Status = "APPROVED", ProjectCode = "HNN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 9, Title = "Hệ thống quản lý kho", Description = "Xây dựng hệ thống quản lý kho hàng tự động.", CourseId = 8, GroupId = 8, Status = "APPROVED", ProjectCode = "QLK_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 10, Title = "Ứng dụng đặt lịch khám bệnh", Description = "Phát triển app đặt lịch khám bệnh trực tuyến.", CourseId = 9, GroupId = 10, Status = "APPROVED", ProjectCode = "DLKB_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 11, Title = "Hệ thống quản lý nhân sự", Description = "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", CourseId = 10, GroupId = 12, Status = "APPROVED", ProjectCode = "QLNS_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Project { Id = 12, Title = "Ứng dụng học tập nhóm", Description = "Phát triển app hỗ trợ học tập nhóm.", CourseId = 11, GroupId = 11, Status = "PENDING", ProjectCode = "HTN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Project { Id = 13, Title = "Hệ thống phân tích tài chính", Description = "Xây dựng hệ thống phân tích tài chính cá nhân.", CourseId = 12, GroupId = 13, Status = "PENDING", ProjectCode = "PTTC_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
@@ -91,9 +91,9 @@ namespace EduProject_TADProgrammer.Data
 
             // 6. Group
             modelBuilder.Entity<Group>().HasData(
-                new Group { Id = 1, Name = "Nhóm 1", ProjectId = 1, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Group { Id = 2, Name = "Nhóm 2", ProjectId = 2, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Group { Id = 3, Name = "Nhóm 3", ProjectId = 3, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 1, Name = "Nhóm 1", ProjectId = 1, LecturerId = 4, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 2, Name = "Nhóm 2", ProjectId = 2, LecturerId = 4, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Group { Id = 3, Name = "Nhóm 3", ProjectId = 3, LecturerId = 4, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Group { Id = 4, Name = "Nhóm 4", ProjectId = 4, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Group { Id = 5, Name = "Nhóm 5", ProjectId = 5, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Group { Id = 6, Name = "Nhóm 6", ProjectId = 6, MaxMembers = 5, Status = "APPROVED", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -108,21 +108,21 @@ namespace EduProject_TADProgrammer.Data
 
             // 7. GroupMember
             modelBuilder.Entity<GroupMember>().HasData(
-                new GroupMember { Id = 1, GroupId = 1, StudentId = 7, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 2, GroupId = 1, StudentId = 8, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 3, GroupId = 2, StudentId = 9, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 4, GroupId = 3, StudentId = 10, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 5, GroupId = 3, StudentId = 11, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 6, GroupId = 4, StudentId = 12, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 7, GroupId = 4, StudentId = 13, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 8, GroupId = 5, StudentId = 7, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 9, GroupId = 6, StudentId = 8, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 10, GroupId = 7, StudentId = 9, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 11, GroupId = 8, StudentId = 10, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 12, GroupId = 9, StudentId = 11, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 13, GroupId = 10, StudentId = 12, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 14, GroupId = 11, StudentId = 13, JoinedAt = DateTime.UtcNow },
-                new GroupMember { Id = 15, GroupId = 12, StudentId = 7, JoinedAt = DateTime.UtcNow }
+                new GroupMember { Id = 1, GroupId = 1, StudentId = 7, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 2, GroupId = 1, StudentId = 8, IsLeader = false, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 3, GroupId = 2, StudentId = 9, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 4, GroupId = 3, StudentId = 10, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 5, GroupId = 3, StudentId = 11, IsLeader = false, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 6, GroupId = 4, StudentId = 12, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 7, GroupId = 4, StudentId = 13, IsLeader = false, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 8, GroupId = 5, StudentId = 7, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 9, GroupId = 6, StudentId = 8, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 10, GroupId = 7, StudentId = 9, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 11, GroupId = 8, StudentId = 10, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 12, GroupId = 9, StudentId = 11, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 13, GroupId = 10, StudentId = 12, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 14, GroupId = 11, StudentId = 13, IsLeader = true, JoinedAt = DateTime.UtcNow },
+                new GroupMember { Id = 15, GroupId = 12, StudentId = 7, IsLeader = true, JoinedAt = DateTime.UtcNow }
             );
 
             // 8. GroupRequest
@@ -155,7 +155,9 @@ namespace EduProject_TADProgrammer.Data
                 new Entities.Task { Id = 10, ProjectId = 10, GroupId = 10, Title = "Báo cáo tuần 1", Description = "Phát triển giao diện đặt lịch khám.", Deadline = new DateTime(2025, 3, 25), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
                 new Entities.Task { Id = 11, ProjectId = 11, GroupId = 11, Title = "Báo cáo tuần 1", Description = "Kiểm tra chức năng quản lý nhân sự.", Deadline = new DateTime(2025, 3, 30), Status = "DONE", CreatedAt = DateTime.UtcNow },
                 new Entities.Task { Id = 12, ProjectId = 12, GroupId = 12, Title = "Báo cáo tuần 1", Description = "Tích hợp tính năng chat nhóm.", Deadline = new DateTime(2025, 4, 1), Status = "TODO", CreatedAt = DateTime.UtcNow },
-                new Entities.Task { Id = 13, ProjectId = 1, GroupId = 1, Title = "Báo cáo tuần 2", Description = "Thiết kế giao diện quản lý đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow }
+                new Entities.Task { Id = 13, ProjectId = 1, GroupId = 1, Title = "Báo cáo tuần 2", Description = "Thiết kế giao diện quản lý đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 14, ProjectId = 1, GroupId = 1, Title = "Báo cáo tuần 3", Description = "Thiết kế giao diện quản lý đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow },
+                new Entities.Task { Id = 15, ProjectId = 1, GroupId = 1, Title = "Báo cáo cuối kỳ", Description = "Báo cáo đồ án.", Deadline = new DateTime(2025, 2, 20), Status = "IN_PROGRESS", CreatedAt = DateTime.UtcNow }
             );
 
             // 10. Submission
@@ -172,7 +174,8 @@ namespace EduProject_TADProgrammer.Data
                 new Submission { Id = 10, ProjectId = 10, GroupId = 10, TaskId = 10, FilePath = "submissions/dt010.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
                 new Submission { Id = 11, ProjectId = 11, GroupId = 11, TaskId = 11, FilePath = "submissions/dt011.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
                 new Submission { Id = 12, ProjectId = 12, GroupId = 12, TaskId = 12, FilePath = "submissions/dt012.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 13, ProjectId = 1, GroupId = 1, TaskId = 1, FilePath = "submissions/dt013.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow }
+                new Submission { Id = 13, ProjectId = 1, GroupId = 1, TaskId = 1, FilePath = "submissions/dt013.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 14, ProjectId = 1, GroupId = 1, TaskId = 15, FilePath = "submissions/dt014.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow }
             );
 
             // 11. SubmissionVersion
@@ -242,18 +245,22 @@ namespace EduProject_TADProgrammer.Data
 
             // 15. Grade
             modelBuilder.Entity<Grade>().HasData(
-                new Grade { Id = 1, ProjectId = 1, GroupId = 1, CriteriaId = 1, Score = 8.5f, Comment = "Nội dung tốt.", GradedAt = DateTime.UtcNow, GradedBy = 4 },
-                new Grade { Id = 2, ProjectId = 1, GroupId = 1, CriteriaId = 2, Score = 8.0f, Comment = "Trình bày rõ ràng.", GradedAt = DateTime.UtcNow, GradedBy = 4 },
-                new Grade { Id = 3, ProjectId = 2, GroupId = 2, CriteriaId = 1, Score = 7.5f, Comment = "Nội dung ổn.", GradedAt = DateTime.UtcNow, GradedBy = 5 },
-                new Grade { Id = 4, ProjectId = 3, GroupId = 3, CriteriaId = 4, Score = 8.0f, Comment = "Nội dung tốt.", GradedAt = DateTime.UtcNow, GradedBy = 6 },
-                new Grade { Id = 5, ProjectId = 4, GroupId = 4, CriteriaId = 6, Score = 7.0f, Comment = "Cần cải thiện.", GradedAt = DateTime.UtcNow, GradedBy = 14 },
-                new Grade { Id = 6, ProjectId = 5, GroupId = 5, CriteriaId = 7, Score = 8.5f, Comment = "Thực hành tốt.", GradedAt = DateTime.UtcNow, GradedBy = 15 },
-                new Grade { Id = 7, ProjectId = 6, GroupId = 6, CriteriaId = 8, Score = 9.0f, Comment = "Bảo mật tốt.", GradedAt = DateTime.UtcNow, GradedBy = 4 },
-                new Grade { Id = 8, ProjectId = 7, GroupId = 7, CriteriaId = 9, Score = 6.5f, Comment = "Phân tích chưa sâu.", GradedAt = DateTime.UtcNow, GradedBy = 5 },
-                new Grade { Id = 9, ProjectId = 8, GroupId = 8, CriteriaId = 10, Score = 8.0f, Comment = "Ứng dụng ổn.", GradedAt = DateTime.UtcNow, GradedBy = 6 },
-                new Grade { Id = 10, ProjectId = 9, GroupId = 9, CriteriaId = 11, Score = 7.5f, Comment = "Quản lý tốt.", GradedAt = DateTime.UtcNow, GradedBy = 14 },
-                new Grade { Id = 11, ProjectId = 10, GroupId = 10, CriteriaId = 12, Score = 8.0f, Comment = "Tiện ích cao.", GradedAt = DateTime.UtcNow, GradedBy = 15 },
-                new Grade { Id = 12, ProjectId = 11, GroupId = 11, CriteriaId = 13, Score = 7.0f, Comment = "Hiệu quả ổn.", GradedAt = DateTime.UtcNow, GradedBy = 4 }
+                new Grade { Id = 1, ProjectId = 1, GroupId = 1, StudentId = 7, CriteriaId = 1, Score = 8.5f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 },
+                new Grade { Id = 2, ProjectId = 1, GroupId = 1, StudentId = 7, CriteriaId = 2, Score = 8.0f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 },
+                new Grade { Id = 3, ProjectId = 2, GroupId = 2, CriteriaId = 1, Score = 7.5f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 5 },
+                new Grade { Id = 4, ProjectId = 3, GroupId = 3, CriteriaId = 4, Score = 8.0f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 6 },
+                new Grade { Id = 5, ProjectId = 4, GroupId = 4, CriteriaId = 6, Score = 7.0f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 14 },
+                new Grade { Id = 6, ProjectId = 5, GroupId = 5, CriteriaId = 7, Score = 8.5f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 15 },
+                new Grade { Id = 7, ProjectId = 6, GroupId = 6, CriteriaId = 8, Score = 9.0f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 },
+                new Grade { Id = 8, ProjectId = 7, GroupId = 7, CriteriaId = 9, Score = 6.5f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 5 },
+                new Grade { Id = 9, ProjectId = 8, GroupId = 8, CriteriaId = 10, Score = 8.0f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 6 },
+                new Grade { Id = 10, ProjectId = 9, GroupId = 9, CriteriaId = 11, Score = 7.5f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 14 },
+                new Grade { Id = 11, ProjectId = 10, GroupId = 10, CriteriaId = 12, Score = 8.0f, Comment = "Chưa duyệt", GradedAt = DateTime.UtcNow, GradedBy = 15 },
+                new Grade { Id = 12, ProjectId = 11, GroupId = 11, CriteriaId = 13, Score = 7.0f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 },
+                new Grade { Id = 13, ProjectId = 1, GroupId = 1, StudentId = 8, CriteriaId = 3, Score = 8.0f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 },
+                new Grade { Id = 14, ProjectId = 1, GroupId = 1, StudentId = 8, CriteriaId = 1, Score = 8.0f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 },
+                new Grade { Id = 15, ProjectId = 1, GroupId = 1, StudentId = 8, CriteriaId = 2, Score = 8.0f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 },
+                new Grade { Id = 16, ProjectId = 1, GroupId = 1, StudentId = 7, CriteriaId = 3, Score = 8.5f, Comment = "Đã duyệt", GradedAt = DateTime.UtcNow, GradedBy = 4 }
             );
 
             // 16. GradeVersion
@@ -353,7 +360,7 @@ namespace EduProject_TADProgrammer.Data
 
             // 22. DefenseSchedule
             modelBuilder.Entity<DefenseSchedule>().HasData(
-                new DefenseSchedule { Id = 1, ProjectId = 1, StartTime = new DateTime(2025, 3, 1, 8, 0, 0), EndTime = new DateTime(2025, 3, 1, 9, 0, 0), Room = "A101", CreatedAt = DateTime.UtcNow },
+                new DefenseSchedule { Id = 1, ProjectId = 1, MeetingId = 1,StartTime = new DateTime(2025, 3, 1, 8, 0, 0), EndTime = new DateTime(2025, 3, 1, 9, 0, 0), Room = "A101", CreatedAt = DateTime.UtcNow },
                 new DefenseSchedule { Id = 2, ProjectId = 2, StartTime = new DateTime(2025, 3, 2, 8, 0, 0), EndTime = new DateTime(2025, 3, 2, 9, 0, 0), Room = "A102", CreatedAt = DateTime.UtcNow },
                 new DefenseSchedule { Id = 3, ProjectId = 3, StartTime = new DateTime(2025, 3, 3, 8, 0, 0), EndTime = new DateTime(2025, 3, 3, 9, 0, 0), Room = "A103", CreatedAt = DateTime.UtcNow },
                 new DefenseSchedule { Id = 4, ProjectId = 4, StartTime = new DateTime(2025, 3, 4, 8, 0, 0), EndTime = new DateTime(2025, 3, 4, 9, 0, 0), Room = "A104", CreatedAt = DateTime.UtcNow },
@@ -401,8 +408,8 @@ namespace EduProject_TADProgrammer.Data
 
             // 25. Notification
             modelBuilder.Entity<Notification>().HasData(
-                new Notification { Id = 1, UserId = 7, GroupId = null, Title = "Hạn nộp đồ án", Content = "Hạn nộp là 28/02/2025.", RecipientType = "user", Type = "WEB", Status = "SENT", CreatedAt = DateTime.UtcNow },
-                new Notification { Id = 2, UserId = 9, Title = "Phản hồi bài nộp", Content = "Bài nộp đã được phản hồi.", RecipientType = "group", Type = "EMAIL", Status = "SENT", CreatedAt = DateTime.UtcNow },
+                new Notification { Id = 1, UserId = 4, GroupId = null, Title = "Hạn nộp đồ án", Content = "Hạn nộp là 28/02/2025.", RecipientType = "user", Type = "WEB", Status = "SENT", CreatedAt = DateTime.UtcNow },
+                new Notification { Id = 2, UserId = 4, Title = "Phản hồi bài nộp", Content = "Bài nộp đã được phản hồi.", RecipientType = "group", Type = "EMAIL", Status = "SENT", CreatedAt = DateTime.UtcNow },
                 new Notification { Id = 3, UserId = 8, GroupId = 1, Title = "Nhóm mới", Content = "Bạn được thêm vào Nhóm 1.", RecipientType = "user", Type = "WEB", Status = "SENT", CreatedAt = DateTime.UtcNow },
                 new Notification { Id = 4, UserId = 10, GroupId = 3, Title = "Họp nhóm", Content = "Họp nhóm vào 14:00, 03/03/2025.", RecipientType = "group", Type = "WEB", Status = "SENT", CreatedAt = DateTime.UtcNow },
                 new Notification { Id = 5, UserId = 11, GroupId = 4, Title = "Phản hồi đồ án", Content = "Đồ án Nhóm 4 cần chỉnh sửa.", RecipientType = "group", Type = "WEB", Status = "SENT", CreatedAt = DateTime.UtcNow },

@@ -171,12 +171,19 @@
 
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_HEAD") {
-                throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_HEAD") {
+                    throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
+                document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
-            document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
         }
 
         async function fetchGroups() {
@@ -321,7 +328,7 @@
             XLSX.writeFile(workbook, `bao_cao_tien_do_${selectedCourseId}_${selectedFacultyCode}_${selectedSemester}_${new Date().toISOString().slice(0, 10)}.xlsx`);
         }
 
-        // Đăng xuất tài khoản
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -332,18 +339,20 @@
                     },
                     credentials: "include"
                 });
-
-                const data = await response.json();
+                const text = await response.text();
                 if (response.ok) {
-                    alert(data.message);
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
                 } else {
+                    const data = text ? JSON.parse(text) : {};
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
                 alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
             }
-
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 

@@ -36,6 +36,12 @@ namespace EduProject_TADProgrammer.Entities
         [StringLength(50)]
         public string Room { get; set; }
 
+        public long? MeetingId { get; set; } // Liên kết với Meeting
+
+        // Liên kết với entity Meeting (dự án được bảo vệ)
+        [ForeignKey("MeetingId")]
+        public Meeting Meeting { get; set; }
+
         // Thời gian tạo bản ghi (mặc định là thời gian hiện tại theo UTC)
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

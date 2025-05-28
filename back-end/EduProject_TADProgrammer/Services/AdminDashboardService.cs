@@ -19,7 +19,7 @@ namespace EduProject_TADProgrammer.Services
                 .Include(u => u.Role)
                 .CountAsync(u => u.Role != null && u.Role.Name == "ROLE_STUDENT");
             var submittedProjects = await _context.Projects
-                .CountAsync(p => p.Status == "SUBMITTED");
+                .CountAsync(p => p.Status == "APPROVED");
             var pendingTopics = await _context.Projects
                 .CountAsync(p => p.Status == "PENDING");
             var recentNotifications = await _context.Notifications
@@ -39,7 +39,7 @@ namespace EduProject_TADProgrammer.Services
             var notSubmitted = await _context.Projects
                 .CountAsync(p => p.Status == "NOT_SUBMITTED");
             var submitted = await _context.Projects
-                .CountAsync(p => p.Status == "SUBMITTED");
+                .CountAsync(p => p.Status == "APPROVED");
             var graded = await _context.Projects
                 .CountAsync(p => p.Status == "GRADED");
 

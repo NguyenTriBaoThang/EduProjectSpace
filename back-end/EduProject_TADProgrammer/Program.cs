@@ -45,8 +45,12 @@ internal class Program
         builder.Services.AddScoped<HeadLecturerService>();
         builder.Services.AddScoped<HeadDashboardService>();
         builder.Services.AddScoped<HeadCourseGradingService>();
+        builder.Services.AddScoped<HeadDefenseScheduleService>();
         builder.Services.AddScoped<HeadProgressCoursesService>();
         builder.Services.AddScoped<HeadCourseAssignmentService>();
+
+        builder.Services.AddScoped<LecturerDashboardService>();
+        builder.Services.AddScoped<LecturerCourseGroupService>();
 
         // Thêm CORS policy
         builder.Services.AddCors(options =>

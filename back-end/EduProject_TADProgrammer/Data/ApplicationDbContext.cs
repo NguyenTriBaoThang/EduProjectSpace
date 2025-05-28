@@ -392,14 +392,21 @@ namespace EduProject_TADProgrammer.Data
             modelBuilder.Entity<FeedbackSurvey>()
                 .HasIndex(fs => fs.UserId);
 
-            // 25. DefenseSchedules: Liên kết with Projects
+            // 25. DefenseSchedules: Liên kết với Projects và Meetings
             modelBuilder.Entity<DefenseSchedule>()
                 .HasOne(ds => ds.Project)
-                .WithMany(p => p.DefenseSchedules) // Thuộc tính navigation: DefenseSchedules trong Project
+                .WithMany(p => p.DefenseSchedules)
                 .HasForeignKey(ds => ds.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<DefenseSchedule>()
+                .HasOne(ds => ds.Meeting)
+                .WithMany(m => m.DefenseSchedules)
+                .HasForeignKey(ds => ds.MeetingId)
+                .OnDelete(DeleteBehavior.Restrict); // Changed to Restrict to avoid cascade path issues
+            modelBuilder.Entity<DefenseSchedule>()
                 .HasIndex(ds => ds.ProjectId);
+            modelBuilder.Entity<DefenseSchedule>()
+                .HasIndex(ds => ds.MeetingId);
 
             // 26. DefenseCommittees: Không có khóa ngoại
             modelBuilder.Entity<DefenseCommittee>()

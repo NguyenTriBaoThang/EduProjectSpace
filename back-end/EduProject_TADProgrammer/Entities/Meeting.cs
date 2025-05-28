@@ -55,5 +55,7 @@ namespace EduProject_TADProgrammer.Entities
 
         // Danh sách bản ghi hoặc tài liệu liên quan đến cuộc họp
         public virtual ICollection<MeetingRecord> MeetingRecords { get; set; } = new List<MeetingRecord>();
+
+        public virtual ICollection<DefenseSchedule> DefenseSchedules { get; set; } = new List<DefenseSchedule>();
     }
 }

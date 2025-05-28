@@ -198,10 +198,7 @@
         // Hỗ trợ chức năng: 
         //   19: Admin - Thành lập hội đồng chấm điểm
 
-        const apiBaseUrl = 'https://localhost:7047/api/AdminDefenseCommittees';
-        const semestersApiUrl = 'https://localhost:7047/api/AdminSemester';
-        const lecturersApiUrl = 'https://localhost:7047/api/AdminUser/lecturers';
-        const authApiUrl = 'https://localhost:7047/api/Auth/logout';
+        const API_URL = "https://localhost:7047";
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
@@ -246,19 +243,28 @@
 
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_ADMIN") {
-                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_ADMIN") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+                document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
-            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
         // Ghi chú: Lấy danh sách kỳ học
         async function loadSemesters() {
             try {
-                const response = await fetch(semestersApiUrl, {
+                const response = await fetch(`${API_URL}/api/AdminSemester`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -300,8 +306,10 @@
         // Ghi chú: Lấy danh sách giảng viên
         async function loadLecturers() {
             try {
-                const response = await fetch(lecturersApiUrl, {
+                const response = await fetch(`${API_URL}/api/AdminUser/lecturers`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -403,8 +411,10 @@
         // Ghi chú: Lấy danh sách hội đồng từ API
         async function loadCouncils() {
             try {
-                const response = await fetch(apiBaseUrl, {
+                const response = await fetch(`${API_URL}/api/AdminDefenseCommittees`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -560,9 +570,10 @@
                 };
 
                 try {
-                    const response = await fetch(apiBaseUrl, {
+                    const response = await fetch(`${API_URL}/api/AdminDefenseCommittees`, {
                         method: 'POST',
                         headers: {
+                            "Accept": "*/*",
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
@@ -594,8 +605,10 @@
         // Ghi chú: Sửa hội đồng
         async function editGrading(id) {
             try {
-                const response = await fetch(`${apiBaseUrl}/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminDefenseCommittees/${id}`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -647,9 +660,10 @@
             };
 
             try {
-                const response = await fetch(`${apiBaseUrl}/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminDefenseCommittees/${id}`, {
                     method: 'PUT',
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -678,9 +692,10 @@
         async function deleteGrading(id) {
             if (confirm("Bạn có chắc muốn xóa hội đồng này không?")) {
                 try {
-                    const response = await fetch(`${apiBaseUrl}/${id}`, {
+                    const response = await fetch(`${API_URL}/api/AdminDefenseCommittees/${id}`, {
                         method: 'DELETE',
                         headers: {
+                            "Accept": "*/*",
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
@@ -732,9 +747,10 @@
         // Ghi chú: Đăng xuất
         async function logout() {
             try {
-                const response = await fetch(authApiUrl, {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },

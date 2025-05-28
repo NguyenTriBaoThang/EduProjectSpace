@@ -168,33 +168,30 @@
             });
         }
 
-        // Tải dữ liệu khi trang được load
-        window.onload = async () => {
-            try {
-                await loadUserProfile();
-                await loadLogs();
-            } catch (error) {
-                console.error("Error loading logs:", error);
-                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
-                window.location.href = "/font-end/login/login.html";
-            }
-        };
-
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_ADMIN") {
-                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_ADMIN") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+                document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
-            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
         // Lấy danh sách log từ API
         async function loadLogs() {
             try {
                 const response = await fetch(`${API_URL}/api/Log`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -355,7 +352,9 @@
 
             try {
                 const response = await fetch(`${API_URL}/api/Log/export?search=${search}&roleFilter=${roleFilter}&actionFilter=${actionFilter}`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -386,12 +385,13 @@
             }
         }
 
-        // Đăng xuất
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -456,6 +456,18 @@
                 icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
             }
         }
+
+        // Tải dữ liệu khi trang được load
+        window.onload = async () => {
+            try {
+                await loadUserProfile();
+                await loadLogs();
+            } catch (error) {
+                console.error("Error loading logs:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
+        };
     </script>
 </body>
 </html>

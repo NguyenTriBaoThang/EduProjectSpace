@@ -170,6 +170,7 @@
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_HEAD") {
                     throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
                 }
                 currentIdHead = user.id;
                 currentHead = user.fullName;

@@ -319,7 +319,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let notifications = [];
-        const API_URL = "https://localhost:7047/api/Notifications";
+        const API_URL = "https://localhost:7047";
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
@@ -354,31 +354,6 @@
                 }
             });
         }
-
-        // Tải thông tin người dùng
-        async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_ADMIN") {
-                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
-            }
-            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
-            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
-        }
-
-        // Tải dữ liệu khi trang được load
-        document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                await loadUserProfile();
-                await loadNotifications();
-                await fetchRecentNotifications();
-                document.getElementById("notificationRecipient").addEventListener("change", () => toggleRecipientFields());
-                document.getElementById("editNotificationRecipient").addEventListener("change", () => toggleRecipientFields(true));
-            } catch (error) {
-                console.error("Error loading notifications:", error);
-                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
-                window.location.href = "/font-end/login/login.html";
-            }
-        });
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
@@ -423,11 +398,30 @@
             }
         }
 
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_ADMIN") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+                document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
+            }
+        }
+
         // Lấy danh sách thông báo từ API
         async function loadNotifications() {
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(`${API_URL}/api/Notifications`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -463,8 +457,10 @@
         // Lấy thông báo gần đây
         async function fetchRecentNotifications() {
             try {
-                const response = await fetch(`${API_URL}/recent`, {
+                const response = await fetch(`${API_URL}/api/Notifications/recent`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -697,9 +693,10 @@
                     status: "SENT"
                 };
                 try {
-                    const response = await fetch(API_URL, {
+                    const response = await fetch(`${API_URL}/api/Notifications`, {
                         method: "POST",
                         headers: {
+                            "Accept": "*/*",
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
@@ -756,9 +753,10 @@
                 type: "WEB"
             };
             try {
-                const response = await fetch(`${API_URL}/${id}`, {
+                const response = await fetch(`${API_URL}/api/Notifications/${id}`, {
                     method: "PUT",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -787,11 +785,12 @@
         async function deleteNotification(id) {
             if (confirm("Bạn có chắc muốn xóa thông báo này không?")) {
                 try {
-                    const response = await fetch(`${API_URL}/${id}`, {
+                    const response = await fetch(`${API_URL}/api/Notifications/${id}`, {
                         method: "DELETE",
                         headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                            "Accept": "*/*",
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                     });
@@ -848,9 +847,10 @@
                 reminderFrequency: document.getElementById("reminderFrequency").value
             };
             try {
-                const response = await fetch(`${API_URL}/config`, {
+                const response = await fetch(`${API_URL}/api/Notifications/config`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -874,12 +874,13 @@
             }
         }
 
-        // Đăng xuất
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
-                const response = await fetch("https://localhost:7047/api/Auth/logout", {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -901,6 +902,21 @@
             localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
+
+        // Tải dữ liệu khi trang được load
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                await loadUserProfile();
+                await loadNotifications();
+                await fetchRecentNotifications();
+                document.getElementById("notificationRecipient").addEventListener("change", () => toggleRecipientFields());
+                document.getElementById("editNotificationRecipient").addEventListener("change", () => toggleRecipientFields(true));
+            } catch (error) {
+                console.error("Error loading notifications:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
+        });
     </script>
 </body>
 </html>

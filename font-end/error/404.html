@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lỗi 404 - Trang không tìm thấy - Hệ thống Sinh viên HUTECH">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <title>HUTECH | Lỗi 404 - Trang không tìm thấy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/font-end/static/img/img_logohutech.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .dark-mode {
+            background: linear-gradient(135deg, #2c3e50, #4a5568);
+            color: #e9ecef;
+        }
+        .navbar {
+            background-color: #1976d2;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand img {
+            width: 40px;
+        }
+        .container-error {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .error-content {
+            max-width: 600px;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .dark-mode .error-content {
+            background: #343a40;
+            color: #e9ecef;
+        }
+        .error-content:hover {
+            transform: translateY(-10px);
+        }
+        .error-icon {
+            font-size: 80px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .error-code {
+            font-size: 48px;
+            font-weight: 700;
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        .error-message {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .dark-mode .error-message {
+            color: #ced4da;
+        }
+        .btn-primary {
+            background-color: #1976d2;
+            border-color: #1976d2;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .btn-primary:hover {
+            background-color: #0d47a1;
+            border-color: #0d47a1;
+        }
+        .footer {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #555;
+            text-align: center;
+            font-size: 12px;
+            padding: 10px 0;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .dark-mode .footer {
+            background-color: #212529;
+            color: #ced4da;
+        }
+        @media (max-width: 576px) {
+            .error-content {
+                padding: 20px;
+            }
+            .error-icon {
+                font-size: 60px;
+            }
+            .error-code {
+                font-size: 36px;
+            }
+            .error-message {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/font-end/index.html">
+                <img src="/font-end/static/img/hutech-logo.png" alt="HUTECH Logo" class="me-2">
+                Hệ thống Sinh viên HUTECH
+            </a>
+            <div class="ms-auto">
+                <button id="toggleTheme" class="btn btn-outline-light"><i class="bi bi-moon-stars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container-error">
+        <div class="error-content">
+            <i class="bi bi-exclamation-circle error-icon"></i>
+            <h1 class="error-code">404</h1>
+            <p class="error-message">Rất tiếc, trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.</p>
+            <a href="/font-end/index.html" class="btn btn-primary"><i class="bi bi-house"></i> Về trang chủ</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme toggle
+        document.getElementById("toggleTheme")?.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        });
+
+        // Load theme from localStorage
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
+</body>
+</html>

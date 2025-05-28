@@ -8,23 +8,22 @@
     <title>Tổng quan Giảng viên hướng dẫn | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_lecturer.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên hướng dẫn</h4>
-        <a href="lecturer_dashboard.html" class="active"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/lecturer/lecturer_dashboard.html" class="active"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section" id="lecturerSection">
-            <h6 class="sidebar-subtitle">Giảng viên hướng dẫn</h6>
-            <a href="lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
-            <a href="lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
-            <a href="lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
-            <a href="lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
-            <a href="lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
-            <a href="lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
-            <a href="lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
+            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
+            <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
+            <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
+            <a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
+            <a href="/font-end/lecturer/lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
+            <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
         </div>
     </div>
 
@@ -50,7 +49,7 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
                 <h6 id="userName">Nguyễn Huy Cường</h6>
                 <p id="userEmail">nguyenhuycuong@hutech.edu.vn</p>
             </div>
@@ -58,7 +57,7 @@
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -72,7 +71,7 @@
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a>
+                        <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i></a>
                     </li>
                     <li class="breadcrumb-item active">
                         <i class="bi bi-house-door-fill"></i> Tổng quan
@@ -138,13 +137,8 @@
                     <ul class="list-group list-group-flush" id="notificationList">
                         <li class="dashboard-list-group-item">
                             <i class="bi bi-folder-check"></i>
-                            <span class="dashboard-notification-title" data-full-text="Hội đồng chấm điểm sẽ họp vào ngày 01/03/2025 tại phòng họp A">Họp hội đồng chấm điểm...</span>
-                            <span class="text-muted">24/02/2025</span>
-                        </li>
-                        <li class="dashboard-list-group-item">
-                            <i class="bi bi-calendar"></i>
-                            <span class="dashboard-notification-title" data-full-text="Lịch học kỳ mới đã được cập nhật, vui lòng kiểm tra">Cập nhật lịch học kỳ...</span>
-                            <span class="text-muted">23/02/2025</span>
+                            <span class="dashboard-notification-title">Đang tải thông báo...</span>
+                            <span class="text-muted"></span>
                         </li>
                     </ul>
                 </div>
@@ -158,17 +152,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        const userRole = "GVHD";
-        const projects = [
-            { id: 1, projectId: "DT001", name: "Công nghệ phần mềm", student: "Nguyễn Tri Bão Thắng", lecturer: "Nguyễn Huy Cường", status: "Đã duyệt" },
-            { id: 2, projectId: "DT002", name: "Ứng dụng AI trong y tế", student: "Trần Văn A", lecturer: "Nguyễn Huy Cường", status: "Chưa duyệt" },
-            { id: 3, projectId: "DT003", name: "Lập trình Web", student: "Lê Thị B", lecturer: "Nguyễn Huy Cường", status: "Hoàn thành" }
-        ];
-        const notifications = [
-            { title: "Họp hội đồng chấm điểm", content: "Hội đồng chấm điểm sẽ họp vào ngày 01/03/2025 tại phòng họp A", date: "24/02/2025" },
-            { title: "Cập nhật lịch học kỳ", content: "Lịch học kỳ mới đã được cập nhật, vui lòng kiểm tra", date: "23/02/2025" }
-        ];
+        const API_URL = 'https://localhost:7047'; // URL API của bạn
+        let lecturerId = null; // Lấy ID từ localStorage
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
@@ -225,31 +210,86 @@
             }
         }
 
-        // Cập nhật giao diện
-        function updateDashboard() {
-            const projectCount = projects.filter(p => p.lecturer === "Nguyễn Huy Cường").length;
-            const approvedProjects = projects.filter(p => p.lecturer === "Nguyễn Huy Cường" && (p.status === "Đã duyệt" || p.status === "Hoàn thành")).length;
-            const pendingProjects = projects.filter(p => p.lecturer === "Nguyễn Huy Cường" && p.status === "Chưa duyệt").length;
-            const notificationCount = notifications.length;
-
-            document.getElementById("projectCount").textContent = projectCount;
-            document.getElementById("approvedProjects").textContent = approvedProjects;
-            document.getElementById("pendingProjects").textContent = pendingProjects;
-            document.getElementById("notificationCount").textContent = notificationCount;
-
-            const notificationList = document.getElementById("notificationList");
-            notificationList.innerHTML = notifications.map(n => `
-                <li class="dashboard-list-group-item">
-                    <i class="bi bi-bell"></i>
-                    <span class="dashboard-notification-title" data-full-text="${n.content}">${n.title}...</span>
-                    <span class="text-muted">${n.date}</span>
-                </li>
-            `).join("");
+        // Tải thông tin người dùng
+        function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user && user.roleName === "ROLE_LECTURER_GUIDE") {
+                lecturerId = user.id;
+                document.getElementById("userName").textContent = user.fullName || "Nguyễn Huy Cường";
+                document.getElementById("userEmail").textContent = user.email || "nguyenhuycuong@hutech.edu.vn";
+            } else {
+                alert("Không có quyền Giảng viên hướng dẫn hoặc chưa đăng nhập.");
+                window.location.replace("/font-end/login/login.html");
+            }
         }
 
-        // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            updateDashboard();
+        // Cập nhật giao diện với dữ liệu từ API
+        async function updateDashboard() {
+            try {
+                if (!lecturerId) {
+                    throw new Error("Không tìm thấy ID giảng viên trong localStorage.");
+                }
+
+                const response = await fetch(`${API_URL}/api/LecturerDashboard/summary/?lecturerId=${encodeURIComponent(lecturerId)}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error("Không thể lấy dữ liệu tổng quan.");
+
+                const data = await response.json();
+                document.getElementById("projectCount").textContent = data.projectCount;
+                document.getElementById("approvedProjects").textContent = data.approvedProjects;
+                document.getElementById("pendingProjects").textContent = data.pendingProjects;
+                document.getElementById("notificationCount").textContent = data.notificationCount;
+
+                const notificationList = document.getElementById("notificationList");
+                notificationList.innerHTML = data.notifications.map(n => `
+                    <li class="dashboard-list-group-item">
+                        <i class="bi bi-bell"></i>
+                        <span class="dashboard-notification-title" data-full-text="${n.content}">${n.title.substring(0, 30)}...</span>
+                        <span class="text-muted">${n.createdAt}</span>
+                    </li>
+                `).join("");
+            } catch (error) {
+                console.error("Lỗi khi cập nhật dashboard:", error);
+                alert("Lỗi: " + error.message);
+            }
+        }
+
+        // Đăng xuất tài khoản
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+            }
+
+            localStorage.removeItem("user");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        // Khởi chạy khi trang tải
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadUserProfile();
+            await updateDashboard();
         });
     </script>
 </body>

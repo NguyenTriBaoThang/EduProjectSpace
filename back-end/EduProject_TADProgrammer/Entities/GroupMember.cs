@@ -32,6 +32,9 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("StudentId")]
         public User Student { get; set; }
 
+        // Nhóm trưởng
+        public bool IsLeader { get; set; }
+
         // Thời gian tham gia nhóm (mặc định là thời gian hiện tại theo UTC)
         public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
     }
