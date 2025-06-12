@@ -1,4 +1,5 @@
 ﻿using EduProject_TADProgrammer.Data;
+using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

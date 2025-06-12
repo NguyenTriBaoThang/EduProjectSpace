@@ -6,19 +6,22 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using EduProject_TADProgrammer.Data;
 
 namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "ROLE_ADMIN")]
+    //[Authorize(Roles = "ROLE_ADMIN")]
     public class AdminUserController : ControllerBase
     {
-        private readonly AdminUserService _userService; 
-        
-        public AdminUserController(AdminUserService userService)
+        private readonly LogService _logService;
+        private readonly AdminUserService _userService;
+
+        public AdminUserController(AdminUserService userService, LogService logService)
         {
             _userService = userService;
+            _logService = logService;
         }
 
         // GET: api/User
@@ -62,7 +65,7 @@ namespace EduProject_TADProgrammer.Controllers
                 Locked = false
             };
             var createdUser = await _userService.CreateUser(user);
-            await _userService.LogAction(createdUser.Id, "CREATE_USER", $"User {createdUser.Username} created.");
+            await _logService.LogAction(createdUser.Id, "CREATE", $"Tạo người dùng {createdUser.Username}.");
             return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
         }
 
@@ -90,7 +93,7 @@ namespace EduProject_TADProgrammer.Controllers
                         Locked = false
                     };
                     var createdUser = await _userService.CreateUser(user);
-                    await _userService.LogAction(createdUser.Id, "CREATE_USER", $"User {createdUser.Username} created via import.");
+                    await _logService.LogAction(createdUser.Id, "CREATE", $"Người dùng {createdUser.Username} được tạo thông qua excel.");
                     result.SuccessCount++;
                 }
                 catch (Exception ex)
@@ -125,7 +128,7 @@ namespace EduProject_TADProgrammer.Controllers
             user.UpdatedAt = DateTime.UtcNow;
 
             await _userService.UpdateUser(user);
-            await _userService.LogAction(id, "UPDATE_USER", $"User {user.Username} updated.");
+            await _logService.LogAction(id, "UPDATE", $"Người dùng {user.Username} đã cập nhật.");
             return NoContent();
         }
 
@@ -139,7 +142,7 @@ namespace EduProject_TADProgrammer.Controllers
                 return NotFound();
 
             await _userService.DeleteUser(id);
-            await _userService.LogAction(id, "DELETE_USER", $"User {user.Username} deleted.");
+            await _logService.LogAction(id, "DELETE", $"Người dùng {user.Username} đã bị xóa.");
             return NoContent();
         }
 
@@ -172,7 +175,7 @@ namespace EduProject_TADProgrammer.Controllers
                 Locked = false
             };
             var createdUser = await _userService.CreateUser(user);
-            await _userService.LogAction(createdUser.Id, "CREATE_STUDENT", $"Student {createdUser.Username} created.");
+            await _logService.LogAction(createdUser.Id, "CREATE", $"Đã tạo sinh viên {createdUser.Username}.");
             return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
         }
 
@@ -200,7 +203,7 @@ namespace EduProject_TADProgrammer.Controllers
                         Locked = false
                     };
                     var createdUser = await _userService.CreateUser(user);
-                    await _userService.LogAction(createdUser.Id, "CREATE_STUDENT", $"Student {createdUser.Username} created via import.");
+                    await _logService.LogAction(createdUser.Id, "CREATE", $"Sinh viên {createdUser.Username} được tạo thông qua excel.");
                     result.SuccessCount++;
                 }
                 catch (Exception ex)
@@ -234,7 +237,7 @@ namespace EduProject_TADProgrammer.Controllers
             user.UpdatedAt = DateTime.UtcNow;
 
             await _userService.UpdateUser(user);
-            await _userService.LogAction(id, "UPDATE_STUDENT", $"Student {user.Username} updated.");
+            await _logService.LogAction(id, "UPDATE", $"Đã cập nhật sinh viên {user.Username}.");
             return NoContent();
         }
 
@@ -248,7 +251,7 @@ namespace EduProject_TADProgrammer.Controllers
                 return NotFound();
 
             await _userService.DeleteUser(id);
-            await _userService.LogAction(id, "DELETE_STUDENT", $"Student {user.Username} deleted.");
+            await _logService.LogAction(id, "DELETE", $"Đã xóa học sinh {user.Username}.");
             return NoContent();
         }
 
@@ -284,7 +287,7 @@ namespace EduProject_TADProgrammer.Controllers
                 Locked = false
             };
             var createdUser = await _userService.CreateUser(user);
-            await _userService.LogAction(createdUser.Id, "CREATE_LECTURER", $"Lecturer {createdUser.Username} created.");
+            await _logService.LogAction(createdUser.Id, "CREATE", $"Giảng viên {createdUser.Username} đã được tạo.");
             return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
         }
 
@@ -315,7 +318,7 @@ namespace EduProject_TADProgrammer.Controllers
                         Locked = false
                     };
                     var createdUser = await _userService.CreateUser(user);
-                    await _userService.LogAction(createdUser.Id, "CREATE_LECTURER", $"Lecturer {createdUser.Username} created via import.");
+                    await _logService.LogAction(createdUser.Id, "CREATE", $"Giảng viên {createdUser.Username} được tạo thông qua excel.");
                     result.SuccessCount++;
                 }
                 catch (Exception ex)
@@ -353,7 +356,7 @@ namespace EduProject_TADProgrammer.Controllers
             user.UpdatedAt = DateTime.UtcNow;
 
             await _userService.UpdateUser(user);
-            await _userService.LogAction(id, "UPDATE_LECTURER", $"Lecturer {user.Username} updated.");
+            await _logService.LogAction(id, "UPDATE", $"Giảng viên {user.Username} đã được cập nhật.");
             return NoContent();
         }
 
@@ -367,7 +370,7 @@ namespace EduProject_TADProgrammer.Controllers
                 return NotFound();
 
             await _userService.DeleteUser(id);
-            await _userService.LogAction(id, "DELETE_LECTURER", $"Lecturer {user.Username} deleted.");
+            await _logService.LogAction(id, "DELETE", $"Giảng viên {user.Username} đã bị xóa.");
             return NoContent();
         }
     }

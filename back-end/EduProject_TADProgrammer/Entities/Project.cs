@@ -50,6 +50,13 @@ namespace EduProject_TADProgrammer.Entities
         [Required]
         public string Status { get; set; }
 
+        // Trạng thái của duyệt đề tài (bắt buộc, ví dụ: "Pending", "Approved", "Rejected")
+        [Required] 
+        public string ApprovalStatus { get; set; } = "PENDING";
+
+        //Lý do duyệt đề tài
+        public string? ApprovalReason { get; set; }
+
         // Mã đề tài (bắt buộc, tối đa 20 ký tự)
         [Required]
         [StringLength(20)]

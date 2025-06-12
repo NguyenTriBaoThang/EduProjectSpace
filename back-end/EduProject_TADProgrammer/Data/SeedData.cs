@@ -26,9 +26,9 @@ namespace EduProject_TADProgrammer.Data
                 new User { Id = 1, Username = "admin", Password = hashedPassword, Email = "admin@hutech.edu.vn", FullName = "Quản trị viên", RoleId = 1, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 2, Username = "AND123456789", Password = hashedPassword, Email = "AND123456789@hutech.edu.vn", FullName = "Nguyễn Đình Ánh", DepartmentId = 1, RoleId = 4, ClassCode = null, AvatarUrl = "/font-end/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 3, Username = "HVT123456789", Password = hashedPassword, Email = "HVT123456789@hutech.edu.vn", FullName = "Văn Thiên Hoàng", DepartmentId = 2, RoleId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 4, Username = "CNH123456789", Password = hashedPassword, Email = "CNH123456789@hutech.edu.vn", FullName = "Nguyễn Huy Cường", RoleId = 2, CourseId = 1, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 5, Username = "TNT123456789", Password = hashedPassword, Email = "TNT123456789@hutech.edu.vn", FullName = "Nguyễn Thanh Tùng", RoleId = 2, CourseId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 6, Username = "KBP123456789", Password = hashedPassword, Email = "KBP123456789@hutech.edu.vn", FullName = "Bùi Phú Khuyên", RoleId = 2, CourseId = 3, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 4, Username = "CNH123456789", Password = hashedPassword, Email = "CNH123456789@hutech.edu.vn", FullName = "Nguyễn Huy Cường", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 5, Username = "TNT123456789", Password = hashedPassword, Email = "TNT123456789@hutech.edu.vn", FullName = "Nguyễn Thanh Tùng", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 6, Username = "KBP123456789", Password = hashedPassword, Email = "KBP123456789@hutech.edu.vn", FullName = "Bùi Phú Khuyên", RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 7, Username = "2180601452", Password = hashedPassword, Email = "2180601452@hutech.edu.vn", FullName = "Nguyễn Tri Bão Thắng", DepartmentId = 1, RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 8, Username = "2180600307", Password = hashedPassword, Email = "2180600307@hutech.edu.vn", FullName = "Huỳnh Thành Đô", DepartmentId = 1, RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 9, Username = "1911256118", Password = hashedPassword, Email = "1911256118@hutech.edu.vn", FullName = "Nguyễn Thuận An", DepartmentId = 1, RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
@@ -36,8 +36,8 @@ namespace EduProject_TADProgrammer.Data
                 new User { Id = 11, Username = "2180603747", Password = hashedPassword, Email = "2180603747@hutech.edu.vn", FullName = "Lê Quang Vinh", DepartmentId = 3, RoleId = 3, ClassCode = "21DTHA1", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 12, Username = "2180603748", Password = hashedPassword, Email = "2180603748@hutech.edu.vn", FullName = "Trần Quang Tài", DepartmentId = 3, RoleId = 3, ClassCode = "21DTHA2", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new User { Id = 13, Username = "2180603749", Password = hashedPassword, Email = "2180603749@hutech.edu.vn", FullName = "Trần Văn Tuệ", DepartmentId = 3, RoleId = 3, ClassCode = "21DTHA2", AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 14, Username = "TDTT123456789", Password = hashedPassword, Email = "TDTT123456789@hutech.edu.vn", FullName = "Đặng Thị Thạch Thảo", DepartmentId = 2, RoleId = 2, CourseId = 4, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new User { Id = 15, Username = "CHM123456789", Password = hashedPassword, Email = "CHM123456789@hutech.edu.vn", FullName = "Hàn Minh Châu", DepartmentId = 3, RoleId = 2, CourseId = 5, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new User { Id = 14, Username = "TDTT123456789", Password = hashedPassword, Email = "TDTT123456789@hutech.edu.vn", FullName = "Đặng Thị Thạch Thảo", DepartmentId = 2, RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new User { Id = 15, Username = "CHM123456789", Password = hashedPassword, Email = "CHM123456789@hutech.edu.vn", FullName = "Hàn Minh Châu", DepartmentId = 3, RoleId = 2, ClassCode = null, AvatarUrl = "/static/medit/imgUser/avatar.jpg", FailedLoginAttempts = 0, Locked = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 3. Course
@@ -58,19 +58,19 @@ namespace EduProject_TADProgrammer.Data
 
             // 4. Project
             modelBuilder.Entity<Project>().HasData(
-                new Project { Id = 1, Title = "Ứng dụng AI trong y tế", Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", CourseId = 1, GroupId = 1, Status = "APPROVED", ProjectCode = "AI_YTE_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 2, Title = "Hệ thống quản lý đồ án", Description = "Xây dựng hệ thống quản lý đồ án sinh viên.", CourseId = 1, GroupId = 2, Status = "APPROVED", ProjectCode = "QLDA_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 3, Title = "Ứng dụng thương mại điện tử", Description = "Phát triển website bán hàng trực tuyến.", CourseId = 2,  GroupId = 3, Status = "PENDING", ProjectCode = "TMĐT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 4, Title = "Phân tích dữ liệu thời gian thực", Description = "Xây dựng hệ thống phân tích dữ liệu thời gian thực.", CourseId = 3, GroupId = 4, Status = "PENDING", ProjectCode = "PTDL_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 5, Title = "Ứng dụng quản lý học tập", Description = "Phát triển app quản lý học tập cho sinh viên.", CourseId = 4, GroupId = 5, Status = "PENDING", ProjectCode = "QLHT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 6, Title = "Hệ thống bảo mật IoT", Description = "Xây dựng giải pháp bảo mật cho thiết bị IoT.", CourseId = 5, GroupId = 6, Status = "NOT_SUBMITTED", ProjectCode = "BM_IOT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 7, Title = "Phân tích dữ liệu mạng xã hội", Description = "Phân tích hành vi người dùng trên mạng xã hội.", CourseId = 6, GroupId = 7, Status = "NOT_SUBMITTED", ProjectCode = "PTMXH_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 8, Title = "Ứng dụng học ngoại ngữ", Description = "Phát triển app học ngoại ngữ với AI.", CourseId = 7, GroupId = 9, Status = "APPROVED", ProjectCode = "HNN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 9, Title = "Hệ thống quản lý kho", Description = "Xây dựng hệ thống quản lý kho hàng tự động.", CourseId = 8, GroupId = 8, Status = "APPROVED", ProjectCode = "QLK_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 10, Title = "Ứng dụng đặt lịch khám bệnh", Description = "Phát triển app đặt lịch khám bệnh trực tuyến.", CourseId = 9, GroupId = 10, Status = "APPROVED", ProjectCode = "DLKB_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 1, Title = "Ứng dụng AI trong y tế", Description = "Phát triển ứng dụng AI hỗ trợ chẩn đoán bệnh.", CourseId = 1, GroupId = 1, Status = "APPROVED", ApprovalStatus = "APPROVED", ProjectCode = "AI_YTE_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 2, Title = "Hệ thống quản lý đồ án", Description = "Xây dựng hệ thống quản lý đồ án sinh viên.", CourseId = 1, GroupId = 2, Status = "APPROVED", ApprovalStatus = "APPROVED", ProjectCode = "QLDA_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 3, Title = "Ứng dụng thương mại điện tử", Description = "Phát triển website bán hàng trực tuyến.", CourseId = 2,  GroupId = 3, Status = "PENDING", ApprovalStatus = "APPROVED", ProjectCode = "TMĐT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 4, Title = "Phân tích dữ liệu thời gian thực", Description = "Xây dựng hệ thống phân tích dữ liệu thời gian thực.", CourseId = 3, GroupId = 4, Status = "PENDING", ApprovalStatus = "APPROVED", ProjectCode = "PTDL_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 5, Title = "Ứng dụng quản lý học tập", Description = "Phát triển app quản lý học tập cho sinh viên.", CourseId = 4, GroupId = 5, Status = "PENDING", ApprovalStatus = "REJECTED", ProjectCode = "QLHT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 6, Title = "Hệ thống bảo mật IoT", Description = "Xây dựng giải pháp bảo mật cho thiết bị IoT.", CourseId = 5, GroupId = 6, Status = "NOT_SUBMITTED", ApprovalStatus = "PENDING", ProjectCode = "BM_IOT_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 7, Title = "Phân tích dữ liệu mạng xã hội", Description = "Phân tích hành vi người dùng trên mạng xã hội.", CourseId = 6, GroupId = 7, Status = "NOT_SUBMITTED", ApprovalStatus = "PENDING", ProjectCode = "PTMXH_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 8, Title = "Ứng dụng học ngoại ngữ", Description = "Phát triển app học ngoại ngữ với AI.", CourseId = 7, GroupId = 9, Status = "APPROVED", ApprovalStatus = "PENDING", ProjectCode = "HNN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 9, Title = "Hệ thống quản lý kho", Description = "Xây dựng hệ thống quản lý kho hàng tự động.", CourseId = 8, GroupId = 8, Status = "APPROVED", ApprovalStatus = "PENDING", ProjectCode = "QLK_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 10, Title = "Ứng dụng đặt lịch khám bệnh", Description = "Phát triển app đặt lịch khám bệnh trực tuyến.", CourseId = 9, GroupId = 10, ApprovalStatus = "PENDING", Status = "APPROVED", ProjectCode = "DLKB_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
                 new Project { Id = 11, Title = "Hệ thống quản lý nhân sự", Description = "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", CourseId = 10, GroupId = 12, Status = "APPROVED", ProjectCode = "QLNS_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 12, Title = "Ứng dụng học tập nhóm", Description = "Phát triển app hỗ trợ học tập nhóm.", CourseId = 11, GroupId = 11, Status = "PENDING", ProjectCode = "HTN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Project { Id = 13, Title = "Hệ thống phân tích tài chính", Description = "Xây dựng hệ thống phân tích tài chính cá nhân.", CourseId = 12, GroupId = 13, Status = "PENDING", ProjectCode = "PTTC_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new Project { Id = 12, Title = "Ứng dụng học tập nhóm", Description = "Phát triển app hỗ trợ học tập nhóm.", CourseId = 11, GroupId = 11, Status = "PENDING", ApprovalStatus = "APPROVED", ProjectCode = "HTN_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
+                new Project { Id = 13, Title = "Hệ thống phân tích tài chính", Description = "Xây dựng hệ thống phân tích tài chính cá nhân.", CourseId = 12, GroupId = 13, Status = "PENDING", ApprovalStatus = "APPROVED", ProjectCode = "PTTC_2025_01", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
 
             // 5. ProjectVersion
@@ -162,20 +162,21 @@ namespace EduProject_TADProgrammer.Data
 
             // 10. Submission
             modelBuilder.Entity<Submission>().HasData(
-                new Submission { Id = 1, ProjectId = 1, GroupId = 1, TaskId = 1, FilePath = "submissions/dt001.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 2, ProjectId = 2, GroupId = 2, TaskId = 2, FilePath = "submissions/dt002.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 3, ProjectId = 3, GroupId = 3, TaskId = 3, FilePath = "submissions/dt003.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 4, ProjectId = 4, GroupId = 4, TaskId = 4, FilePath = "submissions/dt004.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 5, ProjectId = 5, GroupId = 5, TaskId = 5, FilePath = "submissions/dt005.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 6, ProjectId = 6, GroupId = 6, TaskId = 6, FilePath = "submissions/dt006.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 7, ProjectId = 7, GroupId = 7, TaskId = 7, FilePath = "submissions/dt007.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 8, ProjectId = 8, GroupId = 8, TaskId = 8, FilePath = "submissions/dt008.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 9, ProjectId = 9, GroupId = 9, TaskId = 9, FilePath = "submissions/dt009.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 10, ProjectId = 10, GroupId = 10, TaskId = 10, FilePath = "submissions/dt010.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 11, ProjectId = 11, GroupId = 11, TaskId = 11, FilePath = "submissions/dt011.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 12, ProjectId = 12, GroupId = 12, TaskId = 12, FilePath = "submissions/dt012.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 13, ProjectId = 1, GroupId = 1, TaskId = 1, FilePath = "submissions/dt013.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
-                new Submission { Id = 14, ProjectId = 1, GroupId = 1, TaskId = 15, FilePath = "submissions/dt014.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow }
+                new Submission { Id = 1, ProjectId = 1, GroupId = 1, StudentId = 7,TaskId = 1, FilePath = "submissions/dt001.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 2, ProjectId = 2, GroupId = 2, StudentId = 8, TaskId = 2, FilePath = "submissions/dt002.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 3, ProjectId = 3, GroupId = 3, StudentId = 10, TaskId = 3, FilePath = "submissions/dt003.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 4, ProjectId = 4, GroupId = 4, StudentId = 12, TaskId = 4, FilePath = "submissions/dt004.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 5, ProjectId = 5, GroupId = 5, StudentId = 7, TaskId = 5, FilePath = "submissions/dt005.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 6, ProjectId = 6, GroupId = 6, StudentId = 8, TaskId = 6, FilePath = "submissions/dt006.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 7, ProjectId = 7, GroupId = 7, StudentId = 9, TaskId = 7, FilePath = "submissions/dt007.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 8, ProjectId = 8, GroupId = 8, StudentId = 10, TaskId = 8, FilePath = "submissions/dt008.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 9, ProjectId = 9, GroupId = 9, StudentId = 11, TaskId = 9, FilePath = "submissions/dt009.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 10, ProjectId = 10, GroupId = 10, StudentId = 12, TaskId = 10, FilePath = "submissions/dt010.pdf", Version = 1, Status = "VALIDATED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 11, ProjectId = 11, GroupId = 11, StudentId = 13, TaskId = 11, FilePath = "submissions/dt011.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 12, ProjectId = 12, GroupId = 12, StudentId = 7, TaskId = 12, FilePath = "submissions/dt012.pdf", Version = 1, Status = "REJECTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 13, ProjectId = 1, GroupId = 1, StudentId = 8, TaskId = 1, FilePath = "submissions/dt013.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 14, ProjectId = 1, GroupId = 1, StudentId = 7, TaskId = 15, FilePath = "submissions/dt014.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow },
+                new Submission { Id = 15, ProjectId = 1, GroupId = 1, StudentId = 8, TaskId = 1, FilePath = "submissions/dt015.pdf", Version = 1, Status = "SUBMITTED", SubmittedAt = DateTime.UtcNow }
             );
 
             // 11. SubmissionVersion
@@ -722,6 +723,34 @@ namespace EduProject_TADProgrammer.Data
                 new Department { Id = 3, FacultyCode = "MMT", FacultyName = "Mạng máy tính" },
                 new Department { Id = 4, FacultyCode = "HTTT", FacultyName = "Hệ thống thông tin" },
                 new Department { Id = 5, FacultyCode = "TTNT", FacultyName = "Trí tuệ nhân tạo" }
+            );
+
+            // 44. LecturerCourses
+            modelBuilder.Entity<LecturerCourses>().HasData(
+                new LecturerCourses { Id = 1, LecturerId = 4, CourseId = 1, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 2, LecturerId = 5, CourseId = 1, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 3, LecturerId = 6, CourseId = 1, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 4, LecturerId = 4, CourseId = 2, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 5, LecturerId = 5, CourseId = 2, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 6, LecturerId = 6, CourseId = 2, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 7, LecturerId = 4, CourseId = 3, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 8, LecturerId = 5, CourseId = 3, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 9, LecturerId = 6, CourseId = 3, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 10, LecturerId = 4, CourseId = 4, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 11, LecturerId = 5, CourseId = 4, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 12, LecturerId = 6, CourseId = 4, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 13, LecturerId = 14, CourseId = 5, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 14, LecturerId = 14, CourseId = 6, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 15, LecturerId = 15, CourseId = 7, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 16, LecturerId = 14, CourseId = 8, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 17, LecturerId = 6, CourseId = 9, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 18, LecturerId = 5, CourseId = 10, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 19, LecturerId = 4, CourseId = 11, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 20, LecturerId = 15, CourseId = 12, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 21, LecturerId = 2, CourseId = 1, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 22, LecturerId = 2, CourseId = 2, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 23, LecturerId = 2, CourseId = 3, AssignedAt = DateTime.UtcNow },
+                new LecturerCourses { Id = 24, LecturerId = 2, CourseId = 4, AssignedAt = DateTime.UtcNow }
             );
         }
     }

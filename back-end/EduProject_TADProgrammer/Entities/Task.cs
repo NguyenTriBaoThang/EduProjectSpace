@@ -33,13 +33,6 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("GroupId")]
         public Group Group { get; set; }
 
-        // ID của sinh viên được giao nhiệm vụ (tùy chọn)
-        public long? StudentId { get; set; }
-
-        // Liên kết với entity User (sinh viên được giao nhiệm vụ)
-        [ForeignKey("StudentId")]
-        public User Student { get; set; }
-
         // Tiêu đề nhiệm vụ (bắt buộc, tối đa 255 ký tự)
         [Required]
         [StringLength(255)]

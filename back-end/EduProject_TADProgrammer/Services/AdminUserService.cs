@@ -41,6 +41,7 @@ namespace EduProject_TADProgrammer.Services
         {
             return await _context.Users
                 .Include(u => u.Role)
+                .Include(u => u.Department)
                 .Select(u => new AdminUserDto
                 {
                     Id = u.Id,
@@ -48,6 +49,7 @@ namespace EduProject_TADProgrammer.Services
                     Email = u.Email,
                     FullName = u.FullName,
                     ClassCode = u.ClassCode,
+                    FacultyCode = u.Department.FacultyCode,
                     RoleId = u.RoleId,
                     RoleName = u.Role.Name,
                     FailedLoginAttempts = u.FailedLoginAttempts,
@@ -154,20 +156,6 @@ namespace EduProject_TADProgrammer.Services
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
-        }
-
-        // Ghi nhật ký hành động vào bảng Logs.
-        public async System.Threading.Tasks.Task LogAction(long userId, string action, string details)
-        {
-            var log = new Log
-            {
-                UserId = userId,
-                Action = action,
-                Details = details,
-                CreatedAt = DateTime.UtcNow
-            };
-            _context.Logs.Add(log);
-            await _context.SaveChangesAsync();
         }
 
         // Kiểm tra RoleId hợp lệ.

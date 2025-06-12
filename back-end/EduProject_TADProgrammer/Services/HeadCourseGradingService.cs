@@ -1,8 +1,10 @@
-﻿using EduProject_TADProgrammer.Data;
+﻿using EduProject_TADProgrammer.Controllers;
+using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -157,7 +159,7 @@ namespace EduProject_TADProgrammer.Services
 
             return groupDTOs;
         }
-
+       
         public async Task<GroupHeadCourseGradingDetailDto> GetGroupGradingDetailsAsync(long groupId, string courseId, string semester, string facultyCode)
         {
             var group = await _context.Groups

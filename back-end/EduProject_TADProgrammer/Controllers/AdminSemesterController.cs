@@ -5,6 +5,7 @@ using EduProject_TADProgrammer.Services;
 using EduProject_TADProgrammer.Entities;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace EduProject_TADProgrammer.Controllers
 {
@@ -13,11 +14,13 @@ namespace EduProject_TADProgrammer.Controllers
     [Authorize(Roles = "ROLE_ADMIN")]
     public class AdminSemesterController : ControllerBase
     {
+        private readonly LogService _logService;
         private readonly AdminSemesterService _semesterService;
 
-        public AdminSemesterController(AdminSemesterService semesterService)
+        public AdminSemesterController(AdminSemesterService semesterService, LogService logService)
         {
             _semesterService = semesterService;
+            _logService = logService;
         }
 
         // GET: api/Semesters
@@ -54,7 +57,15 @@ namespace EduProject_TADProgrammer.Controllers
                 Description = request.Description
             };
             var createdSemester = await _semesterService.CreateSemester(semester);
-            //await _semesterService.LogAction(createdSemester.Id, "CREATE_SEMESTER", $"Semester {createdSemester.Name} created.");
+
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var userId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+            }
+            var fullName = User.FindFirst("fullName")?.Value ?? "Không rõ tên";
+            var userName = User.FindFirst("userName")?.Value ?? "Không rõ tài khoản";
+            await _logService.LogAction(userId, "CREATE", $"Người dùng {fullName}({userName}) đã tạo học kì {request.Name}.");
+
             return CreatedAtAction(nameof(GetSemester), new { id = createdSemester.Id }, createdSemester);
         }
 
@@ -63,6 +74,13 @@ namespace EduProject_TADProgrammer.Controllers
         [HttpPost("import")]
         public async Task<ActionResult<ImportResult>> ImportSemesters([FromBody] List<CreateAdminSemesterRequest> requests)
         {
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var userId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+            }
+            var fullName = User.FindFirst("fullName")?.Value ?? "Không rõ tên";
+            var userName = User.FindFirst("userName")?.Value ?? "Không rõ tài khoản";
+
             var result = new ImportResult { SuccessCount = 0, FailedCount = 0, Errors = new List<string>() };
             foreach (var request in requests)
             {
@@ -77,7 +95,9 @@ namespace EduProject_TADProgrammer.Controllers
                         Description = request.Description
                     };
                     var createdSemester = await _semesterService.CreateSemester(semester);
-                    //await _semesterService.LogAction(createdSemester.Id, "CREATE_SEMESTER", $"Semester {createdSemester.Name} created via import.");
+
+                    await _logService.LogAction(userId, "CREATE", $"Người dùng {fullName}({userName}) đã tạo học kì {request.Name} thông qua excel.");
+
                     result.SuccessCount++;
                 }
                 catch (Exception ex)
@@ -108,7 +128,15 @@ namespace EduProject_TADProgrammer.Controllers
             //semester.UpdatedAt = DateTime.UtcNow;
 
             await _semesterService.UpdateSemester(semester);
-            //await _semesterService.LogAction(id, "UPDATE_SEMESTER", $"Semester {semester.Name} updated.");
+
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var userId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+            }
+            var fullName = User.FindFirst("fullName")?.Value ?? "Không rõ tên";
+            var userName = User.FindFirst("userName")?.Value ?? "Không rõ tài khoản";
+            await _logService.LogAction(userId, "UPDATE", $"Người dùng {fullName}({userName}) đã tạo cập nhật học kì {semester.Name}.");
+
             return NoContent();
         }
 
@@ -122,7 +150,15 @@ namespace EduProject_TADProgrammer.Controllers
                 return NotFound();
 
             await _semesterService.DeleteSemester(id);
-            //await _semesterService.LogAction(id, "DELETE_SEMESTER", $"Semester {semester.Name} deleted.");
+
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var userId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+            }
+            var fullName = User.FindFirst("fullName")?.Value ?? "Không rõ tên";
+            var userName = User.FindFirst("userName")?.Value ?? "Không rõ tài khoản";
+            await _logService.LogAction(userId, "DELETE", $"Người dùng {fullName.ToString()}({userName}) đã tạo xoá học kì {semester.Name}.");
+
             return NoContent();
         }
 
@@ -132,6 +168,16 @@ namespace EduProject_TADProgrammer.Controllers
         public async Task<IActionResult> ExportSemesters()
         {
             var fileStream = await _semesterService.ExportSemestersToExcelAsync();
+
+            var idClaim = User.FindFirst("id");
+            if (!long.TryParse(idClaim.Value, out var userId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ." });
+            }
+            var fullName = User.FindFirst("fullName");
+            var userName = User.FindFirst("userName");
+            await _logService.LogAction(userId, "EXPORT_EXCEL", $"Người dùng {fullName}({userName}) đã tạo xuất học kì thông qua excel.");
+
             return File(fileStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "danh_sach_ky_hoc.xlsx");
         }
     }

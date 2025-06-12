@@ -161,7 +161,7 @@
         // Mục đích: Xử lý logic giao diện và gọi API cho trang báo cáo thống kê.
         // Ghi chú: Tích hợp API để tải dữ liệu kỳ học, khoa, bộ môn và báo cáo.
 
-        const apiBaseUrl = 'https://localhost:7047/api/AdminReports';
+        const API_URL = "https://localhost:7047";
         let reportData = { summary: {}, students: [], projects: [], lecturers: [] }; // Ghi chú: Lưu dữ liệu báo cáo
 
         // Ghi chú: Navbar Functions - Xử lý sự kiện cho navbar
@@ -209,19 +209,28 @@
 
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_ADMIN") {
-                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_ADMIN") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+                document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
-            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
         // Ghi chú: Tải danh sách kỳ học
         async function loadSemesters() {
             try {
-                const response = await fetch(`${apiBaseUrl}/semesters`, {
+                const response = await fetch(`${API_URL}/api/AdminReports/semesters`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -245,8 +254,10 @@
         // Ghi chú: Tải danh sách khoa/bộ môn
         async function loadDepartments() {
             try {
-                const response = await fetch(`${apiBaseUrl}/departments`, {
+                const response = await fetch(`${API_URL}/api/AdminReports/departments`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -285,8 +296,10 @@
                 if (facultyFilter) query.append("facultyCode", facultyFilter);
                 if (departmentFilter) query.append("departmentCode", departmentFilter);
 
-                const response = await fetch(`${apiBaseUrl}?${query.toString()}`, {
+                const response = await fetch(`${API_URL}/api/AdminReports/?${query.toString()}`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -375,37 +388,46 @@
             XLSX.writeFile(workbook, "bao_cao_thong_ke.xlsx");
         }
 
-        //Đăng xuất
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
-                const response = await fetch("https://localhost:7047/api/Auth/logout", {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-
-                const data = await response.json();
+                const text = await response.text();
                 if (response.ok) {
-                    alert(data.message);
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
                 } else {
+                    const data = text ? JSON.parse(text) : {};
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
                 alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
             }
-
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
         // Ghi chú: Khởi chạy khi trang tải
         document.addEventListener("DOMContentLoaded", async () => {
-            await loadSemesters(); // Ghi chú: Tải kỳ học
-            await loadDepartments(); // Ghi chú: Tải khoa/bộ môn
-            await updateReport(); // Ghi chú: Tải báo cáo ban đầu
+            try{
+                await loadSemesters(); // Ghi chú: Tải kỳ học
+                await loadDepartments(); // Ghi chú: Tải khoa/bộ môn
+                await updateReport(); // Ghi chú: Tải báo cáo ban đầu
+            } catch (error) {
+                console.error("Lỗi khi tải bảng điều khiển:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
         });
     </script> <!-- Ghi chú: Tách logic JS sang file riêng -->
 </body>
