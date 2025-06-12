@@ -9,28 +9,27 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_lecturer.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
     <style>
         .submission-list { list-style: none; padding: 0; }
         .submission-list li { margin-bottom: 5px; }
-        .btn-action-spacing { margin-right: 8px; } /* Thêm khoảng cách giữa các nút */
+        .btn-action-spacing { margin-right: 8px; }
     </style>
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
-        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên hướng dẫn</h4>
+        <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Giảng viên hướng dẫn</h6>
-            <a href="lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
-            <a href="lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
-            <a href="lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
-            <a href="lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
-            <a href="lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
-            <a href="lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
-            <a href="lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
+            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
+            <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
+            <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
+            <a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
+            <a href="/font-end/lecturer/lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
+            <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
         </div>
     </div>
 
@@ -40,7 +39,7 @@
         <nav class="navbar navbar-expand-lg px-3">
             <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
                 <i id="sidebarIcon" class="bi bi-list"></i>
-            </button>            
+            </button>
             <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
                 <i class="bi bi-list"></i>
             </button>
@@ -56,15 +55,15 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
-                <h6>Nguyễn Huy Cường</h6>
-                <p>nguyenhuycuong@hutech.edu.vn</p>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
+                <h6 id="userName">Nguyễn Huy Cường</h6>
+                <p id="userEmail">nguyenhuycuong@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -74,24 +73,24 @@
                 <h2 class="fw-bold text-primary">📈 Chi tiết tiến độ đồ án</h2>
                 <div>
                     <button class="btn btn-info me-2" onclick="exportProgress()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
-                    <button class="btn btn-secondary" onclick="window.location.href='lecturer_projects.html'">Quay lại</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/font-end/lecturer/lecturer_projects.html'">Quay lại</button>
                 </div>
             </div>
 
             <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="lecturer_projects.html"><i class="bi bi-folder"></i> Quản lý đồ án</a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_projects.html"><i class="bi bi-folder"></i> Quản lý đồ án</a></li>
                     <li class="breadcrumb-item active"><i class="bi bi-eye"></i> Chi tiết tiến độ</li>
                 </ol>
             </nav>
 
             <!-- Project Info -->
-            <div class="card-dashboard mb-4">
+            <div class="card mb-4">
                 <div class="card-header">
                     <h5>Thông tin đồ án</h5>
                 </div>
-                <div class="card-content">
+                <div class="card-body">
                     <p><strong>Mã đồ án:</strong> <span id="projectId"></span></p>
                     <p><strong>Tên đồ án:</strong> <span id="projectName"></span></p>
                     <p><strong>Nhóm:</strong> <span id="groupName"></span></p>
@@ -100,82 +99,73 @@
                 </div>
             </div>
 
-            <!-- Progress Table -->
+            <!-- Tasks Table -->
             <div class="table-container">
                 <div class="table-content">
                     <table class="table-custom table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Giai đoạn</th>
+                                <th>Nhiệm vụ</th>
                                 <th>Mô tả</th>
                                 <th>Tệp báo cáo</th>
                                 <th>Hạn nộp</th>
                                 <th>Phản hồi</th>
-                                <th>Điểm tuần</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody id="progressTable"></tbody>
+                        <tbody id="tasksTable"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Chấm Điểm Tuần -->
-    <div class="modal fade" id="gradeModal" tabindex="-1" aria-labelledby="gradeModalLabel" aria-hidden="true">
+    <!-- Feedback Modal -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="gradeModalLabel">Chấm điểm tuần</h5>
+                    <h5 class="modal-title" id="feedbackModalLabel">Cập nhật phản hồi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="gradeForm">
-                        <input type="hidden" id="gradeProjectId">
-                        <input type="hidden" id="gradePhase">
+                    <form id="feedbackForm">
+                        <input type="hidden" id="feedbackProjectId">
+                        <input type="hidden" id="feedbackTaskId">
                         <div class="mb-3">
-                            <label class="form-label">Giai đoạn</label>
-                            <input type="text" id="gradePhaseDisplay" class="form-control" readonly>
+                            <label class="form-label">Nhiệm vụ</label>
+                            <input type="text" id="feedbackTaskTitle" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Điểm (0-10)</label>
-                            <input type="number" id="gradeScore" class="form-control" step="0.1" min="0" max="10" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Nhận xét</label>
-                            <textarea id="gradeComment" class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Lịch sử chấm điểm</label>
-                            <div id="gradeHistory" class="form-text"></div>
+                            <label class="form-label">Phản hồi</label>
+                            <textarea id="feedbackComment" class="form-control" rows="3" required></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="saveGrade()">Lưu</button>
+                    <button type="button" class="btn btn-primary" onclick="saveFeedback()">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Chỉnh Sửa Tiến Độ -->
-    <div class="modal fade" id="editProgressModal" tabindex="-1" aria-labelledby="editProgressModalLabel" aria-hidden="true">
+    <!-- Edit Task Modal -->
+    <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editProgressModalLabel">Chỉnh sửa tiến độ</h5>
+                    <h5 class="modal-title" id="editTaskModalLabel">Chỉnh sửa nhiệm vụ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editProgressForm">
+                    <form id="editTaskForm">
                         <input type="hidden" id="editProjectId">
-                        <input type="hidden" id="editPhase">
+                        <input type="hidden" id="editTaskId">
                         <div class="mb-3">
-                            <label class="form-label">Giai đoạn</label>
-                            <input type="text" id="editPhaseDisplay" class="form-control" readonly>
+                            <label class="form-label">Nhiệm vụ</label>
+                            <input type="text" id="editTaskTitle" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mô tả</label>
@@ -183,7 +173,15 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Hạn nộp</label>
-                            <input type="text" id="editDueDate" class="form-control" required>
+                            <input type="date" id="editDueDate" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select id="editStatus" class="form-select" required>
+                                <option value="Todo">Todo</option>
+                                <option value="InProgress">Đang tiến hành</option>
+                                <option value="Done">Hoàn thành</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tệp báo cáo</label>
@@ -194,7 +192,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="saveProgressEdit()">Lưu</button>
+                    <button type="button" class="btn btn-primary" onclick="saveTaskEdit()">Lưu</button>
                 </div>
             </div>
         </div>
@@ -206,113 +204,301 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        let projects = [
-            { id: 1, projectId: "DT001", name: "Công nghệ phần mềm", groupId: 1, lecturer: "Nguyễn Huy Cường", status: "Đã duyệt" },
-            { id: 2, projectId: "DT002", name: "Ứng dụng AI trong y tế", groupId: 2, lecturer: "Nguyễn Huy Cường", status: "Chưa duyệt" },
-            { id: 3, projectId: "DT003", name: "Lập trình Web", groupId: 3, lecturer: "Nguyễn Huy Cường", status: "Hoàn thành" }
-        ];
+        const API_URL = "https://localhost:7047";
+        let project = null;
+        let tasks = [];
 
-        let groups = [
-            { id: 1, name: "Nhóm 1", projectId: "DT001", members: ["21520001", "21520002"] },
-            { id: 2, name: "Nhóm 2", projectId: "DT002", members: ["21520003"] },
-            { id: 3, name: "Nhóm 3", projectId: "DT003", members: ["21520004", "21520005"] }
-        ];
+        // Get projectId from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get("projectId");
 
-        let students = [
-            { id: "21520001", name: "Nguyễn Tri Bão Thắng", groupId: 1, isLeader: true },
-            { id: "21520002", name: "Trần Văn A", groupId: 1, isLeader: false },
-            { id: "21520003", name: "Lê Thị B", groupId: 2, isLeader: true },
-            { id: "21520004", name: "Phạm Văn C", groupId: 3, isLeader: true },
-            { id: "21520005", name: "Nguyễn Thị D", groupId: 3, isLeader: false }
-        ];
-
-        let progressData = {
-            "DT001": [
-                { 
-                    phase: "Tuần 1", 
-                    description: "Hoàn thành phân tích yêu cầu", 
-                    dueDate: "25/02/2025", 
-                    submissions: [
-                        { file: "baocao_tuan1.pdf", submittedBy: "21520001" }
-                    ], 
-                    feedback: "Báo cáo tốt", 
-                    score: 8.0, 
-                    comment: "Tốt", 
-                    gradeHistory: [{ score: 8.0, comment: "Tốt", date: "26/02/2025" }] 
-                },
-                { 
-                    phase: "Tuần 2", 
-                    description: "Thiết kế giao diện", 
-                    dueDate: "28/02/2025", 
-                    submissions: [
-                        { file: "baocao_tuan2.pdf", submittedBy: "21520001" },
-                        { file: "design.pdf", submittedBy: "21520002" }
-                    ], 
-                    feedback: "", 
-                    score: null, 
-                    comment: "", 
-                    gradeHistory: [] 
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_LECTURER_GUIDE") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    logout();
                 }
-            ],
-            "DT002": [
-                { 
-                    phase: "Tuần 1", 
-                    description: "Khởi tạo dự án", 
-                    dueDate: "26/02/2025", 
-                    submissions: [], 
-                    feedback: "Khởi đầu ổn", 
-                    score: null, 
-                    comment: "", 
-                    gradeHistory: [] 
-                }
-            ],
-            "DT003": [
-                { 
-                    phase: "Tuần 1", 
-                    description: "Hoàn thành", 
-                    dueDate: "20/02/2025", 
-                    submissions: [
-                        { file: "baocao_tuan1.pdf", submittedBy: "21520004" }
-                    ], 
-                    feedback: "Tốt", 
-                    score: 9.0, 
-                    comment: "Xuất sắc", 
-                    gradeHistory: [{ score: 9.0, comment: "Xuất sắc", date: "21/02/2025" }] 
-                },
-                { 
-                    phase: "Tuần 2", 
-                    description: "Triển khai", 
-                    dueDate: "25/02/2025", 
-                    submissions: [
-                        { file: "baocao_tuan2.pdf", submittedBy: "21520005" }
-                    ], 
-                    feedback: "Cần tối ưu", 
-                    score: 8.5, 
-                    comment: "Cần tối ưu", 
-                    gradeHistory: [{ score: 8.5, comment: "Cần tối ưu", date: "26/02/2025" }] 
-                },
-                { 
-                    phase: "Tuần 3", 
-                    description: "Hoàn thiện", 
-                    dueDate: "28/02/2025", 
-                    submissions: [
-                        { file: "baocao_tuan3.pdf", submittedBy: "21520004" },
-                        { file: "final.pdf", submittedBy: "21520005" }
-                    ], 
-                    feedback: "Hoàn hảo", 
-                    score: 9.5, 
-                    comment: "Hoàn hảo", 
-                    gradeHistory: [{ score: 9.5, comment: "Hoàn hảo", date: "01/03/2025" }] 
-                }
-            ]
-        };
+                document.getElementById("userName").textContent = user.fullName || "Nguyễn Huy Cường";
+                document.getElementById("userEmail").textContent = user.email || "nguyenhuycuong@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Không có quyền Giảng viên hướng dẫn hoặc chưa đăng nhập.");
+                logout();
+            }
+        }
 
-        const currentLecturer = "Nguyễn Huy Cường";
+        // Load project details
+        async function loadProjectDetails() {
+            try {
+                const response = await fetch(`${API_URL}/api/LecturerCourses/projects/${projectId}`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error("Failed to load project");
+                project = await response.json();
+                document.getElementById("projectId").textContent = project.projectId;
+                document.getElementById("projectName").textContent = project.name;
+                document.getElementById("groupName").textContent = project.groupName;
+                document.getElementById("groupLeader").textContent = project.students.find(s => s.isLeader)?.fullName || "Chưa có";
+                document.getElementById("groupMembers").textContent = project.students.map(s => s.fullName).join(", ");
+            } catch (error) {
+                console.error("Error loading project:", error);
+                alert("Không thể tải thông tin đồ án");
+            }
+        }
 
-        // Navbar Functions
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
-        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        // Load tasks
+        async function loadTasks() {
+            try {
+                const response = await fetch(`${API_URL}/api/LecturerCourses/projects/${projectId}/tasks`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error("Failed to load tasks");
+                tasks = await response.json();
+                renderTasks();
+            } catch (error) {
+                console.error("Error loading tasks:", error);
+                alert("Không thể tải danh sách nhiệm vụ");
+            }
+        }
+
+        // Render tasks table
+        function renderTasks() {
+            const tableBody = document.getElementById("tasksTable");
+            tableBody.innerHTML = tasks.length > 0 ? tasks.map((task, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${task.title}</td>
+                    <td>${task.description || "Không có mô tả"}</td>
+                    <td>
+                        <ul class="submission-list">
+                            ${task.submissions.length > 0 ? task.submissions.map(s => `
+                                <li><a href="${s.filePath}">${s.filePath.split("/").pop()}</a> (by ${s.submittedBy})</li>
+                            `).join("") : "Chưa nộp"}
+                        </ul>
+                    </td>
+                    <td>${task.deadline ? new Date(task.deadline).toLocaleDateString("vi-VN") : "-"}</td>
+                    <td>${task.feedback || "Chưa có"}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary btn-action-spacing" onclick="openFeedbackModal('${projectId}', ${task.id}, '${task.title}', '${task.feedback || ''}')">
+                            <i class="bi bi-chat-left-text"></i> Phản hồi
+                        </button>
+                        <button class="btn btn-sm btn-warning" onclick="openEditModal('${projectId}', ${task.id}, '${task.title}', '${task.description || ''}', '${task.deadline || ''}', '${task.status}', ${JSON.stringify(task.submissions)})">
+                            <i class="bi bi-pencil"></i> Sửa
+                        </button>
+                    </td>
+                </tr>
+            `).join("") : '<tr><td colspan="7" class="text-center">Chưa có nhiệm vụ</td></tr>';
+        }
+
+        // Open feedback modal
+        function openFeedbackModal(projectId, taskId, title, feedback) {
+            document.getElementById("feedbackProjectId").value = projectId;
+            document.getElementById("feedbackTaskId").value = taskId;
+            document.getElementById("feedbackTaskTitle").value = title;
+            document.getElementById("feedbackComment").value = feedback;
+            new bootstrap.Modal(document.getElementById("feedbackModal")).show();
+        }
+
+        // Save feedback
+        async function saveFeedback() {
+            const projectId = document.getElementById("feedbackProjectId").value;
+            const taskId = document.getElementById("feedbackTaskId").value;
+            const feedback = document.getElementById("feedbackComment").value;
+            try {
+                const response = await fetch(`${API_URL}/api/LecturerCourses/projects/${projectId}/tasks/${taskId}/feedback`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({ feedback })
+                });
+                if (!response.ok) throw new Error("Failed to save feedback");
+                alert("Phản hồi đã được lưu!");
+                bootstrap.Modal.getInstance(document.getElementById("feedbackModal")).hide();
+                await loadTasks();
+            } catch (error) {
+                console.error("Error saving feedback:", error);
+                alert("Lỗi khi lưu phản hồi");
+            }
+        }
+
+        // Open edit modal
+        function openEditModal(projectId, taskId, title, description, deadline, status, submissions) {
+            document.getElementById("editProjectId").value = projectId;
+            document.getElementById("editTaskId").value = taskId;
+            document.getElementById("editTaskTitle").value = title;
+            document.getElementById("editDescription").value = description;
+            document.getElementById("editDueDate").value = deadline ? new Date(deadline).toISOString().split("T")[0] : "";
+            document.getElementById("editStatus").value = status;
+
+            const submissionList = document.getElementById("submissionList");
+            submissionList.innerHTML = "";
+            if (submissions.length > 0) {
+                submissions.forEach(s => addSubmissionField(s.filePath, s.submittedBy));
+            } else {
+                addSubmissionField();
+            }
+
+            new bootstrap.Modal(document.getElementById("editTaskModal")).show();
+        }
+
+        // Add submission field
+        function addSubmissionField(filePath = "", submittedBy = "") {
+            const submissionList = document.getElementById("submissionList");
+            const div = document.createElement("div");
+            div.classList.add("input-group", "mb-2");
+            div.innerHTML = `
+                <input type="text" class="form-control submission-file" value="${filePath}" placeholder="Tên tệp (VD: baocao.pdf)" required>
+                <input type="text" class="form-control submission-submitted-by" value="${submittedBy}" placeholder="Mã sinh viên nộp" required>
+                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">Xóa</button>
+            `;
+            submissionList.appendChild(div);
+        }
+
+        // Save task edit
+        async function saveTaskEdit() {
+            const form = document.getElementById("editTaskForm");
+            if (form.checkValidity()) {
+                const projectId = document.getElementById("editProjectId").value;
+                const taskId = document.getElementById("editTaskId").value;
+                const taskDto = {
+                    id: taskId,
+                    title: document.getElementById("editTaskTitle").value,
+                    description: document.getElementById("editDescription").value,
+                    deadline: document.getElementById("editDueDate").value,
+                    status: document.getElementById("editStatus").value,
+                    submissions: []
+                };
+
+                const submissionEntries = document.querySelectorAll(".input-group");
+                submissionEntries.forEach(entry => {
+                    const filePath = entry.querySelector(".submission-file").value;
+                    const submittedBy = entry.querySelector(".submission-submitted-by").value;
+                    if (filePath && submittedBy) {
+                        taskDto.submissions.push({ filePath, submittedBy });
+                    }
+                });
+
+                try {
+                    const response = await fetch(`${API_URL}/api/LecturerCourses/projects/${projectId}/tasks/${taskId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Accept": "*/*",
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include",
+                        body: JSON.stringify(taskDto)
+                    });
+                    if (!response.ok) throw new Error("Failed to save task");
+                    alert("Nhiệm vụ đã được cập nhật!");
+                    bootstrap.Modal.getInstance(document.getElementById("editTaskModal")).hide();
+                    await loadTasks();
+                } catch (error) {
+                    console.error("Error saving task:", error);
+                    alert("Lỗi khi lưu nhiệm vụ");
+                }
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Export to Excel
+        function exportProgress() {
+            try {
+                const data = tasks.map((t, index) => ({
+                    STT: index + 1,
+                    "Nhiệm vụ": t.title,
+                    "Mô tả": t.description || "Không có",
+                    "Tệp báo cáo": t.submissions.map(s => s.filePath.split("/").pop()).join(", "),
+                    "Hạn nộp": t.deadline ? new Date(t.deadline).toLocaleDateString("vi-VN") : "-",
+                    "Phản hồi": t.feedback || "Chưa có"
+                }));
+                const worksheet = XLSX.utils.json_to_sheet([
+                    { "Chi tiết tiến độ đồ án": `Mã đồ án: ${project?.projectId || "N/A"}` },
+                    { "Chi tiết tiến độ đồ án": `Tên đồ án: ${project?.name || "N/A"}` },
+                    { "Chi tiết tiến độ đồ án": `Nhóm: ${project?.groupName || "N/A"}` },
+                    { "Chi tiết tiến độ đồ án": `Nhóm trưởng: ${project?.students?.find(s => s.isLeader)?.fullName || "N/A"}` },
+                    { "Chi tiết tiến độ đồ án": `Thành viên: ${project?.students?.map(s => s.fullName).join(", ") || "N/A"}` },
+                    {},
+                    ...data
+                ]);
+                const workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Tasks");
+                XLSX.writeFile(workbook, `tien_do_do_an_${projectId}.xlsx`);
+            } catch (error) {
+                console.error("Error exporting to Excel:", error);
+                alert("Lỗi khi xuất Excel");
+            }
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
+
+            sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
+
+            if (sidebar.classList.contains("collapsed")) {
+                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
+            } else {
+                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+            }
+        }
+
+        // Ghi chú: Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                const text = await response.text();
+                if (response.ok) {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
+                } else {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
+            }
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
+        }
+
+        // Navbar functions
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
+        document.getElementById("notificationBtn").addEventListener("click", () => {
+            window.location.href = "/font-end/lecturer/lecturer_notifications.html";
+        });
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
@@ -320,7 +506,9 @@
         });
         document.addEventListener("click", (event) => {
             const dropdown = document.getElementById("profileDropdown");
-            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
+            if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") {
+                dropdown.style.display = "none";
+            }
         });
         document.getElementById("toggleFullscreen").addEventListener("click", () => {
             if (!document.fullscreenElement) document.documentElement.requestFullscreen();
@@ -336,229 +524,17 @@
         });
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
-        function toggleSidebar() {
-            let sidebar = document.querySelector(".sidebar");
-            let content = document.querySelector(".content");
-            let icon = document.getElementById("sidebarIcon");
-
-            sidebar.classList.toggle("collapsed");
-            content.classList.toggle("expanded");
-
-            if (sidebar.classList.contains("collapsed")) {
-                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
-            } else {
-                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
+        // Initialize
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                await loadUserProfile();
+                await loadProjectDetails();
+                await loadTasks();
+            } catch (error) {
+                console.error("Lỗi khi tải bảng điều khiển:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                logout();
             }
-        }
-
-        // Lấy projectId từ URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const projectId = urlParams.get("projectId");
-        const project = projects.find(p => p.projectId === projectId);
-
-        // Hiển thị thông tin đồ án
-        function displayProjectInfo() {
-            if (project) {
-                const group = groups.find(g => g.id === project.groupId);
-                const leader = students.find(s => s.groupId === project.groupId && s.isLeader);
-                const members = students.filter(s => s.groupId === project.groupId);
-
-                document.getElementById("projectId").textContent = project.projectId;
-                document.getElementById("projectName").textContent = project.name;
-                document.getElementById("groupName").textContent = group ? group.name : "Chưa có nhóm";
-                document.getElementById("groupLeader").textContent = leader ? leader.name : "Chưa có nhóm trưởng";
-                document.getElementById("groupMembers").textContent = members.map(m => m.name).join(", ");
-            } else {
-                document.querySelector(".card-content").innerHTML = "<p>Không tìm thấy đồ án.</p>";
-            }
-        }
-
-        // Hiển thị bảng tiến độ
-        function displayProgress() {
-            const progressTable = document.getElementById("progressTable");
-            const progress = progressData[projectId] || [];
-
-            progressTable.innerHTML = progress.length > 0 ? progress.map((p, index) => `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${p.phase}</td>
-                    <td>${p.description}</td>
-                    <td>
-                        <ul class="submission-list">
-                            ${p.submissions.length > 0 ? p.submissions.map(s => `
-                                <li><a href="#">${s.file}</a> (Nộp bởi: ${students.find(st => st.id === s.submittedBy)?.name || "Không rõ"})</li>
-                            `).join("") : "Chưa nộp"}
-                        </ul>
-                    </td>
-                    <td>${p.dueDate}</td>
-                    <td>${p.feedback || "Chưa có phản hồi"}</td>
-                    <td>${p.score !== null ? p.score : "Chưa chấm"}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary btn-action-spacing" onclick="gradeWeek('${projectId}', '${p.phase}')">
-                            <i class="bi bi-star"></i> Chấm điểm
-                        </button>
-                        <button class="btn btn-sm btn-warning" onclick="editProgress('${projectId}', '${p.phase}')">
-                            <i class="bi bi-pencil"></i> Sửa
-                        </button>
-                    </td>
-                </tr>
-            `).join("") : '<tr><td colspan="8" class="text-center">Chưa có tiến độ</td></tr>';
-        }
-
-        // Mở modal chấm điểm tuần
-        function gradeWeek(projectId, phase) {
-            const progress = progressData[projectId].find(p => p.phase === phase);
-            document.getElementById("gradeProjectId").value = projectId;
-            document.getElementById("gradePhase").value = phase;
-            document.getElementById("gradePhaseDisplay").value = phase;
-            document.getElementById("gradeScore").value = progress.score !== null ? progress.score : "";
-            document.getElementById("gradeComment").value = progress.comment || "";
-
-            const historyDiv = document.getElementById("gradeHistory");
-            historyDiv.innerHTML = progress.gradeHistory.length > 0 ? progress.gradeHistory.map(h => 
-                `Điểm: ${h.score}, Nhận xét: ${h.comment}, Ngày: ${h.date}`
-            ).join("<br>") : "Chưa có lịch sử chấm điểm";
-
-            const modal = new bootstrap.Modal(document.getElementById("gradeModal"));
-            modal.show();
-        }
-
-        // Lưu điểm tuần
-        function saveGrade() {
-            const form = document.getElementById("gradeForm");
-            if (form.checkValidity()) {
-                const projectId = document.getElementById("gradeProjectId").value;
-                const phase = document.getElementById("gradePhase").value;
-                const score = parseFloat(document.getElementById("gradeScore").value);
-                const comment = document.getElementById("gradeComment").value;
-
-                const progress = progressData[projectId].find(p => p.phase === phase);
-                if (progress) {
-                    const currentDate = new Date().toLocaleString("vi-VN");
-                    progress.score = score;
-                    progress.comment = comment;
-                    progress.gradeHistory.push({ score: score, comment: comment, date: currentDate });
-                    alert(`Đã chấm điểm cho ${phase} của đồ án ${projectId}: ${score} điểm`);
-                    bootstrap.Modal.getInstance(document.getElementById("gradeModal")).hide();
-                    displayProgress();
-                }
-            } else {
-                form.reportValidity();
-            }
-        }
-
-        // Thêm trường nhập tệp báo cáo trong modal
-        function addSubmissionField(file = "", submittedBy = "") {
-            const submissionList = document.getElementById("submissionList");
-            const group = groups.find(g => g.projectId === projectId);
-            const groupMembers = students.filter(s => group.members.includes(s.id));
-
-            const submissionDiv = document.createElement("div");
-            submissionDiv.className = "submission-entry mb-2";
-            submissionDiv.innerHTML = `
-                <div class="input-group">
-                    <input type="text" class="form-control submission-file" value="${file}" placeholder="Tên tệp (VD: baocao.pdf)" required>
-                    <select class="form-select submission-submitted-by" required>
-                        <option value="">Chọn người nộp</option>
-                        ${groupMembers.map(s => `<option value="${s.id}" ${submittedBy === s.id ? 'selected' : ''}>${s.name}</option>`).join("")}
-                    </select>
-                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Xóa</button>
-                </div>
-            `;
-            submissionList.appendChild(submissionDiv);
-        }
-
-        // Mở modal chỉnh sửa tiến độ
-        function editProgress(projectId, phase) {
-            const progress = progressData[projectId].find(p => p.phase === phase);
-
-            document.getElementById("editProjectId").value = projectId;
-            document.getElementById("editPhase").value = phase;
-            document.getElementById("editPhaseDisplay").value = phase;
-            document.getElementById("editDescription").value = progress.description;
-            document.getElementById("editDueDate").value = progress.dueDate;
-
-            const submissionList = document.getElementById("submissionList");
-            submissionList.innerHTML = "";
-            if (progress.submissions.length > 0) {
-                progress.submissions.forEach(s => addSubmissionField(s.file, s.submittedBy));
-            } else {
-                addSubmissionField();
-            }
-
-            const modal = new bootstrap.Modal(document.getElementById("editProgressModal"));
-            modal.show();
-        }
-
-        // Lưu chỉnh sửa tiến độ
-        function saveProgressEdit() {
-            const form = document.getElementById("editProgressForm");
-            if (form.checkValidity()) {
-                const projectId = document.getElementById("editProjectId").value;
-                const phase = document.getElementById("editPhase").value;
-                const description = document.getElementById("editDescription").value;
-                const dueDate = document.getElementById("editDueDate").value;
-
-                const submissionEntries = document.querySelectorAll(".submission-entry");
-                const submissions = Array.from(submissionEntries).map(entry => ({
-                    file: entry.querySelector(".submission-file").value,
-                    submittedBy: entry.querySelector(".submission-submitted-by").value
-                }));
-
-                const progress = progressData[projectId].find(p => p.phase === phase);
-                if (progress) {
-                    progress.description = description;
-                    progress.dueDate = dueDate;
-                    progress.submissions = submissions.filter(s => s.file && s.submittedBy); // Chỉ lưu nếu có cả file và người nộp
-                    alert(`Đã cập nhật tiến độ ${phase} của đồ án ${projectId}`);
-                    bootstrap.Modal.getInstance(document.getElementById("editProgressModal")).hide();
-                    displayProgress();
-                }
-            } else {
-                form.reportValidity();
-            }
-        }
-
-        // Xuất tiến độ sang Excel
-        function exportProgress() {
-            const worksheetData = [
-                ["Chi tiết tiến độ đồ án - Hệ thống Sinh viên HUTECH"],
-                ["Giảng viên hướng dẫn: Nguyễn Huy Cường"],
-                [],
-                ["Mã đồ án", "Tên đồ án", "Nhóm", "Nhóm trưởng", "Thành viên"],
-                [project.projectId, project.name, groups.find(g => g.id === project.groupId)?.name || "Chưa có nhóm", 
-                 students.find(s => s.groupId === project.groupId && s.isLeader)?.name || "Chưa có", 
-                 students.filter(s => s.groupId === project.groupId).map(s => s.name).join(", ")],
-                [],
-                ["#", "Giai đoạn", "Mô tả", "Tệp báo cáo", "Hạn nộp", "Phản hồi", "Điểm tuần", "Nhận xét"]
-            ];
-
-            const progress = progressData[projectId] || [];
-            progress.forEach((p, index) => {
-                const submissionText = p.submissions.length > 0 ? p.submissions.map(s => `${s.file} (Nộp bởi: ${students.find(st => st.id === s.submittedBy)?.name || "Không rõ"})`).join(", ") : "Chưa nộp";
-                worksheetData.push([
-                    index + 1,
-                    p.phase,
-                    p.description,
-                    submissionText,
-                    p.dueDate,
-                    p.feedback || "Chưa có",
-                    p.score !== null ? p.score : "Chưa chấm",
-                    p.comment || ""
-                ]);
-            });
-
-            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "TienDoDoAn");
-            XLSX.writeFile(workbook, `tien_do_do_an_${projectId}.xlsx`);
-        }
-
-        // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            displayProjectInfo();
-            displayProgress();
         });
     </script>
 </body>

@@ -125,34 +125,32 @@
         // Mục đích: Xử lý logic giao diện và gọi API cho trang cài đặt hệ thống
         // Ghi chú: Tích hợp API để quản lý quyền truy cập (4.7 - Phân quyền và bảo mật)
 
-        const apiBaseUrl = 'https://localhost:7047/api/AdminRolePermissions';
-
-        window.onload = async () => {
-            try {
-                loadUserProfile();
-                await loadPermissions();
-            } catch (error) {
-                console.error("Error loading users:", error);
-                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
-                window.location.href = "/font-end/login/login.html";
-            }
-        };
+        const API_URL = 'https://localhost:7047';
 
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_ADMIN") {
-                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_ADMIN") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    window.location.replace("/font-end/login/login.html");
+                }
+                document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+                document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
-            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
         // Ghi chú: Lấy danh sách quyền từ API
         async function loadPermissions() {
             try {
-                const response = await fetch(apiBaseUrl, {
+                const response = await fetch(`${API_URL}/api/AdminRolePermissions`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -212,9 +210,10 @@
             try {
                 for (const perm of permissions) {
                     if (perm.roleId === 1) continue; // Ghi chú: Bỏ qua Admin
-                    const response = await fetch(`${apiBaseUrl}/${perm.roleId}`, {
+                    const response = await fetch(`${API_URL}/api/AdminRolePermissions/${perm.roleId}`, {
                         method: 'PUT',
                         headers: {
+                            "Accept": "*/*",
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
@@ -237,28 +236,30 @@
         // Ghi chú: Đăng xuất
         async function logout() {
             try {
-                const token = localStorage.getItem('token');
-                if (token) {
-                    const response = await fetch('https://localhost:7047/api/Auth/logout', {
-                        method: 'POST',
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${localStorage.getItem("token")}`
-                        },
-                        credentials: "include"
-                    });
-                    const data = await response.json();
-                    if (!response.ok) {
-                        console.error('Đăng xuất thất bại:', data.message);
-                    }
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                const text = await response.text();
+                if (response.ok) {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
+                } else {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
-                console.error('Lỗi khi đăng xuất:', error);
-            } finally {
-                localStorage.removeItem('token'); // Ghi chú: Xóa token
-                localStorage.removeItem('user'); // Ghi chú: Xóa thông tin user
-                window.location.replace('/font-end/login/login.html');
+                alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
             }
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
         }
 
         // Ghi chú: Navbar Functions
@@ -301,6 +302,17 @@
             icon.classList.replace(sidebar.classList.contains("collapsed") ? "bi-list" : "bi-layout-sidebar-inset",
                                 sidebar.classList.contains("collapsed") ? "bi-layout-sidebar-inset" : "bi-list");
         }
+
+        window.onload = async () => {
+            try {
+                await loadUserProfile();
+                await loadPermissions();
+            } catch (error) {
+                console.error("Error loading users:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
+        };
     </script>
 </body>
 </html>

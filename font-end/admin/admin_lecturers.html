@@ -87,8 +87,8 @@
                     <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm giảng viên..." onkeyup="filterTable()">
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Vai trò</option>
-                        <option value="ROLE_LECTURER">Giảng viên hướng dẫn</option>
                         <option value="ROLE_HEAD">Trưởng bộ môn</option>
+                        <option value="ROLE_LECTURER_GUIDE">Giảng viên hướng dẫn</option>
                     </select>
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
@@ -356,8 +356,8 @@
                             <td>${lecturer.username}</td>
                             <td>${lecturer.fullName}</td>
                             <td>${lecturer.email}</td>
-                            <td>${lecturer.classCode || "Chưa có"}</td>
-                            <td>${lecturer.roleName === "ROLE_LECTURER" ? "Giảng viên hướng dẫn" : "Trưởng bộ môn"}</td>
+                            <td>${lecturer.facultyCode || "Chưa có"}</td>
+                            <td>${lecturer.roleName === "ROLE_LECTURER_GUIDE" ? "Giảng viên hướng dẫn" : "Trưởng bộ môn"}</td>
                             <td><span class="badge ${statusClass}">${statusText}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-info me-1" onclick="editLecturer(${lecturer.id})"><i class="bi bi-pencil"></i></button>
@@ -561,8 +561,8 @@
                     lecturer.username,
                     lecturer.fullName,
                     lecturer.email,
-                    lecturer.classCode || "Chưa có",
-                    lecturer.roleName === "ROLE_LECTURER" ? "Giảng viên hướng dẫn" : "Trưởng bộ môn",
+                    lecturer.facultyCode || "Chưa có",
+                    lecturer.roleId === "ROLE_LECTURER_GUIDE" ? "Giảng viên hướng dẫn" : "Trưởng bộ môn",
                     lecturer.locked ? "Khóa" : "Hoạt động"
                 ]);
             });

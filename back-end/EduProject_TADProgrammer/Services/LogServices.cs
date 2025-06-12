@@ -157,5 +157,19 @@ namespace EduProject_TADProgrammer.Services
 
             return await query.OrderBy(l => l.CreatedAt).ToListAsync();
         }
+
+        // Ghi nhật ký hành động vào bảng Logs.
+        public async System.Threading.Tasks.Task LogAction(long userId, string action, string details)
+        {
+            var log = new Log
+            {
+                UserId = userId,
+                Action = action,
+                Details = details,
+                CreatedAt = DateTime.UtcNow
+            };
+            _context.Logs.Add(log);
+            await _context.SaveChangesAsync();
+        }
     }
 }

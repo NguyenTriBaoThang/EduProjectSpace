@@ -15,7 +15,7 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên hướng dẫn</h4>
         <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
             <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
@@ -240,7 +240,9 @@
         async function filterStudents() {
             const searchText = document.querySelector(".search-box").value.toLowerCase();
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/ungrouped-students?courseId=${selectedCourseId}`, {
+                method: "GET",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
@@ -280,7 +282,9 @@
 
             const groupSize = parseInt(document.getElementById("groupSize").value) || 3;
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/groups?courseId=${selectedCourseId}`, {
+                method: "GET",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
@@ -304,7 +308,7 @@
                 groupList.innerHTML += `
                     <div class="card mb-3">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h6>${group.name} (${group.id}) - ${group.projectId || "Chưa gán đồ án"}</h6>
+                            <h6>${group.name} - ${group.projectId || "Chưa gán đồ án"}</h6>
                             <div>
                                 <button class="btn btn-sm btn-primary me-1" onclick="showEditGroupModal('${group.id}', '${group.name}')">Chỉnh sửa</button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteGroup('${group.id}')">Xóa</button>
@@ -329,9 +333,10 @@
             if (form.checkValidity()) {
                 const groupName = document.getElementById("newGroupName").value.trim();
 
-                const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-group?groupName=${groupName}&courseId=${selectedCourseId}`, {
+                const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-group?groupName=${encodeURIComponent(groupName)}&courseId=${selectedCourseId}`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -354,6 +359,7 @@
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-to-group?studentId=${studentId}&groupId=${groupId}&groupSize=${groupSize}`, {
                 method: "POST",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
@@ -370,6 +376,7 @@
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/remove-from-group?studentId=${studentId}&groupId=${groupId}`, {
                 method: "POST",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
@@ -386,6 +393,7 @@
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/toggle-leader?studentId=${studentId}&groupId=${groupId}`, {
                 method: "POST",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
@@ -403,6 +411,7 @@
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/auto-group`, {
                 method: "POST",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
@@ -442,6 +451,7 @@
                         const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-group?groupName=${groupName}&courseId=${selectedCourseId}`, {
                             method: "POST",
                             headers: {
+                                "Accept": "*/*",
                                 "Content-Type": "application/json",
                                 "Authorization": `Bearer ${localStorage.getItem("token")}`
                             },
@@ -456,6 +466,7 @@
                                 await fetch(`${API_URL}/api/LecturerCourseGroup/add-to-group?studentId=${memberId}&groupId=${groupId}&groupSize=5`, {
                                     method: "POST",
                                     headers: {
+                                        "Accept": "*/*",
                                         "Content-Type": "application/json",
                                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                                     },
@@ -467,6 +478,7 @@
                                 await fetch(`${API_URL}/api/LecturerCourseGroup/toggle-leader?studentId=${leaderId}&groupId=${groupId}`, {
                                     method: "POST",
                                     headers: {
+                                        "Accept": "*/*",
                                         "Content-Type": "application/json",
                                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                                     },
@@ -486,11 +498,13 @@
         // Xuất danh sách nhóm sang Excel
         async function exportGroups() {
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/export-excel?courseId=${selectedCourseId}`, {
+                method: "GET",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
-                credentials: "include"
+                credentials: "include",
             });
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
@@ -502,42 +516,20 @@
         }
 
         // Tải thông tin người dùng
-        function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (user && user.roleName === "ROLE_LECTURER_GUIDE") {
-                lecturerId = user.id;
+        async function loadUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_LECTURER_GUIDE") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                    logout();
+                }
                 document.getElementById("userName").textContent = user.fullName || "Nguyễn Huy Cường";
                 document.getElementById("userEmail").textContent = user.email || "nguyenhuycuong@hutech.edu.vn";
-            } else {
-                alert("Không có quyền Giảng viên hướng dẫn hoặc chưa đăng nhập.");
-                window.location.replace("/font-end/login/login.html");
-            }
-        }
-
-        // Đăng xuất tài khoản
-        async function logout() {
-            try {
-                const response = await fetch(`${API_URL}/api/Auth/logout`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    credentials: "include"
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert(data.message);
-                } else {
-                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                }
             } catch (error) {
-                alert("Đăng xuất bị lỗi: " + error.message);
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Không có quyền Giảng viên hướng dẫn hoặc chưa đăng nhập.");
+                logout();
             }
-
-            localStorage.removeItem("user");
-            window.location.replace("/font-end/login/login.html");
         }
 
         // Hiển thị modal chỉnh sửa tên nhóm
@@ -555,6 +547,7 @@
             const response = await fetch(`${API_URL}/api/LecturerCourseGroup/update-group-name?groupId=${groupId}&newGroupName=${newGroupName}`, {
                 method: "POST",
                 headers: {
+                    "Accept": "*/*",
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
@@ -574,6 +567,7 @@
                 const response = await fetch(`${API_URL}/api/LecturerCourseGroup/delete-group?groupId=${groupId}`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -587,15 +581,50 @@
             }
         }
 
+        // Ghi chú: Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                const text = await response.text();
+                if (response.ok) {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
+                } else {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
+            }
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
+        }
+
         // Khởi chạy
         document.addEventListener("DOMContentLoaded", async () => {
-            if (!selectedCourseId) {
-                alert("Vui lòng chọn một môn học từ danh sách để chia nhóm!");
-                window.location.href = "lecturer_course_groups.html";
-                return;
+            try {
+                if (!selectedCourseId) {
+                    alert("Vui lòng chọn một môn học từ danh sách để chia nhóm!");
+                    window.location.href = "lecturer_course_groups.html";
+                    return;
+                }
+                await loadUserProfile();
+                await displayGroups();
+            } catch (error) {
+                console.error("Lỗi khi tải bảng điều khiển:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                logout();
             }
-            await loadUserProfile();
-            await displayGroups();
         });
     </script>
 </body>

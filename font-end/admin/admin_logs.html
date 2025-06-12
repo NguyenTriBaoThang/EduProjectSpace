@@ -83,9 +83,9 @@
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Vai trò</option>
                         <option value="ROLE_ADMIN">Admin</option>
-                        <option value="ROLE_LECTURER">Giảng viên hướng dẫn</option>
-                        <option value="ROLE_STUDENT">Sinh viên</option>
                         <option value="ROLE_HEAD">Trưởng bộ môn</option>
+                        <option value="ROLE_LECTURER_GUIDE">Giảng viên hướng dẫn</option>
+                        <option value="ROLE_STUDENT">Sinh viên</option>
                     </select>
                     <select id="actionFilter" class="form-select" onchange="filterTable()">
                         <option value="">📌 Hành động</option>
@@ -227,15 +227,31 @@
             switch (action) {
                 case "LOGIN": return "Đăng nhập";
                 case "LOGOUT": return "Đăng xuất";
-                case "CREATE": return "Thêm";
+                case "CREATE": return "Tạo";
                 case "UPDATE": return "Sửa";
                 case "DELETE": return "Xóa";
-                case "JONT_GROUP": return "Tham gia nhóm";
-                case "SEND": return "Gửi tin nhắn";
+                case "EXPORT_EXCEL": return "Xuất excel";
+                case "SEND_NOTIFICATION": return "Gửi thông báo";
+                case "CREATE_ASSIGNMENT": return "Tạo bài tập";
+                case "SUBMIT_ASSIGNMENT": return "Nộp bài";
+                case "APPROVE": return "Duyệt";
+                case "DIVIDE_GROUPS": return "Chia nhóm";
                 case "GREADE": return "Chấm điểm";
-                case "SUBMISSION": return "Nộp bài";
+                case "COMMENT": return "Nhận xét";
                 default: return action;
             }
+        }
+
+        // Ánh xạ Quyền
+        function getRoleDisplayName(roleName) {
+            const roleMap = {
+                ROLE_ADMIN: "Quản trị viên",
+                ROLE_LECTURER_GUIDE: "Giảng viên hướng dẫn",
+                ROLE_STUDENT: "Sinh viên",
+                ROLE_HEAD: "Trưởng bộ môn",
+                ROLE_REVIEWER: "Giảng viên phản biện"
+            };
+            return roleMap[roleName] || "Không xác định";
         }
 
         // Lọc và sắp xếp bảng
@@ -251,7 +267,7 @@
 
             // Lọc theo vai trò và hành động
             filtered = filtered.filter(log =>
-                (roleFilter === "" || log.roleName === roleFilter.replace("ROLE_", "")) &&
+                (roleFilter === "" || log.roleName === roleFilter) &&
                 (actionFilter === "" || log.action === mapAction(actionFilter))
             );
 
@@ -290,7 +306,7 @@
                             <td>${start + index + 1}</td>
                             <td>${log.createdAt}</td>
                             <td>${log.fullName}</td>
-                            <td>${log.roleName}</td>
+                            <td>${getRoleDisplayName(log.roleName)}</td>
                             <td>${log.action}</td>
                             <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${log.details}">${log.details}</td>
                         </tr>

@@ -10,7 +10,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Roles = "ROLE_LECTURER_GUIDE")] // Chỉ cho phép vai trò Giảng viên hướng dẫn
+    [Authorize(Roles = "ROLE_LECTURER_GUIDE")] // Chỉ cho phép vai trò Giảng viên hướng dẫn
     public class LecturerCourseGroupController : ControllerBase
     {
         private readonly LecturerCourseGroupService _service;
@@ -23,8 +23,13 @@ namespace EduProject_TADProgrammer.Controllers
         // GET: api/LecturerCourseGroup/courses
         // Mục đích: Lấy danh sách môn học cần chia nhóm cho Giảng viên
         [HttpGet("courses")]
-        public async Task<IActionResult> GetCourses([FromQuery] long lecturerId)
+        public async Task<IActionResult> GetCourses()
         {
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+            }
+
             try
             {
                 var courseData = await _service.GetCoursesForGroupingAsync(lecturerId);

@@ -44,7 +44,7 @@ namespace EduProject_TADProgrammer.Services
 
             var tomorrow = DateTime.UtcNow.Date.AddDays(1);
             var tasks = await context.Tasks
-                .Include(t => t.Student)
+                //.Include(t => t.Student)
                 .Include(t => t.Group)
                 .Where(t => t.Deadline.HasValue && t.Deadline.Value.Date == tomorrow && t.Status != "DONE")
                 .ToListAsync();
@@ -54,10 +54,10 @@ namespace EduProject_TADProgrammer.Services
                 var recipients = new List<User>();
 
                 // Thêm sinh viên được gán trực tiếp (nếu có)
-                if (task.StudentId.HasValue && task.Student != null)
+                /*if (task.StudentId.HasValue && task.Student != null)
                 {
                     recipients.Add(task.Student);
-                }
+                }*/
 
                 // Thêm các sinh viên trong nhóm (nếu có)
                 if (task.GroupId.HasValue)

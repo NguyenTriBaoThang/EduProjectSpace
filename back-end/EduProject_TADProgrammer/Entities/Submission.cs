@@ -39,6 +39,13 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("GroupId")]
         public Group Group { get; set; }
 
+        // ID của sinh viên nộp bài
+        public long StudentId { get; set; }
+
+        // Liên kết với entity User (sinh viên nộp bài)
+        [ForeignKey("StudentId")]
+        public User Student { get; set; }
+
         // Thêm trường TaskId để liên kết với Task
         public long? TaskId { get; set; } // Nullable vì không phải Submission nào cũng cần liên kết với Task
         [ForeignKey("TaskId")]

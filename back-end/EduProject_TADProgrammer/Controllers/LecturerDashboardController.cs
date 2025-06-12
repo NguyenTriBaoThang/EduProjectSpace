@@ -9,7 +9,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_LECTURER_GUIDE")] // Chỉ cho phép vai trò Giảng viên hướng dẫn
+    [Authorize(Roles = "ROLE_LECTURER_GUIDE")] // Chỉ cho phép vai trò Giảng viên hướng dẫn
     public class LecturerDashboardController : ControllerBase
     {
         private readonly LecturerDashboardService _dashboardService;
@@ -22,8 +22,13 @@ namespace EduProject_TADProgrammer.Controllers
         // GET: api/LecturerDashboard/summary
         // Mục đích: Lấy tổng quan số liệu cho Giảng viên
         [HttpGet("summary")]
-        public async Task<IActionResult> GetSummary([FromQuery] long lecturerId)
+        public async Task<IActionResult> GetSummary()
         {
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+            }
+
             try
             {
                 var dashboardData = await _dashboardService.GetDashboardDataAsync(lecturerId);

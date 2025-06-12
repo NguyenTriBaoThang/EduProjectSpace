@@ -88,9 +88,9 @@
                     <select id="roleFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Vai trò</option>
                         <option value="ROLE_ADMIN">Admin</option>
-                        <option value="ROLE_LECTURER">Giảng viên hướng dẫn</option>
-                        <option value="ROLE_STUDENT">Sinh viên</option>
                         <option value="ROLE_HEAD">Trưởng bộ môn</option>
+                        <option value="ROLE_LECTURER_GUIDE">Giảng viên hướng dẫn</option>
+                        <option value="ROLE_STUDENT">Sinh viên</option>
                     </select>
                 </div>
 
@@ -253,16 +253,17 @@
             });
         }
 
-        window.onload = async () => {
-            try {
-                await loadUserProfile();
-                await loadUsers();
-            } catch (error) {
-                console.error("Error loading users:", error);
-                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
-                window.location.href = "/font-end/login/login.html";
-            }
-        };
+        // Ánh xạ Quyền
+        function getRoleDisplayName(roleName) {
+            const roleMap = {
+                ROLE_ADMIN: "Quản trị viên",
+                ROLE_LECTURER_GUIDE: "Giảng viên hướng dẫn",
+                ROLE_STUDENT: "Sinh viên",
+                ROLE_HEAD: "Trưởng bộ môn",
+                ROLE_REVIEWER: "Giảng viên phản biện"
+            };
+            return roleMap[roleName] || "Không xác định";
+        }
 
         async function loadUserProfile() {
             const user = JSON.parse(localStorage.getItem("user"));
@@ -276,7 +277,9 @@
         async function loadUsers() {
             try {
                 const response = await fetch(`${API_URL}/api/AdminUser`, {
+                    method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -341,7 +344,7 @@
                             <td>${start + index + 1}</td>
                             <td>${user.fullName}</td>
                             <td>${user.email}</td>
-                            <td>${user.roleName.replace("ROLE_", "")}</td>
+                            <td>${getRoleDisplayName(user.roleName)}</td>
                             <td><span class="badge ${statusClass}">${statusText}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-info me-1" onclick="editUser(${user.id})"><i class="bi bi-pencil"></i></button>
@@ -418,6 +421,7 @@
                 const response = await fetch(`${API_URL}/api/AdminUser`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -474,6 +478,7 @@
                 const response = await fetch(`${API_URL}/api/AdminUser/${id}`, {
                     method: "PUT",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -500,6 +505,7 @@
                 const response = await fetch(`${API_URL}/api/AdminUser/${id}`, {
                     method: "DELETE",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -597,6 +603,7 @@
                         const response = await fetch(`${API_URL}/api/AdminUser/import`, {
                             method: "POST",
                             headers: {
+                                "Accept": "*/*",
                                 "Content-Type": "application/json",
                                 "Authorization": `Bearer ${localStorage.getItem("token")}`
                             },
@@ -624,28 +631,32 @@
             }
         }
 
+        // Ghi chú: Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-
-                const data = await response.json();
+                const text = await response.text();
                 if (response.ok) {
-                    alert(data.message);
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
                 } else {
+                    const data = text ? JSON.parse(text) : {};
                     alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
                 }
             } catch (error) {
                 alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Đăng xuất bị lỗi:", error);
             }
-
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
@@ -690,6 +701,17 @@
                 icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
             }
         }
+
+        window.onload = async () => {
+            try {
+                await loadUserProfile();
+                await loadUsers();
+            } catch (error) {
+                console.error("Error loading users:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                window.location.href = "/font-end/login/login.html";
+            }
+        };
     </script>
 </body>
 </html>

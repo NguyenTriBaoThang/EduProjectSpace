@@ -77,5 +77,8 @@ namespace EduProject_TADProgrammer.Entities
 
         // Danh sách sinh viên đăng ký môn học
         public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>();
+
+        // Danh sách giảng viên hướng dẫn
+        public virtual ICollection<LecturerCourses> LecturerCourses { get; set; } = new List<LecturerCourses>();
     }
 }

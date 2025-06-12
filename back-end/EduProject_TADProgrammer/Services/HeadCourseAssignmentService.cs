@@ -59,8 +59,9 @@ namespace EduProject_TADProgrammer.Services
         public async Task<List<HeadCourseAssignmentLecturerDto>> GetLecturersAsyn(long? courseCode)
         {
             var query = _context.Users
-            .Include(u => u.Role)
-            .Where(u => u.Role.Name == "ROLE_LECTURER_GUIDE" && u.CourseId == courseCode);
+                .Include(u => u.Role)
+                .Include(u => u.LecturerCourses)
+                .Where(u => u.Role.Name == "ROLE_LECTURER_GUIDE" && u.LecturerCourses.Any(lc => lc.CourseId == courseCode));
 
 
             var lecturers = await query

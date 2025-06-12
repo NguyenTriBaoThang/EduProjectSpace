@@ -64,13 +64,6 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("DepartmentId")]
         public Department Department { get; set; }
 
-        // ID của môn học (tùy chọn, chỉ áp dụng cho giảng viên)
-        public long? CourseId { get; set; }
-
-        // Liên kết với entity Course (môn học giảng viên phụ trách)
-        [ForeignKey("CourseId")]
-        public Course Course { get; set; }
-
         // Số lần đăng nhập thất bại (bắt buộc, mặc định là 0)
         [Required]
         public int FailedLoginAttempts { get; set; } = 0;
@@ -88,7 +81,7 @@ namespace EduProject_TADProgrammer.Entities
         // Danh sách quan hệ với các entity khác
         public virtual ICollection<GroupMember> GroupMembers { get; set; } = new List<GroupMember>(); // Thành viên nhóm
         public virtual ICollection<GroupRequest> GroupRequests { get; set; } = new List<GroupRequest>(); // Yêu cầu tham gia nhóm
-        public virtual ICollection<Task> Tasks { get; set; } = new List<Task>(); // Nhiệm vụ được giao
+        public virtual ICollection<Submission> Tasks { get; set; } = new List<Submission>(); // Nộp bài
         public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>(); // Điểm số của người dùng
         public virtual ICollection<GradeAppeal> GradeAppeals { get; set; } = new List<GradeAppeal>(); // Yêu cầu phúc khảo điểm
         public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>(); // Thông báo nhận được
@@ -109,6 +102,7 @@ namespace EduProject_TADProgrammer.Entities
         public virtual ICollection<PeerReview> PeerReviewsAsReviewer { get; set; } = new List<PeerReview>(); // Đánh giá ngang hàng (người đánh giá)
         public virtual ICollection<PeerReview> PeerReviewsAsReviewee { get; set; } = new List<PeerReview>(); // Đánh giá ngang hàng (người được đánh giá)
         public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>(); // Môn học sinh viên đăng ký
+        public virtual ICollection<LecturerCourses> LecturerCourses { get; set; } = new List<LecturerCourses>(); // Môn học giảng viên hướng dẫn
         public virtual ICollection<Grade> GradedGrades { get; set; } = new List<Grade>(); // Điểm do người dùng chấm
 
         // Phương thức mã hóa mật khẩu

@@ -25,6 +25,9 @@ namespace EduProject_TADProgrammer.Models
         // Mã lớp học (tùy chọn, chủ yếu áp dụng cho sinh viên)
         public string ClassCode { get; set; }
 
+        // Mã lớp học (tùy chọn, chủ yếu áp dụng cho Giảng viên hướng dẫn và Trưởng bộ môn)
+        public string FacultyCode { get; set; }
+
         // ID của vai trò
         public long RoleId { get; set; }
 

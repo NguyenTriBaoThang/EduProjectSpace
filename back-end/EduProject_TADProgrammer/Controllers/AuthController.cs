@@ -3,11 +3,14 @@
 // Chức năng hỗ trợ: 
 //   1: Phân quyền và bảo mật (xác thực JWT, giới hạn đăng nhập sai, ghi nhật ký).
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using EduProject_TADProgrammer.Entities;
+using EduProject_TADProgrammer.Data;
+using System.Linq;
 
 namespace EduProject_TADProgrammer.Controllers
 {
@@ -15,13 +18,15 @@ namespace EduProject_TADProgrammer.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AdminUserService _userService;
+        private readonly LogService _logService;
         private readonly JwtService _jwtService;
+        private readonly AdminUserService _userService;
 
-        public AuthController(AdminUserService userService, JwtService jwtService)
+        public AuthController(AdminUserService userService, JwtService jwtService, LogService logService)
         {
             _userService = userService;
             _jwtService = jwtService;
+            _logService = logService;
         }
 
         // POST: api/auth/login
@@ -29,11 +34,9 @@ namespace EduProject_TADProgrammer.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            Console.WriteLine($"Attempting login for username: {request.Username}");
             var user = await _userService.Authenticate(request.Username, request.Password);
             if (user == null)
             {
-                Console.WriteLine($"Authentication failed for {request.Username}");
                 var failedUser = await _userService.GetByUsername(request.Username);
                 if (failedUser != null)
                 {
@@ -42,6 +45,7 @@ namespace EduProject_TADProgrammer.Controllers
                         failedUser.Locked = true;
                     await _userService.UpdateUser(failedUser);
                 }
+                await _logService.LogAction(user.Id, "LOGIN", $"Người dùng {user.FullName} đăng nhập hệ thống thất bại.");
                 return Unauthorized(new { message = "Tên đăng nhập hoặc mật khẩu không đúng." });
             }
 
@@ -53,10 +57,8 @@ namespace EduProject_TADProgrammer.Controllers
                 var token = _jwtService.GenerateToken(user);
                 if (string.IsNullOrEmpty(token))
                 {
-                    Console.WriteLine("Token generation failed");
                     return BadRequest(new { message = "Không thể tạo token." });
                 }
-                Console.WriteLine($"Token created: {token}");
 
                 Response.Cookies.Append("token", token, new CookieOptions
                 {
@@ -65,9 +67,8 @@ namespace EduProject_TADProgrammer.Controllers
                     SameSite = SameSiteMode.None,
                     Expires = DateTime.UtcNow.AddHours(1)
                 });
-                Console.WriteLine("Cookie set successfully");
 
-                await _userService.LogAction(user.Id, "Đăng nhập", $"User {user.FullName} đăng nhập hệ thống.");
+                await _logService.LogAction(user.Id, "LOGIN", $"Người dùng {user.FullName} đăng nhập hệ thống.");
 
                 return Ok(new
                 {
@@ -89,7 +90,6 @@ namespace EduProject_TADProgrammer.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in login: {ex.Message}");
                 return StatusCode(500, new { message = "Lỗi server khi tạo token." });
             }
         }
@@ -102,18 +102,13 @@ namespace EduProject_TADProgrammer.Controllers
         {
             try
             {
-                var idClaim = User.FindFirst("id");
-                if (idClaim == null)
+                if (!long.TryParse(User.FindFirst("id")?.Value, out var userId))
                 {
-                    return Unauthorized(new { message = "Không tìm thấy thông tin người dùng trong token." });
+                    return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
                 }
-
-                if (!long.TryParse(idClaim.Value, out var userId))
-                {
-                    return BadRequest(new { message = "ID người dùng không hợp lệ." });
-                }
-
-                await _userService.LogAction(userId, "Đăng xuất", "Tài khoản đã đăng xuất hệ thống.");
+                var fullName = User.FindFirst("fullName")?.Value ?? "Không rõ tên";
+                var userName = User.FindFirst("userName")?.Value ?? "Không rõ tài khoản";
+                await _logService.LogAction(userId, "LOGOUT", $"Người dùng {fullName}({userName}) đã đăng xuất hệ thống.");
 
                 Response.Cookies.Append("token", "", new CookieOptions
                 {
