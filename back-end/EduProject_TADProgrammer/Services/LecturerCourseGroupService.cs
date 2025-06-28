@@ -48,7 +48,7 @@ namespace EduProject_TADProgrammer.Services
 
             var students = await _context.Users
                 .Include(u => u.Role)
-                .Where(u => u.Role.Name == "ROLE_STUDENT" && u.StudentCourses.Any(sc => sc.CourseId == course.Id))
+                .Where(u => u.Role.Name == "ROLE_STUDENT" && u.CoursesAsStudent.Any(sc => sc.CourseId == course.Id))
                 .ToListAsync();
 
             var groupedStudentIds = await _context.GroupMembers
@@ -85,6 +85,7 @@ namespace EduProject_TADProgrammer.Services
                     Name = g.Name,
                     CourseId = courseId,
                     ProjectId = g.Project.ProjectCode,
+                    ProjectName = g.Project.Title,
                     Members = g.GroupMembers.Select(m => new LecturerCourseGroupStudentDto
                     {
                         Id = m.StudentId.ToString(),
@@ -119,6 +120,11 @@ namespace EduProject_TADProgrammer.Services
 
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseCode == courseId);
             if (course == null) throw new Exception("Course not found.");
+
+            var existingGroup = await _context.Groups
+                .Where(g => g.Project != null && g.Project.CourseId == course.Id && g.Name == groupName)
+                .FirstOrDefaultAsync();
+            if (existingGroup != null) throw new Exception("Tên nhóm đã tồn tại trong môn học này.");
 
             var lecturerCourse = await _context.LecturerCourses
                 .Include(lc => lc.Lecturer)
@@ -162,6 +168,7 @@ namespace EduProject_TADProgrammer.Services
                 Name = group.Name,
                 CourseId = courseId,
                 ProjectId = project.ProjectCode,
+                ProjectName = project.Title,
                 Members = new List<LecturerCourseGroupStudentDto>()
             };
         }
@@ -228,6 +235,19 @@ namespace EduProject_TADProgrammer.Services
 
             _context.GroupMembers.Remove(groupMember);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<string> GetIdByUsernameAsync(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+                throw new ArgumentException("Username không được để trống.");
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == username && u.Role.Name == "ROLE_STUDENT");
+            if (user == null)
+                throw new Exception("Sinh viên không tồn tại.");
+
+            return user.Id.ToString();
         }
 
         public async System.Threading.Tasks.Task ToggleLeaderAsync(string studentId, string groupId)
@@ -300,7 +320,7 @@ namespace EduProject_TADProgrammer.Services
             var ungroupedStudents = await _context.Users
                 .Include(u => u.Role)
                 .Where(u => u.Role.Name == "ROLE_STUDENT" &&
-                            u.StudentCourses.Any(sc => sc.CourseId == course.Id) &&
+                            u.CoursesAsStudent.Any(sc => sc.CourseId == course.Id) &&
                             !_context.GroupMembers.Any(gm => gm.StudentId == u.Id &&
                                                             _context.Groups.Any(g => g.Id == gm.GroupId &&
                                                                                     g.Project != null &&
@@ -364,23 +384,33 @@ namespace EduProject_TADProgrammer.Services
 
         public async Task<byte[]> ExportGroupsToExcelAsync(string courseId)
         {
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseCode == courseId);
+            if (course == null) throw new Exception("Course not found.");
+
             var groups = await GetGroupsAsync(courseId);
             var worksheetData = new List<string[]>
             {
                 new[] { "Danh sách nhóm sinh viên - Hệ thống Sinh viên HUTECH" },
                 new[] { $"Khóa học: {courseId}" },
+                new[] { $"Tên môn học: {course.Name}" },
                 new[] { "" },
-                new[] { "Mã nhóm", "Mã đồ án", "Tên nhóm", "Thành viên", "Nhóm trưởng" }
+                new[] { "Mã nhóm", "Mã đồ án", "Tên đồ án", "Tên nhóm", "Thành viên", "Nhóm trưởng" }
             };
 
             foreach (var group in groups)
             {
-                var members = group.Members.Any() ? string.Join(", ", group.Members.Select(m => $"{m.Id} - {m.Name}{(m.IsLeader ? " (Nhóm trưởng)" : "")}")) : "Chưa có thành viên";
-                var leader = group.Members.FirstOrDefault(m => m.IsLeader)?.Id ?? "Chưa chọn";
+                var leaderMember = group.Members.FirstOrDefault(m => m.IsLeader);
+                var leader = leaderMember != null
+                    ? $"{leaderMember.Username} - {leaderMember.Name}"
+                    : "Chưa chọn";
+                var members = group.Members.Any()
+                    ? string.Join(", ", group.Members.Select(m => $"{m.Username} - {m.Name}{(m.IsLeader ? " (Nhóm trưởng)" : "")}"))
+                    : "Chưa có thành viên";
                 worksheetData.Add(new[]
                 {
                     group.Id,
                     group.ProjectId ?? "Chưa gán",
+                    group.ProjectName ?? "Chưa gán",
                     group.Name,
                     members,
                     leader
@@ -412,8 +442,19 @@ namespace EduProject_TADProgrammer.Services
             if (!long.TryParse(groupId, out parsedGroupId))
                 throw new ArgumentException("GroupId phải là số hợp lệ.");
 
-            var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == parsedGroupId);
+            var group = await _context.Groups
+                .Include(g => g.Project)
+                .FirstOrDefaultAsync(g => g.Id == parsedGroupId);
             if (group == null) throw new Exception("Group not found.");
+
+            var courseId = await _context.Projects
+                .Where(p => p.Id == group.ProjectId)
+                .Select(p => p.CourseId)
+                .FirstOrDefaultAsync();
+            var existingGroup = await _context.Groups
+                .Where(g => g.Project != null && g.Project.CourseId == courseId && g.Name == newGroupName && g.Id != parsedGroupId)
+                .FirstOrDefaultAsync();
+            if (existingGroup != null) throw new Exception("Tên nhóm đã tồn tại trong môn học này.");
 
             group.Name = newGroupName;
             group.UpdatedAt = DateTime.UtcNow;
@@ -444,6 +485,21 @@ namespace EduProject_TADProgrammer.Services
 
             _context.Groups.Remove(group);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> CheckStudentInCourseAsync(string studentId, string courseId)
+        {
+            long parsedStudentId;
+            if (!long.TryParse(studentId, out parsedStudentId))
+                throw new ArgumentException("StudentId phải là số hợp lệ.");
+
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseCode == courseId);
+            if (course == null) throw new Exception("Course not found.");
+
+            var student = await _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == parsedStudentId && u.Role.Name == "ROLE_STUDENT" && u.CoursesAsStudent.Any(sc => sc.CourseId == course.Id));
+            return student != null;
         }
 
         private async Task<string> GenerateUniqueProjectCode()

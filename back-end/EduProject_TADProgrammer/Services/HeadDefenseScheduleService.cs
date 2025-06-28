@@ -10,266 +10,194 @@ using Google.Apis.Calendar.v3;
 using Google.Apis.Services;
 using Google.Apis.Calendar.v3.Data;
 using Newtonsoft.Json;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace EduProject_TADProgrammer.Services
 {
     public class HeadDefenseScheduleService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
 
-        public HeadDefenseScheduleService(ApplicationDbContext context, IConfiguration configuration)
+        public HeadDefenseScheduleService(ApplicationDbContext context)
         {
             _context = context;
-            _configuration = configuration;
         }
 
-        public List<HeadDefenseScheduleDto> GetDefenseSchedules()
+        public List<HeadCourseDefenseDto> GetCoursesForDefense(long headId)
         {
-            return _context.DefenseSchedules
-                .Include(ds => ds.Project)
-                .Include(ds => ds.Project.Group)
-                .Include(ds => ds.Meeting)
-                .Select(ds => new HeadDefenseScheduleDto
+            if (headId <= 0)
+                throw new ArgumentException("ID trưởng bộ môn không hợp lệ.");
+
+            return _context.Courses
+                .Include(c => c.Semester)
+                .Include(c => c.Projects)
+                .ThenInclude(p => p.Group)
+                .Include(c => c.Projects)
+                .ThenInclude(p => p.DefenseSchedules)
+                .Include(c => c.StudentCourses)
+                .ThenInclude(sc => sc.Student)
+                .Include(c => c.LecturerCourses)
+                .Where(c => c.LecturerCourses.Any(lc => lc.LecturerId == headId)) // Lọc môn học do trưởng bộ môn quản lý
+                .Select(c => new HeadCourseDefenseDto
                 {
-                    Id = ds.Id,
-                    ProjectId = ds.ProjectId,
-                    ProjectTitle = ds.Project != null ? ds.Project.Title : "Không xác định",
-                    GroupName = ds.Project != null && ds.Project.Group != null ? ds.Project.Group.Name : "Không xác định",
-                    StartTime = ds.StartTime,
-                    EndTime = ds.EndTime,
-                    Room = ds.Room,
-                    MeetingId = ds.MeetingId,
-                    MeetingLocation = ds.MeetingId.HasValue && ds.Meeting != null ? ds.Meeting.Location : "",
-                    CreatedAt = ds.CreatedAt
+                    CourseId = c.CourseCode,
+                    Name = c.Name,
+                    Semester = c.Semester != null ? c.Semester.Name : "Không xác định",
+                    ClassId = c.StudentCourses.Any() ? c.StudentCourses.First().Student.ClassCode ?? "Không xác định" : "Không xác định",
+                    GroupCount = c.Projects.Where(p => p.GroupId != null).Select(p => p.GroupId).Distinct().Count(),
+                    ScheduledCount = c.Projects.Count(p => p.DefenseSchedules.Any())
                 })
-                .OrderBy(dto => dto.StartTime)
+                .OrderBy(c => c.Semester)
+                .ThenBy(c => c.CourseId)
                 .ToList();
         }
 
-        public int GetTotalDefenseSchedules()
+        /// Lấy danh sách lịch bảo vệ theo môn học, học kỳ, lớp.
+        public async Task<List<HeadDefenseScheduleDto>> GetDefenseSchedulesAsync(long headId, string courseId, string semester, string classId)
         {
-            return _context.DefenseSchedules.Count();
+            if (headId <= 0) throw new ArgumentException("ID trưởng bộ môn không hợp lệ.");
+            if (string.IsNullOrEmpty(courseId) || string.IsNullOrEmpty(semester) || string.IsNullOrEmpty(classId))
+                throw new ArgumentException("Thiếu thông tin môn học, học kỳ hoặc lớp.");
+
+            var query = _context.Projects
+                .Include(p => p.Group)
+                .ThenInclude(g => g.GroupMembers)
+                .ThenInclude(ug => ug.Student)
+                .Include(p => p.DefenseSchedules)
+                .Include(p => p.Course)
+                .ThenInclude(c => c.Semester)
+                .Include(p => p.Course)
+                .ThenInclude(c => c.LecturerCourses)
+                .Include(p => p.Course)
+                .ThenInclude(c => c.StudentCourses)
+                .ThenInclude(sc => sc.Student)
+                .Where(p => p.Course.LecturerCourses.Any(lc => lc.LecturerId == headId) && // Trưởng bộ môn quản lý môn học
+                            p.Course.CourseCode == courseId); // Lớp của sinh viên trong nhóm
+
+            return await query.Select(p => new HeadDefenseScheduleDto
+            {
+                Id = p.DefenseSchedules.Any() ? p.DefenseSchedules.First().Id : (long?)null,
+                ProjectId = p.ProjectCode,
+                GroupName = p.Group != null ? p.Group.Name : "Không xác định",
+                Members = p.Group != null && p.Group.GroupMembers.Any() ? string.Join(", ", p.Group.GroupMembers.Select(ug => ug.Student.FullName)) : "Không có thành viên",
+                Date = p.DefenseSchedules.Any() ? p.DefenseSchedules.First().StartTime.ToString("dd/MM/yyyy") : "Chưa xếp lịch",
+                Location = p.DefenseSchedules.Any() ? p.DefenseSchedules.First().Room : "",
+                Council = p.DefenseSchedules.Any() ? "Chưa có" : ""
+            }).ToListAsync();
         }
 
-        public HeadDefenseScheduleDto CreateDefenseSchedule(CreateHeadDefenseScheduleDto dto)
+        /// Lấy danh sách dự án chưa có lịch bảo vệ cho dropdown.
+        public async Task<List<dynamic>> GetAvailableProjectsAsync(long headId, string courseId, string semester, string classId)
         {
-            // Kiểm tra dữ liệu đầu vào
-            if (dto == null)
-                throw new ArgumentNullException(nameof(dto), "Dữ liệu đầu vào không được null.");
-            if (dto.StartTime >= dto.EndTime)
-                throw new ArgumentException("Thời gian bắt đầu phải sớm hơn thời gian kết thúc.");
-            if (string.IsNullOrWhiteSpace(dto.Room))
-                throw new ArgumentException("Phòng không được để trống.");
+            if (headId <= 0) throw new ArgumentException("ID trưởng bộ môn không hợp lệ.");
+            if (string.IsNullOrEmpty(courseId) || string.IsNullOrEmpty(semester) || string.IsNullOrEmpty(classId))
+                throw new ArgumentException("Thiếu thông tin môn học, học kỳ hoặc lớp.");
 
-            Console.WriteLine($"Dữ liệu đầu vào: {JsonConvert.SerializeObject(dto, Formatting.Indented)}");
-
-            var project = _context.Projects
+            return await _context.Projects
+                .Include(p => p.Course)
+                .ThenInclude(c => c.LecturerCourses)
+                .Include(p => p.Course)
+                .ThenInclude(c => c.Semester)
                 .Include(p => p.Group)
-                .FirstOrDefault(p => p.Id == dto.ProjectId);
-            if (project == null)
-                throw new KeyNotFoundException($"Không tìm thấy dự án với ID {dto.ProjectId}.");
+                .ThenInclude(g => g.GroupMembers)
+                .ThenInclude(ug => ug.Student)
+                .Include(p => p.DefenseSchedules)
+                .Where(p => p.Course.LecturerCourses.Any(lc => lc.LecturerId == headId) &&
+                            p.Course.CourseCode == courseId &&
+                            p.Course.Semester.Name == semester &&
+                            p.Group.GroupMembers.Any(ug => ug.Student.ClassCode == classId) &&
+                            !p.DefenseSchedules.Any()) // Chỉ lấy dự án chưa có lịch
+                .Select(p => new
+                {
+                    Id = p.Id,
+                    ProjectId = p.ProjectCode,
+                    Name = p.Group != null ? p.Group.Name : "Không xác định",
+                    Members = p.Group != null && p.Group.GroupMembers.Any() ? string.Join(", ", p.Group.GroupMembers.Select(ug => ug.Student.FullName)) : "Không có thành viên",
+                    Status = "Chưa tạo"
+                })
+                .ToListAsync<dynamic>();
+        }
 
-            var meeting = CreateGoogleMeetMeeting(project, dto.StartTime, dto.EndTime);
+        /// <summary>
+        /// Tạo lịch bảo vệ mới
+        /// </summary>
+        public async Task<CreateDefenseScheduleDto> CreateDefenseScheduleAsync(long headId, CreateDefenseScheduleDto dto)
+        {
+            if (headId <= 0) throw new ArgumentException("Invalid head ID.");
+            if (dto.StartTime >= dto.EndTime) throw new ArgumentException("StartTime must be earlier than EndTime.");
+
+            var project = await _context.Projects
+                .Include(p => p.Course)
+                .ThenInclude(c => c.LecturerCourses)
+                .Include(p => p.DefenseSchedules)
+                .FirstOrDefaultAsync(p => p.Id == dto.ProjectId && p.Course.LecturerCourses.Any(lc => lc.LecturerId == headId));
+            if (project == null) throw new ArgumentException("Project not found or not managed by head.");
+            if (project.DefenseSchedules.Any()) throw new ArgumentException("Project already has a defense schedule.");
+
+            var conflict = await _context.DefenseSchedules
+                .AnyAsync(ds => ds.Room == dto.Room &&
+                               ((dto.StartTime >= ds.StartTime && dto.StartTime < ds.EndTime) ||
+                                (dto.EndTime > ds.StartTime && dto.EndTime <= ds.EndTime) ||
+                                (dto.StartTime <= ds.StartTime && dto.EndTime >= ds.EndTime)));
+            if (conflict) throw new ArgumentException("Room is already booked.");
+
+            Meeting meeting = null;
+            if (dto.MeetingId != 0)
+            {
+                meeting = await _context.Meetings.FirstOrDefaultAsync(m => m.Id == dto.MeetingId);
+                if (meeting == null)
+                    throw new ArgumentException("Invalid MeetingId.");
+            }
 
             var defenseSchedule = new DefenseSchedule
             {
                 ProjectId = dto.ProjectId,
-                Project = project,
                 StartTime = dto.StartTime,
                 EndTime = dto.EndTime,
                 Room = dto.Room,
-                MeetingId = meeting.Id,
-                Meeting = meeting,
+                MeetingId = dto.MeetingId,
                 CreatedAt = DateTime.UtcNow
             };
+
             _context.DefenseSchedules.Add(defenseSchedule);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return new HeadDefenseScheduleDto
-            {
-                Id = defenseSchedule.Id,
-                ProjectId = defenseSchedule.ProjectId,
-                ProjectTitle = project.Title,
-                GroupName = project.Group != null ? project.Group.Name : "Không xác định",
-                StartTime = defenseSchedule.StartTime,
-                EndTime = defenseSchedule.EndTime,
-                Room = defenseSchedule.Room,
-                MeetingId = defenseSchedule.MeetingId,
-                MeetingLocation = meeting.Location,
-                CreatedAt = defenseSchedule.CreatedAt
-            };
+            return dto;
         }
 
-        private Meeting CreateGoogleMeetMeeting(Project project, DateTime startTime, DateTime endTime)
+
+        /// Lấy danh sách tất cả meeting
+        /// </summary>
+        public async Task<List<MeetingDto>> GetAllMeetingsAsync()
         {
-            // Kiểm tra thời gian đầu vào
-            if (startTime >= endTime)
-                throw new ArgumentException("Thời gian bắt đầu phải sớm hơn thời gian kết thúc.");
-
-            // Ghi log thời gian đầu vào
-            Console.WriteLine($"Thời gian đầu vào: Start={startTime:yyyy-MM-ddTHH:mm:sszzz}, End={endTime:yyyy-MM-ddTHH:mm:sszzz}");
-
-            // Lấy đường dẫn từ appsettings.json
-            var credentialPath = _configuration["GoogleCredentialPath"]
-                ?? throw new InvalidOperationException("Không tìm thấy đường dẫn tệp thông tin xác thực Google trong cấu hình.");
-
-            // Chuyển đổi đường dẫn tương đối thành đường dẫn tuyệt đối
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var fullCredentialPath = Path.Combine(basePath, credentialPath);
-
-            if (!File.Exists(fullCredentialPath))
-                throw new FileNotFoundException($"Tệp thông tin xác thực không tồn tại tại: {fullCredentialPath}");
-
-            // Ghi log đường dẫn tệp
-            Console.WriteLine($"Đường dẫn tệp thông tin xác thực: {fullCredentialPath}");
-
-            var credential = GoogleCredential.FromFile(fullCredentialPath)
-                .CreateScoped(CalendarService.Scope.Calendar);
-
-            var service = new CalendarService(new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "EduProject_TADProgrammer"
-            });
-
-            // Tạo sự kiện Google Calendar
-            var calendarEvent = new Event
-            {
-                Summary = $"Buổi bảo vệ đồ án - {project.ProjectCode}",
-                Description = $"Buổi bảo vệ đồ án cho nhóm {project.Group?.Name ?? "Không xác định"}",
-                Start = new EventDateTime
+            return await _context.Meetings
+                .Select(m => new MeetingDto
                 {
-                    DateTime = startTime,
-                    TimeZone = "Asia/Ho_Chi_Minh"
-                },
-                End = new EventDateTime
-                {
-                    DateTime = endTime,
-                    TimeZone = "Asia/Ho_Chi_Minh"
-                },
-                ConferenceData = new ConferenceData
-                {
-                    CreateRequest = new CreateConferenceRequest
-                    {
-                        RequestId = Guid.NewGuid().ToString(),
-                        ConferenceSolutionKey = new ConferenceSolutionKey
-                        {
-                            Type = "hangoutsMeet" // Sử dụng "hangoutsMeet" để tạo Google Meet
-                        }
-                    }
-                }
-            };
-
-            try
-            {
-                // Ghi log dữ liệu sự kiện
-                Console.WriteLine($"Tạo sự kiện: {JsonConvert.SerializeObject(calendarEvent, Formatting.Indented)}");
-
-                // Sử dụng lịch "primary"
-                string calendarId = "primary"; // Thay bằng ID lịch cụ thể nếu cần, ví dụ: "your_calendar_id@group.calendar.google.com"
-                Console.WriteLine($"Lịch được sử dụng: {calendarId}");
-                var request = service.Events.Insert(calendarEvent, calendarId);
-                request.ConferenceDataVersion = 1;
-                var createdEvent = request.Execute();
-
-                // Ghi log toàn bộ sự kiện được tạo
-                Console.WriteLine($"Sự kiện được tạo: {JsonConvert.SerializeObject(createdEvent, Formatting.Indented)}");
-
-                if (string.IsNullOrEmpty(createdEvent.HangoutLink))
-                {
-                    Console.WriteLine("Không tạo được liên kết Google Meet. Kiểm tra ConferenceData và quyền tài khoản.");
-                    throw new Exception("Không tạo được liên kết Google Meet.");
-                }
-
-                // Ghi log liên kết Google Meet
-                Console.WriteLine($"Liên kết Google Meet: {createdEvent.HangoutLink}");
-
-                var meeting = new Meeting
-                {
-                    GroupId = project.GroupId,
-                    Title = $"Buổi bảo vệ đồ án {project.ProjectCode}",
-                    StartTime = startTime,
-                    EndTime = endTime,
-                    Location = createdEvent.HangoutLink,
-                    CreatedBy = 1,
-                    CreatedAt = DateTime.UtcNow
-                };
-                _context.Meetings.Add(meeting);
-                _context.SaveChanges();
-
-                return meeting;
-            }
-            catch (Google.GoogleApiException ex)
-            {
-                // Ghi log chi tiết lỗi
-                Console.WriteLine($"Lỗi Google API: {ex.Message}");
-                Console.WriteLine($"Chi tiết: {ex.Error?.Message}");
-                Console.WriteLine($"Mã lỗi: {ex.Error?.Code}");
-                Console.WriteLine($"Lý do: {ex.Error?.Errors?.FirstOrDefault()?.Reason}");
-                throw new Exception($"Lỗi Google API: {ex.Message}, Chi tiết: {ex.Error?.Message}, Mã lỗi: {ex.Error?.Code}, Lý do: {ex.Error?.Errors?.FirstOrDefault()?.Reason}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi không xác định: {ex.Message}, StackTrace: {ex.StackTrace}");
-                throw;
-            }
+                    MeetingId = m.Id,
+                    Link = m.Location
+                })
+                .ToListAsync();
         }
 
-        public HeadDefenseScheduleDto UpdateDefenseSchedule(long id, UpdateHeadDefenseScheduleDto dto)
+        /// Xóa lịch bảo vệ.
+        public async System.Threading.Tasks.Task DeleteDefenseScheduleAsync(long headId, long id)
         {
-            var defenseSchedule = _context.DefenseSchedules
+            if (headId <= 0) throw new ArgumentException("ID trưởng bộ môn không hợp lệ.");
+            if (id <= 0) throw new ArgumentException("ID lịch bảo vệ không hợp lệ.");
+
+            var defenseSchedule = await _context.DefenseSchedules
                 .Include(ds => ds.Project)
-                .Include(ds => ds.Project.Group)
-                .Include(ds => ds.Meeting)
-                .FirstOrDefault(ds => ds.Id == id);
+                .ThenInclude(p => p.Course)
+                .ThenInclude(c => c.LecturerCourses)
+                .FirstOrDefaultAsync(ds => ds.Id == id &&
+                                          ds.Project.Course.LecturerCourses.Any(lc => lc.LecturerId == headId));
+
             if (defenseSchedule == null)
-                throw new KeyNotFoundException("Không tìm thấy lịch bảo vệ.");
-
-            if (dto.StartTime >= dto.EndTime)
-                throw new ArgumentException("Thời gian bắt đầu phải sớm hơn thời gian kết thúc.");
-
-            defenseSchedule.StartTime = dto.StartTime;
-            defenseSchedule.EndTime = dto.EndTime;
-            defenseSchedule.Room = dto.Room;
-
-            if (defenseSchedule.MeetingId.HasValue && defenseSchedule.Meeting != null)
-            {
-                defenseSchedule.Meeting.StartTime = dto.StartTime;
-                defenseSchedule.Meeting.EndTime = dto.EndTime;
-                _context.SaveChanges();
-            }
-
-            return new HeadDefenseScheduleDto
-            {
-                Id = defenseSchedule.Id,
-                ProjectId = defenseSchedule.ProjectId,
-                ProjectTitle = defenseSchedule.Project != null ? defenseSchedule.Project.Title : "Không xác định",
-                GroupName = defenseSchedule.Project != null && defenseSchedule.Project.Group != null ? defenseSchedule.Project.Group.Name : "Không xác định",
-                StartTime = defenseSchedule.StartTime,
-                EndTime = defenseSchedule.EndTime,
-                Room = defenseSchedule.Room,
-                MeetingId = defenseSchedule.MeetingId,
-                MeetingLocation = defenseSchedule.MeetingId.HasValue && defenseSchedule.Meeting != null ? defenseSchedule.Meeting.Location : "",
-                CreatedAt = defenseSchedule.CreatedAt
-            };
-        }
-
-        public void DeleteDefenseSchedule(long id)
-        {
-            var defenseSchedule = _context.DefenseSchedules
-                .Include(ds => ds.Meeting)
-                .FirstOrDefault(ds => ds.Id == id);
-            if (defenseSchedule == null)
-                throw new KeyNotFoundException("Không tìm thấy lịch bảo vệ.");
-
-            if (defenseSchedule.MeetingId.HasValue && defenseSchedule.Meeting != null)
-            {
-                _context.Meetings.Remove(defenseSchedule.Meeting);
-            }
+                throw new KeyNotFoundException("Lịch bảo vệ không tồn tại hoặc không thuộc trưởng bộ môn.");
 
             _context.DefenseSchedules.Remove(defenseSchedule);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

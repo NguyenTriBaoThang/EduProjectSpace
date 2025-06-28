@@ -14,12 +14,11 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
         <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
-            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
             <a href="/font-end/head/head_grading_courses.html" class="active"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
             <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
@@ -246,7 +245,8 @@
                 tableBody.innerHTML = '<tr><td colspan="10" class="text-center">Không tìm thấy nhóm nào.</td></tr>';
             } else {
                 paginatedData.forEach((group, index) => {
-                    const statusClass = group.status === "Hoàn thành" ? "bg-success" : group.status === "Đã duyệt" ? "bg-info" : "bg-warning";
+                    const statusClass = group.status === "APPROVED" ? "bg-success" :
+                                    group.status === "REJECTED" ? "bg-danger" : "bg-warning";
                     const approvalClass = group.approved === "Đã duyệt" ? "bg-success" : "bg-warning";
                     const isBothNotApproved = group.status === "Chưa duyệt" && group.approved === "Chưa duyệt";
                     tableBody.innerHTML += `
@@ -258,7 +258,7 @@
                             <td>${group.members}</td>
                             <td>${group.lecturer}</td>
                             <td>${group.grade}</td>
-                            <td><span class="badge ${statusClass}">${group.status}</span></td>
+                            <td><span class="badge ${statusClass}">${group.status === "APPROVED" ? "Đã duyệt" : group.status === "REJECTED" ? "Từ chối" : "Chưa duyệt"}</span></td>
                             <td><span class="badge ${approvalClass}">${group.approved}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-primary" onclick="viewGradingDetails(${group.id})" ${isBothNotApproved ? "disabled" : ""}>

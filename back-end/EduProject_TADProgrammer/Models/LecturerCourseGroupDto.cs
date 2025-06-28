@@ -2,18 +2,18 @@
 {
     public class LecturerCourseGroupDto
     {
-        public List<LecturerCourseSummaryDto> Courses { get; set; } // Danh sách môn học cần chia nhóm
+        public List<LecturerCourseSummaryDto> Courses { get; set; }
     }
 
     public class LecturerCourseSummaryDto
     {
-        public long Id { get; set; } 
-        public string CourseId { get; set; } // Mã môn học
-        public string Name { get; set; } // Tên môn học
-        public string ?Semester { get; set; } // Học kỳ
-        public string FacultyCode { get; set; } // Mã khoa
-        public int StudentCount { get; set; } // Số lượng sinh viên
-        public int GroupCount { get; set; } // Số lượng nhóm
+        public long Id { get; set; }
+        public string CourseId { get; set; } 
+        public string Name { get; set; }
+        public string? Semester { get; set; }
+        public string FacultyCode { get; set; }
+        public int StudentCount { get; set; }
+        public int GroupCount { get; set; }
     }
 
     public class LecturerCourseGroupStudentDto
@@ -31,6 +31,7 @@
         public string Name { get; set; }
         public string CourseId { get; set; }
         public string ProjectId { get; set; }
+        public string ProjectName { get; set; }
         public List<LecturerCourseGroupStudentDto> Members { get; set; }
     }
 

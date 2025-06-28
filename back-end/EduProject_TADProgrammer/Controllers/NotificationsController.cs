@@ -1,15 +1,9 @@
-﻿// File: Controllers/NotificationsController.cs
-// Mục đích: Xử lý yêu cầu HTTP để quản lý thông báo (CRUD).
-// Hỗ trợ: Gửi thông báo cho tất cả, vai trò, cá nhân, nhóm qua web/email.
-// Chức năng: Lấy danh sách, thông báo gần đây, tạo, cập nhật, xóa, xuất Excel, cấu hình.
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using EduProject_TADProgrammer.Services;
 using EduProject_TADProgrammer.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Collections;
 
 namespace EduProject_TADProgrammer.Controllers
 {
@@ -32,8 +26,6 @@ namespace EduProject_TADProgrammer.Controllers
             return Ok(new { notifications = result.Notifications, totalItems = result.TotalItems });
         }
 
-        // GET: api/notifications/recent
-        // Mục đích: Lấy 5 thông báo gần đây (cho phép tất cả người dùng đã xác thực)
         [HttpGet("recent")]
         public async Task<ActionResult<IEnumerable<NotificationDto>>> GetRecentNotificationsAsync()
         {
@@ -41,16 +33,35 @@ namespace EduProject_TADProgrammer.Controllers
             return Ok(notifications);
         }
 
-        [HttpPost]
-        [Authorize(Roles = "ROLE_ADMIN,ROLE_LECTURER")]
-        public async Task<IActionResult> CreateNotification([FromBody] NotificationDto notificationDto)
+        [HttpGet("config")]
+       // [Authorize(Roles = "ROLE_ADMIN")]
+        public async Task<ActionResult<NotificationConfigDto>> GetConfigAsync()
         {
-            var createdNotification = await _notificationService.CreateNotificationAsync(notificationDto);
+            var config = await _notificationService.GetConfigAsync();
+            return Ok(config);
+        }
+
+        // [Authorize(Roles = "ROLE_ADMIN,ROLE_LECTURER")]
+        [HttpPost]
+        public async Task<IActionResult> CreateNotification([FromBody] NotificationDtoWrapper wrapper)
+        {
+            if (wrapper?.notificationDto == null)
+                return BadRequest(new { errors = new { notificationDto = new[] { "The notificationDto field is required." } } });
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var createdNotification = await _notificationService.CreateNotificationAsync(wrapper.notificationDto);
             return CreatedAtAction(nameof(GetNotifications), new { id = createdNotification.Id }, createdNotification);
         }
 
+        public class NotificationDtoWrapper
+        {
+            public NotificationDto notificationDto { get; set; }
+        }
+
         [HttpPut("{id}")]
-        [Authorize(Roles = "ROLE_ADMIN,ROLE_LECTURER")]
+        //[Authorize(Roles = "ROLE_ADMIN,ROLE_LECTURER")]
         public async Task<IActionResult> UpdateNotification(long id, [FromBody] NotificationDto notificationDto)
         {
             await _notificationService.UpdateNotificationAsync(id, notificationDto);
@@ -58,7 +69,7 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "ROLE_ADMIN")]
+      //  [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<IActionResult> DeleteNotification(long id)
         {
             await _notificationService.DeleteNotificationAsync(id);
@@ -66,11 +77,25 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpPost("config")]
-        [Authorize(Roles = "ROLE_ADMIN")]
+       // [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<IActionResult> SaveConfig([FromBody] NotificationConfigDto config)
         {
             await _notificationService.SaveConfigAsync(config);
             return Ok();
+        }
+
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<UserNotificationDto>>> GetUsersAsync([FromQuery] int? roleId)
+        {
+            var users = await _notificationService.GetUsersByRoleAsync(roleId ?? 0);
+            return Ok(users);
+        }
+
+        [HttpGet("groups")]
+        public async Task<ActionResult<IEnumerable<GroupNotificationDto>>> GetGroupsAsync()
+        {
+            var groups = await _notificationService.GetGroupsAsync();
+            return Ok(groups);
         }
     }
 }

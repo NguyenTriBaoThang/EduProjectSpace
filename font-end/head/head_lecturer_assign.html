@@ -15,11 +15,11 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
         <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_lecturer_assign.html" class="active"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
             <a href="/font-end/head/head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
             <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
@@ -48,7 +48,7 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
                 <h6 id="headName">Head HUTECH</h6>
                 <p id="headEmail">head@hutech.edu.vn</p>
             </div>
@@ -77,9 +77,7 @@
 
             <!-- Lecturers Table -->
             <div class="table-container">
-                <div class="table-header d-flex gap-2">
-                    <!-- Loại bỏ select filter -->
-                </div>
+                <div class="table-header d-flex gap-2"></div>
 
                 <div class="table-content">
                     <table class="table-custom table-bordered table-hover">
@@ -89,7 +87,7 @@
                                 <th class="sortable" onclick="sortTable('lecturer')">Tên GVHD <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('courseCode')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('semesterName')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('classCode')">Mã lớp <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('facultyCode')">Mã khoa <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('studentCount')">Số SV <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('groupCount')">Số nhóm <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
@@ -111,20 +109,19 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
         let lecturers = [];
-        const API_URL = 'https://localhost:7047'; // Thay bằng URL API thực tế
-        let currentHead = null; // Trưởng bộ môn hiện tại
+        const API_URL = 'https://localhost:7047';
+        let currentHead = null;
         let currentIdHead = null;
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
-        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "/font-end/head/lecturer_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
@@ -153,10 +150,8 @@
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
             let icon = document.getElementById("sidebarIcon");
-
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-
             if (sidebar.classList.contains("collapsed")) {
                 icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
             } else {
@@ -164,13 +159,12 @@
             }
         }
 
-        // Tải thông tin người dùng từ localStorage
+        // Tải thông tin người dùng
         async function loadUserProfile() {
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_HEAD") {
                     throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
                 }
                 currentIdHead = user.id;
                 currentHead = user.fullName;
@@ -183,18 +177,19 @@
             }
         }
 
-        // Load danh sách giảng viên từ API (không cần bộ lọc)
+        // Load danh sách giảng viên từ API
         async function loadLecturers() {
             try {
-                const response = await fetch(`${API_URL}/api/HeadLecturer?headLecturer=${encodeURIComponent(currentIdHead)}`, {
+                const response = await fetch(`${API_URL}/api/HeadLecturer?headLecturer=${currentIdHead}`, {
                     method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error(`Lỗi: ${response.statusText}`);
+                if (!response.ok) throw new Error(`Lỗi: ${await response.text()}`);
                 lecturers = await response.json();
                 displayTable(currentPage);
             } catch (error) {
@@ -219,10 +214,7 @@
             }
 
             paginatedData = paginatedData.slice(start, end);
-
             const tableBody = document.getElementById("tableBody");
-            tableBody.innerHTML = "";
-
             if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy giảng viên nào.</td></tr>';
             } else {
@@ -233,29 +225,29 @@
                             <td>${lecturerData.lecturer}</td>
                             <td>${lecturerData.courseCode}</td>
                             <td>${lecturerData.semesterName}</td>
-                            <td>${lecturerData.classCode}</td>
+                            <td>${lecturerData.facultyCode}</td>
                             <td>${lecturerData.studentCount}</td>
                             <td>${lecturerData.groupCount}</td>
                             <td>
-                                <button class="btn btn-sm btn-primary" onclick="viewDetails('${lecturerData.lecturer}', '${lecturerData.courseCode}', '${lecturerData.semesterName}', '${lecturerData.classCode}')">
-                                    <i class="bi bi-eye"></i> Xem chi tiết
+                                <button class="btn btn-sm btn-primary" onclick="viewDetails('${lecturerData.lecturer}', '${lecturerData.courseCode}', '${lecturerData.semesterName}', '${lecturerData.facultyCode}')">
+                                    <i class="bi bi-eye"></i> Xem chi tiết xem
                                 </button>
                             </td>
                         </tr>
                     `;
-                });
+                    }
+                );
             }
-
             setupPagination(lecturers.length);
         }
 
         // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
-            const pagination = document.getElementById("pagination");
-            pagination.innerHTML = "";
+            const paginationItems = document.getElementById("pagination");
+            paginationItems.innerHTML = "";
 
-            if (totalPages <= 1) return;
+            if (totalItems <= 1) return;
 
             let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
             if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
@@ -286,22 +278,22 @@
             displayTable(currentPage);
         }
 
-        // Lọc cơ bản theo search input
+        // Lọc theo search input
         function filterTable() {
             const searchText = document.getElementById("searchInput").value.toLowerCase();
             lecturers = lecturers.filter(l =>
                 l.lecturer.toLowerCase().includes(searchText) ||
                 l.courseCode.toLowerCase().includes(searchText) ||
                 l.semesterName.toLowerCase().includes(searchText) ||
-                l.classCode.toLowerCase().includes(searchText)
+                l.facultyCode.toLowerCase().includes(searchText)
             );
             currentPage = 1;
             displayTable(currentPage);
         }
 
         // Điều hướng đến trang chi tiết
-        function viewDetails(lecturer, courseCode, semesterName, classCode) {
-            window.location.href = `head_lecturer_details.html?lecturer=${encodeURIComponent(lecturer)}&courseCode=${courseCode}&semesterName=${semesterName}&classCode=${classCode}`;
+        function viewDetails(lecturer, courseCode, semesterName, facultyCode) {
+            window.location.href = `/font-end/head/head_lecturer_details.html?lecturer=${encodeURIComponent(lecturer)}&courseId=${courseCode}&semester=${semesterName}&facultyCode=${facultyCode}`;
         }
 
         // Xuất danh sách giảng viên sang Excel
@@ -310,7 +302,7 @@
                 ["Danh sách giảng viên hướng dẫn - Hệ thống Sinh viên HUTECH"],
                 [`Trưởng bộ môn: ${currentHead}`],
                 [],
-                ["#", "Tên GVHD", "Mã môn học", "Học kỳ", "Mã lớp", "Số sinh viên", "Số nhóm"]
+                ["#", "Tên GVHD", "Mã môn học", "Học kỳ", "Mã khoa", "Số sinh viên", "Số nhóm"]
             ];
 
             lecturers.forEach((lecturerData, index) => {
@@ -319,7 +311,7 @@
                     lecturerData.lecturer,
                     lecturerData.courseCode,
                     lecturerData.semesterName,
-                    lecturerData.classCode,
+                    lecturerData.facultyCode,
                     lecturerData.studentCount,
                     lecturerData.groupCount
                 ]);
@@ -334,34 +326,24 @@
         // Đăng xuất
         async function logout() {
             try {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    throw new Error("Chưa đăng nhập hoặc token không hợp lệ.");
-                }
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert(data.message || "Đăng xuất thành công!");
-                } else {
-                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                }
+                if (!response.ok) throw new Error(`Đăng xuất thất bại: ${await response.text()}`);
+                alert("Đã đăng xuất thành công!");
             } catch (error) {
-                alert("Đăng xuất bị lỗi: " + error.message);
+                alert("Lỗi khi đăng xuất: " + error.message);
             }
-
             localStorage.removeItem("user");
             localStorage.removeItem("token");
-            window.location.replace("/font-end/login/login.html");
+            window.location="/font-end/login/login.html";
         }
-
 
         // Khởi chạy
         document.addEventListener("DOMContentLoaded", async () => {
@@ -369,5 +351,6 @@
             await loadLecturers();
         });
     </script>
+    
 </body>
 </html>

@@ -1,8 +1,4 @@
-﻿// File: Services/NotificationService.cs
-// Mục đích: Thực hiện quản lý thông báo, bao gồm CRUD, gửi email, cấu hình.
-// Sử dụng: EF Core cho cơ sở dữ liệu, SMTP cho email.
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
@@ -12,23 +8,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace EduProject_TADProgrammer.Services
 {
     public class NotificationService
     {
         private readonly ApplicationDbContext _context;
-        private readonly SmtpClient _smtpClient;
-        
-        public NotificationService(ApplicationDbContext context)
+        private readonly IConfiguration _configuration;
+        private SmtpClient _smtpClient;
+
+        public NotificationService(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-            _smtpClient = new SmtpClient("smtp.gmail.com")
+            _configuration = configuration;
+        }
+
+        private void InitializeSmtpClient(NotificationConfigDto config)
+        {
+            if (config?.EnableEmail == true && config.SmtpConfig != null)
             {
-                Port = 587,
-                Credentials = new NetworkCredential("your-email@gmail.com", "your-app-password"),
-                EnableSsl = true,
-            };
+                _smtpClient = new SmtpClient(config.SmtpConfig.Host)
+                {
+                    Port = config.SmtpConfig.Port,
+                    Credentials = new NetworkCredential(config.SmtpConfig.Username, config.SmtpConfig.Password),
+                    EnableSsl = true,
+                };
+            }
+            else
+            {
+                _smtpClient = null;
+            }
         }
 
         public async Task<(List<NotificationDto> Notifications, int TotalItems)> GetNotificationsAsync()
@@ -50,7 +60,10 @@ namespace EduProject_TADProgrammer.Services
                     Content = n.Content,
                     Type = n.Type,
                     Status = n.Status,
-                    CreatedAt = n.CreatedAt
+                    RecipientType = n.RecipientType,
+                    CreatedAt = n.CreatedAt,
+                    IsFirstViewed = n.IsFirstViewed,
+                    FirstViewedAt = n.FirstViewedAt
                 })
                 .ToListAsync();
 
@@ -71,9 +84,44 @@ namespace EduProject_TADProgrammer.Services
                     Content = n.Content,
                     Type = n.Type,
                     Status = n.Status,
-                    CreatedAt = n.CreatedAt
+                    RecipientType = n.RecipientType,
+                    CreatedAt = n.CreatedAt,
+                    IsFirstViewed = n.IsFirstViewed,
+                    FirstViewedAt = n.FirstViewedAt
                 })
                 .ToListAsync();
+        }
+
+        public async Task<NotificationConfigDto> GetConfigAsync()
+        {
+            var systemConfig = await _context.SystemConfigs
+                .FirstOrDefaultAsync(sc => sc.Key == "NOTIFICATION_CONFIG");
+
+            if (systemConfig == null) return new NotificationConfigDto();
+
+            var parts = systemConfig.Value.Split(',');
+            var config = new NotificationConfigDto
+            {
+                EnableWeb = parts.Any(p => p.Contains("WEB:True")),
+                EnableEmail = parts.Any(p => p.Contains("EMAIL:True")),
+                ReminderFrequency = parts.FirstOrDefault(p => p.Contains("FREQUENCY:"))?.Replace("FREQUENCY:", "") ?? "none",
+                SmtpConfig = new SmtpConfig()
+            };
+
+            var smtpHost = parts.FirstOrDefault(p => p.Contains("SMTP_HOST:"))?.Replace("SMTP_HOST:", "");
+            var smtpPort = parts.FirstOrDefault(p => p.Contains("SMTP_PORT:"))?.Replace("SMTP_PORT:", "");
+            var smtpUsername = parts.FirstOrDefault(p => p.Contains("SMTP_USERNAME:"))?.Replace("SMTP_USERNAME:", "");
+            var smtpPassword = parts.FirstOrDefault(p => p.Contains("SMTP_PASSWORD:"))?.Replace("SMTP_PASSWORD:", "");
+
+            if (!string.IsNullOrEmpty(smtpHost))
+            {
+                config.SmtpConfig.Host = smtpHost;
+                config.SmtpConfig.Port = int.TryParse(smtpPort, out var port) ? port : 587;
+                config.SmtpConfig.Username = smtpUsername;
+                config.SmtpConfig.Password = smtpPassword;
+            }
+
+            return config;
         }
 
         public async Task<NotificationDto> CreateNotificationAsync(NotificationDto notificationDto)
@@ -81,26 +129,8 @@ namespace EduProject_TADProgrammer.Services
             if (notificationDto == null)
                 throw new ArgumentNullException(nameof(notificationDto));
 
-            var config = await _context.SystemConfigs
-                .Where(sc => sc.Key == "NOTIFICATION_CONFIG")
-                .Select(sc => new NotificationConfigDto
-                {
-                    EnableWeb = sc.Value.Contains("WEB"),
-                    EnableEmail = sc.Value.Contains("EMAIL"),
-                    ReminderFrequency = sc.Value.Contains("DAILY") ? "daily" : sc.Value.Contains("WEEKLY") ? "weekly" : "none"
-                })
-                .FirstOrDefaultAsync();
-
-            var notification = new Notification
-            {
-                UserId = notificationDto.UserId,
-                GroupId = notificationDto.GroupId,
-                Title = notificationDto.Title,
-                Content = notificationDto.Content,
-                Type = config?.EnableEmail == true ? notificationDto.Type : "WEB",
-                Status = notificationDto.Status ?? "PENDING",
-                CreatedAt = DateTime.UtcNow
-            };
+            var config = await GetConfigAsync();
+            InitializeSmtpClient(config);
 
             var recipients = new List<User>();
             switch (notificationDto.RecipientType?.ToLower())
@@ -109,29 +139,32 @@ namespace EduProject_TADProgrammer.Services
                     recipients = await _context.Users.ToListAsync();
                     break;
                 case "student":
-                    recipients = await _context.Users.Where(u => u.RoleId == 3).ToListAsync();
+                    recipients = notificationDto.UserIds != null && notificationDto.UserIds.Length > 0
+                        ? await _context.Users.Where(u => notificationDto.UserIds.Contains(u.Id) && u.RoleId == 3).ToListAsync()
+                        : await _context.Users.Where(u => u.RoleId == 3).ToListAsync();
                     break;
                 case "lecturer":
-                    recipients = await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
+                    recipients = notificationDto.UserIds != null && notificationDto.UserIds.Length > 0
+                        ? await _context.Users.Where(u => notificationDto.UserIds.Contains(u.Id) && u.RoleId == 2).ToListAsync()
+                        : await _context.Users.Where(u => u.RoleId == 2).ToListAsync();
                     break;
                 case "admin":
                     recipients = await _context.Users.Where(u => u.RoleId == 1).ToListAsync();
                     break;
                 case "head":
-                    recipients = await _context.Users.Where(u => u.RoleId == 4).ToListAsync();
-                    break;
-                case "user":
-                    var user = await _context.Users.FindAsync(notificationDto.UserId);
-                    if (user != null) recipients.Add(user);
+                    recipients = notificationDto.UserIds != null && notificationDto.UserIds.Length > 0
+                        ? await _context.Users.Where(u => notificationDto.UserIds.Contains(u.Id) && u.RoleId == 4).ToListAsync()
+                        : await _context.Users.Where(u => u.RoleId == 4).ToListAsync();
                     break;
                 case "group":
-                    if (notificationDto.GroupId.HasValue)
+                    if (notificationDto.GroupIds != null && notificationDto.GroupIds.Length > 0)
                     {
                         recipients = await _context.GroupMembers
-                            .Where(gm => gm.GroupId == notificationDto.GroupId)
+                            .Where(gm => notificationDto.GroupIds.Contains(gm.GroupId))
                             .Include(gm => gm.Student)
                             .Select(gm => gm.Student)
                             .Where(s => s != null)
+                            .Distinct()
                             .ToListAsync();
                     }
                     break;
@@ -141,27 +174,44 @@ namespace EduProject_TADProgrammer.Services
 
             foreach (var recipient in recipients.Distinct())
             {
-                var userNotification = new Notification
+                var notification = new Notification
                 {
-                    UserId = recipient.Id,
-                    Title = notification.Title,
-                    Content = notification.Content,
-                    Type = notification.Type,
-                    Status = notification.Status,
-                    CreatedAt = notification.CreatedAt
+                    UserId = recipient.Id, // Gán UserId cho từng người nhận
+                    Title = notificationDto.Title,
+                    Content = notificationDto.Content,
+                    Type = config.EnableEmail && notificationDto.Type == "Email" ? "Email" : "Web",
+                    Status = notificationDto.Status ?? "PENDING",
+                    RecipientType = notificationDto.RecipientType,
+                    CreatedAt = DateTime.UtcNow,
+                    IsFirstViewed = false,
+                    FirstViewedAt = null
                 };
-                _context.Notifications.Add(userNotification);
+                _context.Notifications.Add(notification);
 
-                if (config?.EnableEmail == true && !string.IsNullOrEmpty(recipient.Email))
+                if (config?.EnableEmail == true && !string.IsNullOrEmpty(recipient.Email) && notification.Type == "Email")
                     await SendEmailAsync(recipient.Email, notification.Title, notification.Content);
             }
 
-            if (notificationDto.RecipientType != "user" && notificationDto.RecipientType != "group")
+            // Nếu không gửi cho cá nhân hoặc nhóm cụ thể, tạo thông báo chung
+            if (!recipients.Any() && notificationDto.RecipientType != "student" && notificationDto.RecipientType != "lecturer" &&
+                notificationDto.RecipientType != "head" && notificationDto.RecipientType != "group")
             {
+                var notification = new Notification
+                {
+                    Title = notificationDto.Title,
+                    Content = notificationDto.Content,
+                    Type = config.EnableEmail && notificationDto.Type == "Email" ? "Email" : "Web",
+                    Status = notificationDto.Status ?? "PENDING",
+                    RecipientType = notificationDto.RecipientType,
+                    CreatedAt = DateTime.UtcNow,
+                    IsFirstViewed = false,
+                    FirstViewedAt = null
+                };
                 _context.Notifications.Add(notification);
             }
 
             await _context.SaveChangesAsync();
+            notificationDto.Id = _context.Notifications.Max(n => n.Id);
             return notificationDto;
         }
 
@@ -177,7 +227,10 @@ namespace EduProject_TADProgrammer.Services
             notification.Title = notificationDto.Title;
             notification.Content = notificationDto.Content;
             notification.Status = notificationDto.Status ?? "PENDING";
-            notification.Type = notificationDto.Type ?? "WEB";
+            notification.Type = notificationDto.Type ?? "Web";
+            notification.RecipientType = notificationDto.RecipientType;
+            notification.UserId = (long)notificationDto.UserId;
+            notification.GroupId = notificationDto.GroupId;
             notification.CreatedAt = DateTime.UtcNow;
 
             _context.Notifications.Update(notification);
@@ -213,6 +266,10 @@ namespace EduProject_TADProgrammer.Services
             }
 
             systemConfig.Value = $"WEB:{config.EnableWeb},EMAIL:{config.EnableEmail},FREQUENCY:{config.ReminderFrequency}";
+            if (config.SmtpConfig != null)
+            {
+                systemConfig.Value += $",SMTP_HOST:{config.SmtpConfig.Host},SMTP_PORT:{config.SmtpConfig.Port},SMTP_USERNAME:{config.SmtpConfig.Username},SMTP_PASSWORD:{config.SmtpConfig.Password}";
+            }
             await _context.SaveChangesAsync();
         }
 
@@ -220,9 +277,14 @@ namespace EduProject_TADProgrammer.Services
         {
             try
             {
+                if (_smtpClient == null)
+                {
+                    throw new InvalidOperationException("SMTP client chưa được cấu hình.");
+                }
+
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress("your-email@gmail.com"),
+                    From = new MailAddress(_smtpClient.Credentials.GetCredential(_smtpClient.Host, _smtpClient.Port, "Basic").UserName),
                     Subject = subject,
                     Body = body,
                     IsBodyHtml = true
@@ -234,7 +296,33 @@ namespace EduProject_TADProgrammer.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"Gửi email thất bại: {ex.Message}");
+                throw;
             }
         }
+
+        public async Task<List<UserNotificationDto>> GetUsersByRoleAsync(int roleId)
+        {
+            return await _context.Users
+                .Where(u => u.RoleId == roleId)
+                .Select(u => new UserNotificationDto
+                {
+                    Id = u.Id,
+                    FullName = u.FullName,
+                    Email = u.Email
+                })
+                .ToListAsync();
+        }
+
+        public async Task<List<GroupNotificationDto>> GetGroupsAsync()
+        {
+            return await _context.Groups
+                .Select(g => new GroupNotificationDto
+                {
+                    Id = g.Id,
+                    Name = g.Name
+                })
+                .ToListAsync();
+        }
     }
+
 }

@@ -31,10 +31,12 @@ namespace EduProject_TADProgrammer.Services
                     Id = p.Id,
                     ProjectCode = p.ProjectCode,
                     Title = p.Title,
+                    Description = p.Description,
                     CourseId = p.CourseId,
                     CourseName = p.Course.Name,
-                    LecturerId = p.Group != null ? p.Group.LecturerId : (long?)null, // Avoid ?. with conditional
-                    LecturerName = p.Group != null && p.Group.Lecturer != null ? p.Group.Lecturer.FullName : "Chưa có giảng viên", // Avoid ?. and ??Status = p.Status,
+                    LecturerId = p.Group != null ? p.Group.LecturerId : null,
+                    LecturerName = p.Group != null && p.Group.Lecturer != null ? p.Group.Lecturer.FullName : "Chưa có giảng viên",
+                    Status = p.Status,
                     CreatedAt = p.CreatedAt,
                     UpdatedAt = p.UpdatedAt,
                     Group = p.Group != null ? new AdminProjectGroupDto
@@ -50,15 +52,15 @@ namespace EduProject_TADProgrammer.Services
                 .ToListAsync();
         }
 
-        // Hàm lấy danh sách tất cả môn học
         public async Task<List<CourseAdminProjectDto>> GetAllCoursesAsync()
         {
             return await _context.Courses
-                .AsNoTracking() // Tăng hiệu suất vì chỉ đọc dữ liệu
+                .AsNoTracking()
                 .Select(c => new CourseAdminProjectDto
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    DepartmentCode = c.Department.FacultyCode
                 })
                 .ToListAsync();
         }
@@ -81,10 +83,12 @@ namespace EduProject_TADProgrammer.Services
                 Id = project.Id,
                 ProjectCode = project.ProjectCode,
                 Title = project.Title,
+                Description = project.Description,
                 CourseId = project.CourseId,
                 CourseName = project.Course.Name,
-                LecturerId = project.Group != null ? project.Group.LecturerId : (long?)null, // Avoid ?. with conditional
-                LecturerName = project.Group != null && project.Group.Lecturer != null ? project.Group.Lecturer.FullName : "Chưa có giảng viên", // Avoid ?. and ??Status = project.Status,
+                LecturerId = project.Group != null ? project.Group.LecturerId : null,
+                LecturerName = project.Group != null && project.Group.Lecturer != null ? project.Group.Lecturer.FullName : "Chưa có giảng viên",
+                Status = project.Status,
                 CreatedAt = project.CreatedAt,
                 UpdatedAt = project.UpdatedAt,
                 Group = project.Group != null ? new AdminProjectGroupDto
@@ -104,6 +108,7 @@ namespace EduProject_TADProgrammer.Services
             return await _context.Projects
                 .Include(p => p.Course)
                 .Include(p => p.Group)
+                    .ThenInclude(g => g.Lecturer)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -113,8 +118,6 @@ namespace EduProject_TADProgrammer.Services
                 throw new System.Exception("Mã đề tài đã tồn tại.");
             if (!await _context.Courses.AnyAsync(c => c.Id == project.CourseId))
                 throw new System.Exception("Môn học không hợp lệ.");
-            if (!await _context.Users.AnyAsync(u => u.Id == project.Group.LecturerId && (u.RoleId == 2 || u.RoleId == 4)))
-                throw new System.Exception("Giảng viên không hợp lệ.");
 
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
@@ -122,16 +125,19 @@ namespace EduProject_TADProgrammer.Services
             var createdProject = await _context.Projects
                 .Include(p => p.Course)
                 .Include(p => p.Group)
+                    .ThenInclude(g => g.Lecturer)
                 .FirstOrDefaultAsync(p => p.Id == project.Id);
             return new AdminProjectDto
             {
                 Id = createdProject.Id,
                 ProjectCode = createdProject.ProjectCode,
                 Title = createdProject.Title,
+                Description = createdProject.Description,
                 CourseId = createdProject.CourseId,
                 CourseName = createdProject.Course.Name,
-                LecturerId = createdProject.Group != null ? createdProject.Group.LecturerId : (long?)null, // Avoid ?. with conditional
-                LecturerName = createdProject.Group != null && createdProject.Group.Lecturer != null ? createdProject.Group.Lecturer.FullName : "Chưa có giảng viên", // Avoid ?. and ??Status = createdProject.Status,
+                LecturerId = createdProject.Group != null ? createdProject.Group.LecturerId : null,
+                LecturerName = createdProject.Group != null && createdProject.Group.Lecturer != null ? createdProject.Group.Lecturer.FullName : "Chưa có giảng viên",
+                Status = createdProject.Status,
                 CreatedAt = createdProject.CreatedAt,
                 UpdatedAt = createdProject.UpdatedAt
             };
@@ -139,14 +145,21 @@ namespace EduProject_TADProgrammer.Services
 
         public async System.Threading.Tasks.Task UpdateProject(Project project)
         {
-            if (await _context.Projects.AnyAsync(p => p.ProjectCode == project.ProjectCode && p.Id != project.Id))
-                throw new System.Exception("Mã đề tài đã tồn tại.");
-            if (!await _context.Courses.AnyAsync(c => c.Id == project.CourseId))
-                throw new System.Exception("Môn học không hợp lệ.");
-            if (!await _context.Users.AnyAsync(u => u.Id == project.Group.LecturerId && (u.RoleId == 2 || u.RoleId == 4)))
-                throw new System.Exception("Giảng viên không hợp lệ.");
+            var existingProject = await _context.Projects
+                .Include(p => p.Course)
+                .Include(p => p.Group)
+                    .ThenInclude(g => g.Lecturer)
+                .FirstOrDefaultAsync(p => p.Id == project.Id);
 
-            _context.Projects.Update(project);
+            if (existingProject == null)
+                throw new System.Exception("Đề tài không tồn tại.");
+
+            existingProject.Title = project.Title;
+            existingProject.Description = project.Description;
+            existingProject.Status = project.Status;
+            existingProject.UpdatedAt = project.UpdatedAt;
+
+            _context.Projects.Update(existingProject);
             await _context.SaveChangesAsync();
         }
 
@@ -164,7 +177,7 @@ namespace EduProject_TADProgrammer.Services
         {
             var log = new Log
             {
-                UserId = projectId, // Lưu ý: UserId có thể cần là ID của người thực hiện hành động, không phải projectId
+                UserId = projectId,
                 Action = action,
                 Details = details,
                 CreatedAt = DateTime.UtcNow

@@ -17,8 +17,8 @@ namespace EduProject_TADProgrammer.Models
         // Học kỳ của môn học (ví dụ: "HK1_2023-2024")
         public string Semester { get; set; }
 
-        // Mã lớp học (ví dụ: "K64A")
-        public string ClassCode { get; set; }
+        // Mã ngành (ví dụ: "K64A")
+        public string FacultyCode { get; set; }
 
         // Tổng số sinh viên trong môn học
         public int StudentCount { get; set; }

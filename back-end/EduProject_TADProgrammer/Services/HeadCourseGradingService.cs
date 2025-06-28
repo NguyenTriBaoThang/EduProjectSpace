@@ -1,10 +1,8 @@
-﻿using EduProject_TADProgrammer.Controllers;
-using EduProject_TADProgrammer.Data;
+﻿using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -87,6 +85,8 @@ namespace EduProject_TADProgrammer.Services
                         .ThenInclude(g => g.Criteria)
                 .Include(g => g.Project)
                     .ThenInclude(p => p.Tasks)
+                        .ThenInclude(t => t.Submissions)
+                            .ThenInclude(s => s.Student)
                 .Where(g => g.Project.Course.CourseCode == courseId &&
                             g.Project.Course.Semester.Name == semester &&
                             g.Project.Course.Department.FacultyCode == facultyCode)
@@ -99,14 +99,10 @@ namespace EduProject_TADProgrammer.Services
                 var members = group.GroupMembers?.Select(gm => gm.Student?.FullName).Where(name => name != null).ToList() ?? new List<string>();
                 var membersString = string.Join(", ", members);
 
-                // Tính điểm tổng dựa trên GradeCriteria
                 float? totalScore = null;
                 if (group.Project?.Grades != null && group.Project.Grades.Any())
                 {
-                    // Lấy CourseId từ Project
                     var projectCourseId = group.Project.CourseId;
-
-                    // Lấy tất cả GradeCriteria có CourseId khớp
                     var gradeCriteria = await _context.GradeCriteria
                         .Where(gc => gc.CourseId == projectCourseId)
                         .ToListAsync();
@@ -114,11 +110,9 @@ namespace EduProject_TADProgrammer.Services
                     float scoreSum = 0f;
                     foreach (var grade in group.Project.Grades)
                     {
-                        // Tìm GradeCriteria có Id khớp với Grade.CriteriaId
                         var matchingCriteria = gradeCriteria.FirstOrDefault(gc => gc.Id == grade.CriteriaId);
                         if (matchingCriteria != null)
                         {
-                            // Nhân Score với Weight từ GradeCriteria
                             scoreSum += grade.Score * matchingCriteria.Weight;
                         }
                     }
@@ -130,7 +124,12 @@ namespace EduProject_TADProgrammer.Services
                     : "Chưa duyệt";
 
                 var finalReportTask = group.Project.Tasks?.FirstOrDefault(t => t.Title == "Báo cáo cuối kỳ");
-                var reportFiles = finalReportTask?.Submissions?.Select(s => s.FilePath).ToList() ?? new List<string>();
+                var reportFiles = finalReportTask?.Submissions?.Select(s => new FileSubmissionHeadCourseGradingDto
+                {
+                    FilePath = s.FilePath,
+                    StudentCode = s.Student?.Username ?? "Unknown",
+                    FullName = s.Student?.FullName ?? "Unknown"
+                }).ToList() ?? new List<FileSubmissionHeadCourseGradingDto>();
 
                 var gradeDetails = new HeadCourseGradeDetails
                 {
@@ -159,7 +158,7 @@ namespace EduProject_TADProgrammer.Services
 
             return groupDTOs;
         }
-       
+
         public async Task<GroupHeadCourseGradingDetailDto> GetGroupGradingDetailsAsync(long groupId, string courseId, string semester, string facultyCode)
         {
             var group = await _context.Groups
@@ -175,6 +174,7 @@ namespace EduProject_TADProgrammer.Services
                 .Include(g => g.Project)
                     .ThenInclude(p => p.Tasks)
                         .ThenInclude(t => t.Submissions)
+                            .ThenInclude(s => s.Student)
                 .FirstOrDefaultAsync(g => g.Id == groupId &&
                                           g.Project.Course.CourseCode == courseId &&
                                           g.Project.Course.Semester.Name == semester &&
@@ -190,36 +190,29 @@ namespace EduProject_TADProgrammer.Services
                     .Where(g => g.StudentId == gm.StudentId)
                     .Sum(g =>
                     {
-                        // Lấy CourseId từ Project
                         var projectCourseId = group.Project.CourseId;
-
-                        // Lấy GradeCriteria có CourseId khớp
                         var gradeCriteria = _context.GradeCriteria
                             .Where(gc => gc.CourseId == projectCourseId)
                             .ToList();
-
-                        // Tìm GradeCriteria có Id khớp với Grade.CriteriaId
                         var matchingCriteria = gradeCriteria.FirstOrDefault(gc => gc.Id == g.CriteriaId);
-                        if (matchingCriteria != null)
-                        {
-                            return g.Score * matchingCriteria.Weight;
-                        }
-                        return 0f;
+                        return matchingCriteria != null ? g.Score * matchingCriteria.Weight : 0f;
                     }),
                 CouncilFeedback = group.Project.Grades
                     .FirstOrDefault(g => g.StudentId == gm.StudentId)?.Comment ?? "Chưa có phản hồi"
             }).ToList() ?? new List<GroupMemberDetail>();
 
             var finalReportTask = group.Project.Tasks?.FirstOrDefault(t => t.Title == "Báo cáo cuối kỳ");
-            var reportFiles = finalReportTask?.Submissions?.Select(s => s.FilePath).ToList() ?? new List<string>();
+            var reportFiles = finalReportTask?.Submissions?.Select(s => new FileSubmissionHeadCourseGradingDto
+            {
+                FilePath = s.FilePath,
+                StudentCode = s.Student?.Username ?? "Unknown",
+                FullName = s.Student?.FullName ?? "Unknown"
+            }).ToList() ?? new List<FileSubmissionHeadCourseGradingDto>();
 
             float? totalGroupScore = null;
             if (group.Project.Grades != null && group.Project.Grades.Any())
             {
-                // Lấy CourseId từ Project
                 var projectCourseId = group.Project.CourseId;
-
-                // Lấy tất cả GradeCriteria có CourseId khớp
                 var gradeCriteria = await _context.GradeCriteria
                     .Where(gc => gc.CourseId == projectCourseId)
                     .ToListAsync();
@@ -227,7 +220,6 @@ namespace EduProject_TADProgrammer.Services
                 float scoreSum = 0f;
                 foreach (var grade in group.Project.Grades)
                 {
-                    // Tìm GradeCriteria có Id khớp với Grade.CriteriaId
                     var matchingCriteria = gradeCriteria.FirstOrDefault(gc => gc.Id == grade.CriteriaId);
                     if (matchingCriteria != null)
                     {

@@ -9,8 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="styles.css" rel="stylesheet">
-    <link href="img/img_logohutech.png" type="image/png" rel="icon">
+    <link href="/font-end/static/css/styles_lecturer.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
     <style>
         .resource-entry { margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     </style>
@@ -19,16 +19,16 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
-        <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
             <h6 class="sidebar-subtitle">Giảng viên hướng dẫn</h6>
-            <a href="lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
-            <a href="lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Danh sách môn duyệt đề tài</a>
-            <a href="lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
-            <a href="lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
-            <a href="lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
-            <a href="lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
-            <a href="lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
+            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Danh sách môn duyệt đề tài</a>
+            <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
+            <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
+            <a href="/font-end/lecturer/lecturer_course_resources.html" class="active"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
+            <a href="/font-end/lecturer/lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
+            <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
         </div>
     </div>
 
@@ -54,15 +54,15 @@
         <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="img/avatar.jpg" alt="Lecturer Avatar">
-                <h6>Nguyễn Huy Cường</h6>
-                <p>nguyenhuycuong@hutech.edu.vn</p>
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Lecturer Avatar">
+                <h6 id="userName">Nguyễn Huy Cường</h6>
+                <p id="userEmail">nguyenhuycuong@hutech.edu.vn</p>
             </div>
             <div class="profile-menu">
                 <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
                 <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
                 <a href="#"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
-                <a href="../LOGIN/login.html" class="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
 
@@ -72,6 +72,7 @@
                 <h2 class="fw-bold text-primary">📚 Gợi ý tài liệu</h2>
                 <div>
                     <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addResourceModal">Thêm tài liệu <i class="bi bi-plus-circle"></i></button>
+                    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#aiSuggestionModal">Tạo gợi ý AI <i class="bi bi-robot"></i></button>
                     <button class="btn btn-info" onclick="exportResources()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
                 </div>
             </div>
@@ -79,8 +80,8 @@
             <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
-                    <li class="breadcrumb-item"><a href="lecturer_course_resources.html"><i class="bi bi-book"></i> Danh sách môn cần gợi ý tài liệu</a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Danh sách môn cần gợi ý tài liệu</a></li>
                     <li class="breadcrumb-item active"><i class="bi bi-folder"></i> Gợi ý tài liệu</li>
                 </ol>
             </nav>
@@ -207,63 +208,63 @@
         </div>
     </div>
 
+    <!-- Modal Tạo Gợi Ý AI -->
+    <div class="modal fade" id="aiSuggestionModal" tabindex="-1" aria-labelledby="aiSuggestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aiSuggestionModalLabel">Tạo gợi ý tài liệu bằng AI</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="aiSuggestionForm">
+                        <div class="mb-3">
+                            <label class="form-label">Chọn đồ án</label>
+                            <select id="aiProjectId" class="form-select" required>
+                                <option value="">Chọn đồ án</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Từ khóa (cách nhau bằng dấu phẩy)</label>
+                            <input type="text" id="aiKeywords" class="form-control" placeholder="ví dụ: Java, Web Development" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="generateSuggestions()">Tạo gợi ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="footer">
         Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu
-        let courses = [
-            { courseId: "CS101", name: "Công nghệ phần mềm", semester: "HK1-2025", classId: "CNTT01", lecturer: "Nguyễn Huy Cường" },
-            { courseId: "AI201", name: "Trí tuệ nhân tạo", semester: "HK1-2025", classId: "AI01", lecturer: "Nguyễn Huy Cường" }
-        ];
-
-        let projects = [
-            { id: 1, courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", name: "Công nghệ phần mềm", groupId: 1, lecturer: "Nguyễn Huy Cường", status: "Đã duyệt" },
-            { id: 2, courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT002", name: "Ứng dụng AI trong y tế", groupId: 2, lecturer: "Nguyễn Huy Cường", status: "Chưa duyệt" },
-            { id: 3, courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", name: "Lập trình Web", groupId: 3, lecturer: "Nguyễn Huy Cường", status: "Hoàn thành" },
-            { id: 4, courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT006", name: "Blockchain trong tài chính", groupId: 4, lecturer: "Nguyễn Huy Cường", status: "Đã duyệt" }
-        ];
-
-        let groups = [
-            { id: 1, name: "Nhóm 1", projectId: "DT001", members: ["21520001", "21520002"] },
-            { id: 2, name: "Nhóm 2", projectId: "DT002", members: ["21520003"] },
-            { id: 3, name: "Nhóm 3", projectId: "DT003", members: ["21520004", "21520005"] },
-            { id: 4, name: "Nhóm 4", projectId: "DT006", members: ["21520006"] }
-        ];
-
-        let students = [
-            { id: "21520001", name: "Nguyễn Tri Bão Thắng", groupId: 1, isLeader: true },
-            { id: "21520002", name: "Trần Văn A", groupId: 1, isLeader: false },
-            { id: "21520003", name: "Lê Thị B", groupId: 2, isLeader: true },
-            { id: "21520004", name: "Phạm Văn C", groupId: 3, isLeader: true },
-            { id: "21520005", name: "Nguyễn Thị D", groupId: 3, isLeader: false },
-            { id: "21520006", name: "Hoàng Văn E", groupId: 4, isLeader: true }
-        ];
-
-        let resources = [
-            { id: 1, courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", groupId: 1, title: "Hướng dẫn lập trình Java", type: "PDF", link: "http://example.com/java.pdf" },
-            { id: 2, courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", groupId: 1, title: "Video hướng dẫn UI/UX", type: "Video", link: "http://youtube.com/uiux" },
-            { id: 3, courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT002", groupId: 2, title: "Bài viết về AI", type: "Website", link: "http://airesource.com" },
-            { id: 4, courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", groupId: 3, title: "CSS nâng cao", type: "PDF", link: "http://example.com/css.pdf" }
-        ];
+        // Cấu hình API
+        const API_URL = "https://localhost:7047";
+        let token = localStorage.getItem("token");
+        let fullNameLecturer = null;
 
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
-        const currentLecturer = "Nguyễn Huy Cường";
+        let resources = [];
+        let projects = [];
+        let groups = [];
 
-        // Lấy thông tin từ URL
         const urlParams = new URLSearchParams(window.location.search);
         const selectedCourseId = urlParams.get("courseId");
         const selectedSemester = urlParams.get("semester");
-        const selectedClassId = urlParams.get("classId");
+        const selectedFacultyCode = urlParams.get("facultyCode");
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
-        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "/font-end/lecturer/lecturer_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
@@ -303,10 +304,66 @@
             }
         }
 
-        // Lấy tên nhóm từ groupId
-        function getGroupName(groupId) {
-            const group = groups.find(g => g.id === groupId);
-            return group ? group.name : "Chưa có nhóm";
+        // Tải thông tin người dùng
+        async function loadUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_LECTURER_GUIDE") {
+                    throw new Error("Không có quyền Giảng viên hoặc chưa đăng nhập.");
+                }
+                fullNameLecturer = user.fullName;
+                document.getElementById("userName").textContent = user.fullName || "Nguyễn Huy Cường";
+                document.getElementById("userEmail").textContent = user.email || "nguyenhuycuong@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Không có quyền Giảng viên hoặc chưa đăng nhập.");
+                logout();
+            }
+        }
+
+        // Tải danh sách tài liệu từ API
+        async function loadResources() {
+            try {
+                const response = await fetch(`${API_URL}/api/LearnerResources/resources?courseId=${selectedCourseId}&semester=${encodeURIComponent(selectedSemester)}&facultyCode=${selectedFacultyCode}`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) throw new Error("Không thể tải danh sách tài liệu");
+                resources = await response.json();
+                await loadProjectsAndGroups();
+                displayTable();
+            } catch (e) {
+                console.error("Lỗi khi tải danh sách tài liệu:", e);
+                document.getElementById("tableBody").innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy tài liệu nào.</td></tr>';
+            }
+        }
+
+        // Tải danh sách đồ án và nhóm
+        async function loadProjectsAndGroups() {
+            try {
+                const response = await fetch(`${API_URL}/api/LecturerFeedback/projects?courseId=${selectedCourseId}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) throw new Error("Không thể tải danh sách đồ án");
+                projects = await response.json();
+
+                // Lấy danh sách nhóm (giả lập từ projects, cần endpoint thực tế)
+                groups = projects.map(p => ({
+                    id: p.groupId || Math.floor(Math.random() * 1000),
+                    name: p.groupName || `Group-${p.projectId}`,
+                    projectId: p.projectId
+                }));
+                populateFiltersAndForms();
+            } catch (e) {
+                console.error("Lỗi khi tải danh sách đồ án:", e);
+            }
         }
 
         // Lọc và sắp xếp bảng
@@ -315,14 +372,11 @@
             const projectFilter = document.getElementById("projectFilter").value;
 
             let filtered = resources.filter(resource =>
-                resource.courseId === selectedCourseId &&
-                resource.semester === selectedSemester &&
-                resource.classId === selectedClassId &&
-                (resource.projectId.toLowerCase().includes(searchText) || 
-                 resource.title.toLowerCase().includes(searchText) || 
-                 resource.type.toLowerCase().includes(searchText) || 
-                 resource.link.toLowerCase().includes(searchText) ||
-                 getGroupName(resource.groupId).toLowerCase().includes(searchText)) &&
+                resource.projectId?.toLowerCase().includes(searchText) || 
+                resource.groupName?.toLowerCase().includes(searchText) || 
+                resource.title?.toLowerCase()?.includes(searchText) || 
+                resource.type?.toLowerCase()?.includes(searchText) || 
+                resource.link?.toLowerCase()?.includes(searchText) &&
                 (projectFilter === "" || resource.projectId === projectFilter)
             );
 
@@ -338,7 +392,7 @@
         }
 
         // Hiển thị bảng
-        function displayTable(page) {
+        function displayTable(page = currentPage) {
             const filteredResources = getFilteredResources();
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
@@ -347,36 +401,37 @@
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
 
-            if (!selectedCourseId || !selectedSemester || !selectedClassId) {
+            if (!selectedCourseId || !selectedSemester || !selectedFacultyCode) {
                 tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Vui lòng chọn một môn học từ danh sách để xem tài liệu.</td></tr>';
-            } else if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy tài liệu nào.</td></tr>';
             } else {
-                paginatedData.forEach((resource, index) => {
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td>${start + index + 1}</td>
-                            <td>${resource.projectId}</td>
-                            <td>${getGroupName(resource.groupId)}</td>
-                            <td>${resource.title}</td>
-                            <td>${resource.type}</td>
-                            <td><a href="${resource.link}" target="_blank">${resource.link}</a></td>
-                            <td>
-                                <button class="btn btn-sm btn-info me-1" onclick="editResource(${resource.id})">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteResource(${resource.id})">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
+                if (paginatedData.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy tài liệu nào.</td></tr>';
+                } else {
+                        paginatedData.forEach((resource, index) => {
+                            tableBody.innerHTML += `
+                                <tr>
+                                    <td>${start + index + 1}</td>
+                                    <td>${resource.projectId || 'N/A'}</td>
+                                    <td>${resource.groupName || 'N/A'}</td>
+                                    <td>${resource.title || 'N/A'}</td>
+                                    <td>${resource.type || 'N/A'}</td>
+                                    <td><a href="${resource.link || '#'} target="_blank">${resource.link || 'N/A'}</a></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info me-1" onclick="editResource(${resource.id})">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteResource(${resource.id})">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
 
-            setupPagination(filteredResources.length);
-            populateFiltersAndForms();
-        }
+                setupPagination(filteredResources.length);
+            }
 
         // Thiết lập phân trang
         function setupPagination(totalItems) {
@@ -386,15 +441,15 @@
 
             if (totalPages <= 1) return;
 
-            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
-            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
-            if (currentPage > 3) paginationHTML += `<li>...</li>`;
-            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
-            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
-            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
-            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
-            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            let paginationHTML = `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage > 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li class="page-item active"><a class="page-link">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
             pagination.innerHTML = paginationHTML;
         }
 
@@ -407,7 +462,7 @@
         // Sắp xếp bảng
         function sortTable(column) {
             if (sortColumn === column) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                sortDirection === sortDirection === 'asc' ? 'desc' : 'asc';
             } else {
                 sortColumn = column;
                 sortDirection = 'asc';
@@ -423,22 +478,23 @@
 
         // Điền danh sách đồ án và nhóm vào bộ lọc và form
         function populateFiltersAndForms() {
-            const projectFilter = document.getElementById("projectFilter");
+            const projectFilter = document.getElementById("project-id");
+            const aiProjectFilter = document.getElementById("aiProjectId");
             projectFilter.innerHTML = '<option value="">📂 Chọn đồ án</option>';
-            const filteredProjects = projects.filter(p => 
-                p.courseId === selectedCourseId && p.semester === selectedSemester && p.classId === selectedClassId
-            );
-            filteredProjects.forEach(project => {
-                projectFilter.innerHTML += `<option value="${project.projectId}">${project.projectId} - ${project.name}</option>`;
+            aiProjectFilter.innerHTML = '<option value="">Chọn đồ án</option>';
+
+            projects.forEach(project => {
+                projectFilter.innerHTML += `<option value="${project.projectId}">${project.projectId} - ${project.name || 'N/A'}</option>`;
+                aiProjectFilter.innerHTML += `<option value="${project.projectId}">${project.projectId} - ${project.name || 'N/A'}</option>`;
             });
 
             const groupSelects = document.querySelectorAll(".resource-group");
             groupSelects.forEach(select => {
                 select.innerHTML = '<option value="">Chọn nhóm</option>';
-                filteredProjects.forEach(project => {
+                projects.forEach(project => {
                     const group = groups.find(g => g.projectId === project.projectId);
                     if (group) {
-                        select.innerHTML += `<option value="${project.projectId}|${group.id}">${group.name} (${project.projectId} - ${project.name})</option>`;
+                        select.innerHTML += `<option value="${project.projectId}|${group.id}">${group.name} (${project.projectId} - ${project.name || 'N/A'})</option>`;
                     }
                 });
             });
@@ -475,69 +531,91 @@
                 <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
             `;
             resourceList.appendChild(newEntry);
-            populateFiltersAndForms(); // Cập nhật lại danh sách nhóm
+            populateFiltersAndForms();
         }
 
         // Thêm nhiều tài liệu
-        function addResources() {
+        async function addResources() {
             const form = document.getElementById("addResourceForm");
             if (form.checkValidity()) {
                 const resourceEntries = document.querySelectorAll(".resource-entry");
                 const newResources = [];
                 resourceEntries.forEach(entry => {
                     const [projectId, groupId] = entry.querySelector(".resource-group").value.split("|");
-                    const project = projects.find(p => p.projectId === projectId);
-                    if (project) {
-                        const newResource = {
-                            id: resources.length + 1 + newResources.length,
-                            courseId: selectedCourseId,
-                            semester: selectedSemester,
-                            classId: selectedClassId,
-                            projectId: projectId,
-                            groupId: parseInt(groupId),
-                            title: entry.querySelector(".resource-title").value,
-                            type: entry.querySelector(".resource-type").value,
-                            link: entry.querySelector(".resource-link").value
-                        };
-                        newResources.push(newResource);
-                    }
+                    newResources.push({
+                        projectId: projectId,
+                        groupId: parseInt(groupId),
+                        facultyCode: selectedFacultyCode,
+                        title: entry.querySelector(".resource-title").value,
+                        type: entry.querySelector(".resource-type").value,
+                        link: entry.querySelector(".resource-link").value
+                    });
                 });
 
-                resources.push(...newResources);
-                alert(`Đã thêm ${newResources.length} tài liệu cho các đồ án trong lớp ${selectedClassId}`);
-                bootstrap.Modal.getInstance(document.getElementById("addResourceModal")).hide();
-                displayTable(currentPage);
+                try {
+                    const response = await fetch(`${API_URL}/api/LecturerResources/resources`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify(newResources)
+                    });
+                    if (!response.ok) throw new Error("Không thể thêm tài liệu");
+                    const result = await response.json();
+                    alert(result.message);
+                    bootstrap.Modal.getInstance(document.getElementById("addResourceModal")).hide();
+                    await loadResources();
+                } catch (error) {
+                    console.error("Lỗi khi thêm tài liệu:", error);
+                    alert("Lỗi khi thêm tài liệu: " + error.message);
+                }
             } else {
                 form.reportValidity();
             }
         }
 
         // Sửa tài liệu
-        function editResource(resourceId) {
+        async function editResource(resourceId) {
             const resource = resources.find(r => r.id === resourceId);
             if (resource) {
                 document.getElementById("editResourceId").value = resource.id;
-                document.getElementById("editResourceProjectId").value = resource.projectId;
-                document.getElementById("editResourceTitle").value = resource.title;
-                document.getElementById("editResourceType").value = resource.type;
-                document.getElementById("editResourceLink").value = resource.link;
+                document.getElementById("editResourceProjectId").value = resource.projectId || 'N/A';
+                document.getElementById("editResourceTitle").value = resource.title || '';
+                document.getElementById("editResourceType").value = resource.type || 'PDF';
+                document.getElementById("editResourceLink").value = resource.link || '';
                 const modal = new bootstrap.Modal(document.getElementById("editResourceModal"));
                 modal.show();
             }
         }
 
-        function saveEditResource() {
+        async function saveEditResource() {
             const form = document.getElementById("editResourceForm");
             if (form.checkValidity()) {
                 const resourceId = parseInt(document.getElementById("editResourceId").value);
-                const resource = resources.find(r => r.id === resourceId);
-                if (resource) {
-                    resource.title = document.getElementById("editResourceTitle").value;
-                    resource.type = document.getElementById("editResourceType").value;
-                    resource.link = document.getElementById("editResourceLink").value;
-                    alert(`Đã cập nhật tài liệu: ${resource.title} cho đồ án ${resource.projectId}`);
+                const resourceDto = {
+                    title: document.getElementById("editResourceTitle").value,
+                    type: document.getElementById("editResourceType").value,
+                    link: document.getElementById("editResourceLink").value
+                };
+
+                try {
+                    const response = await fetch(`${API_URL}/api/LecturerResources/resources/${resourceId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify(resourceDto)
+                    });
+                    if (!response.ok) throw new Error("Không thể cập nhật tài liệu");
+                    const result = await response.json();
+                    alert(result.message);
                     bootstrap.Modal.getInstance(document.getElementById("editResourceModal")).hide();
-                    displayTable(currentPage);
+                    await loadResources();
+                } catch (error) {
+                    console.error("Lỗi khi cập nhật tài liệu:", error);
+                    alert("Lỗi khi cập nhật tài liệu: " + error.message);
                 }
             } else {
                 form.reportValidity();
@@ -545,11 +623,53 @@
         }
 
         // Xóa tài liệu
-        function deleteResource(resourceId) {
-            if (confirm("Bạn có chắc muốn xóa tài liệu này không?")) {
-                resources = resources.filter(r => r.id !== resourceId);
-                alert("Đã xóa tài liệu!");
-                displayTable(currentPage);
+        async function deleteResource(resourceId) {
+            if (confirm("Bạn có chắc chắn muốn xóa tài liệu này không?")) {
+                try {
+                    const response = await fetch(`${API_URL}/api/LecturerResources/resources/${resourceId}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    });
+                    if (!response.ok) throw new Error("Không thể xóa tài liệu");
+                    const result = await response.json();
+                    alert(result.message);
+                    await loadResources();
+                } catch (error) {
+                    console.error("Lỗi khi xóa tài liệu:", error);
+                    alert("Lỗi khi xóa tài liệu: " + error.message);
+                }
+            }
+        }
+
+        // Tạo gợi ý bằng AI
+        async function generateSuggestions() {
+            const form = document.getElementById("aiSuggestionForm");
+            if (form.checkValidity()) {
+                const projectId = document.getElementById("aiProjectId").value;
+                const keywords = document.getElementById("aiKeywords").value;
+
+                try {
+                    const response = await fetch(`${API_URL}/api/LecturerResources/suggestions`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ projectId, keywords })
+                    });
+                    if (!response.ok) throw new Error("Không thể tạo gợi ý");
+                    const suggestions = await response.json();
+                    alert(`Đã tạo ${suggestions.length} gợi ý tài liệu mới.`);
+                    bootstrap.Modal.getInstance(document.getElementById("aiSuggestionModal")).hide();
+                    await loadResources();
+                } catch (error) {
+                    console.error("Lỗi khi tạo gợi ý:", error);
+                    alert("Lỗi khi tạo gợi ý: " + error.message);
+                }
+            } else {
+                form.reportValidity();
             }
         }
 
@@ -558,7 +678,7 @@
             const filteredResources = getFilteredResources();
             const worksheetData = [
                 ["Danh sách tài liệu gợi ý - Hệ thống Sinh viên HUTECH"],
-                ["Giảng viên hướng dẫn: Nguyễn Huy Cường"],
+                [`Giảng viên hướng dẫn: ${fullNameLecturer || 'Nguyễn Huy Cường'}`],
                 [],
                 ["#", "Mã đồ án", "Tên nhóm", "Tiêu đề", "Loại tài liệu", "Liên kết"]
             ];
@@ -566,23 +686,58 @@
             filteredResources.forEach((resource, index) => {
                 worksheetData.push([
                     index + 1,
-                    resource.projectId,
-                    getGroupName(resource.groupId),
-                    resource.title,
-                    resource.type,
-                    resource.link
+                    resource.projectId || 'N/A',
+                    resource.groupName || 'N/A',
+                    resource.title || 'N/A',
+                    resource.type || 'N/A',
+                    resource.link || 'N/A'
                 ]);
             });
 
             const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "TaiLieuGoiY");
-            XLSX.writeFile(workbook, `tai_lieu_goi_y_${selectedCourseId}_${selectedClassId}.xlsx`);
+            XLSX.writeFile(workbook, `tai_lieu_goi_y_${selectedCourseId}_${selectedFacultyCode}.xlsx`);
+        }
+
+        // Đăng xuất
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                const text = await response.text();
+                if (response.ok) {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(data.message || "Đã đăng xuất thành công.");
+                } else {
+                    const data = text ? JSON.parse(text) : {};
+                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                alert("Đăng xuất bị lỗi: " + error.message);
+                console.error("Lỗi khi đăng xuất:", error);
+            }
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            window.location.replace("/font-end/login/login.html");
         }
 
         // Khởi chạy
-        document.addEventListener("DOMContentLoaded", () => {
-            displayTable(currentPage);
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                await loadUserProfile();
+                await loadResources();
+            } catch (error) {
+                console.error("Lỗi khi tải trang:", error);
+                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
+                logout();
+            }
         });
     </script>
 </body>

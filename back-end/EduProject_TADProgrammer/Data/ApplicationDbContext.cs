@@ -99,8 +99,13 @@ namespace EduProject_TADProgrammer.Data
             // 4. StudentCourses: Liên kết giữa Users (sinh viên) và Courses
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Student)
-                .WithMany(u => u.StudentCourses)
+                .WithMany(u => u.CoursesAsStudent)
                 .HasForeignKey(sc => sc.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<StudentCourse>()
+                .HasOne(sc => sc.Lecturer)
+                .WithMany(u => u.CoursesAsLecturer)
+                .HasForeignKey(sc => sc.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StudentCourse>()
                 .HasOne(sc => sc.Course)

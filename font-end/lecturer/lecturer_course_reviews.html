@@ -245,6 +245,7 @@
                 tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy môn học nào.</td></tr>';
             } else {
                 paginatedData.forEach((course, index) => {
+                    const progress = (course.reviewedCount / course.projectCount * 100).toFixed(1);
                     tableBody.innerHTML += `
                         <tr>
                             <td>${start + index + 1}</td>
@@ -253,7 +254,7 @@
                             <td>${course.semester}</td>
                             <td>${course.facultyCode}</td>
                             <td>${course.projectCount}</td>
-                            <td>${course.reviewedCount}</td>
+                            <td>${course.reviewedCount} (${progress}%)</td>
                             <td>
                                 <button class="btn btn-sm btn-primary" onclick="viewReviews('${course.courseId}')">
                                     <i class="bi bi-eye"></i> Xem đồ án
@@ -326,6 +327,7 @@
             ];
 
             filteredCourses.forEach((course, index) => {
+                const progress = (course.reviewedCount / course.projectCount * 100).toFixed(1);
                 worksheetData.push([
                     index + 1,
                     course.courseId,
@@ -333,7 +335,7 @@
                     course.semester,
                     course.facultyCode,
                     course.projectCount,
-                    course.reviewedCount
+                    `${course.reviewedCount} (${progress}%)`
                 ]);
             });
 

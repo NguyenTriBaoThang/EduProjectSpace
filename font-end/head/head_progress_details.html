@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
-    <link href="/font-end/static/medit/imgUser/avatar.jpg" type="image/png" rel="icon">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
     <style>
         .file-list {
             list-style: none;
@@ -31,11 +31,11 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
         <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_progress_courses.html" class="active"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
             <a href="/font-end/head/head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
             <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
@@ -119,7 +119,6 @@
                                 <th>Tệp báo cáo</th>
                                 <th>Ngày nộp</th>
                                 <th>Hạn nộp</th>
-                                <!-- SỬA: Xóa cột Điểm -->
                             </tr>
                         </thead>
                         <tbody id="progressTableBody"></tbody>
@@ -135,14 +134,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_URL = "https://localhost:7047"; // Thay bằng URL backend thực tế
+        const API_URL = "https://localhost:7047"; // Backend API URL
         const urlParams = new URLSearchParams(window.location.search);
         const selectedCourseId = urlParams.get("courseId");
         const selectedSemester = urlParams.get("semester");
         const selectedFacultyCode = urlParams.get("facultyCode");
         const selectedGroupId = parseInt(urlParams.get("groupId"));
 
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
@@ -173,25 +172,20 @@
             let icon = document.getElementById("sidebarIcon");
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-            if (sidebar.classList.contains("collapsed")) {
-                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
-            } else {
-                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
-            }
+            icon.classList.replace(sidebar.classList.contains("collapsed") ? "bi-list" : "bi-layout-sidebar-inset", 
+                                  sidebar.classList.contains("collapsed") ? "bi-layout-sidebar-inset" : "bi-list");
         }
 
-        // Tải thông tin người dùng
         async function loadUserProfile() {
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_HEAD") {
                     throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
                 }
                 document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
                 document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
             } catch (error) {
-                console.error('Lỗi khi tải thông tin người dùng:', error);
+                console.error("Lỗi khi tải thông tin người dùng:", error);
                 alert("Vui lòng đăng nhập lại!");
                 window.location.replace("/font-end/login/login.html");
             }
@@ -201,6 +195,7 @@
             try {
                 const response = await fetch(`${API_URL}/api/HeadProgressCourses/details?courseId=${encodeURIComponent(selectedCourseId)}&semester=${encodeURIComponent(selectedSemester)}&facultyCode=${encodeURIComponent(selectedFacultyCode)}&groupId=${selectedGroupId}`, {
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
@@ -218,16 +213,18 @@
         function displayProgressDetails(data) {
             if (!data) {
                 document.querySelector(".card-body").innerHTML = "<p>Không tìm thấy thông tin nhóm.</p>";
-                document.getElementById("progressTableBody").innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy tiến độ.</td></tr>'; // SỬA: Đổi colspan từ 7 thành 6 vì đã xóa cột Điểm
+                document.getElementById("progressTableBody").innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy tiến độ.</td></tr>';
                 return;
             }
+
+            const dataStatus = (data.status === "APPROVED" ? "Đã duyệt" : data.status === "REJECTED" ? "Từ chối" : "Chưa duyệt");
 
             document.getElementById("groupName").textContent = data.groupName;
             document.getElementById("projectId").textContent = data.projectId;
             document.getElementById("projectName").textContent = data.projectName;
             document.getElementById("members").textContent = data.members;
             document.getElementById("lecturer").textContent = data.lecturer;
-            document.getElementById("status").textContent = data.status;
+            document.getElementById("status").textContent = dataStatus;
 
             const progressTableBody = document.getElementById("progressTableBody");
             progressTableBody.innerHTML = data.phases.length > 0 ? data.phases.map((p, index) => `
@@ -235,12 +232,11 @@
                     <td>${index + 1}</td>
                     <td>${p.phase}</td>
                     <td>${p.description}</td>
-                    <td><ul class="file-list">${p.files.length > 0 ? p.files.map(file => `<li><a href="#">${file}</a></li>`).join("") : "<li>Chưa nộp</li>"}</ul></td>
+                    <td><ul class="file-list">${p.files.length > 0 ? p.files.map(file => `<li><a href="${API_URL}/api/File/files/${file.filePath}" target="_blank">${file.filePath.split('/').pop()} (${file.studentCode} - ${file.fullName})</a></li>`).join("") : "<li>Chưa nộp</li>"}</ul></td>
                     <td>${p.date}</td>
                     <td>${p.deadline}</td>
-                    <!-- SỬA: Xóa cột điểm -->
                 </tr>
-            `).join("") : '<tr><td colspan="6" class="text-center">Chưa có tiến độ</td></tr>'; // SỬA: Đổi colspan từ 7 thành 6
+            `).join("") : '<tr><td colspan="6" class="text-center">Chưa có tiến độ</td></tr>';
             document.getElementById("backToProgressLink").href = `head_progress.html?courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}`;
         }
 
@@ -257,14 +253,14 @@
                 [`Trạng thái: ${data.status}`],
                 [`Ngày xuất: ${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}`],
                 [],
-                ["#", "Giai đoạn", "Mô tả", "Tệp báo cáo", "Ngày nộp", "Hạn nộp"] // SỬA: Xóa cột Điểm
+                ["#", "Giai đoạn", "Mô tả", "Tệp báo cáo", "Ngày nộp", "Hạn nộp"]
             ];
 
             if (data.phases.length === 0) {
-                worksheetData.push(["", "Chưa có tiến độ", "", "", "", ""]); // SỬA: Xóa cột Điểm
+                worksheetData.push(["", "Chưa có tiến độ", "", "", "", ""]);
             } else {
                 data.phases.forEach((p, index) => {
-                    worksheetData.push([index + 1, p.phase, p.description, p.files.join(", ") || "Chưa nộp", p.date, p.deadline]); // SỬA: Xóa cột Điểm
+                    worksheetData.push([index + 1, p.phase, p.description, p.files.map(file => `${file.filePath.split('/').pop()} (${file.studentCode} - ${file.fullName})`).join(", ") || "Chưa nộp", p.date, p.deadline]);
                 });
             }
 
@@ -274,12 +270,12 @@
             XLSX.writeFile(workbook, `chi_tiet_tien_do_${data.groupName}_${selectedCourseId}_${selectedFacultyCode}_${selectedSemester}.xlsx`);
         }
 
-        // Đăng xuất tài khoản
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },

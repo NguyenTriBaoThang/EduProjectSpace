@@ -1,8 +1,4 @@
-﻿// File: Controllers/AuthController.cs
-// Mục đích: Xử lý đăng nhập, đăng xuất, tạo JWT token, ghi nhật ký đăng nhập vào Logs.
-// Chức năng hỗ trợ: 
-//   1: Phân quyền và bảo mật (xác thực JWT, giới hạn đăng nhập sai, ghi nhật ký).
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
@@ -29,8 +25,6 @@ namespace EduProject_TADProgrammer.Controllers
             _logService = logService;
         }
 
-        // POST: api/auth/login
-        // Đăng nhập, set token vào HttpOnly cookie, tăng FailedLoginAttempts nếu sai, khóa tài khoản sau 5 lần thất bại.
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
@@ -43,9 +37,9 @@ namespace EduProject_TADProgrammer.Controllers
                     failedUser.FailedLoginAttempts++;
                     if (failedUser.FailedLoginAttempts >= 5)
                         failedUser.Locked = true;
-                    await _userService.UpdateUser(failedUser);
+                    await _userService.UpdateUser(failedUser.Id, failedUser);
+                    await _logService.LogAction(failedUser.Id, "LOGIN", $"Người dùng {failedUser.FullName} đăng nhập hệ thống thất bại.");
                 }
-                await _logService.LogAction(user.Id, "LOGIN", $"Người dùng {user.FullName} đăng nhập hệ thống thất bại.");
                 return Unauthorized(new { message = "Tên đăng nhập hoặc mật khẩu không đúng." });
             }
 
@@ -94,8 +88,6 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // POST: api/auth/logout
-        // Ghi nhật ký đăng xuất và xóa HttpOnly cookie.
         [HttpPost("logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
@@ -122,7 +114,6 @@ namespace EduProject_TADProgrammer.Controllers
             }
             catch (Exception ex)
             {
-                // Ghi log lỗi nếu cần
                 return StatusCode(500, new { message = "Đã xảy ra lỗi server khi đăng xuất." });
             }
         }

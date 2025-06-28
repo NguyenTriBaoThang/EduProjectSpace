@@ -159,6 +159,7 @@ namespace EduProject_TADProgrammer.Services
                         FileName = s.Task.Title,
                         FilePath = s.FilePath,
                         SubmittedById = s.Student.Username,
+                        FullName = s.Student.FullName,
                         Feedback = s.Feedbacks.FirstOrDefault(f => f.LecturerId == lecturerId)?.Content ?? "",
                     }).ToList() ?? new List<SubmissionLecturerReviewDto>()
                 }).ToList() ?? new List<TaskLecturerReviewDto>()

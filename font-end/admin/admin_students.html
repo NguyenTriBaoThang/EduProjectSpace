@@ -14,7 +14,7 @@
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
-    <!-- Sidebar -->
+    <!-- Sidebar (unchanged) -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
         <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
@@ -30,9 +30,9 @@
         <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main Content (unchanged except for modal) -->
     <div class="content">
-        <!-- Navbar -->
+        <!-- Navbar (unchanged) -->
         <nav class="navbar navbar-expand-lg px-3">
             <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
                 <i id="sidebarIcon" class="bi bi-list"></i>
@@ -49,7 +49,7 @@
             </div>
         </nav>
 
-        <!-- Profile Dropdown -->
+        <!-- Profile Dropdown (unchanged) -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <!-- Students Management Section -->
+        <!-- Students Management Section (unchanged except for modal) -->
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">🎓 Quản lý sinh viên</h2>
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <!-- Breadcrumb -->
+            <!-- Breadcrumb (unchanged) -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
@@ -88,12 +88,12 @@
                 </ol>
             </nav>
 
-            <!-- Students Table -->
+            <!-- Students Table (unchanged) -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
                     <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm sinh viên..." onkeyup="filterTable()">
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
-                        <option value="">📂 Trạng thái</option>
+                        <option value="">Trạng thái</option>
                         <option value="Hoạt động">Hoạt động</option>
                         <option value="Khóa">Khóa</option>
                     </select>
@@ -107,6 +107,7 @@
                                 <th class="sortable" onclick="sortTable('username')">Mã SV <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('fullName')">Họ và tên <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Email</th>
+                                <th class="sortable" onclick="sortTable('departmentName')">Khoa <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('classCode')">Lớp <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('locked')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
@@ -146,6 +147,13 @@
                             <input type="email" id="studentEmail" class="form-control" required>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Khoa</label>
+                            <select id="studentDepartmentId" class="form-select" required>
+                                <option value="">Chọn khoa</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Lớp</label>
                             <input type="text" id="studentClass" class="form-control" required>
                         </div>
@@ -181,6 +189,13 @@
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" id="editStudentEmail" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Khoa</label>
+                            <select id="editStudentDepartmentId" class="form-select" required>
+                                <option value="">Chọn khoa</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Lớp</label>
@@ -220,6 +235,7 @@
         let sortDirection = 'asc';
         let students = [];
         let fuse = null;
+        let departments = [];
 
         // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
         function removeVietnameseTones(str) {
@@ -241,15 +257,46 @@
                     { name: 'email', weight: 0.3 }
                 ],
                 includeScore: true,
-                threshold: 0.4, // Độ nhạy tìm kiếm mờ
-                ignoreLocation: true, // Tìm kiếm chuỗi con
+                threshold: 0.4,
+                ignoreLocation: true,
                 useExtendedSearch: true,
                 getFn: (obj, path) => {
-                    // Chuẩn hóa dữ liệu khi tìm kiếm
                     const value = Fuse.config.getFn(obj, path);
                     return removeVietnameseTones(value);
                 }
             });
+        }
+
+        // Tải danh sách khoa
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_URL}/api/AdminUser/Department`, {
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error("Lỗi tải danh sách khoa");
+                departments = await response.json();
+                populateDepartmentSelect('studentDepartmentId');
+                populateDepartmentSelect('editStudentDepartmentId');
+            } catch (error) {
+                console.error("Error loading departments:", error);
+                alert("Không tải được danh sách khoa: " + error.message);
+            }
+        }
+
+        // Điền danh sách khoa vào select
+        function populateDepartmentSelect(selectId) {
+            const selectElement = document.getElementById(selectId);
+            if (!selectElement) {
+                console.warn(`Element with ID '${selectId}' not found.`);
+                return;
+            }
+            selectElement.innerHTML = '<option value="">Chọn khoa</option>' + 
+                departments.map(dept => `<option value="${dept.id}">${dept.facultyName}</option>`).join('');
         }
 
         // Tải thông tin người dùng
@@ -258,7 +305,6 @@
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_ADMIN") {
                     throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
                 }
                 document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
                 document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
@@ -283,7 +329,7 @@
                 });
                 if (!response.ok) throw new Error(`Lỗi tải danh sách sinh viên: ${response.status}`);
                 students = await response.json();
-                fuse = createFuseIndex(students); // Tạo chỉ mục Fuse.js
+                fuse = createFuseIndex(students);
                 displayTable(currentPage);
             } catch (error) {
                 throw new Error(`Lỗi API: ${error.message}`);
@@ -300,12 +346,10 @@
             const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const statusFilter = document.getElementById("statusFilter").value;
 
-            // Tìm kiếm bằng Fuse.js
             let filtered = searchText
                 ? fuse.search(searchText).map(result => result.item)
                 : students;
 
-            // Lọc theo trạng thái
             if (statusFilter) {
                 filtered = filtered.filter(student =>
                     (statusFilter === "Hoạt động" && !student.locked) ||
@@ -313,11 +357,14 @@
                 );
             }
 
-            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = sortColumn === 'locked' ? a.locked : (a[sortColumn] || '').toLowerCase();
-                    let valueB = sortColumn === 'locked' ? b.locked : (b[sortColumn] || '').toLowerCase();
+                    let valueA = sortColumn === 'locked' ? a.locked : 
+                    sortColumn === 'departmentName' ? (departments.find(d => d.id === a.departmentId)?.name || '').toLowerCase() :
+                    (a[sortColumn] || '').toLowerCase();
+                    let valueB = sortColumn === 'locked' ? b.locked : 
+                    sortColumn === 'departmentName' ? (departments.find(d => d.id === b.departmentId)?.name || '').toLowerCase() :
+                    (b[sortColumn] || '').toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -336,17 +383,19 @@
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy sinh viên nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy sinh viên nào.</td></tr>';
             } else {
                 paginatedData.forEach((student, index) => {
                     const status = student.locked ? "Khóa" : "Hoạt động";
                     const statusClass = student.locked ? "bg-danger" : "bg-success";
+                    const department = departments.find(d => d.id === student.departmentId);
                     tableBody.innerHTML += `
                         <tr>
                             <td>${start + index + 1}</td>
                             <td>${student.username}</td>
                             <td>${student.fullName}</td>
                             <td>${student.email}</td>
+                            <td>${department ? department.facultyName : 'Chưa có'}</td>
                             <td>${student.classCode || ''}</td>
                             <td><span class="badge ${statusClass}">${status}</span></td>
                             <td>
@@ -412,7 +461,14 @@
                 return;
             }
 
-            const username = document.getElementById("studentId").value;
+            const usernameElement = document.getElementById("studentId");
+            const departmentElement = document.getElementById("studentDepartmentId");
+            if (!usernameElement || !departmentElement) {
+                alert("Lỗi: Không tìm thấy trường mã sinh viên hoặc khoa.");
+                return;
+            }
+
+            const username = usernameElement.value;
             if (isUsernameDuplicate(username)) {
                 alert("Mã sinh viên đã tồn tại. Vui lòng chọn mã khác.");
                 return;
@@ -422,6 +478,8 @@
                 username: username,
                 fullName: document.getElementById("studentName").value,
                 email: document.getElementById("studentEmail").value,
+                roleId: 3, // Student role
+                departmentId: parseInt(departmentElement.value),
                 classCode: document.getElementById("studentClass").value
             };
 
@@ -457,6 +515,7 @@
                 document.getElementById("editStudentCode").value = student.username;
                 document.getElementById("editStudentName").value = student.fullName;
                 document.getElementById("editStudentEmail").value = student.email;
+                document.getElementById("editStudentDepartmentId").value = student.departmentId || '';
                 document.getElementById("editStudentClass").value = student.classCode || '';
                 document.getElementById("editStudentPassword").value = '';
                 document.getElementById("editStudentStatus").value = student.locked ? "Khóa" : "Hoạt động";
@@ -472,18 +531,26 @@
                 return;
             }
 
-            const id = parseInt(document.getElementById("editStudentId").value);
+            const idElement = document.getElementById("editStudentId");
+            const departmentElement = document.getElementById("editStudentDepartmentId");
+            if (!idElement || !departmentElement) {
+                alert("Lỗi: Không tìm thấy trường ID hoặc khoa.");
+                return;
+            }
+
+            const id = parseInt(idElement.value);
             const updatedStudent = {
                 id: id,
                 email: document.getElementById("editStudentEmail").value,
                 fullName: document.getElementById("editStudentName").value,
+                departmentId: parseInt(departmentElement.value),
                 classCode: document.getElementById("editStudentClass").value,
                 password: document.getElementById("editStudentPassword").value || undefined,
                 locked: document.getElementById("editStudentStatus").value === "Khóa"
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/AdminUser/students/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/students/update/${id}`, {
                     method: "PUT",
                     headers: {
                         "Accept": "*/*",
@@ -535,15 +602,17 @@
             const worksheetData = [
                 ["Danh sách sinh viên - Hệ thống Sinh viên HUTECH"],
                 [],
-                ["#", "Mã SV", "Họ và tên", "Email", "Lớp", "Trạng thái"]
+                ["#", "Mã SV", "Họ và tên", "Email", "Khoa", "Lớp", "Trạng thái"]
             ];
 
             filteredStudents.forEach((student, index) => {
+                const department = departments.find(d => d.id === student.departmentId);
                 worksheetData.push([
                     index + 1,
                     student.username,
                     student.fullName,
                     student.email,
+                    department ? department.name : 'Chưa có',
                     student.classCode || '',
                     student.locked ? "Khóa" : "Hoạt động"
                 ]);
@@ -567,7 +636,7 @@
                     const workbook = XLSX.read(data, { type: 'array' });
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
                     const rows = XLSX.utils.sheet_to_json(sheet, { 
-                        header: ["Username", "FullName", "Email", "ClassCode"], 
+                        header: ["Username", "FullName", "Email", "DepartmentId", "ClassCode"], 
                         skipHeader: true 
                     });
 
@@ -580,15 +649,23 @@
                         username: row.Username?.toString(),
                         fullName: row.FullName?.toString(),
                         email: row.Email?.toString(),
+                        roleId: 3,
+                        departmentId: parseInt(row.DepartmentId) || null,
                         classCode: row.ClassCode?.toString() || ''
-                    })).filter(student => student.username && student.fullName && student.email);
+                    })).filter(student => 
+                        student.username && 
+                        student.fullName && 
+                        student.email && 
+                        student.departmentId && 
+                        departments.some(d => d.id === student.departmentId) &&
+                        student.classCode
+                    );
 
                     if (studentsToImport.length === 0) {
-                        alert("Không có dữ liệu hợp lệ trong file Excel. Đảm bảo có Username, FullName, Email.");
+                        alert("Không có dữ liệu hợp lệ trong file Excel. Đảm bảo có Username, FullName, Email, DepartmentId hợp lệ, ClassCode.");
                         return;
                     }
 
-                    // Kiểm tra Username trùng trong file Excel
                     const usernameSet = new Set();
                     const duplicateUsernames = [];
                     for (const student of studentsToImport) {
@@ -603,7 +680,6 @@
                         return;
                     }
 
-                    // Kiểm tra Username trùng với danh sách hiện tại
                     const existingDuplicates = studentsToImport
                         .filter(student => isUsernameDuplicate(student.username))
                         .map(student => student.username);
@@ -644,7 +720,7 @@
             }
         }
 
-        // Ghi chú: Đăng xuất
+        // Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -673,7 +749,7 @@
             window.location.replace("/font-end/login/login.html");
         }
 
-        // Navbar Functions
+        // Navbar Functions (unchanged)
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";
@@ -720,6 +796,7 @@
         window.onload = async () => {
             try {
                 await loadUserProfile();
+                await loadDepartments();
                 await fetchStudents();
             } catch (error) {
                 console.error("Error loading students:", error);

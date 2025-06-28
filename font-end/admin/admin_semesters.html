@@ -484,8 +484,8 @@
                     credentials: "include"
                 });
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Không thể xóa kỳ học: ${errorText || response.statusText}`);
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Không thể xóa kỳ học: ${response.statusText}`);
                 }
                 semesters = semesters.filter(s => s.id !== id);
                 fuse = createFuseIndex(semesters); // Cập nhật chỉ mục Fuse.js
@@ -493,7 +493,7 @@
                 displayTable(currentPage);
             } catch (error) {
                 console.error("Lỗi khi xóa kỳ học:", error);
-                alert(error.message);
+                alert(error.message); // Hiển thị thông báo lỗi từ server
             }
         }
 

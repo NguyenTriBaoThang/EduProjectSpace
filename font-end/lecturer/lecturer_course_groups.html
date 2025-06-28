@@ -117,6 +117,7 @@
         const API_URL = 'https://localhost:7047'; // URL API của bạn
         const itemsPerPage = 5;
         let currentPage = 1;
+        let fullNameLecturer = null;
         let sortColumn = null;
         let sortDirection = 'asc';
         let courses = [];
@@ -269,7 +270,7 @@
             const filteredCourses = getFilteredCourses();
             const worksheetData = [
                 ["Danh sách môn học cần chia nhóm - Hệ thống Sinh viên HUTECH"],
-                ["Giảng viên hướng dẫn: Nguyễn Huy Cường"],
+                [`Giảng viên hướng dẫn: ${fullNameLecturer}`],
                 [],
                 ["#", "Mã môn học", "Tên môn học", "Học kỳ", "Mã khoa", "Số SV", "Số nhóm"]
             ];
@@ -300,6 +301,7 @@
                     throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
                     logout();
                 }
+                fullNameLecturer = user.fullName;
                 document.getElementById("userName").textContent = user.fullName || "Nguyễn Huy Cường";
                 document.getElementById("userEmail").textContent = user.email || "nguyenhuycuong@hutech.edu.vn";
             } catch (error) {

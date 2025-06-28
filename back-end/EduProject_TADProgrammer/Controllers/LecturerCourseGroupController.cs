@@ -10,7 +10,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "ROLE_LECTURER_GUIDE")] // Chỉ cho phép vai trò Giảng viên hướng dẫn
+    [Authorize(Roles = "ROLE_LECTURER_GUIDE")]
     public class LecturerCourseGroupController : ControllerBase
     {
         private readonly LecturerCourseGroupService _service;
@@ -20,8 +20,6 @@ namespace EduProject_TADProgrammer.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
-        // GET: api/LecturerCourseGroup/courses
-        // Mục đích: Lấy danh sách môn học cần chia nhóm cho Giảng viên
         [HttpGet("courses")]
         public async Task<IActionResult> GetCourses()
         {
@@ -65,54 +63,104 @@ namespace EduProject_TADProgrammer.Controllers
         [HttpPost("add-group")]
         public async Task<IActionResult> AddGroup([FromQuery] string groupName, string courseId)
         {
-            var group = await _service.AddGroupAsync(groupName, courseId);
-            return Ok(group);
+            try
+            {
+                var group = await _service.AddGroupAsync(groupName, courseId);
+                return Ok(group);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("add-to-group")]
         public async Task<IActionResult> AddToGroup([FromQuery] string studentId, string groupId, int groupSize)
         {
-            await _service.AddToGroupAsync(studentId, groupId, groupSize);
-            return Ok();
+            try
+            {
+                await _service.AddToGroupAsync(studentId, groupId, groupSize);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("remove-from-group")]
         public async Task<IActionResult> RemoveFromGroup([FromQuery] string studentId, string groupId)
         {
-            await _service.RemoveFromGroupAsync(studentId, groupId);
-            return Ok();
+            try
+            {
+                await _service.RemoveFromGroupAsync(studentId, groupId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("toggle-leader")]
         public async Task<IActionResult> ToggleLeader([FromQuery] string studentId, string groupId)
         {
-            await _service.ToggleLeaderAsync(studentId, groupId);
-            return Ok();
+            try
+            {
+                await _service.ToggleLeaderAsync(studentId, groupId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("assign-project")]
         public async Task<IActionResult> AssignProject([FromQuery] string groupId, string projectId)
         {
-            await _service.AssignProjectAsync(groupId, projectId);
-            return Ok();
+            try
+            {
+                await _service.AssignProjectAsync(groupId, projectId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("auto-group")]
         public async Task<IActionResult> AutoGroup([FromBody] AutoLecturerCourseGroupRequestDto request)
         {
-            await _service.AutoGroupAsync(request);
-            return Ok();
+            try
+            {
+                await _service.AutoGroupAsync(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet("export-excel")]
         public async Task<IActionResult> ExportGroupsToExcel(string courseId)
         {
-            var fileContent = await _service.ExportGroupsToExcelAsync(courseId);
-            return File(fileContent, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"nhom_sinh_vien_{courseId}.xlsx");
+            try
+            {
+                var fileContent = await _service.ExportGroupsToExcelAsync(courseId);
+                var courseResponse = await _service.GetCoursesForGroupingAsync(long.Parse(User.FindFirst("id")?.Value));
+                var course = courseResponse.Courses.Find(c => c.CourseId == courseId);
+                var fileName = $"{course.Name}_{courseId}.xlsx";
+                return File(fileContent, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi server: {ex.Message}" });
+            }
         }
 
-        // POST: api/LecturerCourseGroup/update-group-name
-        // Mục đích: Cập nhật tên nhóm
         [HttpPost("update-group-name")]
         public async Task<IActionResult> UpdateGroupName([FromQuery] string groupId, string newGroupName)
         {
@@ -123,12 +171,10 @@ namespace EduProject_TADProgrammer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = $"Lỗi server: {ex.Message}" });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
-        // POST: api/LecturerCourseGroup/delete-group
-        // Mục đích: Xóa nhóm và chuyển các thành viên về chưa có nhóm
         [HttpPost("delete-group")]
         public async Task<IActionResult> DeleteGroup([FromQuery] string groupId)
         {
@@ -139,7 +185,35 @@ namespace EduProject_TADProgrammer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = $"Lỗi server: {ex.Message}" });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("check-student")]
+        public async Task<IActionResult> CheckStudentInCourse(string studentId, string courseId)
+        {
+            try
+            {
+                var isValid = await _service.CheckStudentInCourseAsync(studentId, courseId);
+                return Ok(new { isValid });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("getIdByUsername")]
+        public async Task<IActionResult> GetIdByUsername(string username)
+        {
+            try
+            {
+                var userId = await _service.GetIdByUsernameAsync(username);
+                return Ok(new { id = userId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

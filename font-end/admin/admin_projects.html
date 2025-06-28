@@ -15,6 +15,11 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link href="/font-end/static/css/styles_admin.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        .select2-container {
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
@@ -67,9 +72,6 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">📂 Quản lý đề tài</h2>
                 <div>
-                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addProjectModal">Thêm đề tài <i class="bi bi-plus-circle"></i></button>
-                    <button class="btn btn-warning me-2" onclick="document.getElementById('importExcel').click()">Nhập Excel <i class="bi bi-file-earmark-arrow-up"></i></button>
-                    <input type="file" id="importExcel" style="display: none;" accept=".xlsx, .xls" onchange="importProjects(event)">
                     <button class="btn btn-info" onclick="exportProjects()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
                 </div>
             </div>
@@ -120,45 +122,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addProjectModalLabel">Thêm đề tài mới</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addProjectForm">
-                        <div class="mb-3">
-                            <label class="form-label">Mã đề tài</label>
-                            <input type="text" id="projectCode" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tên đề tài</label>
-                            <input type="text" id="projectTitle" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Môn học</label>
-                            <select id="projectCourse" class="form-select" required>
-                                <option value="">Chọn môn học</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Giảng viên hướng dẫn</label>
-                            <select id="projectLecturer" class="form-select" required>
-                                <option value="">Chọn giảng viên</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="addProject()">Thêm</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="editProjectModal" tabindex="-1" aria-labelledby="editProjectModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -169,25 +132,22 @@
                 <div class="modal-body">
                     <form id="editProjectForm">
                         <input type="hidden" id="editProjectId">
+                        <input type="hidden" id="editProjectCourseId">
                         <div class="mb-3">
                             <label class="form-label">Mã đề tài</label>
-                            <input type="text" id="editProjectCode" class="form-control" required>
+                            <input type="text" id="editProjectCode" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Môn học</label>
+                            <input type="text" id="editProjectCourse" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tên đề tài</label>
                             <input type="text" id="editProjectTitle" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Môn học</label>
-                            <select id="editProjectCourse" class="form-select" required>
-                                <option value="">Chọn môn học</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Giảng viên hướng dẫn</label>
-                            <select id="editProjectLecturer" class="form-select" required>
-                                <option value="">Chọn giảng viên</option>
-                            </select>
+                            <label class="form-label">Mô tả</label>
+                            <textarea id="editProjectDescription" class="form-control" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
@@ -221,7 +181,6 @@
         let sortColumn = null;
         let sortDirection = 'asc';
 
-        // Hàm chuẩn hóa tiếng Việt
         function removeVietnameseTones(str) {
             return str
                 .normalize('NFD')
@@ -231,7 +190,6 @@
                 .toLowerCase();
         }
 
-        // Hàm tạo chỉ mục Fuse.js
         function createFuseIndex(data) {
             return new Fuse(data, {
                 keys: [
@@ -250,13 +208,11 @@
             });
         }
 
-        // Tải thông tin người dùng
         async function loadUserProfile() {
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_ADMIN") {
                     throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
                 }
                 document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
                 document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
@@ -264,63 +220,6 @@
                 console.error('Lỗi khi tải thông tin người dùng:', error);
                 alert("Vui lòng đăng nhập lại!");
                 window.location.replace("/font-end/login/login.html");
-            }
-        }
-
-        async function loadCourses() {
-            try {
-                const response = await fetch(`${API_URL}/api/AdminProjects/courses`, {
-                    method: "GET",
-                    headers: {
-                        "Accept": "*/*",
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    credentials: "include"
-                });
-                if (!response.ok) throw new Error(`Lỗi tải danh sách môn học: ${response.status}`);
-                const courses = await response.json();
-                const courseSelect = document.getElementById("projectCourse");
-                const editCourseSelect = document.getElementById("editProjectCourse");
-                courseSelect.innerHTML = '<option value="">Chọn môn học</option>';
-                editCourseSelect.innerHTML = '<option value="">Chọn môn học</option>';
-                courses.forEach(course => {
-                    const option = `<option value="${course.id}">${course.name}</option>`;
-                    courseSelect.innerHTML += option;
-                    editCourseSelect.innerHTML += option;
-                });
-                $(courseSelect).select2();
-                $(editCourseSelect).select2();
-            } catch (error) {
-                console.error("Error loading courses:", error);
-            }
-        }
-
-        async function loadLecturers() {
-            try {
-                const response = await fetch(`${API_URL}/api/AdminUser/lecturers`, {
-                    headers: {
-                        "Accept": "*/*",
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    credentials: "include"
-                });
-                if (!response.ok) throw new Error(`Lỗi tải danh sách giảng viên: ${response.status}`);
-                const lecturers = await response.json();
-                const lecturerSelect = document.getElementById("projectLecturer");
-                const editLecturerSelect = document.getElementById("editProjectLecturer");
-                lecturerSelect.innerHTML = '<option value="">Chọn giảng viên</option>';
-                editLecturerSelect.innerHTML = '<option value="">Chọn giảng viên</option>';
-                lecturers.forEach(lecturer => {
-                    const option = `<option value="${lecturer.id}">${lecturer.fullName}</option>`;
-                    lecturerSelect.innerHTML += option;
-                    editLecturerSelect.innerHTML += option;
-                });
-                $(lecturerSelect).select2();
-                $(editLecturerSelect).select2();
-            } catch (error) {
-                console.error("Error loading lecturers:", error);
             }
         }
 
@@ -343,10 +242,6 @@
             }
         }
 
-        function isProjectCodeDuplicate(projectCode, excludeId = null) {
-            return projects.some(project => project.projectCode === projectCode && (!excludeId || project.id !== excludeId));
-        }
-
         function getFilteredProjects() {
             const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const statusFilter = document.getElementById("statusFilter").value;
@@ -364,8 +259,8 @@
                     let valueA = a[sortColumn] || '';
                     let valueB = b[sortColumn] || '';
                     if (sortColumn === 'lecturerName') {
-                        valueA = a.lecturer?.fullName || '';
-                        valueB = b.lecturer?.fullName || '';
+                        valueA = a.lecturerName || '';
+                        valueB = b.lecturerName || '';
                     }
                     valueA = valueA.toString().toLowerCase();
                     valueB = valueB.toString().toLowerCase();
@@ -383,7 +278,7 @@
             const paginatedData = filteredProjects.slice(start, end);
 
             const tableBody = document.getElementById("tableBody");
-            tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Đang tải...</td></tr>';
+            tableBody.innerHTML = '';
 
             if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy đề tài nào.</td></tr>';
@@ -453,54 +348,6 @@
             displayTable(currentPage);
         }
 
-        async function addProject() {
-            const form = document.getElementById("addProjectForm");
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const projectCode = document.getElementById("projectCode").value;
-            if (isProjectCodeDuplicate(projectCode)) {
-                alert("Mã đề tài đã tồn tại. Vui lòng chọn mã khác.");
-                return;
-            }
-
-            const newProject = {
-                projectCode: projectCode,
-                title: document.getElementById("projectTitle").value,
-                courseId: parseInt(document.getElementById("projectCourse").value),
-                lecturerId: parseInt(document.getElementById("projectLecturer").value),
-                status: "PENDING"
-            };
-
-            try {
-                const response = await fetch(`${API_URL}/api/AdminProjects`, {
-                    method: "POST",
-                    headers: {
-                        "Accept": "*/*",
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(newProject)
-                });
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.message || "Không thêm được đề tài.");
-                }
-                alert("Đã thêm đề tài: " + newProject.title);
-                bootstrap.Modal.getInstance(document.getElementById("addProjectModal")).hide();
-                form.reset();
-                $(document.getElementById("projectCourse")).val("").trigger("change");
-                $(document.getElementById("projectLecturer")).val("").trigger("change");
-                await loadProjects();
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Không thêm được đề tài: " + error.message);
-            }
-        }
-
         async function editProject(id) {
             try {
                 const response = await fetch(`${API_URL}/api/AdminProjects/${id}`, {
@@ -515,9 +362,10 @@
                 const project = await response.json();
                 document.getElementById("editProjectId").value = project.id;
                 document.getElementById("editProjectCode").value = project.projectCode;
+                document.getElementById("editProjectCourseId").value = project.courseId;
+                document.getElementById("editProjectCourse").value = project.courseName;
                 document.getElementById("editProjectTitle").value = project.title;
-                $(document.getElementById("editProjectCourse")).val(project.courseId).trigger("change");
-                $(document.getElementById("editProjectLecturer")).val(project.lecturerId).trigger("change");
+                document.getElementById("editProjectDescription").value = project.description || '';
                 document.getElementById("editProjectStatus").value = project.status;
                 const modal = new bootstrap.Modal(document.getElementById("editProjectModal"));
                 modal.show();
@@ -535,18 +383,12 @@
             }
 
             const id = parseInt(document.getElementById("editProjectId").value);
-            const projectCode = document.getElementById("editProjectCode").value;
-            if (isProjectCodeDuplicate(projectCode, id)) {
-                alert("Mã đề tài đã tồn tại. Vui lòng chọn mã khác.");
-                return;
-            }
-
             const updatedProject = {
                 id: id,
-                projectCode: projectCode,
+                projectCode: document.getElementById("editProjectCode").value,
                 title: document.getElementById("editProjectTitle").value,
-                courseId: parseInt(document.getElementById("editProjectCourse").value),
-                lecturerId: parseInt(document.getElementById("editProjectLecturer").value),
+                description: document.getElementById("editProjectDescription").value,
+                courseId: parseInt(document.getElementById("editProjectCourseId").value),
                 status: document.getElementById("editProjectStatus").value
             };
 
@@ -611,7 +453,7 @@
                     project.projectCode,
                     project.title,
                     students,
-                    project.lecturer?.fullName || "Chưa có giảng viên",
+                    project.lecturerName || "Chưa có giảng viên",
                     project.status === "PENDING" ? "Chưa duyệt" :
                     project.status === "APPROVED" ? "Đã duyệt" : "Hoàn thành"
                 ]);
@@ -623,99 +465,6 @@
             XLSX.writeFile(workbook, "danh_sach_de_tai.xlsx");
         }
 
-        async function importProjects(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            try {
-                const reader = new FileReader();
-                reader.onload = async (e) => {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(sheet, { 
-                        header: ["ProjectCode", "Title", "CourseId", "LecturerId"], 
-                        skipHeader: true 
-                    });
-
-                    if (rows.length === 0) {
-                        alert("File Excel trống hoặc định dạng không đúng.");
-                        return;
-                    }
-
-                    const projectsToImport = rows.map(row => ({
-                        projectCode: row.ProjectCode?.toString(),
-                        title: row.Title?.toString(),
-                        courseId: parseInt(row.CourseId),
-                        lecturerId: parseInt(row.LecturerId),
-                        status: "PENDING"
-                    })).filter(project => 
-                        project.projectCode && 
-                        project.title && 
-                        !isNaN(project.courseId) && 
-                        !isNaN(project.lecturerId)
-                    );
-
-                    if (projectsToImport.length === 0) {
-                        alert("Không có dữ liệu hợp lệ trong file Excel. Đảm bảo có ProjectCode, Title, CourseId, LecturerId.");
-                        return;
-                    }
-
-                    const projectCodeSet = new Set();
-                    const duplicateProjectCodes = [];
-                    for (const project of projectsToImport) {
-                        if (projectCodeSet.has(project.projectCode)) {
-                            duplicateProjectCodes.push(project.projectCode);
-                        } else {
-                            projectCodeSet.add(project.projectCode);
-                        }
-                    }
-                    if (duplicateProjectCodes.length > 0) {
-                        alert(`File Excel chứa ProjectCode trùng lặp: ${duplicateProjectCodes.join(', ')}. Vui lòng sửa trước khi nhập.`);
-                        return;
-                    }
-
-                    const existingDuplicates = projectsToImport
-                        .filter(project => isProjectCodeDuplicate(project.projectCode))
-                        .map(project => project.projectCode);
-                    if (existingDuplicates.length > 0) {
-                        alert(`ProjectCode đã tồn tại trong hệ thống: ${existingDuplicates.join(', ')}. Vui lòng sửa trước khi nhập.`);
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch(`${API_URL}/api/AdminProjects/import`, {
-                            method: "POST",
-                            headers: {
-                                "Accept": "*/*",
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer ${localStorage.getItem("token")}`
-                            },
-                            credentials: "include",
-                            body: JSON.stringify(projectsToImport)
-                        });
-
-                        if (!response.ok) {
-                            const error = await response.json();
-                            throw new Error(error.message || "Không nhập được danh sách đề tài.");
-                        }
-
-                        const result = await response.json();
-                        alert(`Đã nhập ${result.successCount} đề tài thành công. Thất bại: ${result.failedCount}. ${result.errors.length > 0 ? 'Lỗi: ' + result.errors.join('; ') : ''}`);
-                        await loadProjects();
-                    } catch (error) {
-                        console.error("Import error:", error);
-                        alert("Không nhập được danh sách đề tài: " + error.message);
-                    }
-                };
-                reader.readAsArrayBuffer(file);
-            } catch (error) {
-                console.error("Error reading file:", error);
-                alert("Lỗi đọc file Excel: " + error.message);
-            }
-        }
-
-        // Ghi chú: Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -789,8 +538,6 @@
         window.onload = async () => {
             try {
                 await loadUserProfile();
-                await loadCourses();
-                await loadLecturers();
                 await loadProjects();
             } catch (error) {
                 console.error("Error loading projects:", error);
