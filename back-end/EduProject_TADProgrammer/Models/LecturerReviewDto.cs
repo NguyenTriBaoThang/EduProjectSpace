@@ -56,6 +56,7 @@ namespace EduProject_TADProgrammer.Models
         public string FileName { get; set; }
         public string FilePath { get; set; }
         public string SubmittedById { get; set; }
+        public string FullName { get; set; }
         public string Feedback { get; set; }
         public float? Score { get; set; }
     }

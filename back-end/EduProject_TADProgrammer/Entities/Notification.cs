@@ -25,7 +25,7 @@ namespace EduProject_TADProgrammer.Entities
 
         // ID của người dùng liên quan (bắt buộc, thường là người tạo hoặc người nhận nếu RecipientType là Individual)
         [Required]
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
 
         // Liên kết với entity User (người dùng liên quan)
         [ForeignKey("UserId")]
@@ -51,6 +51,12 @@ namespace EduProject_TADProgrammer.Entities
         [Required]
         [StringLength(50)]
         public string RecipientType { get; set; }
+
+        // Người dùng đã xem thông báo này lần đầu chưa (dùng cho loại cá nhân)
+        public bool IsFirstViewed { get; set; } = false;
+
+        // Thời gian xem lần đầu (tùy chọn, nếu bạn muốn lưu)
+        public DateTime? FirstViewedAt { get; set; }
 
         // Loại thông báo (bắt buộc, giá trị: "Email", "Web", "Urgent")
         [Required]

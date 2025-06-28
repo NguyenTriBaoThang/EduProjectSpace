@@ -11,7 +11,7 @@
         public string CourseId { get; set; }
         public string Name { get; set; }
         public string Semester { get; set; }
-        public string FacultyCode { get; set; } // Đổi từ ClassId thành FacultyCode
+        public string FacultyCode { get; set; }
         public int ProjectCount { get; set; }
     }
 

@@ -16,11 +16,11 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
         <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_lecturer_assign.html" class="active"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
             <a href="/font-end/head/head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
             <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
@@ -163,10 +163,10 @@
         const selectedLecturer = decodeURIComponent(urlParams.get("lecturer"));
         const selectedCourseId = urlParams.get("courseId");
         const selectedSemester = urlParams.get("semester");
-        const selectedClassId = urlParams.get("classId");
-        const selectedGroupId = parseInt(urlParams.get("groupIndex"));
+        const selectedFacultyCode = urlParams.get("facultyCode");
+        const selectedGroupId = parseInt(urlParams.get("groupId"));
 
-        // Đường dẫn API cơ bản (thay đổi theo URL backend của bạn)
+        // Đường dẫn API cơ bản
         const API_URL = "https://localhost:7047";
 
         // Dữ liệu nhóm để sử dụng cho xuất Excel
@@ -174,7 +174,7 @@
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
-        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
+        document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "/font-end/head/lecturer_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
             const dropdown = document.getElementById("profileDropdown");
@@ -203,10 +203,8 @@
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
             let icon = document.getElementById("sidebarIcon");
-
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-
             if (sidebar.classList.contains("collapsed")) {
                 icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
             } else {
@@ -220,7 +218,6 @@
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_HEAD") {
                     throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
                 }
                 document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
                 document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
@@ -234,17 +231,18 @@
         // Hàm lấy thông tin chi tiết nhóm từ API
         async function fetchGroupDetails() {
             try {
-                const response = await fetch(`${API_URL}/api/HeadLecturer/groupdetails/?groupId=${selectedGroupId}&lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`,{
+                const response = await fetch(`${API_URL}/api/HeadLecturer/groupdetails?groupId=${selectedGroupId}&lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}`, {
                     method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error("Không thể lấy thông tin nhóm");
+                if (!response.ok) throw new Error(`Lỗi: ${await response.text()}`);
                 const details = await response.json();
-                groupDetails = details; // Lưu dữ liệu để dùng cho xuất Excel
+                groupDetails = details;
                 return details;
             } catch (error) {
                 console.error("Lỗi khi lấy thông tin nhóm:", error);
@@ -282,16 +280,16 @@
             // Hiển thị danh sách file
             const fileList = document.getElementById("fileList");
             fileList.innerHTML = "";
-            details.fileUrls.forEach(fileUrl => {
-                if (fileUrl === "Chưa có file") {
-                    fileList.innerHTML += `<li>${fileUrl}</li>`;
+            details.files.forEach(file => {
+                if (file.filePath === "Chưa có file") {
+                    fileList.innerHTML += `<li>${file.filePath}</li>`;
                 } else {
-                    fileList.innerHTML += `<li><a href="${fileUrl}" target="_blank">${fileUrl.split('/').pop()}</a></li>`;
+                    fileList.innerHTML += `<li><a href="${API_URL}/api/File/files/${file.filePath}" target="_blank">${file.filePath.split('/').pop()} (${file.studentCode} - ${file.fullName})</a></li>`;
                 }
             });
 
             // Cập nhật link quay lại
-            document.getElementById("backToLecturerLink").href = `head_lecturer_details.html?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&classId=${selectedClassId}`;
+            document.getElementById("backToLecturerLink").href = `/font-end/head/head_lecturer_details.html?lecturer=${encodeURIComponent(selectedLecturer)}&courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}`;
         }
 
         // Hàm xuất thông tin chi tiết sang Excel
@@ -304,7 +302,7 @@
             const worksheetData = [
                 ["Chi tiết nhóm và đồ án - Hệ thống Sinh viên HUTECH"],
                 [`GVHD: ${groupDetails.lecturerName}`],
-                [`Môn học: ${selectedCourseId} - ${selectedClassId} - ${selectedSemester}`],
+                [`Môn học: ${selectedCourseId} - ${selectedFacultyCode} - ${selectedSemester}`],
                 [],
                 ["Mã SV", "Tên SV", "Tên nhóm", "Tên đồ án", "Thời gian bắt đầu", "Thời gian kết thúc", "Thời gian chấm", "Mô tả đề tài", "File mô tả"]
             ];
@@ -319,14 +317,14 @@
                     groupDetails.endDate,
                     groupDetails.gradingDate,
                     groupDetails.description,
-                    groupDetails.fileUrls.join(", ")
+                    groupDetails.files.map(file => file.filePath === "Chưa có file" ? "Chưa có file" : `${file.filePath.split('/').pop()} (${file.studentCode} - ${file.fullName})`).join(", ")
                 ]);
             });
 
             const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "ChiTietNhom");
-            XLSX.writeFile(workbook, `chi_tiet_nhom_${groupDetails.groupName}_${selectedCourseId}_${selectedClassId}_${selectedSemester}.xlsx`);
+            XLSX.writeFile(workbook, `chi_tiet_nhom_${groupDetails.groupName}_${selectedCourseId}_${selectedFacultyCode}_${selectedSemester}.xlsx`);
         }
 
         // Đăng xuất tài khoản
@@ -335,23 +333,19 @@
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert(data.message);
-                } else {
-                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                }
+                if (!response.ok) throw new Error(`Đăng xuất thất bại: ${await response.text()}`);
+                alert("Đăng xuất thành công!");
             } catch (error) {
                 alert("Đăng xuất bị lỗi: " + error.message);
             }
-
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 

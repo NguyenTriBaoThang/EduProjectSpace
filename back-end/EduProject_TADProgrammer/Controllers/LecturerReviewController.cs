@@ -8,7 +8,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_LECTURER_GUIDE")]
+    [Authorize(Roles = "ROLE_LECTURER_GUIDE")]
     public class LecturerReviewController : ControllerBase
     {
         private readonly LecturerReviewService _lecturerReviewService;

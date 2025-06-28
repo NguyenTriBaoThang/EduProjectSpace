@@ -100,7 +100,6 @@
                                 <th class="sortable" onclick="sortTable('groupName')">Tên nhóm <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('members')">Thành viên <i class="bi bi-arrow-down-up"></i></th>
                                 <th>File mô tả</th>
-                                <th>Mô tả</th>
                                 <th class="sortable" onclick="sortTable('approvalStatus')">Trạng thái duyệt <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
                             </tr>
@@ -111,6 +110,24 @@
 
                 <div class="table-footer">
                     <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description Modal -->
+    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="descriptionModalLabel">Chi tiết mô tả</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalDescription"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
@@ -224,9 +241,9 @@
                     displayTable(currentPage);
                 } catch (error) {
                     alert("Không thể tải đề tài.");
-                    document.getElementById("tableBody").innerHTML = '<tr><td colspan="9" class="text-center">Lỗi tải dữ liệu.</td></tr>';
+                    document.getElementById("tableBody").innerHTML = '<tr><td colspan="8" class="text-center">Lỗi tải dữ liệu.</td></tr>';
                 }
-            }else{
+            } else {
                 try {
                     const response = await fetch(`${API_URL}/api/LecturerProjectApproval/project?projectId=${selectedProjectId}`, {
                         method: "GET",
@@ -242,7 +259,7 @@
                     displayTable(currentPage);
                 } catch (error) {
                     alert("Không thể tải đề tài.");
-                    document.getElementById("tableBody").innerHTML = '<tr><td colspan="9" class="text-center">Lỗi tải dữ liệu.</td></tr>';
+                    document.getElementById("tableBody").innerHTML = '<tr><td colspan="8" class="text-center">Lỗi tải dữ liệu.</td></tr>';
                 }
             }
         }
@@ -286,11 +303,14 @@
                     <tr>
                         <td>${start + i + 1}</td>
                         <td>${p.projectId}</td>
-                        <td>${p.name}</td>
+                        <td><a href="#" onclick="showDescription('${p.id}')">${p.name}</a></td>
                         <td>${p.groupName}</td>
                         <td>${p.students.map(s => s.fullName).join(", ")}</td>
-                        <td><ul class="file-list">${p.descriptionFilePath.length ? p.descriptionFilePath.map(f => `<li><a href="${f}">${f.split("/").pop()}</a></li>`).join("") : "<li>Chưa có</li>"}</ul></td>
-                        <td>${p.description || "Chưa có"}</td>
+                        <td><ul class="file-list">${p.descriptionFilePath.length ? p.descriptionFilePath.map(f => {
+                            const fileName = f.split('/').pop();
+                            const student = p.students.find(s => f.includes(s.username)) || p.students[0];
+                            return `<li><a href="${API_URL}/api/File/files/${f}" target="_blank">${fileName} (${student.username} - ${student.fullName})</a></li>`;
+                        }).join("") : "<li>Chưa có</li>"}</ul></td>
                         <td><span class="badge ${statusClass}">${p.approvalStatus === "APPROVED" ? "Đã duyệt" : p.approvalStatus === "REJECTED" ? "Từ chối" : "Chưa duyệt"}</span></td>
                         <td>
                             <button class="btn btn-sm btn-primary" onclick="approveProject('${p.id}')" ${p.approvalStatus !== "PENDING" ? "disabled" : ""}>
@@ -299,7 +319,7 @@
                         </td>
                     </tr>
                 `;
-            }).join("") : '<tr><td colspan="9" class="text-center">Không tìm thấy đề tài.</td></tr>';
+            }).join("") : '<tr><td colspan="8" class="text-center">Không tìm thấy đề tài.</td></tr>';
 
             setupPagination(filtered.length);
         }
@@ -336,6 +356,14 @@
             displayTable(currentPage);
         }
 
+        function showDescription(projectId) {
+            const project = projects.find(p => p.id == projectId);
+            if (project) {
+                document.getElementById("modalDescription").textContent = project.description || "Chưa có";
+                new bootstrap.Modal(document.getElementById("descriptionModal")).show();
+            }
+        }
+
         function approveProject(projectId) {
             const project = projects.find(p => p.id == projectId);
             if (project) {
@@ -345,7 +373,11 @@
                 document.getElementById("approvalGroupName").value = project.groupName;
                 document.getElementById("approvalMembers").value = project.students.map(s => s.fullName).join(", ");
                 document.getElementById("approvalFiles").innerHTML = project.descriptionFilePath.length ?
-                    project.descriptionFilePath.map(f => `<li><a href="${f}">${f.split("/").pop()}</a></li>`).join("") : "<li>Chưa có</li>";
+                    project.descriptionFilePath.map(f => {
+                        const fileName = f.split('/').pop();
+                        const student = project.students.find(s => f.includes(s.username)) || project.students[0];
+                        return `<li><a href="${API_URL}/api/File/files/${f}" target="_blank">${fileName} (${student.username} - ${student.fullName})</a></li>`;
+                    }).join("") : "<li>Chưa có</li>";
                 document.getElementById("approvalDescription").value = project.description || "Chưa có";
                 document.getElementById("approvalStatus").value = project.approvalStatus;
                 document.getElementById("approvalReason").value = project.approvalReason || "";
@@ -357,7 +389,7 @@
         }
 
         function toggleReasonField(status) {
-            document.getElementById("reasonField").style.display = status === "Rejected" ? "block" : "none";
+            document.getElementById("reasonField").style.display = status === "REJECTED" ? "block" : "none";
         }
 
         async function saveApproval() {
@@ -371,7 +403,7 @@
             const status = document.getElementById("approvalStatus").value;
             const reason = document.getElementById("approvalReason").value;
 
-            if (status === "Rejected" && !reason.trim()) {
+            if (status === "REJECTED" && !reason.trim()) {
                 alert("Vui lòng nhập lý do từ chối!");
                 return;
             }
@@ -402,15 +434,18 @@
                 ["Danh sách duyệt đề tài - HUTECH"],
                 ["Giảng viên: " + document.getElementById("userName").textContent],
                 [],
-                ["#", "Mã đề tài", "Tên đề tài", "Tên nhóm", "Thành viên", "File mô tả", "Mô tả", "Trạng thái duyệt", "Lý do từ chối"]
+                ["#", "Mã đề tài", "Tên đề tài", "Tên nhóm", "Thành viên", "File mô tả", "Trạng thái duyệt", "Lý do từ chối"]
             ].concat(filtered.map((p, i) => [
                 i + 1,
                 p.projectId,
                 p.name,
                 p.groupName,
                 p.students.map(s => s.fullName).join(", "),
-                p.descriptionFilePath.join("; ") || "Chưa có",
-                p.description || "Chưa có",
+                p.descriptionFilePath.map(f => {
+                    const fileName = f.split('/').pop();
+                    const student = p.students.find(s => f.includes(s.username)) || p.students[0];
+                    return `${fileName} (${student.username} - ${student.fullName})`;
+                }).join("; ") || "Chưa có",
                 p.approvalStatus === "APPROVED" ? "Đã duyệt" : p.approvalStatus === "REJECTED" ? "Từ chối" : "Chưa duyệt",
                 p.approvalReason || ""
             ]));
@@ -418,7 +453,7 @@
             const worksheet = XLSX.utils.aoa_to_sheet(data);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "DuyetDeTai");
-            XLSX.writeFile(workbook, `duyet_de_tai_${selectedProjectId}.xlsx`);
+            XLSX.writeFile(workbook, `duyet_de_tai_${selectedProjectId || selectedCourseId}.xlsx`);
         }
 
         function toggleSidebar() {

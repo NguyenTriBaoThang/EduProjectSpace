@@ -66,15 +66,14 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
         <a href="lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
             <a href="head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
             <a href="head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
             <a href="head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
-            <a href="head_defense_list.html"  class="active"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+            <a href="head_defense_list.html" class="active"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
         </div>
     </div>
 
@@ -158,16 +157,12 @@
                                     <input type="text" id="defenseStatus" class="form-control" readonly>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Điểm GVHD</label>
-                                    <input type="text" id="defenseLecturerScore" class="form-control" readonly>
+                                    <label class="form-label">Thời gian bắt đầu</label>
+                                    <input type="datetime-local" id="startTime" class="form-control" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Điểm hội đồng</label>
-                                    <input type="text" id="defenseCouncilScore" class="form-control" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Duyệt điểm</label>
-                                    <input type="text" id="defenseApproved" class="form-control" readonly>
+                                    <label class="form-label">Thời gian kết thúc</label>
+                                    <input type="datetime-local" id="endTime" class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -175,25 +170,22 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label class="form-label">Ngày bảo vệ</label>
-                                    <input type="date" id="defenseDate" class="form-control" required>
+                                    <label class="form-label">Phòng</label>
+                                    <input type="text" id="defenseRoom" class="form-control" required>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label class="form-label">Địa điểm</label>
-                                    <input type="text" id="defenseLocation" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Hội đồng</label>
-                                    <select id="defenseCouncil" class="form-select" required>
-                                        <option value="">Chọn hội đồng</option>
-                                        <option value="HD001">HD001</option>
-                                        <option value="HD002">HD002</option>
-                                        <option value="HD003">HD003</option>
+                                    <label class="form-label">Meeting</label>
+                                    <select id="meetingId" class="form-select">
+                                        <option value="">Chọn meeting (tùy chọn)</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Link Meeting</label>
+                                    <input type="text" id="meetingLink" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -213,19 +205,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu mẫu nhóm sinh viên
-        let groups = [
-            { id: 1, name: "Nhóm 1", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT001", members: ["Nguyễn Tri Bão Thắng", "Trần Văn A"], status: "Đã duyệt", grades: { lecturerScore: 8.5, councilScore: 8.0, approved: "Chưa duyệt" } },
-            { id: 2, name: "Nhóm 2", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT002", members: ["Lê Thị B"], status: "Chưa duyệt", grades: null },
-            { id: 3, name: "Nhóm 3", courseId: "CS101", semester: "HK1-2025", classId: "CNTT01", projectId: "DT003", members: ["Phạm Văn C", "Nguyễn Thị D"], status: "Hoàn thành", grades: { lecturerScore: 9.0, councilScore: 8.8, approved: "Đã duyệt" } },
-            { id: 4, name: "Nhóm 4", courseId: "AI201", semester: "HK1-2025", classId: "AI01", projectId: "DT004", members: ["Hoàng Văn E", "Trần Thị F"], status: "Đã duyệt", grades: { lecturerScore: 7.5, councilScore: 7.8, approved: "Chưa duyệt" } }
-        ];
-
-        let defenseSchedules = [
-            { id: 1, projectId: "DT001", date: "01/03/2025", location: "Phòng họp A", council: "HD001" },
-            { id: 2, projectId: "DT003", date: "02/03/2025", location: "Phòng họp B", council: "HD002" },
-            { id: 3, projectId: "DT004", date: "03/03/2025", location: "Phòng họp C", council: "HD003" }
-        ];
+        const API_URL = "https://localhost:7047";
 
         // Lấy thông tin từ URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -276,81 +256,126 @@
             }
         }
 
-        // Đổ danh sách nhóm vào select
-        function populateDefenseProjects() {
-            const select = document.getElementById("defenseProjectId");
-            select.innerHTML = '<option value="">Chọn nhóm</option>';
-            groups.filter(group => 
-                !defenseSchedules.some(s => s.projectId === group.projectId) &&
-                group.courseId === courseId && 
-                group.semester === semester && 
-                group.classId === classId
-            ).forEach(group => {
-                select.innerHTML += `<option value="${group.projectId}">${group.projectId} - ${group.name}</option>`;
-            });
-
-            if (projectIdFromUrl) {
-                select.value = projectIdFromUrl;
-                updateGroupInfo(projectIdFromUrl);
+        // Load danh sách dự án chưa có lịch bảo vệ
+        async function populateDefenseProjects() {
+            if (!courseId || !semester || !classId) {
+                document.querySelector(".card-body").innerHTML = "<p class='text-center text-muted'>Vui lòng chọn một môn học từ danh sách để thêm lịch bảo vệ.</p>";
+                return;
             }
 
-            select.addEventListener("change", () => {
-                const selectedProjectId = select.value;
-                updateGroupInfo(selectedProjectId);
-            });
+            try {
+                const response = await fetch(`${API_URL}/api/HeadDefenseSchedule/projects?courseId=${courseId}&semester=${semester}&classId=${classId}`, {
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error('Failed to load projects');
+                const projects = await response.json();
+                const select = document.getElementById("defenseProjectId");
+                select.innerHTML = '<option value="">Chọn nhóm</option>';
+                projects.forEach(project => {
+                    select.innerHTML += `<option value="${project.id}" data-name="${project.name}" data-members="${project.members}" data-status="${project.status}">${project.projectId} - ${project.name}</option>`;
+                });
+
+                if (projectIdFromUrl) {
+                    select.value = projectIdFromUrl;
+                    updateGroupInfo(projectIdFromUrl);
+                }
+
+                select.addEventListener("change", () => {
+                    const selectedOption = select.options[select.selectedIndex];
+                    updateGroupInfo(select.value, selectedOption);
+                });
+
+                document.getElementById("backToDefenseLink").href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                alert('Không thể tải danh sách dự án.');
+            }
         }
 
-        // Cập nhật thông tin nhóm khi chọn
-        function updateGroupInfo(projectId) {
-            const group = groups.find(g => g.projectId === projectId);
-            if (group) {
-                document.getElementById("defenseName").value = group.name;
-                document.getElementById("defenseMembers").value = group.members.join(", ");
-                document.getElementById("defenseStatus").value = group.status;
-                document.getElementById("defenseLecturerScore").value = group.grades ? group.grades.lecturerScore : "Chưa có";
-                document.getElementById("defenseCouncilScore").value = group.grades ? group.grades.councilScore : "Chưa có";
-                document.getElementById("defenseApproved").value = group.grades ? group.grades.approved : "Chưa duyệt";
+        // Cập nhật thông tin nhóm khi chọn dự án
+        function updateGroupInfo(projectId, option) {
+            if (projectId && option) {
+                document.getElementById("defenseName").value = option.dataset.name || "";
+                document.getElementById("defenseMembers").value = option.dataset.members || "";
+                document.getElementById("defenseStatus").value = option.dataset.status || "";
             } else {
                 document.getElementById("defenseName").value = "";
                 document.getElementById("defenseMembers").value = "";
                 document.getElementById("defenseStatus").value = "";
-                document.getElementById("defenseLecturerScore").value = "";
-                document.getElementById("defenseCouncilScore").value = "";
-                document.getElementById("defenseApproved").value = "";
             }
         }
 
-        // Hiển thị thông tin ban đầu
-        function displayForm() {
-            if (!courseId || !semester || !classId) {
-                document.querySelector(".card-body").innerHTML = "<p class='text-center text-muted'>Vui lòng chọn một môn học từ danh sách để thêm lịch bảo vệ.</p>";
-            } else {
-                populateDefenseProjects();
-                document.getElementById("backToDefenseLink").href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
+        // Load danh sách meeting
+        async function populateMeetings() {
+            try {
+                const response = await fetch(`${API_URL}/api/HeadDefenseSchedule/meeting`, {
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error('Failed to load meetings');
+                const meetings = await response.json();
+                const select = document.getElementById("meetingId");
+                meetings.forEach(meeting => {
+                    select.innerHTML += `<option value="${meeting.meetingId}" data-link="${meeting.link}">${meeting.meetingId} (${meeting.link || 'No link'})</option>`;
+                });
+
+                select.addEventListener("change", () => {
+                    const selectedOption = select.options[select.selectedIndex];
+                    document.getElementById("meetingLink").value = selectedOption.dataset.link || "";
+                });
+            } catch (error) {
+                console.error('Error loading meetings:', error);
+                alert('Không thể tải danh sách meeting.');
             }
         }
 
         // Lưu lịch bảo vệ
-        function saveDefense() {
+        async function saveDefense() {
             const form = document.getElementById("addDefenseForm");
-            if (form.checkValidity()) {
-                const projectId = document.getElementById("defenseProjectId").value;
-                if (defenseSchedules.some(s => s.projectId === projectId)) {
-                    alert("Nhóm này đã được xếp lịch bảo vệ!");
-                    return;
-                }
-                const newDefense = {
-                    id: defenseSchedules.length + 1,
-                    projectId: projectId,
-                    date: formatDate(document.getElementById("defenseDate").value),
-                    location: document.getElementById("defenseLocation").value,
-                    council: document.getElementById("defenseCouncil").value
-                };
-                defenseSchedules.push(newDefense);
-                alert(`Đã thêm lịch bảo vệ cho nhóm ${newDefense.projectId} vào ngày ${newDefense.date}`);
-                window.location.href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
-            } else {
+            if (!form.checkValidity()) {
                 form.reportValidity();
+                return;
+            }
+
+            const defenseData = {
+                projectId: parseInt(document.getElementById("defenseProjectId").value),
+                startTime: document.getElementById("startTime").value,
+                endTime: document.getElementById("endTime").value,
+                room: document.getElementById("defenseRoom").value,
+                meetingId: document.getElementById("meetingId").value || null
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/HeadDefenseSchedule`, {
+                    method: 'POST',
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(defenseData)
+                });
+
+                if (response.ok) {
+                    alert('Đã thêm lịch bảo vệ thành công!');
+                    window.location.href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
+                } else {
+                    const error = await response.json();
+                    alert('Lỗi: ' + error.message);
+                }
+            } catch (error) {
+                console.error('Error saving defense schedule:', error);
+                alert('Đã xảy ra lỗi khi lưu lịch bảo vệ.');
             }
         }
 
@@ -359,15 +384,10 @@
             window.location.href = `head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
         }
 
-        // Hàm định dạng ngày từ ISO sang dd/mm/yyyy
-        function formatDate(isoDate) {
-            const date = new Date(isoDate);
-            return date.toLocaleDateString('vi-VN');
-        }
-
         // Khởi chạy
         document.addEventListener("DOMContentLoaded", () => {
-            displayForm();
+            populateDefenseProjects();
+            populateMeetings();
         });
     </script>
 </body>

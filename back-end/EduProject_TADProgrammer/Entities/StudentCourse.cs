@@ -31,6 +31,13 @@ namespace EduProject_TADProgrammer.Entities
         [ForeignKey("CourseId")]
         public Course Course { get; set; }
 
+        // ID của Giảng viên hướng dẫn
+        public long? LecturerId { get; set; }
+
+        // Liên kết với entity User (Giảng viên hướng dẫn)
+        [ForeignKey("LecturerId")]
+        public User? Lecturer { get; set; }
+
         // Trạng thái tham gia môn học (tùy chọn, tối đa 50 ký tự, ví dụ: "COMPLETED", "ENROLLED")
         [StringLength(50)]
         public string Status { get; set; }

@@ -24,7 +24,7 @@
             <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
             <a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
             <a href="/font-end/lecturer/lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
-            <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
+            <a href="/font-end/lecturer/lecturer_course_groups.html" class="active"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
         </div>
     </div>
 
@@ -259,7 +259,7 @@
                             ${student.username} - ${student.name} ${student.isLeader ? "(Nhóm trưởng)" : ""}
                             <select class="form-select w-50" onchange="addToGroup('${student.id}', this.value)">
                                 <option value="">Chọn nhóm</option>
-                                ${groups.map(g => `<option value="${g.id}">${g.name} (${g.id})</option>`).join("")}
+                                ${groups.map(g => `<option value="${g.id}">${g.name} (${g.projectName})</option>`).join("")}
                             </select>
                         </li>
                     `;
@@ -308,7 +308,7 @@
                 groupList.innerHTML += `
                     <div class="card mb-3">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h6>${group.name} - ${group.projectId || "Chưa gán đồ án"}</h6>
+                            <h6>${group.name} - ${group.projectName || "Chưa gán đồ án"}</h6>
                             <div>
                                 <button class="btn btn-sm btn-primary me-1" onclick="showEditGroupModal('${group.id}', '${group.name}')">Chỉnh sửa</button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteGroup('${group.id}')">Xóa</button>
@@ -347,6 +347,9 @@
                     bootstrap.Modal.getInstance(document.getElementById("addGroupModal")).hide();
                     await displayGroups();
                     alert(`Đã thêm nhóm: ${groupName}`);
+                } else {
+                    const error = await response.json();
+                    alert(`Lỗi: ${error.message || "Tên nhóm đã tồn tại trong môn học này."}`);
                 }
             } else {
                 form.reportValidity();
@@ -368,6 +371,9 @@
 
             if (response.ok) {
                 await displayGroups();
+            } else {
+                const error = await response.json();
+                alert(`Lỗi: ${error.message || "Nhóm đã đầy hoặc sinh viên đã thuộc nhóm khác."}`);
             }
         }
 
@@ -385,6 +391,9 @@
 
             if (response.ok) {
                 await displayGroups();
+            } else {
+                const error = await response.json();
+                alert(`Lỗi: ${error.message || "Không thể xóa sinh viên khỏi nhóm."}`);
             }
         }
 
@@ -402,6 +411,9 @@
 
             if (response.ok) {
                 await displayGroups();
+            } else {
+                const error = await response.json();
+                alert(`Lỗi: ${error.message || "Không thể thay đổi nhóm trưởng."}`);
             }
         }
 
@@ -422,6 +434,9 @@
             if (response.ok) {
                 await displayGroups();
                 alert("Đã chia nhóm tự động!");
+            } else {
+                const error = await response.json();
+                alert(`Lỗi: ${error.message || "Không thể chia nhóm tự động."}`);
             }
         }
 
@@ -435,20 +450,30 @@
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: "array" });
                 const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                // Đọc dữ liệu với phân cách cột là |
                 const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                console.log("Raw Rows:", rows);
 
-                rows.slice(3).forEach(async (row) => {
-                    const groupName = row[0];
-                    const membersStr = row[1];
-                    const leaderId = row[2];
+                if (!rows || rows.length <= 3 || !rows.slice(3).some(row => row.length > 0)) {
+                    alert("File Excel không chứa dữ liệu hợp lệ từ dòng 4 trở đi. Vui lòng kiểm tra lại file.");
+                    return;
+                }
+
+                for (const row of rows.slice(3)) {
+                    console.log("Row:", row);
+                    const [groupName, membersStr, leaderId] = row; // Phân tách cột theo |
+                    console.log("groupName:", groupName);
+                    console.log("membersStr:", membersStr);
+                    console.log("leaderId:", leaderId);
 
                     if (groupName && membersStr) {
                         const members = membersStr.split(", ").map(m => {
-                            const [id] = m.split(" - ");
-                            return id;
+                            const [username] = m.split(" - ");
+                            return username.trim();
                         });
+                        console.log("Members:", members);
 
-                        const response = await fetch(`${API_URL}/api/LecturerCourseGroup/add-group?groupName=${groupName}&courseId=${selectedCourseId}`, {
+                        let groupResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/add-group?groupName=${encodeURIComponent(groupName)}&courseId=${selectedCourseId}`, {
                             method: "POST",
                             headers: {
                                 "Accept": "*/*",
@@ -458,24 +483,46 @@
                             credentials: "include"
                         });
 
-                        if (response.ok) {
-                            const newGroup = await response.json();
-                            const groupId = newGroup.id;
+                        if (!groupResponse.ok) {
+                            const error = await groupResponse.json();
+                            alert(`Lỗi khi tạo nhóm ${groupName}: ${error.message || "Tên nhóm đã tồn tại."}`);
+                            continue;
+                        }
 
-                            members.forEach(async memberId => {
-                                await fetch(`${API_URL}/api/LecturerCourseGroup/add-to-group?studentId=${memberId}&groupId=${groupId}&groupSize=5`, {
-                                    method: "POST",
-                                    headers: {
-                                        "Accept": "*/*",
-                                        "Content-Type": "application/json",
-                                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                                    },
-                                    credentials: "include"
-                                });
+                        const newGroup = await groupResponse.json();
+                        const groupId = newGroup.id;
+
+                        for (const username of members) {
+                            const userResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/getIdByUsername?username=${username}`, {
+                                method: "GET",
+                                headers: {
+                                    "Accept": "*/*",
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                                },
+                                credentials: "include"
                             });
+                            alert(`Sinh viên ${username}.`);
+                            if (userResponse.ok) {
+                                const userData = await userResponse.json();
+                                const studentId = userData.id;
 
-                            if (leaderId) {
-                                await fetch(`${API_URL}/api/LecturerCourseGroup/toggle-leader?studentId=${leaderId}&groupId=${groupId}`, {
+                                const checkResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/check-student?studentId=${studentId}&courseId=${selectedCourseId}`, {
+                                    method: "GET",
+                                    headers: {
+                                        "Accept": "*/*",
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                                    },
+                                    credentials: "include"
+                                });
+                                if (!checkResponse.ok) {
+                                    const error = await checkResponse.json();
+                                    alert(`Lỗi: Sinh viên ${username} không thuộc môn học ${selectedCourseId}.`);
+                                    continue;
+                                }
+
+                                const addResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/add-to-group?studentId=${studentId}&groupId=${groupId}&groupSize=5`, {
                                     method: "POST",
                                     headers: {
                                         "Accept": "*/*",
@@ -484,10 +531,66 @@
                                     },
                                     credentials: "include"
                                 });
+                                if (!addResponse.ok) {
+                                    const error = await addResponse.json();
+                                    alert(`Lỗi khi thêm thành viên ${username} vào nhóm ${groupName}: ${error.message || "Nhóm đã đầy."}`);
+                                }
+                            } else {
+                                alert(`Lỗi khi lấy ID của sinh viên ${username}.`);
                             }
                         }
+
+                        if (leaderId) {
+                            const [leaderUsername] = leaderId.split(" - ");
+                            const userResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/getIdByUsername?username=${leaderUsername}`, {
+                                method: "GET",
+                                headers: {
+                                    "Accept": "*/*",
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                                },
+                                credentials: "include"
+                            });
+                            if (userResponse.ok) {
+                                const userData = await userResponse.json();
+                                const leaderStudentId = userData.id;
+
+                                const checkLeaderResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/check-student?studentId=${leaderStudentId}&courseId=${selectedCourseId}`, {
+                                    method: "GET",
+                                    headers: {
+                                        "Accept": "*/*",
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                                    },
+                                    credentials: "include"
+                                });
+                                if (!checkLeaderResponse.ok) {
+                                    const error = await checkLeaderResponse.json();
+                                    alert(`Lỗi: Sinh viên ${leaderUsername} không thuộc môn học ${selectedCourseId}.`);
+                                    continue;
+                                }
+
+                                const leaderResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/toggle-leader?studentId=${leaderStudentId}&groupId=${groupId}`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Accept": "*/*",
+                                        "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                                    },
+                                    credentials: "include"
+                                });
+                                if (!leaderResponse.ok) {
+                                    const error = await leaderResponse.json();
+                                    alert(`Lỗi khi đặt nhóm trưởng ${leaderUsername} cho nhóm ${groupName}: ${error.message || "Không thể đặt nhóm trưởng."}`);
+                                }
+                            } else {
+                                alert(`Lỗi khi lấy ID của sinh viên ${leaderUsername}.`);
+                            }
+                        }
+                    } else {
+                        alert("Dữ liệu Excel không hợp lệ: Tên nhóm hoặc thành viên bị thiếu.");
                     }
-                });
+                }
 
                 await displayGroups();
                 alert("Đã nhập danh sách nhóm từ Excel!");
@@ -506,13 +609,30 @@
                 },
                 credentials: "include",
             });
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `nhom_sinh_vien_${selectedCourseId}.xlsx`;
-            a.click();
-            window.URL.revokeObjectURL(url);
+            if (response.ok) {
+                const blob = await response.blob();
+                const courseResponse = await fetch(`${API_URL}/api/LecturerCourseGroup/courses`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include",
+                });
+                const courseData = await courseResponse.json();
+                const course = courseData.courses.find(c => c.courseId === selectedCourseId);
+                const fileName = `${course.Name}_${selectedCourseId}.xlsx`;
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } else {
+                const error = await response.json();
+                alert(`Lỗi: ${error.message || "Không thể xuất Excel."}`);
+            }
         }
 
         // Tải thông tin người dùng
@@ -558,6 +678,9 @@
                 bootstrap.Modal.getInstance(document.getElementById("editGroupModal")).hide();
                 await displayGroups();
                 alert(`Đã cập nhật tên nhóm thành: ${newGroupName}`);
+            } else {
+                const error = await response.json();
+                alert(`Lỗi: ${error.message || "Tên nhóm đã tồn tại trong môn học này."}`);
             }
         }
 
@@ -577,6 +700,9 @@
                 if (response.ok) {
                     await displayGroups();
                     alert("Đã xóa nhóm thành công!");
+                } else {
+                    const error = await response.json();
+                    alert(`Lỗi: ${error.message || "Không thể xóa nhóm."}`);
                 }
             }
         }

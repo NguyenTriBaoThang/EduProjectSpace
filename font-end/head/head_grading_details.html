@@ -8,7 +8,11 @@
     <title>Chi tiết duyệt chấm điểm | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
     <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
     <style>
@@ -81,6 +85,9 @@
             background-color: #f1f3f5;
             border-radius: 6px;
             transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .file-list li:hover {
             background-color: #e9ecef;
@@ -126,16 +133,30 @@
             background-color: #007bff;
             color: white;
         }
+        .modal-content {
+            border-radius: 12px;
+        }
+        .modal-body pre {
+            max-height: 500px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .modal-body iframe {
+            width: 100%;
+            height: 80vh; /* Increased to 80% of viewport height */
+            border: none;
+        }
     </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
         <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Trưởng bộ môn</h6>
-            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
             <a href="/font-end/head/head_grading_courses.html" class="active"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
             <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
@@ -254,6 +275,25 @@
         </div>
     </div>
 
+    <!-- Modal for viewing code or PDF -->
+    <div class="modal fade" id="codeModal" tabindex="-1" aria-labelledby="codeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl"> <!-- Changed to modal-xl -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="codeModalLabel">Xem mã nguồn hoặc tệp</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <a id="downloadCodeLink" class="btn btn-info"><i class="bi bi-download"></i> Tải xuống</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="footer">
         Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
     </div>
@@ -266,6 +306,8 @@
         const selectedSemester = urlParams.get("semester");
         const selectedFacultyCode = urlParams.get("facultyCode");
         const selectedGroupId = parseInt(urlParams.get("groupId"));
+
+        let groupDetails = null;
 
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
         document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "lecturer_notifications.html");
@@ -305,13 +347,11 @@
             }
         }
 
-        // Tải thông tin người dùng
         async function loadUserProfile() {
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_HEAD") {
                     throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
                 }
                 document.getElementById("headName").textContent = user.fullName || "Head HUTECH";
                 document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
@@ -332,11 +372,46 @@
                     credentials: "include"
                 });
                 if (!response.ok) throw new Error(`Lỗi tải chi tiết nhóm: ${response.status}`);
-                return await response.json();
+                const data = await response.json();
+                groupDetails = data;
+                return data;
             } catch (error) {
                 console.error("Error loading group details:", error);
                 alert("Không thể tải chi tiết nhóm. Vui lòng thử lại.");
                 return null;
+            }
+        }
+
+        async function viewCode(filePath, fileName) {
+            try {
+                const response = await fetch(`${API_URL}/api/File/files/${filePath}`, {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải tệp: ${response.status}`);
+                const modal = new bootstrap.Modal(document.getElementById("codeModal"));
+                const modalContent = document.getElementById("modalContent");
+                if (fileName.endsWith(".pdf")) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    modalContent.innerHTML = `<iframe src="${url}" frameborder="0"></iframe>`;
+                    document.getElementById("codeModalLabel").textContent = `Xem tệp PDF: ${fileName}`;
+                } else {
+                    const code = await response.text();
+                    modalContent.innerHTML = `<pre><code id="codeContent"></code></pre>`;
+                    const codeContent = document.getElementById("codeContent");
+                    codeContent.textContent = code;
+                    codeContent.className = fileName.endsWith(".java") ? "language-java" : "language-csharp";
+                    document.getElementById("codeModalLabel").textContent = `Xem mã nguồn: ${fileName}`;
+                    Prism.highlightElement(codeContent);
+                }
+                document.getElementById("downloadCodeLink").href = `${API_URL}/api/File/files/${filePath}?download=true`;
+                modal.show();
+            } catch (error) {
+                console.error("Error loading file:", error);
+                alert("Không thể tải tệp. Vui lòng thử lại.");
             }
         }
 
@@ -355,7 +430,20 @@
 
             const reportFiles = document.getElementById("reportFiles");
             reportFiles.innerHTML = data.grades.reportFiles && data.grades.reportFiles.length > 0
-                ? data.grades.reportFiles.map(file => `<li><a href="#">${file}</a></li>`).join("")
+                ? data.grades.reportFiles.map(file => {
+                    const fileName = file.filePath.split('/').pop();
+                    const isCodeFile = fileName.endsWith(".java") || fileName.endsWith(".cs");
+                    const isZipFile = fileName.endsWith(".zip");
+                    const isPdfFile = fileName.endsWith(".pdf");
+                    const demoUrl = isZipFile ? "https://samplewebapp-thang20250623.azurewebsites.net" : null; // Update with your deployed URL
+                    return `
+                        <li>
+                            <a href="#" ${isCodeFile || isPdfFile ? `onclick="viewCode('${file.filePath}', '${fileName}')"` : isZipFile ? `href="${demoUrl}" target="_blank"` : `href="${API_URL}/api/File/files/${file.filePath}" target="_blank"`}>
+                                ${fileName} (${file.studentCode} - ${file.fullName})
+                            </a>
+                            <a href="${API_URL}/api/File/files/${file.filePath}?download=true" title="Tải xuống"><i class="bi bi-download"></i></a>
+                        </li>`;
+                  }).join("")
                 : "<li>Chưa có tệp</li>";
 
             document.getElementById("gradeApproval").value = data.grades.approved;
@@ -372,35 +460,61 @@
             document.getElementById("backToGradingLink").href = `head_grading.html?courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}`;
         }
 
-        function saveGradeApproval() {
-            const form = document.getElementById("gradeForm");
+        async function saveGradeApproval() {
+            const form = document.getElementById("gradeFormDetails");
             if (form.checkValidity()) {
                 const groupId = parseInt(document.getElementById("gradeGroupId").value);
                 const approval = document.getElementById("gradeApproval").value;
-                alert(`Đã cập nhật trạng thái duyệt điểm cho nhóm ${document.getElementById("gradeGroupName").value}: ${approval}`);
-                window.location.href = `head_grading.html?courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}`;
+
+                try {
+                    const response = await fetch(`${API_URL}/api/HeadCourseGrading/approve-grade`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        body: JSON.stringify({
+                            groupId: groupId,
+                            approved: approval
+                        }),
+                        credentials: "include"
+                    });
+
+                    if (!response.ok) throw new Error(`Lỗi cập nhật trạng thái: ${response.status}`);
+                    alert(`Đã cập nhật trạng thái duyệt điểm cho nhóm ${document.getElementById("gradeGroupName").value}: ${approval}`);
+                    window.location.href = `head_grading.html?courseId=${selectedCourseId}&semester=${selectedSemester}&facultyCode=${selectedFacultyCode}`;
+                } catch (error) {
+                    console.error("Error saving approval:", error);
+                    alert("Không thể cập nhật trạng thái. Vui lòng thử lại.");
+                }
             } else {
                 form.reportValidity();
             }
         }
 
         function exportDetails() {
-            const data = fetchGroupDetails();
-            if (!data) return;
+            if (!groupDetails) {
+                alert("Không có dữ liệu để xuất!");
+                return;
+            }
 
-            const members = data.members.map(m => `${m.fullName}: Điểm tổng=${m.totalScore || "Chưa chấm"}, Phản hồi=${m.councilFeedback}`).join("\n");
+            const members = groupDetails.members.map(m => `${m.fullName}: Điểm tổng=${m.totalScore?.toFixed(1) || "Chưa chấm"}, Phản hồi=${m.councilFeedback}`).join("\n");
+            const reportFiles = groupDetails.grades.reportFiles && groupDetails.grades.reportFiles.length > 0
+                ? groupDetails.grades.reportFiles.map(file => `${file.filePath.split('/').pop()} (${file.studentCode} - ${file.fullName})`).join(", ")
+                : "Chưa có tệp";
+
             const worksheetData = [
                 ["Chi tiết duyệt chấm điểm - Hệ thống Sinh viên HUTECH"],
                 [`Lớp: ${selectedCourseId} - ${selectedFacultyCode} - ${selectedSemester}`],
                 [],
                 ["Tên nhóm", "Mã đồ án", "Tên đồ án", "Thành viên", "GVHD", "Tệp báo cáo", "Trạng thái duyệt", "Trạng thái đồ án"],
-                [data.groupName, data.projectId, data.projectName, members, data.lecturer, data.grades.reportFiles.join(", ") || "Chưa có tệp", data.grades.approved, data.status]
+                [groupDetails.groupName, groupDetails.projectId, groupDetails.projectName, members, groupDetails.lecturer, reportFiles, groupDetails.grades.approved, groupDetails.status]
             ];
 
             const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "ChiTietChamDiem");
-            XLSX.writeFile(workbook, `chi_tiet_cham_diem_${data.groupName}_${selectedCourseId}_${selectedFacultyCode}_${selectedSemester}.xlsx`);
+            XLSX.writeFile(workbook, `chi_tiet_cham_diem_${groupDetails.groupName}_${selectedCourseId}_${selectedFacultyCode}_${selectedSemester}.xlsx`);
         }
 
         async function logout() {
@@ -425,6 +539,7 @@
             }
 
             localStorage.removeItem("user");
+            localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 

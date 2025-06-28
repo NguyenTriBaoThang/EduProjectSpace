@@ -25,7 +25,7 @@
             <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
             <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
             <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
-            <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
+            <a href="/font-end/lecturer/lecturer_course_feedback.html" class="active"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
             <a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
             <a href="/font-end/lecturer/lecturer_course_reviews.html"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
             <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
@@ -217,14 +217,14 @@
         // Hiển thị thông tin đồ án
         function displayProjectInfo() {
             if (projectDetail) {
-                const statusClass = projectDetail.status === "Hoàn thành" ? "text-success" : 
-                                    projectDetail.status === "Đã duyệt" ? "text-info" : "text-warning";
+                const statusClass = projectDetail.status === "APPROVED" ? "text-success" :
+                                    projectDetail.status === "REJECTED" ? "text-danger" : "text-warning";
                 document.getElementById("projectId").textContent = projectDetail.projectId;
                 document.getElementById("projectName").textContent = projectDetail.name;
                 document.getElementById("groupName").textContent = projectDetail.groupName;
                 document.getElementById("groupLeader").textContent = projectDetail.groupLeader;
                 document.getElementById("groupMembers").textContent = projectDetail.groupMembers;
-                document.getElementById("projectStatus").innerHTML = `<span class="${statusClass}">${projectDetail.status}</span>`;
+                document.getElementById("projectStatus").innerHTML = `<span class="${statusClass}"><strong>${projectDetail.status === "APPROVED" ? "Đã duyệt" : projectDetail.status === "REJECTED" ? "Từ chối" : "Chưa duyệt"}</strong></span>`;
                 document.getElementById("backLink").href = `lecturer_feedback.html?courseId=${projectDetail.courseId}`;
             }
         }
@@ -257,7 +257,15 @@
                             ${group.submissions.length > 0 ? group.submissions.map(s => `
                                 <tr>
                                     <td>${s.title}</td>
-                                    <td><a href="#">${s.fileName}</a></td>
+                                    <td>
+                                        ${s.fileName === null ?
+                                            "<li>Chưa nộp</li>"
+                                            :
+                                            `<li>
+                                                <a href="${API_URL}/api/File/files/${s.fileName}" target="_blank">${s.fileName.split('/').pop()}</a>
+                                            </li>`
+                                        }
+                                    </td>
                                     <td>${s.submittedAt}</td>
                                     <td>${s.submittedBy}</td>
                                     <td><textarea class="form-control feedback-text" data-submission-id="${s.submissionId}" rows="2">${s.feedback}</textarea></td>

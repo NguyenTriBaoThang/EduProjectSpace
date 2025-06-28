@@ -101,7 +101,8 @@ namespace EduProject_TADProgrammer.Entities
         public virtual ICollection<Calendar> Calendars { get; set; } = new List<Calendar>(); // Lịch cá nhân
         public virtual ICollection<PeerReview> PeerReviewsAsReviewer { get; set; } = new List<PeerReview>(); // Đánh giá ngang hàng (người đánh giá)
         public virtual ICollection<PeerReview> PeerReviewsAsReviewee { get; set; } = new List<PeerReview>(); // Đánh giá ngang hàng (người được đánh giá)
-        public virtual ICollection<StudentCourse> StudentCourses { get; set; } = new List<StudentCourse>(); // Môn học sinh viên đăng ký
+        public virtual ICollection<StudentCourse> CoursesAsStudent { get; set; } = new List<StudentCourse>(); // Môn học sinh viên đăng ký
+        public virtual ICollection<StudentCourse> CoursesAsLecturer { get; set; } = new List<StudentCourse>(); 
         public virtual ICollection<LecturerCourses> LecturerCourses { get; set; } = new List<LecturerCourses>(); // Môn học giảng viên hướng dẫn
         public virtual ICollection<Grade> GradedGrades { get; set; } = new List<Grade>(); // Điểm do người dùng chấm
 

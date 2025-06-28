@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Trang danh sách môn học cần phân công giảng viên hướng dẫn của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
-    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
+    <meta name="description" content="Trang danh sách môn học cần phân công GVHD - Hệ thống Sinh viên HUTECH">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer, Khoa CNTT, HUTECH">
     <title>Danh sách môn cần phân công GVHD | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,42 +13,36 @@
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
-    <!-- Thanh bên -->
     <div class="sidebar" id="sidebar">
-        <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
         <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <a href="/font-end/head/head_course_assign.html" class="active"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html" class="active"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
             <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
             <a href="/font-end/head/head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
             <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
         </div>
     </div>
-
-    <!-- Nội dung chính -->
     <div class="content">
-        <!-- Thanh điều hướng -->
         <nav class="navbar navbar-expand-lg px-3">
             <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
                 <i id="sidebarIcon" class="bi bi-list"></i>
-            </button>            
+            </button>
             <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
+                <input type="text" class="search-box me-3" id="searchInput" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
                 <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
             </div>
         </nav>
-
-        <!-- Menu hồ sơ -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
-                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Avatar Giảng viên">
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Avatar">
                 <h6 id="headName">Head HUTECH</h6>
                 <p id="headEmail">head@hutech.edu.vn</p>
             </div>
@@ -59,28 +53,21 @@
                 <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </div>
-
-        <!-- Phần môn học -->
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">👩‍🏫 Danh sách môn học cần phân công GVHD</h2>
                 <button class="btn btn-info" onclick="exportCourses()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
             </div>
-
-            <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i></a></li>
-                    <li class="breadcrumb-item active"><i class="bi bi-person-plus"></i> Danh sách môn cần phân công GVHD</li>
+                    <li class="breadcrumb-item active"><i class="bi bi-person-plus"></i> Danh sách môn cần phân công</li>
                 </ol>
             </nav>
-
-            <!-- Bảng môn học -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
                     <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
                 </div>
-
                 <div class="table-content">
                     <table class="table-custom table-bordered table-hover">
                         <thead>
@@ -89,7 +76,7 @@
                                 <th class="sortable" onclick="sortTable('courseId')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('name')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('semester')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('classCode')">Mã lớp <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('facultyCode')">Mã khoa <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('studentCount')">Số sinh viên <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('assignedCount')">Số SV đã phân công <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('assignedNullCount')">Số SV chưa phân công <i class="bi bi-arrow-down-up"></i></th>
@@ -99,32 +86,27 @@
                         <tbody id="tableBody"></tbody>
                     </table>
                 </div>
-
                 <div class="table-footer">
                     <ul id="pagination" class="pagination"></ul>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="footer">
-        Bản quyền của HUTECH – Phát triển bởi Team TAD Programmer ©2025
+        Bản quyền HUTECH – Team TAD Programmer ©2025
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Cấu hình cơ bản
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
         let courses = [];
-        const API_URL = 'https://localhost:7047'; // URL API
-        let currentHead = null; // Trưởng bộ môn hiện tại
+        const API_URL = 'https://localhost:7047';
+        let currentHead = null;
         let currentIdHead = null;
 
-        // Gắn sự kiện cho thanh điều hướng
-        document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
+        document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "/font-end/head/head_notifications.html");
         document.getElementById("profileBtn").addEventListener("click", (event) => {
             event.stopPropagation();
@@ -149,99 +131,80 @@
         });
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Bật/tắt thanh bên
         function toggleSidebar() {
-            let sidebar = document.querySelector(".sidebar");
-            let content = document.querySelector(".content");
-            let icon = document.getElementById("sidebarIcon");
-
+            const sidebar = document.querySelector(".sidebar");
+            const content = document.querySelector(".content");
+            const icon = document.getElementById("sidebarIcon");
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
-
-            if (sidebar.classList.contains("collapsed")) {
-                icon.classList.replace("bi-list", "bi-layout-sidebar-inset");
-            } else {
-                icon.classList.replace("bi-layout-sidebar-inset", "bi-list");
-            }
+            icon.classList.toggle("bi-list", !sidebar.classList.contains("collapsed"));
+            icon.classList.toggle("bi-layout-sidebar-inset", sidebar.classList.contains("collapsed"));
         }
 
-        // Tải thông tin người dùng từ localStorage
         async function loadUserProfile() {
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
-                if (!user || user.roleName !== "ROLE_HEAD") {
-                    throw new Error("Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
-                }
+                if (!user || user.roleName !== "ROLE_HEAD") throw new Error("Không có quyền Trưởng bộ môn.");
                 currentIdHead = user.id;
                 currentHead = user.fullName;
                 document.getElementById("headName").textContent = currentHead || "Head HUTECH";
                 document.getElementById("headEmail").textContent = user.email || "head@hutech.edu.vn";
             } catch (error) {
-                console.error('Lỗi khi tải thông tin người dùng:', error);
                 alert("Vui lòng đăng nhập lại!");
                 window.location.replace("/font-end/login/login.html");
             }
         }
 
-        // Lấy danh sách môn học từ API
         async function fetchCourses() {
             try {
-                
                 const response = await fetch(`${API_URL}/api/HeadCourseAssignment?headLecturer=${encodeURIComponent(currentIdHead)}`, {
                     method: "GET",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
                 if (!response.ok) {
-                    if (response.status === 401) {
-                        throw new Error("Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.");
-                    }
+                    if (response.status === 401) throw new Error("Phiên đăng nhập hết hạn.");
                     throw new Error(`Không thể lấy danh sách môn học: ${response.statusText}`);
                 }
                 const data = await response.json();
-                courses = data.courses || []; // Lấy mảng từ key "courses", mặc định là mảng rỗng
+                courses = data.courses || [];
                 displayTable(currentPage);
             } catch (error) {
-                console.error('Lỗi khi lấy môn học:', error);
+                console.error('Lỗi lấy môn học:', error);
                 alert(`Lỗi: ${error.message}`);
                 courses = [];
                 displayTable(currentPage);
             }
         }
 
-        // Lọc danh sách môn học theo ô tìm kiếm
         function getFilteredCourses() {
             const searchText = document.getElementById("searchInput").value.toLowerCase();
-
             return courses.filter(course =>
-                (course.courseId?.toString().toLowerCase().includes(searchText) || 
+                (course.courseId?.toString().toLowerCase().includes(searchText) ||
                  course.name?.toLowerCase().includes(searchText) ||
                  course.semester?.toLowerCase().includes(searchText) ||
-                 course.classCode?.toLowerCase().includes(searchText))
+                 course.facultyCode?.toLowerCase().includes(searchText))
             ).sort((a, b) => {
                 if (!sortColumn) return 0;
-                let valueA = sortColumn === 'studentCount' || sortColumn === 'assignedCount' ? Number(a[sortColumn] || 0) : (a[sortColumn] || '').toString().toLowerCase();
-                let valueB = sortColumn === 'studentCount' || sortColumn === 'assignedCount' ? Number(b[sortColumn] || 0) : (b[sortColumn] || '').toString().toLowerCase();
-                return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                let valueA = sortColumn === 'studentCount' || sortColumn === 'assignedCount' || sortColumn === 'assignedNullCount' ? Number(a[sortColumn] || 0) : (a[sortColumn] || '').toString().toLowerCase();
+                let valueB = sortColumn === 'studentCount' || sortColumn === 'assignedCount' || sortColumn === 'assignedNullCount' ? Number(b[sortColumn] || 0) : (b[sortColumn] || '').toString().toLowerCase();
+                return sortDirection === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
             });
         }
 
-        // Hiển thị bảng môn học
         function displayTable(page) {
             const filteredCourses = getFilteredCourses();
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
             const paginatedData = filteredCourses.slice(start, end);
-
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
-
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Không tìm thấy môn học.</td></tr>';
             } else {
                 paginatedData.forEach((course, index) => {
                     tableBody.innerHTML += `
@@ -250,12 +213,12 @@
                             <td>${course.courseId || 'N/A'}</td>
                             <td>${course.name || 'N/A'}</td>
                             <td>${course.semester || 'N/A'}</td>
-                            <td>${course.classCode || 'N/A'}</td>
+                            <td>${course.facultyCode || 'N/A'}</td>
                             <td>${course.studentCount || 0}</td>
                             <td>${course.assignedCount || 0}</td>
                             <td>${course.assignedNullCount || 0}</td>
                             <td>
-                                <button class="btn btn-sm btn-primary" onclick="viewAssignments('${course.courseId || ''}', '${course.semester || ''}', '${course.classCode || ''}')">
+                                <button class="btn btn-sm btn-primary" onclick="viewAssignments('${course.courseId || ''}', '${course.semester || ''}', '${course.facultyCode || ''}')">
                                     <i class="bi bi-eye"></i> Xem sinh viên
                                 </button>
                             </td>
@@ -263,37 +226,30 @@
                     `;
                 });
             }
-
             setupPagination(filteredCourses.length);
         }
 
-        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
             pagination.innerHTML = "";
-
             if (totalPages <= 1) return;
-
-            let paginationHTML = `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
-            if (currentPage > 2) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
-            if (currentPage > 3) paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-            if (currentPage > 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
-            paginationHTML += `<li class="page-item active"><a class="page-link" href="#">${currentPage}</a></li>`;
-            if (currentPage < totalPages) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
-            if (currentPage < totalPages - 2) paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-            if (currentPage < totalPages - 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
-            pagination.innerHTML = paginationHTML;
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage > 1) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            pagination.innerHTML += `<li class="page-item active"><a class="page-link" href="#">${currentPage}</a></li>`;
+            if (currentPage < totalPages) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage < totalPages - 1) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
         }
 
-        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
-        // Sắp xếp bảng theo cột
         function sortTable(column) {
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -304,82 +260,69 @@
             displayTable(currentPage);
         }
 
-        // Lọc bảng khi nhập ô tìm kiếm
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
-        // Điều hướng đến trang phân công
-        function viewAssignments(courseId, semester, classCode) {
-            if (!courseId || !semester || !classCode) {
+        function viewAssignments(courseId, semester, facultyCode) {
+            if (!courseId || !semester || !facultyCode) {
                 alert("Thông tin môn học không đầy đủ!");
                 return;
             }
-            window.location.href = `/font-end/head/head_assign.html?courseId=${courseId}&semester=${semester}&classCode=${encodeURIComponent(classCode)}`;
+            window.location.href = `/font-end/head/head_assign.html?courseId=${courseId}&semester=${encodeURIComponent(semester)}&facultyCode=${encodeURIComponent(facultyCode)}`;
         }
 
-        // Xuất danh sách môn học sang Excel
         function exportCourses() {
             const filteredCourses = getFilteredCourses();
             const worksheetData = [
                 ["Danh sách môn học cần phân công GVHD - Hệ thống Sinh viên HUTECH"],
                 ["Trưởng bộ môn: " + (document.getElementById("headName").textContent || "Head HUTECH")],
                 [],
-                ["#", "Mã môn học", "Tên môn học", "Học kỳ", "Mã lớp", "Số sinh viên", "Số SV đã phân công"]
+                ["#", "Mã môn học", "Tên môn học", "Học kỳ", "Mã khoa", "Số sinh viên", "Số SV đã phân công", "Số SV chưa phân công"]
             ];
-
             filteredCourses.forEach((course, index) => {
                 worksheetData.push([
                     index + 1,
                     course.courseId || 'N/A',
                     course.name || 'N/A',
                     course.semester || 'N/A',
-                    course.classCode || 'N/A',
+                    course.facultyCode || 'N/A',
                     course.studentCount || 0,
-                    course.assignedCount || 0
+                    course.assignedCount || 0,
+                    course.assignedNullCount || 0
                 ]);
             });
-
             const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "MonHocPhanCong");
-            XLSX.writeFile(workbook, "mon_hoc_can_phan_cong.xlsx");
+            XLSX.writeFile(workbook, `mon_hoc_can_phan_cong_${currentHead || 'head'}.xlsx`);
         }
 
-        // Đăng xuất
         async function logout() {
             try {
                 const token = localStorage.getItem("token");
-                if (!token) {
-                    throw new Error("Chưa đăng nhập hoặc token không hợp lệ.");
-                }
+                if (!token) throw new Error("Chưa đăng nhập.");
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
+                        "Accept": "*/*",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert(data.message || "Đăng xuất thành công!");
-                } else {
-                    alert(`Đăng xuất thất bại: ${data.message || response.statusText}`);
-                }
+                if (!response.ok) throw new Error(`Đăng xuất thất bại: ${response.statusText}`);
+                alert("Đăng xuất thành công!");
             } catch (error) {
-                alert("Đăng xuất bị lỗi: " + error.message);
+                alert(`Lỗi đăng xuất: ${error.message}`);
             }
-
             localStorage.removeItem("user");
             localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
-        // Khởi chạy khi tải trang
-        document.addEventListener("DOMContentLoaded",async () => {
+        document.addEventListener("DOMContentLoaded", async () => {
             await loadUserProfile();
             await fetchCourses();
         });

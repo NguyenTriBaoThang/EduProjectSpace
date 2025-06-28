@@ -14,7 +14,6 @@
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
         <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
@@ -30,9 +29,7 @@
         <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg px-3">
             <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
                 <i id="sidebarIcon" class="bi bi-list"></i>
@@ -41,7 +38,6 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" id="searchInputFuse" placeholder="🔍 Tìm thông báo...">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -49,7 +45,6 @@
             </div>
         </nav>
 
-        <!-- Profile Dropdown -->
         <div class="profile-dropdown" id="profileDropdown">
             <div class="profile-header">
                 <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Admin Avatar">
@@ -64,7 +59,6 @@
             </div>
         </div>
 
-        <!-- Notifications Management Section -->
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">🔔 Quản lý thông báo</h2>
@@ -75,7 +69,6 @@
                 </div>
             </div>
 
-            <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
@@ -97,14 +90,13 @@
                 </div>
             </div>
 
-            <!-- Notifications Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
                     <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm thông báo..." onkeyup="filterTable()">
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
-                        <option value="Đã gửi">Đã gửi</option>
-                        <option value="Chưa gửi">Chưa gửi</option>
+                        <option value="SENT">Đã gửi</option>
+                        <option value="PENDING">Chưa gửi</option>
                     </select>
                 </div>
 
@@ -118,6 +110,8 @@
                                 <th class="sortable" onclick="sortTable('recipient')">Người nhận <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('createdAt')">Ngày gửi <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('isFirstViewed')">Đã xem <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('firstViewedAt')">Thời gian xem <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -132,7 +126,6 @@
         </div>
     </div>
 
-    <!-- Modal Thêm Thông Báo -->
     <div class="modal fade" id="addNotificationModal" tabindex="-1" aria-labelledby="addNotificationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -153,22 +146,30 @@
                         <div class="mb-3">
                             <label class="form-label">Người nhận</label>
                             <select id="notificationRecipient" class="form-select" required>
-                                <option value="all">Tất cả</option>
-                                <option value="student">Sinh viên</option>
-                                <option value="lecturer">Giảng viên</option>
-                                <option value="admin">Quản trị viên</option>
-                                <option value="head">Trưởng bộ môn</option>
-                                <option value="user">Cá nhân</option>
-                                <option value="group">Nhóm</option>
+                                <option value="All">Tất cả</option>
+                                <option value="Student">Sinh viên</option>
+                                <option value="Lecturer">Giảng viên</option>
+                                <option value="Admin">Quản trị viên</option>
+                                <option value="Head">Trưởng bộ môn</option>
+                                <option value="Individual">Cá nhân</option>
+                                <option value="Group">Nhóm</option>
                             </select>
                         </div>
                         <div class="mb-3" id="userIdField" style="display: none;">
-                            <label class="form-label">ID Người dùng</label>
-                            <input type="number" id="notificationUserId" class="form-control">
+                            <label class="form-label">Chọn tài khoản</label>
+                            <select id="notificationUserId" class="form-select" multiple></select>
                         </div>
                         <div class="mb-3" id="groupIdField" style="display: none;">
-                            <label class="form-label">ID Nhóm</label>
-                            <input type="number" id="notificationGroupId" class="form-control">
+                            <label class="form-label">Chọn nhóm</label>
+                            <select id="notificationGroupId" class="form-select" multiple></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Loại thông báo</label>
+                            <select id="notificationType" class="form-select" required>
+                                <option value="Web">Web</option>
+                                <option value="Email">Email</option>
+                                <option value="Urgent">Khẩn cấp</option>
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -180,7 +181,6 @@
         </div>
     </div>
 
-    <!-- Modal Sửa Thông Báo -->
     <div class="modal fade" id="editNotificationModal" tabindex="-1" aria-labelledby="editNotificationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -202,28 +202,37 @@
                         <div class="mb-3">
                             <label class="form-label">Người nhận</label>
                             <select id="editNotificationRecipient" class="form-select" required>
-                                <option value="all">Tất cả</option>
-                                <option value="student">Sinh viên</option>
-                                <option value="lecturer">Giảng viên</option>
-                                <option value="admin">Quản trị viên</option>
-                                <option value="head">Trưởng bộ môn</option>
-                                <option value="user">Cá nhân</option>
-                                <option value="group">Nhóm</option>
+                                <option value="All">Tất cả</option>
+                                <option value="Student">Sinh viên</option>
+                                <option value="Lecturer">Giảng viên</option>
+                                <option value="Admin">Quản trị viên</option>
+                                <option value="Head">Trưởng bộ môn</option>
+                                <option value="Individual">Cá nhân</option>
+                                <option value="Group">Nhóm</option>
                             </select>
                         </div>
-                        <div class="mb-3" id="editUserIdField" style="display: none;">
-                            <label class="form-label">ID Người dùng</label>
-                            <input type="number" id="editNotificationUserId" class="form-control" readonly>
+                        <div class="mb-3" id="userIdField" style="display: none;">
+                            <label class="form-label">Chọn tài khoản</label>
+                            <select id="notificationUserId" class="form-select" multiple></select>
                         </div>
-                        <div class="mb-3" id="editGroupIdField" style="display: none;">
-                            <label class="form-label">ID Nhóm</label>
-                            <input type="number" id="editNotificationGroupId" class="form-control" readonly>
+                        <div class="mb-3" id="groupIdField" style="display: none;">
+                            <label class="form-label">Chọn nhóm</label>
+                            <select id="notificationGroupId" class="form-select" multiple></select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
                             <select id="editNotificationStatus" class="form-select" required>
                                 <option value="SENT">Đã gửi</option>
                                 <option value="PENDING">Chưa gửi</option>
+                                <option value="FAILED">Thất bại</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Loại thông báo</label>
+                            <select id="editNotificationType" class="form-select" required>
+                                <option value="Web">Web</option>
+                                <option value="Email">Email</option>
+                                <option value="Urgent">Khẩn cấp</option>
                             </select>
                         </div>
                     </form>
@@ -236,7 +245,6 @@
         </div>
     </div>
 
-    <!-- Modal Cấu Hình Thông Báo -->
     <div class="modal fade" id="configNotificationModal" tabindex="-1" aria-labelledby="configNotificationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -257,6 +265,13 @@
                                 <label class="form-check-label" for="enableEmail">Gửi qua email</label>
                             </div>
                         </div>
+                        <div class="mb-3" id="emailConfig" style="display: none;">
+                            <label class="form-label">Cấu hình SMTP</label>
+                            <input type="text" id="smtpHost" class="form-control mb-2" placeholder="SMTP Host (e.g., smtp.gmail.com)">
+                            <input type="number" id="smtpPort" class="form-control mb-2" placeholder="SMTP Port (e.g., 587)">
+                            <input type="text" id="smtpUsername" class="form-control mb-2" placeholder="SMTP Username">
+                            <input type="password" id="smtpPassword" class="form-control" placeholder="SMTP Password">
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Tần suất nhắc nhở tự động</label>
                             <select id="reminderFrequency" class="form-select">
@@ -275,7 +290,6 @@
         </div>
     </div>
 
-    <!-- Modal Xem chi tiết Thông Báo -->
     <div class="modal fade" id="viewNotificationModal" tabindex="-1" aria-labelledby="viewNotificationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -304,6 +318,14 @@
                         <label class="form-label fw-bold">Trạng thái</label>
                         <p id="viewNotificationStatus" class="bg-light p-2 rounded-3"></p>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Đã xem</label>
+                        <p id="viewNotificationIsFirstViewed" class="bg-light p-2 rounded-3"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Thời gian xem</label>
+                        <p id="viewNotificationFirstViewedAt" class="bg-light p-2 rounded-3"></p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -317,6 +339,22 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            $("#notificationUserId").select2({
+                placeholder: "Chọn tài khoản",
+                allowClear: true,
+                width: "100%"
+            });
+            $("#notificationGroupId").select2({
+                placeholder: "Chọn nhóm",
+                allowClear: true,
+                width: "100%"
+            });
+        });
+    </script>
     <script>
         let notifications = [];
         const API_URL = "https://localhost:7047";
@@ -326,7 +364,6 @@
         let sortDirection = 'asc';
         let fuse = null;
 
-        // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
         function removeVietnameseTones(str) {
             if (!str) return '';
             return str
@@ -337,7 +374,6 @@
                 .toLowerCase();
         }
 
-        // Hàm tạo chỉ mục cho Fuse.js
         function createFuseIndex(data) {
             return new Fuse(data, {
                 keys: [
@@ -345,8 +381,8 @@
                     { name: 'content', weight: 0.4 }
                 ],
                 includeScore: true,
-                threshold: 0.4, // Độ nhạy tìm kiếm mờ
-                ignoreLocation: true, // Tìm kiếm chuỗi con
+                threshold: 0.4,
+                ignoreLocation: true,
                 useExtendedSearch: true,
                 getFn: (obj, path) => {
                     const value = Fuse.config.getFn(obj, path);
@@ -355,7 +391,6 @@
             });
         }
 
-        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => {
             window.location.href = "/font-end/admin/admin_notifications.html";
@@ -398,13 +433,11 @@
             }
         }
 
-        // Tải thông tin người dùng
         async function loadUserProfile() {
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
                 if (!user || user.roleName !== "ROLE_ADMIN") {
                     throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
-                    window.location.replace("/font-end/login/login.html");
                 }
                 document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
                 document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
@@ -415,7 +448,33 @@
             }
         }
 
-        // Lấy danh sách thông báo từ API
+        async function loadUsersAndGroups() {
+            try {
+                const userResponse = await fetch(`${API_URL}/api/Notifications/users`, {
+                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}`, "Accept": "*/*" },
+                    credentials: "include"
+                });
+                if (!userResponse.ok) throw new Error("Không thể tải danh sách người dùng.");
+                const users = await userResponse.json();
+                const userSelect = document.getElementById("notificationUserId");
+                userSelect.innerHTML = users.map(user => `<option value="${user.id}">${user.fullName} (${user.email})</option>`).join("");
+
+                const groupResponse = await fetch(`${API_URL}/api/Notifications/groups`, {
+                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}`, "Accept": "*/*" },
+                    credentials: "include"
+                });
+                if (!groupResponse.ok) throw new Error("Không thể tải danh sách nhóm.");
+                const groups = await groupResponse.json();
+                const groupSelect = document.getElementById("notificationGroupId");
+                groupSelect.innerHTML = groups.map(group => `<option value="${group.id}">${group.name}</option>`).join("");
+            } catch (error) {
+                console.error("Lỗi khi tải danh sách người dùng/nhóm:", error);
+                alert("Không thể tải danh sách: " + error.message);
+            }
+        }
+
+        document.getElementById("addNotificationModal").addEventListener("shown.bs.modal", loadUsersAndGroups);
+
         async function loadNotifications() {
             try {
                 const response = await fetch(`${API_URL}/api/Notifications`, {
@@ -444,17 +503,17 @@
                 notifications = Array.isArray(data.notifications) ? data.notifications : [];
                 notifications = notifications.map(notification => ({
                     ...notification,
-                    createdAt: notification.createdAt ? new Date(notification.createdAt).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Chưa gửi"
+                    createdAt: notification.createdAt ? new Date(notification.createdAt).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Chưa gửi",
+                    firstViewedAt: notification.firstViewedAt ? new Date(notification.firstViewedAt).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : "Chưa xem"
                 }));
-                fuse = createFuseIndex(notifications); // Tạo chỉ mục Fuse.js
+                fuse = createFuseIndex(notifications);
                 displayTable(currentPage);
             } catch (error) {
                 console.error("Lỗi khi lấy thông báo:", error);
-                alert("Không thể tải thông báo. Vui lòng thử lại.");
+                alert("Không thể tải thông báo: " + error.message);
             }
         }
 
-        // Lấy thông báo gần đây
         async function fetchRecentNotifications() {
             try {
                 const response = await fetch(`${API_URL}/api/Notifications/recent`, {
@@ -484,11 +543,10 @@
                 displayRecentNotifications(recentNotifications);
             } catch (error) {
                 console.error("Lỗi khi lấy thông báo gần đây:", error);
-                alert("Không thể tải thông báo gần đây. Vui lòng thử lại.");
+                alert("Không thể tải thông báo gần đây: " + error.message);
             }
         }
 
-        // Hiển thị thông báo gần đây
         function displayRecentNotifications(data) {
             const container = document.getElementById("recentNotifications");
             container.innerHTML = "";
@@ -534,7 +592,6 @@
             }
         }
 
-        // Xem chi tiết thông báo
         function viewNotificationDetails(id) {
             const notification = notifications.find(n => n.id === id);
             if (notification) {
@@ -542,38 +599,39 @@
                 document.getElementById("viewNotificationContent").textContent = notification.content || "Không có nội dung.";
                 document.getElementById("viewNotificationRecipient").textContent = notification.userId ? "Cá nhân" : notification.groupId ? "Nhóm" : notification.recipientType || "Tất cả";
                 document.getElementById("viewNotificationDate").textContent = notification.createdAt !== "Chưa gửi" ? notification.createdAt : "Chưa gửi";
-                document.getElementById("viewNotificationStatus").textContent = notification.status === "SENT" ? "Đã gửi" : "Chưa gửi";
+                document.getElementById("viewNotificationStatus").textContent = notification.status === "SENT" ? "Đã gửi" : notification.status === "PENDING" ? "Chưa gửi" : "Thất bại";
+                document.getElementById("viewNotificationIsFirstViewed").textContent = notification.isFirstViewed ? "Đã xem" : "Chưa xem";
+                document.getElementById("viewNotificationFirstViewedAt").textContent = notification.firstViewedAt !== "Chưa xem" ? notification.firstViewedAt : "Chưa xem";
                 const modal = new bootstrap.Modal(document.getElementById("viewNotificationModal"));
                 modal.show();
             }
         }
 
-        // Lọc và sắp xếp thông báo
         function getFilteredNotifications() {
             const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const statusFilter = document.getElementById("statusFilter").value;
 
-            // Tìm kiếm bằng Fuse.js
             let filtered = searchText
                 ? fuse.search(searchText).map(result => result.item)
                 : notifications;
 
-            // Lọc theo trạng thái
             filtered = filtered.filter(notification =>
-                (statusFilter === "" || (statusFilter === "Đã gửi" ? notification.status === "SENT" : notification.status === "PENDING"))
+                (statusFilter === "" || notification.status === statusFilter)
             );
 
-            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valueA = a[sortColumn] || '';
                     let valueB = b[sortColumn] || '';
-                    if (sortColumn === 'createdAt') {
-                        valueA = a.createdAt === "Chưa gửi" ? "" : new Date(a.createdAt.replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
-                        valueB = b.createdAt === "Chưa gửi" ? "" : new Date(b.createdAt.replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
+                    if (sortColumn === 'createdAt' || sortColumn === 'firstViewedAt') {
+                        valueA = a[sortColumn] === "Chưa gửi" || a[sortColumn] === "Chưa xem" ? "" : new Date(a[sortColumn].replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
+                        valueB = b[sortColumn] === "Chưa gửi" || b[sortColumn] === "Chưa xem" ? "" : new Date(b[sortColumn].replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2})/, '$3-$2-$1T$4:$5:00'));
                     } else if (sortColumn === 'recipient') {
                         valueA = a.userId ? "Cá nhân" : a.groupId ? "Nhóm" : a.recipientType || "Tất cả";
                         valueB = b.userId ? "Cá nhân" : b.groupId ? "Nhóm" : b.recipientType || "Tất cả";
+                    } else if (sortColumn === 'isFirstViewed') {
+                        valueA = a.isFirstViewed;
+                        valueB = b.isFirstViewed;
                     }
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
@@ -582,7 +640,6 @@
             return filtered;
         }
 
-        // Hiển thị bảng
         function displayTable(page) {
             const filteredNotifications = getFilteredNotifications();
             const start = (page - 1) * itemsPerPage;
@@ -593,10 +650,10 @@
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy thông báo nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Không tìm thấy thông báo nào.</td></tr>';
             } else {
                 paginatedData.forEach((notification, index) => {
-                    const statusClass = notification.status === "SENT" ? "bg-success" : "bg-warning";
+                    const statusClass = notification.status === "SENT" ? "bg-success" : notification.status === "PENDING" ? "bg-warning" : "bg-danger";
                     const recipient = notification.userId ? "Cá nhân" : notification.groupId ? "Nhóm" : notification.recipientType || "Tất cả";
                     tableBody.innerHTML += `
                         <tr>
@@ -605,7 +662,9 @@
                             <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${notification.content}">${notification.content}</td>
                             <td>${recipient}</td>
                             <td>${notification.createdAt}</td>
-                            <td><span class="badge ${statusClass}">${notification.status === "SENT" ? "Đã gửi" : "Chưa gửi"}</span></td>
+                            <td><span class="badge ${statusClass}">${notification.status === "SENT" ? "Đã gửi" : notification.status === "PENDING" ? "Chưa gửi" : "Thất bại"}</span></td>
+                            <td>${notification.isFirstViewed ? "Đã xem" : "Chưa xem"}</td>
+                            <td>${notification.firstViewedAt}</td>
                             <td>
                                 <button class="btn btn-sm btn-info me-1" onclick="editNotification(${notification.id})"><i class="bi bi-pencil"></i></button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteNotification(${notification.id})"><i class="bi bi-trash"></i></button>
@@ -618,7 +677,6 @@
             setupPagination(filteredNotifications.length);
         }
 
-        // Thiết lập phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
@@ -626,25 +684,23 @@
 
             if (totalPages <= 1) return;
 
-            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
-            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
-            if (currentPage > 3) paginationHTML += `<li>...</li>`;
-            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
-            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
-            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
-            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
-            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            let paginationHTML = `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li class="page-item disabled"><a class="page-link">...</a></li>`;
+            if (currentPage > 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li class="page-item active"><a class="page-link">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li class="page-item disabled"><a class="page-link">...</a></li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
             pagination.innerHTML = paginationHTML;
         }
 
-        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
-        // Sắp xếp bảng
         function sortTable(column) {
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
@@ -655,103 +711,136 @@
             displayTable(currentPage);
         }
 
-        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
-        // Hiển thị/ẩn trường ID người dùng hoặc nhóm
         function toggleRecipientFields(isEdit = false) {
             const recipientType = (isEdit ? document.getElementById("editNotificationRecipient") : document.getElementById("notificationRecipient")).value;
             const userIdField = isEdit ? document.getElementById("editUserIdField") : document.getElementById("userIdField");
-            const groupIdField = isEdit ? document.getElementById("editGroupIdField") : document.getElementById("groupIdField");
-            const userIdInput = isEdit ? document.getElementById("editNotificationUserId") : document.getElementById("notificationUserId");
+            const groupIdField = isEdit ? document.getElementById("editGroupIdField") : document.getElementById("groupIdField");const userIdInput = isEdit ? document.getElementById("editNotificationUserId") : document.getElementById("notificationUserId");
             const groupIdInput = isEdit ? document.getElementById("editNotificationGroupId") : document.getElementById("notificationGroupId");
 
-            userIdField.style.display = recipientType === "user" ? "block" : "none";
-            groupIdField.style.display = recipientType === "group" ? "block" : "none";
+            userIdField.style.display = recipientType === "Individual" ? "block" : "none";
+            groupIdField.style.display = recipientType === "Group" ? "block" : "none";
             if (isEdit) {
                 const id = parseInt(document.getElementById("editNotificationId").value);
                 const notification = notifications.find(n => n.id === id);
-                userIdInput.value = recipientType === "user" ? (notification?.userId || "") : "";
-                groupIdInput.value = recipientType === "group" ? (notification?.groupId || "") : "";
+                userIdInput.value = recipientType === "Individual" ? (notification?.userId || "") : "";
+                groupIdInput.value = recipientType === "Group" ? (notification?.groupId || "") : "";
             }
         }
 
-        // Thêm thông báo
-        async function addNotification() {
+        function toggleEmailConfig() {
+            const enableEmail = document.getElementById("enableEmail").checked;
+            document.getElementById("emailConfig").style.display = enableEmail ? "block" : "none";
+        }
+
+        async function addNotification(event) {
+            event.preventDefault();
             const form = document.getElementById("addNotificationForm");
-            if (form.checkValidity()) {
-                const notification = {
-                    title: document.getElementById("notificationTitle").value,
-                    content: document.getElementById("notificationContent").value,
-                    recipientType: document.getElementById("notificationRecipient").value.toLowerCase(),
-                    userId: document.getElementById("notificationUserId").value ? parseInt(document.getElementById("notificationUserId").value) : null,
-                    groupId: document.getElementById("notificationGroupId").value ? parseInt(document.getElementById("notificationGroupId").value) : null,
-                    type: "WEB",
-                    status: "SENT"
-                };
-                try {
-                    const response = await fetch(`${API_URL}/api/Notifications`, {
-                        method: "POST",
-                        headers: {
-                            "Accept": "*/*",
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${localStorage.getItem("token")}`
-                        },
-                        credentials: "include",
-                        body: JSON.stringify(notification)
-                    });
-                    if (response.status === 401) {
-                        alert("Bạn không có quyền tạo thông báo. Vui lòng đăng nhập lại.");
-                        window.location.href = "/font-end/login/login.html";
-                        return;
-                    }
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Không thể tạo thông báo: ${errorText || response.statusText}`);
-                    }
-                    alert("Đã gửi thông báo: " + notification.title);
-                    bootstrap.Modal.getInstance(document.getElementById("addNotificationModal")).hide();
-                    form.reset();
-                    await loadNotifications();
-                } catch (error) {
-                    console.error("Lỗi khi tạo thông báo:", error);
-                    alert("Không thể tạo thông báo: " + error.message);
-                }
-            } else {
+            if (!form.checkValidity()) {
                 form.reportValidity();
+                return;
+            }
+
+            const recipientType = document.getElementById("notificationRecipient").value;
+            const userSelect = document.getElementById("notificationUserId");
+            const groupSelect = document.getElementById("notificationGroupId");
+
+            const notification = {
+                title: document.getElementById("notificationTitle")?.value || "",
+                content: document.getElementById("notificationContent")?.value || "",
+                recipientType: recipientType,
+                userIds: recipientType === "Individual" ? Array.from(userSelect.selectedOptions).map(opt => parseInt(opt.value)) : [],
+                groupIds: recipientType === "Group" ? Array.from(groupSelect.selectedOptions).map(opt => parseInt(opt.value)) : [],
+                type: document.getElementById("notificationType")?.value || "Web",
+                status: "SENT"
+            };
+
+            if (!notification.title || !notification.content || !notification.recipientType) {
+                alert("Vui lòng điền đầy đủ các trường bắt buộc.");
+                return;
+            }
+
+            if (recipientType === "Individual" && !notification.userIds.length) {
+                alert("Vui lòng chọn ít nhất một tài khoản.");
+                return;
+            }
+            if (recipientType === "Group" && !notification.groupIds.length) {
+                alert("Vui lòng chọn ít nhất một nhóm.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/Notifications`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({ notificationDto: notification })
+                });
+
+                const responseText = await response.text();
+                console.log("Add notification response:", response.status, responseText);
+
+                if (response.status === 401) {
+                    alert("Bạn không có quyền tạo thông báo. Vui lòng đăng nhập lại.");
+                    window.location.href = "/font-end/login/login.html";
+                    return;
+                }
+                if (!response.ok) {
+                    throw new Error(`Không thể tạo thông báo: ${responseText || response.statusText}`);
+                }
+
+                alert("Đã gửi thông báo: " + notification.title);
+                bootstrap.Modal.getInstance(document.getElementById("addNotificationModal")).hide();
+                form.reset();
+                await loadNotifications();
+            } catch (error) {
+                console.error("Lỗi khi tạo thông báo:", error);
+                alert("Không thể tạo thông báo: " + error.message);
             }
         }
 
-        // Sửa thông báo
         function editNotification(id) {
             const notification = notifications.find(n => n.id === id);
             if (notification) {
                 document.getElementById("editNotificationId").value = notification.id;
                 document.getElementById("editNotificationTitle").value = notification.title;
                 document.getElementById("editNotificationContent").value = notification.content;
-                document.getElementById("editNotificationRecipient").value = notification.recipientType || "all";
+                document.getElementById("editNotificationRecipient").value = notification.recipientType || "All";
                 document.getElementById("editNotificationStatus").value = notification.status;
+                document.getElementById("editNotificationType").value = notification.type;
                 toggleRecipientFields(true);
                 const modal = new bootstrap.Modal(document.getElementById("editNotificationModal"));
                 modal.show();
             }
         }
 
-        // Lưu thông báo đã sửa
         async function saveEditNotification() {
+            const form = document.getElementById("editNotificationForm");
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
             const id = parseInt(document.getElementById("editNotificationId").value);
             const notification = {
+                id: id,
                 title: document.getElementById("editNotificationTitle").value,
                 content: document.getElementById("editNotificationContent").value,
-                recipientType: document.getElementById("editNotificationRecipient").value.toLowerCase(),
+                recipientType: document.getElementById("editNotificationRecipient").value,
                 userId: document.getElementById("editNotificationUserId").value ? parseInt(document.getElementById("editNotificationUserId").value) : null,
                 groupId: document.getElementById("editNotificationGroupId").value ? parseInt(document.getElementById("editNotificationGroupId").value) : null,
                 status: document.getElementById("editNotificationStatus").value,
-                type: "WEB"
+                type: document.getElementById("editNotificationType").value
             };
+
             try {
                 const response = await fetch(`${API_URL}/api/Notifications/${id}`, {
                     method: "PUT",
@@ -763,6 +852,7 @@
                     credentials: "include",
                     body: JSON.stringify(notification)
                 });
+                console.log("Edit notification response:", response.status, await response.text());
                 if (response.status === 401) {
                     alert("Bạn không có quyền sửa thông báo. Vui lòng đăng nhập lại.");
                     window.location.href = "/font-end/login/login.html";
@@ -781,44 +871,42 @@
             }
         }
 
-        // Xóa thông báo
         async function deleteNotification(id) {
-            if (confirm("Bạn có chắc muốn xóa thông báo này không?")) {
-                try {
-                    const response = await fetch(`${API_URL}/api/Notifications/${id}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Accept": "*/*",
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            if (!confirm("Bạn có chắc muốn xóa thông báo này không?")) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/Notifications/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
-                    });
-                    if (response.status === 401) {
-                        alert("Bạn không có quyền xóa thông báo. Vui lòng đăng nhập lại.");
-                        window.location.href = "/font-end/login/login.html";
-                        return;
-                    }
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Không thể xóa thông báo: ${errorText || response.statusText}`);
-                    }
-                    alert("Đã xóa thông báo!");
-                    await loadNotifications();
-                } catch (error) {
-                    console.error("Lỗi khi xóa thông báo:", error);
-                    alert("Không thể xóa thông báo: " + error.message);
+                });
+                if (response.status === 401) {
+                    alert("Bạn không có quyền xóa thông báo. Vui lòng đăng nhập lại.");
+                    window.location.href = "/font-end/login/login.html";
+                    return;
                 }
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể xóa thông báo: ${errorText || response.statusText}`);
+                }
+                alert("Đã xóa thông báo!");
+                await loadNotifications();
+            } catch (error) {
+                console.error("Lỗi khi xóa thông báo:", error);
+                alert("Không thể xóa thông báo: " + error.message);
             }
         }
 
-        // Xuất danh sách thông báo sang Excel
         function exportNotifications() {
             const filteredNotifications = getFilteredNotifications();
             const worksheetData = [
                 ["Danh sách thông báo - Hệ thống Sinh viên HUTECH"],
                 [],
-                ["#", "Tiêu đề", "Nội dung", "Người nhận", "Ngày gửi", "Trạng thái"]
+                ["#", "Tiêu đề", "Nội dung", "Người nhận", "Ngày gửi", "Trạng thái", "Đã xem", "Thời gian xem"]
             ];
 
             filteredNotifications.forEach((notification, index) => {
@@ -829,7 +917,9 @@
                     notification.content,
                     recipient,
                     notification.createdAt,
-                    notification.status === "SENT" ? "Đã gửi" : "Chưa gửi"
+                    notification.status === "SENT" ? "Đã gửi" : notification.status === "PENDING" ? "Chưa gửi" : "Thất bại",
+                    notification.isFirstViewed ? "Đã xem" : "Chưa xem",
+                    notification.firstViewedAt
                 ]);
             });
 
@@ -839,13 +929,19 @@
             XLSX.writeFile(workbook, "danh_sach_thong_bao.xlsx");
         }
 
-        // Lưu cấu hình thông báo
         async function saveConfig() {
             const config = {
                 enableWeb: document.getElementById("enableWeb").checked,
                 enableEmail: document.getElementById("enableEmail").checked,
-                reminderFrequency: document.getElementById("reminderFrequency").value
+                reminderFrequency: document.getElementById("reminderFrequency").value,
+                smtpConfig: document.getElementById("enableEmail").checked ? {
+                    host: document.getElementById("smtpHost").value,
+                    port: parseInt(document.getElementById("smtpPort").value) || 587,
+                    username: document.getElementById("smtpUsername").value,
+                    password: document.getElementById("smtpPassword").value
+                } : null
             };
+
             try {
                 const response = await fetch(`${API_URL}/api/Notifications/config`, {
                     method: "POST",
@@ -874,7 +970,37 @@
             }
         }
 
-        // Ghi chú: Đăng xuất
+        async function loadConfig() {
+            try {
+                const response = await fetch(`${API_URL}/api/Notifications/config`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể tải cấu hình: ${errorText || response.statusText}`);
+                }
+                const config = await response.json();
+                document.getElementById("enableWeb").checked = config.enableWeb;
+                document.getElementById("enableEmail").checked = config.enableEmail;
+                document.getElementById("reminderFrequency").value = config.reminderFrequency || "none";
+                if (config.smtpConfig) {
+                    document.getElementById("smtpHost").value = config.smtpConfig.host || "";
+                    document.getElementById("smtpPort").value = config.smtpConfig.port || "";
+                    document.getElementById("smtpUsername").value = config.smtpConfig.username || "";
+                    document.getElementById("smtpPassword").value = config.smtpConfig.password || "";
+                }
+                toggleEmailConfig();
+            } catch (error) {
+                console.error("Lỗi khi tải cấu hình:", error);
+            }
+        }
+
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -903,14 +1029,15 @@
             window.location.replace("/font-end/login/login.html");
         }
 
-        // Tải dữ liệu khi trang được load
         document.addEventListener("DOMContentLoaded", async () => {
             try {
                 await loadUserProfile();
                 await loadNotifications();
                 await fetchRecentNotifications();
+                await loadConfig();
                 document.getElementById("notificationRecipient").addEventListener("change", () => toggleRecipientFields());
                 document.getElementById("editNotificationRecipient").addEventListener("change", () => toggleRecipientFields(true));
+                document.getElementById("enableEmail").addEventListener("change", toggleEmailConfig);
             } catch (error) {
                 console.error("Error loading notifications:", error);
                 alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);

@@ -38,7 +38,6 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" id="searchInputFuse" placeholder="🔍 Tìm giảng viên...">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -105,7 +104,7 @@
                                 <th class="sortable" onclick="sortTable('username')">Mã GV <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('fullName')">Họ và tên <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Email</th>
-                                <th class="sortable" onclick="sortTable('classCode')">Bộ môn <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('departmentName')">Khoa <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('roleName')">Vai trò <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('locked')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
@@ -144,8 +143,14 @@
                             <input type="email" id="lecturerEmail" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Bộ môn</label>
-                            <input type="text" id="lecturerClassCode" class="form-control" required>
+                            <label class="form-label">Mật khẩu</label>
+                            <input type="password" id="lecturerPassword" class="form-control" placeholder="Nhập mật khẩu ban đầu">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Khoa</label>
+                            <select id="lecturerDepartmentId" class="form-select" required>
+                                <option value="">Chọn khoa</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Vai trò</label>
@@ -191,8 +196,10 @@
                             <input type="password" id="editLecturerPassword" class="form-control" placeholder="Nhập mật khẩu mới (nếu muốn thay đổi)">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Bộ môn</label>
-                            <input type="text" id="editLecturerClassCode" class="form-control" required>
+                            <label class="form-label">Khoa</label>
+                            <select id="editLecturerDepartmentId" class="form-select" required>
+                                <option value="">Chọn khoa</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Vai trò</label>
@@ -231,6 +238,7 @@
         let sortColumn = null;
         let sortDirection = 'asc';
         let fuse = null;
+        let departments = [];
 
         // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
         function removeVietnameseTones(str) {
@@ -252,8 +260,8 @@
                     { name: 'email', weight: 0.2 }
                 ],
                 includeScore: true,
-                threshold: 0.4, // Độ nhạy tìm kiếm mờ
-                ignoreLocation: true, // Tìm kiếm chuỗi con
+                threshold: 0.4,
+                ignoreLocation: true,
                 useExtendedSearch: true,
                 getFn: (obj, path) => {
                     const value = Fuse.config.getFn(obj, path);
@@ -262,14 +270,52 @@
             });
         }
 
+        // Tải danh sách khoa
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_URL}/api/AdminUser/Department`, {
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error("Lỗi tải danh sách khoa");
+                departments = await response.json();
+                populateDepartmentSelect('lecturerDepartmentId');
+                populateDepartmentSelect('editLecturerDepartmentId');
+            } catch (error) {
+                console.error("Error loading departments:", error);
+                alert("Không tải được danh sách khoa: " + error.message);
+            }
+        }
+
+        // Điền danh sách khoa vào select
+        function populateDepartmentSelect(selectId) {
+            const selectElement = document.getElementById(selectId);
+            if (!selectElement) {
+                console.warn(`Element with ID '${selectId}' not found.`);
+                return;
+            }
+            selectElement.innerHTML = '<option value="">Chọn khoa</option>' + 
+                departments.map(dept => `<option value="${dept.id}">${dept.facultyName}</option>`).join('');
+        }
+
         // Tải thông tin người dùng
         async function loadUserProfile() {
-            const user = JSON.parse(localStorage.getItem("user"));
-            if (!user || user.roleName !== "ROLE_ADMIN") {
-                throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+            try {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || user.roleName !== "ROLE_ADMIN") {
+                    throw new Error("Không có quyền Admin hoặc chưa đăng nhập.");
+                }
+                document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
+                document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
+            } catch (error) {
+                console.error('Lỗi khi tải thông tin người dùng:', error);
+                alert("Vui lòng đăng nhập lại!");
+                window.location.replace("/font-end/login/login.html");
             }
-            document.getElementById("adminName").textContent = user.fullName || "Admin HUTECH";
-            document.getElementById("adminEmail").textContent = user.email || "admin@hutech.edu.vn";
         }
 
         // Lấy danh sách giảng viên từ API
@@ -293,7 +339,7 @@
                     throw new Error("Phản hồi từ server trống.");
                 }
                 lecturers = JSON.parse(text);
-                fuse = createFuseIndex(lecturers); // Tạo chỉ mục Fuse.js
+                fuse = createFuseIndex(lecturers);
                 displayTable(currentPage);
             } catch (error) {
                 throw error;
@@ -311,22 +357,23 @@
             const roleFilter = document.getElementById("roleFilter").value;
             const statusFilter = document.getElementById("statusFilter").value;
 
-            // Tìm kiếm bằng Fuse.js
             let filtered = searchText
                 ? fuse.search(searchText).map(result => result.item)
                 : lecturers;
 
-            // Lọc theo vai trò và trạng thái
             filtered = filtered.filter(lecturer =>
                 (roleFilter === "" || lecturer.roleName === roleFilter) &&
                 (statusFilter === "" || lecturer.locked.toString() === statusFilter)
             );
 
-            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = sortColumn === 'locked' ? a.locked : (a[sortColumn] || '').toLowerCase();
-                    let valueB = sortColumn === 'locked' ? b.locked : (b[sortColumn] || '').toLowerCase();
+                    let valueA = sortColumn === 'locked' ? a.locked : 
+                                 sortColumn === 'departmentName' ? (departments.find(d => d.id === a.departmentId)?.name || '').toLowerCase() :
+                                 (a[sortColumn] || '').toLowerCase();
+                    let valueB = sortColumn === 'locked' ? b.locked : 
+                                 sortColumn === 'departmentName' ? (departments.find(d => d.id === b.departmentId)?.name || '').toLowerCase() :
+                                 (b[sortColumn] || '').toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -350,13 +397,14 @@
                 paginatedData.forEach((lecturer, index) => {
                     const statusText = lecturer.locked ? "Khóa" : "Hoạt động";
                     const statusClass = lecturer.locked ? "bg-danger" : "bg-success";
+                    const department = departments.find(d => d.id === lecturer.departmentId);
                     tableBody.innerHTML += `
                         <tr>
                             <td>${start + index + 1}</td>
                             <td>${lecturer.username}</td>
                             <td>${lecturer.fullName}</td>
                             <td>${lecturer.email}</td>
-                            <td>${lecturer.facultyCode || "Chưa có"}</td>
+                            <td>${department ? department.facultyName : 'Chưa có'}</td>
                             <td>${lecturer.roleName === "ROLE_LECTURER_GUIDE" ? "Giảng viên hướng dẫn" : "Trưởng bộ môn"}</td>
                             <td><span class="badge ${statusClass}">${statusText}</span></td>
                             <td>
@@ -379,15 +427,15 @@
 
             if (totalPages <= 1) return;
 
-            let paginationHTML = `<li><a href="#" onclick="changePage(1)">«</a></li>`;
-            if (currentPage > 2) paginationHTML += `<li><a href="#" onclick="changePage(1)">1</a></li>`;
-            if (currentPage > 3) paginationHTML += `<li>...</li>`;
-            if (currentPage > 1) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
-            paginationHTML += `<li><a href="#" class="active">${currentPage}</a></li>`;
-            if (currentPage < totalPages) paginationHTML += `<li><a href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
-            if (currentPage < totalPages - 2) paginationHTML += `<li>...</li>`;
-            if (currentPage < totalPages - 1) paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            paginationHTML += `<li><a href="#" onclick="changePage(${totalPages})">»</a></li>`;
+            let paginationHTML = `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) paginationHTML += `<li class="page-item disabled"><a class="page-link">...</a></li>`;
+            if (currentPage > 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            paginationHTML += `<li class="page-item active"><a class="page-link">${currentPage}</a></li>`;
+            if (currentPage < totalPages) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) paginationHTML += `<li class="page-item disabled"><a class="page-link">...</a></li>`;
+            if (currentPage < totalPages - 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
             pagination.innerHTML = paginationHTML;
         }
 
@@ -422,7 +470,16 @@
                 return;
             }
 
-            const username = document.getElementById("lecturerUsername").value;
+            const usernameElement = document.getElementById("lecturerUsername");
+            const departmentElement = document.getElementById("lecturerDepartmentId");
+            const roleElement = document.getElementById("lecturerRole");
+            const passwordElement = document.getElementById("lecturerPassword");
+            if (!usernameElement || !departmentElement || !roleElement) {
+                alert("Lỗi: Không tìm thấy trường mã giảng viên, khoa, hoặc vai trò.");
+                return;
+            }
+
+            const username = usernameElement.value;
             if (isUsernameDuplicate(username)) {
                 alert("Mã giảng viên đã tồn tại. Vui lòng chọn mã khác.");
                 return;
@@ -432,8 +489,9 @@
                 username: username,
                 fullName: document.getElementById("lecturerFullName").value,
                 email: document.getElementById("lecturerEmail").value,
-                classCode: document.getElementById("lecturerClassCode").value,
-                roleId: parseInt(document.getElementById("lecturerRole").value)
+                password: passwordElement.value || undefined,
+                departmentId: parseInt(departmentElement.value),
+                roleId: parseInt(roleElement.value)
             };
 
             try {
@@ -469,7 +527,7 @@
                 document.getElementById("editLecturerFullName").value = lecturer.fullName;
                 document.getElementById("editLecturerEmail").value = lecturer.email;
                 document.getElementById("editLecturerPassword").value = '';
-                document.getElementById("editLecturerClassCode").value = lecturer.classCode || '';
+                document.getElementById("editLecturerDepartmentId").value = lecturer.departmentId || '';
                 document.getElementById("editLecturerRole").value = lecturer.roleId;
                 document.getElementById("editLecturerStatus").value = lecturer.locked.toString();
                 const modal = new bootstrap.Modal(document.getElementById("editLecturerModal"));
@@ -484,20 +542,28 @@
                 return;
             }
 
-            const id = parseInt(document.getElementById("editLecturerId").value);
+            const idElement = document.getElementById("editLecturerId");
+            const departmentElement = document.getElementById("editLecturerDepartmentId");
+            const roleElement = document.getElementById("editLecturerRole");
+            if (!idElement || !departmentElement || !roleElement) {
+                alert("Lỗi: Không tìm thấy trường ID, khoa, hoặc vai trò.");
+                return;
+            }
+
+            const id = parseInt(idElement.value);
             const updatedLecturer = {
                 id: id,
                 username: document.getElementById("editLecturerUsername").value,
                 fullName: document.getElementById("editLecturerFullName").value,
                 email: document.getElementById("editLecturerEmail").value,
                 password: document.getElementById("editLecturerPassword").value || undefined,
-                classCode: document.getElementById("editLecturerClassCode").value,
-                roleId: parseInt(document.getElementById("editLecturerRole").value),
+                departmentId: parseInt(departmentElement.value),
+                roleId: parseInt(roleElement.value),
                 locked: document.getElementById("editLecturerStatus").value === "true"
             };
 
             try {
-                const response = await fetch(`${API_URL}/api/AdminUser/lecturers/${id}`, {
+                const response = await fetch(`${API_URL}/api/AdminUser/lecturers/update/${id}`, {
                     method: "PUT",
                     headers: {
                         "Accept": "*/*",
@@ -507,15 +573,32 @@
                     credentials: "include",
                     body: JSON.stringify(updatedLecturer)
                 });
+
+                // Log response for debugging
+                console.log("Response status:", response.status);
+                const text = await response.text();
+                console.log("Response text:", text);
+
                 if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.message || "Không cập nhật được giảng viên.");
+                    let errorMessage = "Không cập nhật được giảng viên.";
+                    if (response.status === 405) {
+                        errorMessage = "Phương thức PUT không được hỗ trợ. Vui lòng kiểm tra API.";
+                    } else if (text) {
+                        try {
+                            const error = JSON.parse(text);
+                            errorMessage = error.message || errorMessage;
+                        } catch (e) {
+                            errorMessage = text || errorMessage;
+                        }
+                    }
+                    throw new Error(errorMessage);
                 }
+
                 alert("Đã cập nhật thông tin giảng viên: " + updatedLecturer.fullName);
                 bootstrap.Modal.getInstance(document.getElementById("editLecturerModal")).hide();
                 await loadLecturers();
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Error in saveEditLecturer:", error);
                 alert("Không cập nhật được giảng viên: " + error.message);
             }
         }
@@ -552,17 +635,18 @@
             const worksheetData = [
                 ["Danh sách giảng viên - Hệ thống Sinh viên HUTECH"],
                 [],
-                ["#", "Mã GV", "Họ và tên", "Email", "Bộ môn", "Vai trò", "Trạng thái"]
+                ["#", "Mã GV", "Họ và tên", "Email", "Khoa", "Vai trò", "Trạng thái"]
             ];
 
             filteredLecturers.forEach((lecturer, index) => {
+                const department = departments.find(d => d.id === lecturer.departmentId);
                 worksheetData.push([
                     index + 1,
                     lecturer.username,
                     lecturer.fullName,
                     lecturer.email,
-                    lecturer.facultyCode || "Chưa có",
-                    lecturer.roleId === "ROLE_LECTURER_GUIDE" ? "Giảng viên hướng dẫn" : "Trưởng bộ môn",
+                    department ? department.name : 'Chưa có',
+                    lecturer.roleId === 2 ? "Giảng viên hướng dẫn" : "Trưởng bộ môn",
                     lecturer.locked ? "Khóa" : "Hoạt động"
                 ]);
             });
@@ -585,8 +669,8 @@
                     const workbook = XLSX.read(data, { type: 'array' });
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
                     const rows = XLSX.utils.sheet_to_json(sheet, {
-                        header: ["", "Username", "FullName", "Email", "ClassCode", "RoleId"],
-                        range: 2
+                        header: ["Username", "FullName", "Email", "DepartmentId", "RoleId", "Password"],
+                        skipHeader: true
                     });
 
                     if (rows.length === 0) {
@@ -598,12 +682,20 @@
                         username: row.Username?.toString(),
                         fullName: row.FullName?.toString(),
                         email: row.Email?.toString(),
-                        classCode: row.ClassCode?.toString(),
-                        roleId: parseInt(row.RoleId) || 2
-                    })).filter(lecturer => lecturer.username && lecturer.fullName && lecturer.email && [2, 4].includes(lecturer.roleId));
+                        departmentId: parseInt(row.DepartmentId) || null,
+                        roleId: parseInt(row.RoleId) || 2,
+                        password: row.Password?.toString()
+                    })).filter(lecturer => 
+                        lecturer.username && 
+                        lecturer.fullName && 
+                        lecturer.email && 
+                        lecturer.departmentId && 
+                        departments.some(d => d.id === lecturer.departmentId) &&
+                        [2, 4].includes(lecturer.roleId)
+                    );
 
                     if (lecturersToImport.length === 0) {
-                        alert("Không có dữ liệu hợp lệ trong file Excel. Đảm bảo có Username, FullName, Email, RoleId (2 hoặc 4).");
+                        alert("Không có dữ liệu hợp lệ. Đảm bảo có Username, FullName, Email, DepartmentId hợp lệ, RoleId (2 hoặc 4).");
                         return;
                     }
 
@@ -665,7 +757,7 @@
             }
         }
 
-        // Ghi chú: Đăng xuất
+        // Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -741,6 +833,7 @@
         window.onload = async () => {
             try {
                 await loadUserProfile();
+                await loadDepartments();
                 await loadLecturers();
             } catch (error) {
                 console.error("Error loading data:", error);

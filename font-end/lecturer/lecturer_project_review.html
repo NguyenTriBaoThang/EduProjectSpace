@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Trang đánh giá chi tiết đồ án của một môn học trong hệ thống Sinh viên HUTECH.">
+    <meta name="description" content="Trang chi tiết đánh giá đồ án trong hệ thống Sinh viên HUTECH.">
     <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
-    <title>Đánh giá chi tiết đồ án | Hệ thống Sinh viên</title>
+    <title>Chi tiết đánh giá đồ án | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="/font-end/static/css/styles_lecturer.css" rel="stylesheet">
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
     <style>
         .submission-list { list-style: none; padding: 0; }
         .submission-list li { margin-bottom: 5px; }
         .criteria-table td { vertical-align: middle; }
+        .content { padding: 20px; }
     </style>
 </head>
 <body>
@@ -28,7 +28,7 @@
             <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
             <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
             <a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
-            <a href="/font-end/lecturer/lecturer_course_reviews.html" class="active"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
+            <a href="/font-end/lecturer/lecturer_course_evaluation.html" class="active"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
             <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
         </div>
     </div>
@@ -41,7 +41,8 @@
                 <i id="sidebarIcon" class="bi bi-list"></i>
             </button>            
             <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
-                <i class="bi bi-list"></i></button>
+                <i class="bi bi-list"></i>
+            </button>
             <div class="ms-auto d-flex align-items-center">
                 <input type="text" class="form-control me-3" id="searchInput" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
@@ -66,139 +67,114 @@
             </div>
         </div>
 
-        <!-- Projects Section -->
+        <!-- Project Review Section -->
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold text">⭐ Danh sách đồ án cần đánh giá</h2>
-                <button class="btn btn-info" onclick="exportProjects()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                <h2 class="fw-bold text">⭐ Chi tiết đánh giá đồ án</h2>
+                <button class="btn btn-secondary" onclick="goBack()">Quay lại</button>
             </div>
 
             <!-- Breadcrumb -->
             <nav class="breadcrumb-container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i></a></li>
-                    <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_course_reviews.html"><i class="bi bi-star"></i> Danh sách môn cần đánh giá</a></li>
-                    <li class="breadcrumb-item active"><i class="bi bi-folder"></i> Danh sách đồ án</li>
+                    <li class="breadcrumb-item"><a href="/font-end/lecturer/lecturer_project_review.html?courseId=${new URLSearchParams(window.location.search).get('courseId')}"><i class="bi bi-star"></i> Danh sách môn cần đánh giá</a></li>
+                    <li class="breadcrumb-item active"><i class="bi bi-folder"></i> Chi tiết đánh giá</li>
                 </ol>
             </nav>
 
-            <!-- Projects Table -->
-            <div class="table-container">
-                <div class="table-section d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm kiếm đồ án..." onkeyup="filterTable()">
-                    <select id="statusFilter" class="form-select" onchange="filterTable()">
-                        <option value="">📂 Tất cả trạng thái</option>
-                        <option value="Chưa duyệt">Chưa duyệt</option>
-                        <option value="Đã duyệt">Đã duyệt</option>
-                        <option value="Hoàn thành">Hoàn thành</option>
-                    </select>
+            <!-- Project Details -->
+            <div class="card">
+                <div class="card-header">
+                    <h4>Thông tin đồ án</h4>
                 </div>
-
-                <div class="table-content">
-                    <table class="table-custom table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th class="sortable" onclick="sortTable('projectId')">Mã đồ án <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('name')">Tên đồ án <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('groupName')">Tên nhóm <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('groupLeader')">Nhóm trưởng <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('memberCount')">Số thành viên <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('isFullyReviewed')">Đã đánh giá</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
-                </div>
-
-                <div class="table-footer">
-                    <ul id="pagination" class="pagination"></ul>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Mã đồ án</label>
+                                <input type="text" id="projectCode" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tên đồ án</label>
+                                <input type="text" id="projectName" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tên nhóm</label>
+                                <input type="text" id="groupName" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Nhóm trưởng</label>
+                                <input type="text" id="groupLeader" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Thành viên</label>
+                                <input type="text" id="groupMembers" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal Đánh Giá Đồ án -->
-        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="reviewModalLabel">Đánh giá đồ án</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="reviewForm">
-                            <input type="hidden" id="projectId">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Mã đồ án</label>
-                                        <input type="text" id="projectCode" class="form-control" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Tên đồ án</label>
-                                        <input type="text" id="projectName" class="form-control" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Tên nhóm</label>
-                                        <input type="text" id="groupName" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Nhóm trưởng</label>
-                                        <input type="text" id="groupLeader" class="form-control" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Thành viên</label>
-                                        <input type="text" id="groupMembers" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Điểm từng sinh viên</label>
-                                    <table class="table-custom table-bordered criteria-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Sinh viên</th>
-                                                <th>Tiêu chí</th>
-                                                <th>Trọng số</th>
-                                                <th>Điểm (0-10)</th>
-                                                <th>Điểm tổng</th>
-                                                <th>Nhận xét</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="criteriaTable"></tbody>
-                                    </table>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Tiến độ đồ án</label>
-                                    <table class="table-custom table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Giai đoạn</th>
-                                                <th>Mô tả</th>
-                                                <th>Tệp báo cáo</th>
-                                                <th>Hạn nộp</th>
-                                                <th>Người nộp</th>
-                                                <th>Phản hồi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="progressTable"></tbody>
-                                    </table>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Lịch sử đánh giá</label>
-                                    <div id="reviewHistory" class="form-text"></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary" onclick="saveReview()">Lưu</button>
-                    </div>
+            <!-- Criteria Grades -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4>Điểm từng sinh viên</h4>
                 </div>
+                <div class="card-body">
+                    <table class="table-custom table-bordered criteria-table">
+                        <thead>
+                            <tr>
+                                <th>Sinh viên</th>
+                                <th>Tiêu chí</th>
+                                <th>Trọng số</th>
+                                <th>Điểm (0-10)</th>
+                                <th>Điểm tổng</th>
+                                <th>Nhận xét</th>
+                            </tr>
+                        </thead>
+                        <tbody id="criteriaTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Progress Table -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4>Tiến độ đồ án</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table-custom table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Giai đoạn</th>
+                                <th>Mô tả</th>
+                                <th>Tệp báo cáo</th>
+                                <th>Hạn nộp</th>
+                                <th>Phản hồi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="progressTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Review History -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h4>Lịch sử đánh giá</h4>
+                </div>
+                <div class="card-body">
+                    <div id="reviewHistory" class="form-text"></div>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-primary" onclick="saveReview()">Lưu</button>
+                <button type="button" class="btn btn-info ms-2" onclick="window.location.href='/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}'">Đánh giá</button>
             </div>
         </div>
     </div>
@@ -213,15 +189,16 @@
         const API_URL = "https://localhost:7047";
         let token = localStorage.getItem("token");
         let fullNameLecturer = "";
-        let projects = [];
-        const itemsPerPage = 5;
-        let currentPage = 1;
-        let sortColumn = null;
-        let sortDirection = 'asc';
 
         // Lấy thông tin từ URL
         const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get("projectId");
         const courseId = urlParams.get("courseId");
+
+        //const courseId = new URLSearchParams(window.location.search).get('courseId');
+        function goBack() {
+            window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
+        }
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
@@ -277,153 +254,14 @@
             }
         }
 
-        // Tải danh sách đồ án từ API
-        async function loadProjects() {
-            if (!courseId) {
-                document.getElementById("tableBody").innerHTML = '<tr><td colspan="9" class="text-center">Không tìm thấy môn học.</td></tr>';
+        // Tải chi tiết đồ án để đánh giá
+        async function loadProjectReview() {
+            if (!projectId) {
+                alert("Không tìm thấy mã đồ án.");
+                window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
                 return;
             }
 
-            try {
-                const response = await fetch(`${API_URL}/api/LecturerReview/courses/${encodeURIComponent(courseId)}/projects`, {
-                    method: "GET",
-                    headers: {
-                        "Accept": "*/*",
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    credentials: "include"
-                });
-
-                if (!response.ok) throw new Error(`Không thể tải danh sách đồ án: ${response.statusText}`);
-                projects = await response.json();
-                displayTable(currentPage);
-            } catch (e) {
-                console.error("Lỗi khi tải đồ án:", e);
-                document.getElementById("tableBody").innerHTML = '<tr><td colspan="9" class="text-center">Không thể tải dữ liệu.</td></tr>';
-            }
-        }
-
-        // Lọc và sắp xếp bảng
-        function getFilteredProjects() {
-            const searchText = document.getElementById("searchInput").value.toLowerCase();
-            const statusFilter = document.getElementById("statusFilter").value;
-
-            let filtered = projects.filter(project => 
-                ((project.projectId || "").toLowerCase().includes(searchText) ||
-                 (project.name || "").toLowerCase().includes(searchText) ||
-                 (project.groupName || "").toLowerCase().includes(searchText) ||
-                 (project.groupLeader || "").toLowerCase().includes(searchText)) &&
-                (statusFilter === "" || project.status === statusFilter)
-            );
-
-            if (sortColumn) {
-                filtered.sort((a, b) => {
-                    let valueA = a[sortColumn] || "";
-                    let valueB = b[sortColumn] || "";
-                    if (sortColumn === 'memberCount') {
-                        valueA = parseInt(valueA) || 0;
-                        valueB = parseInt(valueB) || 0;
-                    } else if (sortColumn === 'isFullyReviewed') {
-                        valueA = valueA ? 1 : 0;
-                        valueB = valueB ? 1 : 0;
-                    } else {
-                        valueA = valueA.toLowerCase();
-                        valueB = valueB.toLowerCase();
-                    }
-                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
-                });
-            }
-
-            return filtered;
-        }
-
-        // Hiển thị bảng
-        function displayTable(page) {
-            const filteredProjects = getFilteredProjects();
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const paginatedData = filteredProjects.slice(start, end);
-
-            const tableBody = document.getElementById("tableBody");
-            tableBody.innerHTML = "";
-
-            if (!courseId) {
-                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Vui lòng chọn môn học từ danh sách.</td></tr>';
-            } else if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Không tìm thấy đồ án nào.</td></tr>';
-            } else {
-                paginatedData.forEach((project, index) => {
-                    const statusClass = project.status === "Hoàn thành" ? "bg-success" : project.status === "Đã duyệt" ? "bg-info" : "bg-warning";
-                    const reviewStatusClass = project.isFullyReviewed ? "text-success" : "text-danger";
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td>${start + index + 1}</td>
-                            <td>${project.projectId || "N/A"}</td>
-                            <td>${project.name || "N/A"}</td>
-                            <td>${project.groupName || "N/A"}</td>
-                            <td>${project.groupLeader || "N/A"}</td>
-                            <td>${project.memberCount || 0}</td>
-                            <td><span class="badge ${statusClass}">${project.status || "Chưa xác định"}</span></td>
-                            <td><span class="${reviewStatusClass}">${project.isFullyReviewed ? "Hoàn tất" : "Chưa hoàn tất"}</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" onclick="reviewProject('${project.projectId || ''}')">
-                                <i class="bi bi-star"></i> Đánh giá
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            }
-
-            setupPagination(filteredProjects.length);
-        }
-
-        // Setup pagination
-        function setupPagination(totalItems) {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            const pagination = document.getElementById("pagination");
-            pagination.innerHTML = '';
-
-            if (totalPages <= 1) return;
-
-            let paginationHTML = `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
-            if (currentPage > 2) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
-            if (currentPage > 3) paginationHTML += `<li class="page-item disabled"><a class="page-link">...</a></li>`;
-            if (currentPage > 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
-            paginationHTML += `<li class="page-item active"><a class="page-link">${currentPage}</a></li>`;
-            if (currentPage < totalPages) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
-            if (currentPage < totalPages - 2) paginationHTML += `<li class="page-item disabled"><a class="page-link">...</a></li>`;
-            if (currentPage < totalPages - 1) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
-            pagination.innerHTML = paginationHTML;
-        }
-
-        // Change page
-        function changePage(page) {
-            currentPage = page;
-            displayTable(currentPage);
-        }
-
-        // Sort table
-        function sortTable(column) {
-            if (sortColumn === column) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortColumn = column;
-                sortDirection = 'asc';
-            }
-            displayTable(currentPage);
-        }
-
-        // Filter table
-        function filterTable() {
-            currentPage = 1;
-            displayTable(currentPage);
-        }
-
-        // Load project details for review
-        async function reviewProject(projectId) {
             try {
                 const response = await fetch(`${API_URL}/api/LecturerReview/projects/${encodeURIComponent(projectId)}`, {
                     method: "GET",
@@ -438,15 +276,14 @@
                 if (!response.ok) throw new Error(`Không thể tải chi tiết đồ án: ${response.statusText}`);
                 const project = await response.json();
 
-                // Populate modal fields
-                document.getElementById("projectId").value = project.projectId || "";
+                // Điền thông tin đồ án
                 document.getElementById("projectCode").value = project.projectId || "";
                 document.getElementById("projectName").value = project.name || "";
                 document.getElementById("groupName").value = project.groupName || "";
                 document.getElementById("groupLeader").value = project.groupLeader || "";
                 document.getElementById("groupMembers").value = project.groupMembers || "";
 
-                // Populate criteria grades table
+                // Điền bảng điểm từng sinh viên
                 const criteriaTable = document.getElementById("criteriaTable");
                 criteriaTable.innerHTML = "";
                 project.studentGrades.forEach(student => {
@@ -467,55 +304,50 @@
                     });
                 });
 
-                // Populate progress table
+                // Điền bảng tiến độ với các liên kết file
                 const progressTable = document.getElementById("progressTable");
                 progressTable.innerHTML = "";
                 if (project.tasks && project.tasks.length) {
                     project.tasks.forEach(task => {
-                        task.submissions?.forEach((submission, index) => {
-                            progressTable.innerHTML += `
-                                <tr>
-                                    ${index === 0 ? `<td rowspan="${task.submissions.length}">${task.title || "N/A"}</td>` : ""}
-                                    ${index === 0 ? `<td rowspan="${task.submissions.length}">${task.description || "Chưa có mô tả"}</td>` : ""}
-                                    <td><a href="${submission.filePath || "#"}">${submission.fileName || submission.filePath || "N/A"}</a></td>
-                                    <td>${task.dueDate || "N/A"}</td>
-                                    <td>${submission.submittedById || "Không rõ"}</td>
-                                    <td>${submission.feedback || "Chưa có phản hồi"}</td>
-                                </tr>
-                            `;
-                        });
+                        progressTable.innerHTML += `
+                            <tr>
+                                <td>${task.title || "N/A"}</td>
+                                <td>${task.description || "Chưa có mô tả"}</td>
+                                <td>
+                                    <ul class="submission-list">
+                                        ${task.submissions.map(sub => `
+                                            <li><a href="${API_URL}/api/File/files/${sub.filePath}" target="_blank">${sub.fileName || sub.filePath.split("/").pop() || "N/A"} (${sub.submittedById} - ${sub.fullName || "Unknown"})</a></li>
+                                        `).join("")}
+                                    </ul>
+                                </td>
+                                <td>${task.dueDate || "N/A"}</td>
+                                <td>${task.submissions.length > 0 ? task.submissions[0].feedback || "Chưa có phản hồi" : "Chưa có"}</td>
+                            </tr>
+                        `;
                     });
                 } else {
-                    progressTable.innerHTML = '<tr><td colspan="7" class="text-center">Chưa có tiến độ</td></tr>';
+                    progressTable.innerHTML = '<tr><td colspan="5" class="text-center">Chưa có tiến độ</td></tr>';
                 }
 
-                // Populate review history
+                // Điền lịch sử đánh giá
                 const historyDiv = document.getElementById("reviewHistory");
                 historyDiv.innerHTML = project.studentGrades
                     .filter(g => g.comment)
                     .map(g => `Sinh viên: ${g.fullName}, TotalScore: ${g.totalScore != null ? g.totalScore.toFixed(2) : "Chưa có"}, Nhận xét: ${g.comment}, Ngày: ${new Date().toLocaleString("vi-VN")}`)
                     .join("<br/>") || "Chưa có lịch sử đánh giá";
-
-                // Show modal
-                const modal = new bootstrap.Modal(document.getElementById("reviewModal"));
-                modal.show();
             } catch (e) {
                 alert("Lỗi khi tải chi tiết đồ án: " + e.message);
+                window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
             }
         }
 
-        // Save review
+        // Lưu đánh giá
         async function saveReview() {
-            const form = document.getElementById("reviewForm");
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const projectId = document.getElementById("projectId").value;
+            const form = document.createElement("form"); // Form tạm để kiểm tra tính hợp lệ
+            const projectId = projectId;
             const studentGrades = [];
 
-            // Collect grades for each student
+            // Thu thập điểm số cho từng sinh viên
             const studentIds = new Set();
             document.querySelectorAll(".criteria-score").forEach(input => {
                 const studentId = parseInt(input.getAttribute("data-student-id"));
@@ -536,7 +368,7 @@
                 studentGrade.criteriaGrades.push({ criteriaId, score });
             });
 
-            // Validate all criteria
+            // Kiểm tra và lưu điểm
             try {
                 const response = await fetch(`${API_URL}/api/LecturerReview/projects/${encodeURIComponent(projectId)}/grades`, {
                     method: 'POST',
@@ -551,44 +383,13 @@
 
                 if (!response.ok) throw new Error(`Không thể lưu điểm: ${response.statusText}`);
                 alert("Đã lưu điểm thành công");
-                bootstrap.Modal.getInstance(document.getElementById("reviewModal")).hide();
-                await loadProjects();
+                window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
             } catch (e) {
                 alert("Lỗi khi lưu điểm: " + e.message);
             }
         }
 
-        // Export projects to Excel
-        function exportProjects() {
-            const filteredProjects = getFilteredProjects();
-            const worksheetData = [
-                ["Danh sách đồ án cần đánh giá - Hệ thống Sinh viên HUTECH"],
-                [`Giảng viên hướng dẫn: ${fullNameLecturer || ''}`],
-                [`Môn học: ${courseId || "N/A"}`],
-                [],
-                ["#", "Mã đồ án", "Tên đồ án", "Tên nhóm phát triển", "Nhóm trưởng", "Số thành viên", "Trạng thái", "Đã đánh giá"]
-            ];
-
-            filteredProjects.forEach((project, index) => {
-                worksheetData.push([
-                    index + 1,
-                    project.projectId || "",
-                    project.name || "",
-                    project.groupName || "",
-                    project.groupLeader || "",
-                    project.memberCount || "",
-                    project.status || "",
-                    project.isFullyReviewed ? "Hoàn thành" : "Chưa hoàn chỉnh"
-                ]);
-            });
-
-            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "DoAnDanhGia");
-            XLSX.writeFile(workbook, `do-an_${courseId || "unknown"}.xlsx`);
-        }
-
-        // Ghi chú: Đăng xuất
+        // Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -617,13 +418,13 @@
             window.location.replace("/login/login.html");
         }
 
-        // Initialize
+        // Khởi tạo
         document.addEventListener("DOMContentLoaded", async () => {
             try {
                 await loadUserProfile();
-                await loadProjects();
+                await loadProjectReview();
             } catch (error) {
-                console.error("Lỗi khi tải bảng:", error);
+                console.error("Lỗi khi tải trang:", error);
                 alert(`Không thể tải dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
                 logout();
             }

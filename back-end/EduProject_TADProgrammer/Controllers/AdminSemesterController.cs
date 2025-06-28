@@ -145,21 +145,35 @@ namespace EduProject_TADProgrammer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSemester(long id)
         {
-            var semester = await _semesterService.GetById(id);
-            if (semester == null)
-                return NotFound();
-
-            await _semesterService.DeleteSemester(id);
-
-            if (!long.TryParse(User.FindFirst("id")?.Value, out var userId))
+            try
             {
-                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
-            }
-            var fullName = User.FindFirst("fullName")?.Value ?? "Không rõ tên";
-            var userName = User.FindFirst("userName")?.Value ?? "Không rõ tài khoản";
-            await _logService.LogAction(userId, "DELETE", $"Người dùng {fullName.ToString()}({userName}) đã tạo xoá học kì {semester.Name}.");
+                var semester = await _semesterService.GetById(id);
+                if (semester == null)
+                    return NotFound(new { message = "Không tìm thấy kỳ học." });
 
-            return NoContent();
+                await _semesterService.DeleteSemester(id);
+
+                if (!long.TryParse(User.FindFirst("id")?.Value, out var userId))
+                    return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+
+                var fullName = User.FindFirst("fullName")?.Value ?? "Không rõ tên";
+                var userName = User.FindFirst("userName")?.Value ?? "Không rõ tài khoản";
+                await _logService.LogAction(userId, "DELETE", $"Người dùng {fullName}({userName}) đã xóa học kỳ {semester.Name}.");
+
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi server: " + ex.Message });
+            }
         }
 
         // GET: api/Semesters/export

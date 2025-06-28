@@ -106,7 +106,7 @@
                                 <th>Hành động</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody"></tbody>
+                        <tbody id="userTableBody"></tbody>
                     </table>
                 </div>
 
@@ -127,25 +127,35 @@
                 <div class="modal-body">
                     <form id="addUserForm">
                         <div class="mb-3">
-                            <label class="form-label">Tên đăng nhập</label>
+                            <label class="form-label" for="userUsername">Tên đăng nhập</label>
                             <input type="text" id="userUsername" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Họ và tên</label>
+                            <label class="form-label" for="userFullName">Họ và tên</label>
                             <input type="text" id="userFullName" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Email</label>
+                            <label class="form-label" for="userEmail">Email</label>
                             <input type="email" id="userEmail" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Vai trò</label>
-                            <select id="userRole" class="form-select" required>
+                            <label class="form-label" for="userRole">Vai trò</label>
+                            <select id="userRole" class="form-select" onchange="toggleRoleFields('add')">
                                 <option value="1">Admin</option>
                                 <option value="2">Giảng viên hướng dẫn</option>
                                 <option value="3">Sinh viên</option>
                                 <option value="4">Trưởng bộ môn</option>
                             </select>
+                        </div>
+                        <div class="mb-3" id="addUserDepartmentIdContainer" style="display: none;">
+                            <label class="form-label" for="addUserDepartmentId">Khoa</label>
+                            <select id="addUserDepartmentId" class="form-select" required>
+                                <!-- Được điền động từ API -->
+                            </select>
+                        </div>
+                        <div class="mb-3" id="addUserClassCodeContainer" style="display: none;">
+                            <label class="form-label" for="userClassCode">Mã lớp</label>
+                            <input type="text" id="userClassCode" class="form-control">
                         </div>
                     </form>
                 </div>
@@ -168,32 +178,42 @@
                     <form id="editUserForm">
                         <input type="hidden" id="editUserId">
                         <div class="mb-3">
-                            <label class="form-label">Tên đăng nhập</label>
+                            <label class="form-label" for="editUserUsername">Tên đăng nhập</label>
                             <input type="text" id="editUserUsername" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Họ và tên</label>
+                            <label class="form-label" for="editUserFullName">Họ và tên</label>
                             <input type="text" id="editUserFullName" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Email</label>
+                            <label class="form-label" for="editUserEmail">Email</label>
                             <input type="email" id="editUserEmail" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Mật khẩu</label>
+                            <label class="form-label" for="editUserPassword">Mật khẩu</label>
                             <input type="password" id="editUserPassword" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Vai trò</label>
-                            <select id="editUserRole" class="form-select" required>
+                            <label class="form-label" for="editUserRole">Vai trò</label>
+                            <select id="editUserRole" class="form-select" required onchange="toggleRoleFields('edit')">
                                 <option value="1">Admin</option>
                                 <option value="2">Giảng viên hướng dẫn</option>
                                 <option value="3">Sinh viên</option>
                                 <option value="4">Trưởng bộ môn</option>
                             </select>
                         </div>
+                        <div class="mb-3" id="editUserDepartmentIdContainer" style="display: none;">
+                            <label class="form-label" for="editUserDepartmentId">Khoa</label>
+                            <select id="editUserDepartmentId" class="form-select" required>
+                                <!-- Được điền động từ API -->
+                            </select>
+                        </div>
+                        <div class="mb-3" id="editUserClassCodeContainer" style="display: none;">
+                            <label class="form-label" for="editUserClassCode">Mã lớp</label>
+                            <input type="text" id="editUserClassCode" class="form-control">
+                        </div>
                         <div class="mb-3">
-                            <label class="form-label">Trạng thái</label>
+                            <label class="form-label" for="editUserStatus">Trạng thái</label>
                             <select id="editUserStatus" class="form-select" required>
                                 <option value="false">Hoạt động</option>
                                 <option value="true">Khóa</option>
@@ -222,6 +242,7 @@
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
+        let departments = [];
 
         // Hàm chuẩn hóa tiếng Việt (bỏ dấu)
         function removeVietnameseTones(str) {
@@ -242,11 +263,10 @@
                     { name: 'email', weight: 0.3 }
                 ],
                 includeScore: true,
-                threshold: 0.4, // Độ nhạy tìm kiếm mờ
-                ignoreLocation: true, // Tìm kiếm chuỗi con
+                threshold: 0.4,
+                ignoreLocation: true,
                 useExtendedSearch: true,
                 getFn: (obj, path) => {
-                    // Chuẩn hóa dữ liệu khi tìm kiếm
                     const value = Fuse.config.getFn(obj, path);
                     return removeVietnameseTones(value);
                 }
@@ -263,6 +283,64 @@
                 ROLE_REVIEWER: "Giảng viên phản biện"
             };
             return roleMap[roleName] || "Không xác định";
+        }
+
+        // Tải danh sách khoa
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_URL}/api/AdminUser/department`, {
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error("Lỗi tải danh sách khoa");
+                departments = await response.json();
+                populateDepartmentSelect('addUserDepartmentId');
+                populateDepartmentSelect('editUserDepartmentId');
+            } catch (error) {
+                console.error("Error loading departments:", error);
+                alert("Không tải được danh sách khoa: " + error.message);
+            }
+        }
+
+        // Điền danh sách khoa vào select
+        function populateDepartmentSelect(selectId) {
+            const selectElement = document.getElementById(selectId);
+            if (!selectElement) {
+                console.warn(`Element with ID '${selectId}' not found.`);
+                return;
+            }
+            selectElement.innerHTML = '<option value="">Chọn khoa</option>' + 
+                departments.map(dept => `<option value="${dept.id}">${dept.facultyName}</option>`).join('');
+        }
+
+        // Hiển thị/ẩn các trường dựa trên vai trò
+        function toggleRoleFields(prefix) {
+            const roleSelectId = prefix === 'add' ? 'userRole' : 'editUserRole';
+            const roleSelect = document.getElementById(roleSelectId);
+            const departmentContainer = document.getElementById(`${prefix}UserDepartmentIdContainer`);
+            const classCodeContainer = document.getElementById(`${prefix}UserClassCodeContainer`);
+
+            if (!roleSelect || !departmentContainer || !classCodeContainer) {
+                console.warn(`One or more elements not found: roleSelect=${roleSelect}, departmentContainer=${departmentContainer}, classCodeContainer=${classCodeContainer}`);
+                return;
+            }
+
+            const roleId = parseInt(roleSelect.value);
+            departmentContainer.style.display = [2, 3, 4].includes(roleId) ? 'block' : 'none';
+            const departmentSelect = document.getElementById(`${prefix}UserDepartmentId`);
+            if (departmentSelect) {
+                departmentSelect.required = [2, 3, 4].includes(roleId);
+            }
+
+            classCodeContainer.style.display = roleId === 3 ? 'block' : 'none';
+            const classCodeInput = document.getElementById(`${prefix}UserClassCode`);
+            if (classCodeInput) {
+                classCodeInput.required = roleId === 3;
+            }
         }
 
         async function loadUserProfile() {
@@ -287,7 +365,7 @@
                 });
                 if (!response.ok) throw new Error(`Lỗi tải danh sách người dùng: ${response.status}`);
                 users = await response.json();
-                fuse = createFuseIndex(users); // Tạo chỉ mục Fuse.js
+                fuse = createFuseIndex(users);
                 displayTable(currentPage);
             } catch (error) {
                 throw new Error(`Lỗi API: ${error.message}`);
@@ -302,17 +380,14 @@
             const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const roleFilter = document.getElementById("roleFilter").value;
 
-            // Tìm kiếm bằng Fuse.js
             let filtered = searchText
                 ? fuse.search(searchText).map(result => result.item)
                 : users;
 
-            // Lọc theo vai trò
             if (roleFilter) {
                 filtered = filtered.filter(user => user.roleName === roleFilter);
             }
 
-            // Sắp xếp nếu có
             if (sortColumn) {
                 filtered.sort((a, b) => {
                     let valueA = sortColumn === 'locked' ? a.locked : (a[sortColumn] || '').toLowerCase();
@@ -330,7 +405,7 @@
             const end = start + itemsPerPage;
             const paginatedData = filteredUsers.slice(start, end);
 
-            const tableBody = document.getElementById("tableBody");
+            const tableBody = document.getElementById("userTableBody");
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
@@ -410,11 +485,23 @@
                 return;
             }
 
+            const roleSelect = document.getElementById("userRole");
+            if (!roleSelect) {
+                console.error("Role select element not found.");
+                alert("Lỗi: Không tìm thấy trường vai trò.");
+                return;
+            }
+            const roleId = parseInt(roleSelect.value);
+            const departmentSelect = document.getElementById("addUserDepartmentId");
+            const classCodeInput = document.getElementById("userClassCode");
+
             const newUser = {
                 username: username,
                 fullName: document.getElementById("userFullName").value,
                 email: document.getElementById("userEmail").value,
-                roleId: parseInt(document.getElementById("userRole").value)
+                roleId: roleId,
+                departmentId: [2, 3, 4].includes(roleId) && departmentSelect ? parseInt(departmentSelect.value) : null,
+                classCode: roleId === 3 && classCodeInput ? classCodeInput.value : null
             };
 
             try {
@@ -451,6 +538,9 @@
                 document.getElementById("editUserPassword").value = '';
                 document.getElementById("editUserRole").value = user.roleId;
                 document.getElementById("editUserStatus").value = user.locked.toString();
+                document.getElementById("editUserDepartmentId").value = user.departmentId || '';
+                document.getElementById("editUserClassCode").value = user.classCode || '';
+                toggleRoleFields('edit');
                 const modal = new bootstrap.Modal(document.getElementById("editUserModal"));
                 modal.show();
             }
@@ -464,13 +554,16 @@
             }
 
             const id = parseInt(document.getElementById("editUserId").value);
+            const roleId = parseInt(document.getElementById("editUserRole").value);
             const updatedUser = {
                 id: id,
                 username: document.getElementById("editUserUsername").value,
                 fullName: document.getElementById("editUserFullName").value,
                 email: document.getElementById("editUserEmail").value,
                 password: document.getElementById("editUserPassword").value || undefined,
-                roleId: parseInt(document.getElementById("editUserRole").value),
+                roleId: roleId,
+                departmentId: [2, 3, 4].includes(roleId) ? parseInt(document.getElementById("editUserDepartmentId").value) : null,
+                classCode: roleId === 3 ? document.getElementById("editUserClassCode").value : null,
                 locked: document.getElementById("editUserStatus").value === "true"
             };
 
@@ -511,7 +604,10 @@
                     },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error("Không xóa được người dùng.");
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || "Không xóa được người dùng.");
+                }
                 alert("Đã xóa người dùng!");
                 await loadUsers();
             } catch(error) {
@@ -525,7 +621,7 @@
             const worksheetData = [
                 ["Danh sách người dùng - Hệ thống Sinh viên HUTECH"],
                 [],
-                ["#", "Tên", "Email", "Vai trò", "Trạng thái"]
+                ["#", "Tên", "Email", "Vai trò", "Trạng thái", "Khoa", "Mã lớp"]
             ];
 
             filteredUsers.forEach((user, index) => {
@@ -534,7 +630,9 @@
                     user.fullName,
                     user.email,
                     user.roleName.replace("ROLE_", ""),
-                    user.locked ? "Khóa" : "Hoạt động"
+                    user.locked ? "Khóa" : "Hoạt động",
+                    departments.find(dept => dept.id === user.departmentId)?.name || '',
+                    user.classCode || ''
                 ]);
             });
 
@@ -555,7 +653,7 @@
                     const workbook = XLSX.read(data, { type: 'array' });
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
                     const rows = XLSX.utils.sheet_to_json(sheet, { 
-                        header: ["Username", "FullName", "ClassCode","Email", "RoleId"], 
+                        header: ["Username", "FullName", "Email", "RoleId", "DepartmentId", "ClassCode"], 
                         skipHeader: true 
                     });
 
@@ -567,13 +665,29 @@
                     const usersToImport = rows.map(row => ({
                         username: row.Username?.toString(),
                         fullName: row.FullName?.toString(),
-                        classCode: row.ClassCode?.toString(),
                         email: row.Email?.toString(),
-                        roleId: parseInt(row.RoleId) || 3
-                    })).filter(user => user.username && user.fullName && user.classCode && user.email && [1, 2, 3, 4].includes(user.roleId));
+                        roleId: parseInt(row.RoleId) || 3,
+                        departmentId: row.DepartmentId ? parseInt(row.DepartmentId) : null,
+                        classCode: row.ClassCode?.toString()
+                    })).filter(user => user.username && user.fullName && user.email && [1, 2, 3, 4].includes(user.roleId));
 
                     if (usersToImport.length === 0) {
                         alert("Không có dữ liệu hợp lệ trong file Excel. Đảm bảo có Username, FullName, Email, RoleId (1-4).");
+                        return;
+                    }
+
+                    // Kiểm tra dữ liệu bắt buộc theo vai trò
+                    const invalidUsers = [];
+                    usersToImport.forEach(user => {
+                        if (user.roleId === 3 && (!user.classCode || !user.departmentId)) {
+                            invalidUsers.push(`Sinh viên ${user.username}: Thiếu Mã lớp hoặc Khoa.`);
+                        } else if ([2, 4].includes(user.roleId) && !user.departmentId) {
+                            invalidUsers.push(`Giảng viên ${user.username}: Thiếu Khoa.`);
+                        }
+                    });
+
+                    if (invalidUsers.length > 0) {
+                        alert("Dữ liệu không hợp lệ:\n" + invalidUsers.join('\n'));
                         return;
                     }
 
@@ -631,7 +745,6 @@
             }
         }
 
-        // Ghi chú: Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -705,6 +818,7 @@
         window.onload = async () => {
             try {
                 await loadUserProfile();
+                await loadDepartments();
                 await loadUsers();
             } catch (error) {
                 console.error("Error loading users:", error);

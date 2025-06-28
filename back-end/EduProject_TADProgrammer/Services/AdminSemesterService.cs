@@ -107,11 +107,20 @@ namespace EduProject_TADProgrammer.Services
         public async System.Threading.Tasks.Task DeleteSemester(long id)
         {
             var semester = await _context.Semesters.FindAsync(id);
-            if (semester != null)
+            if (semester == null)
+                throw new KeyNotFoundException("Không tìm thấy kỳ học.");
+
+            // Kiểm tra các bảng liên kết với Semester
+            var hasCourses = await _context.Courses.AnyAsync(c => c.SemesterId == id);
+            var hasDefenseCommittees = await _context.DefenseCommittees.AnyAsync(dc => dc.SemesterId == id);
+
+            if (hasCourses || hasDefenseCommittees)
             {
-                _context.Semesters.Remove(semester);
-                await _context.SaveChangesAsync();
+                throw new InvalidOperationException("Không thể xóa kỳ học vì nó đang được sử dụng trong các môn học hoặc hội đồng bảo vệ.");
             }
+
+            _context.Semesters.Remove(semester);
+            await _context.SaveChangesAsync();
         }
 
         // Xuất danh sách kỳ học sang Excel.

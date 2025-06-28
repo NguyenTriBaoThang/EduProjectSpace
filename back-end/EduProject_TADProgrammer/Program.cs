@@ -53,16 +53,22 @@ internal class Program
         builder.Services.AddScoped<LecturerReviewService>();
         builder.Services.AddScoped<LecturerCourseService>();
         builder.Services.AddScoped<LecturerFeedbackService>();
+        builder.Services.AddScoped<LecturerResourcesService>();
         builder.Services.AddScoped<LecturerDashboardService>();
         builder.Services.AddScoped<LecturerCourseGroupService>();
         builder.Services.AddScoped<LecturerProjectApprovalService>();
+
+        builder.Services.AddScoped<StudentDashboardService>();
+
+        builder.Services.AddHttpClient<LecturerResourcesService>();
+        builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
         // Thêm CORS policy
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: "MyAllowOrigins", policy =>
             {
-                policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000", "http://localhost:8080")
+                policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000", "http://localhost:8080", "http://localhost:5000")
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials(); //hỗ trợ HttpOnly cookie

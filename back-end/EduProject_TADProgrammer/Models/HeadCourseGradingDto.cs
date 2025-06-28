@@ -1,6 +1,4 @@
-﻿// File: Models/HeadCourseGradingDto.cs
-// Mục đích: Định nghĩa DTO để trả về danh sách môn học, nhóm và chi tiết chấm điểm.
-namespace EduProject_TADProgrammer.Models
+﻿namespace EduProject_TADProgrammer.Models
 {
     public class HeadCourseGradingDto
     {
@@ -22,7 +20,7 @@ namespace EduProject_TADProgrammer.Models
         public string ProjectName { get; set; }
         public string Members { get; set; }
         public string Lecturer { get; set; }
-        public string Grade { get; set; } // Điểm tổng dưới dạng chuỗi (đã tính theo Weight)
+        public string Grade { get; set; }
         public string Status { get; set; }
         public string Approved { get; set; }
         public HeadCourseGradeDetails Grades { get; set; }
@@ -32,13 +30,12 @@ namespace EduProject_TADProgrammer.Models
     {
         public long StudentId { get; set; }
         public string FullName { get; set; }
-        public double? TotalScore { get; set; } // Điểm tổng (đã tính theo Weight)
+        public double? TotalScore { get; set; }
         public string CouncilFeedback { get; set; }
         public string Approved { get; set; }
-        public List<string> ReportFiles { get; set; } // Sửa từ string thành List<string> để đồng bộ
+        public List<FileSubmissionHeadCourseGradingDto> ReportFiles { get; set; } // Changed to List<FileSubmission>
     }
 
-    // DTO mới để hỗ trợ chi tiết nhóm
     public class GroupHeadCourseGradingDetailDto
     {
         public long GroupId { get; set; }
@@ -55,7 +52,15 @@ namespace EduProject_TADProgrammer.Models
     {
         public long StudentId { get; set; }
         public string FullName { get; set; }
-        public double? TotalScore { get; set; } // Điểm tổng của từng sinh viên
+        public double? TotalScore { get; set; }
         public string CouncilFeedback { get; set; }
+    }
+
+    // New DTO for file submissions with student info
+    public class FileSubmissionHeadCourseGradingDto
+    {
+        public string FilePath { get; set; }
+        public string StudentCode { get; set; }
+        public string FullName { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "ROLE_HEAD")]
+    //[Authorize(Roles = "ROLE_HEAD")]
     public class HeadLecturerController : ControllerBase
     {
         private readonly HeadLecturerService _service;
@@ -17,7 +17,7 @@ namespace EduProject_TADProgrammer.Controllers
             _service = service;
         }
 
-        // GET: api/head/Headlecturer
+        // GET: api/HeadLecturer
         [HttpGet]
         public async Task<IActionResult> GetLecturers([FromQuery] long headLecturer)
         {
@@ -25,45 +25,42 @@ namespace EduProject_TADProgrammer.Controllers
             return Ok(lecturers);
         }
 
-        // GET: api/head/Headlecturer/details
-        // Purpose: Retrieve lecturer summary details
+        // GET: api/HeadLecturer/details
         [HttpGet("details")]
         public async Task<IActionResult> GetLecturerDetails(
             [FromQuery] string lecturer,
             [FromQuery] string courseId,
             [FromQuery] string semester,
-            [FromQuery] string classId)
+            [FromQuery] string facultyCode)
         {
-            var details = await _service.GetLecturerDetailsAsync(lecturer, courseId, semester, classId);
+            var details = await _service.GetLecturerDetailsAsync(lecturer, courseId, semester, facultyCode);
             if (details == null) return NotFound("Lecturer not found.");
             return Ok(details);
         }
 
-        // GET: api/head/Headlecturer/groups
-        // Purpose: Retrieve group details for a specific lecturer
+        // GET: api/HeadLecturer/groups
         [HttpGet("groups")]
         public async Task<IActionResult> GetLecturerGroups(
             [FromQuery] string lecturer,
             [FromQuery] string courseId,
             [FromQuery] string semester,
-            [FromQuery] string classId)
+            [FromQuery] string facultyCode)
         {
-            var groups = await _service.GetLecturerGroupsAsync(lecturer, courseId, semester, classId);
+            var groups = await _service.GetLecturerGroupsAsync(lecturer, courseId, semester, facultyCode);
             if (groups == null || !groups.Any()) return NotFound("No groups found.");
             return Ok(groups);
         }
 
-        // API: GET api/head/Headlecturer/groupdetails
-        // Mục đích: Lấy thông tin chi tiết nhóm dựa trên các tham số query
+        // GET: api/HeadLecturer/groupdetails
         [HttpGet("groupdetails")]
         public async Task<IActionResult> GetGroupDetails(
             [FromQuery] long groupId,
             [FromQuery] string lecturer,
             [FromQuery] string courseId,
             [FromQuery] string semester,
-            [FromQuery] string classId)
+            [FromQuery] string facultyCode)
         {
-            var details = await _service.GetGroupDetailsAsync(groupId, lecturer, courseId, semester, classId);
+            var details = await _service.GetGroupDetailsAsync(groupId, lecturer, courseId, semester, facultyCode);
             if (details == null) return NotFound("Không tìm thấy thông tin nhóm.");
             return Ok(details);
         }
