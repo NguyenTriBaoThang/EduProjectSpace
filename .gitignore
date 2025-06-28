@@ -402,3 +402,7 @@ FodyWeavers.xsd
 
 
 Resources/
+
+# Bỏ qua file cấu hình nhạy cảm
+appsettings.json
+appsettings.Development.json
