@@ -3,6 +3,7 @@ using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace EduProject_TADProgrammer.Controllers
 {
@@ -18,7 +19,6 @@ namespace EduProject_TADProgrammer.Controllers
             _lecturerReviewService = lecturerReviewService;
         }
 
-        // GET: api/LecturerReview
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseLecturerReviewDto>>> GetCoursesForReview()
         {
@@ -36,7 +36,6 @@ namespace EduProject_TADProgrammer.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        // GET: api/LecturerReview/courses/{courseId}/projects
         [HttpGet("courses/{courseId}/projects")]
         public async Task<ActionResult<IEnumerable<ProjectLecturerReviewListDto>>> GetProjectsForCourse(string courseId)
         {
@@ -55,7 +54,6 @@ namespace EduProject_TADProgrammer.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        // GET: api/LecturerReview/projects/{projectId}
         [HttpGet("projects/{projectId}")]
         public async Task<ActionResult<ProjectLecturerReviewDto>> GetProjectReviewDetail(string projectId)
         {
@@ -74,7 +72,6 @@ namespace EduProject_TADProgrammer.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
 
-        // POST: api/LecturerReview/projects/{projectId}/grades
         [HttpPost("projects/{projectId}/grades")]
         public async Task<ActionResult> SaveProjectGrades(string projectId, [FromBody] SaveGradesLecturerReviewDto saveGradesDto)
         {
@@ -91,6 +88,23 @@ namespace EduProject_TADProgrammer.Controllers
             catch (UnauthorizedAccessException ex) { return Unauthorized(ex.Message); }
             catch (KeyNotFoundException ex) { return NotFound(ex.Message); }
             catch (ValidationException ex) { return BadRequest(ex.Message); }
+            catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        [HttpGet("projects/{projectId}/history")]
+        public async Task<ActionResult<IEnumerable<GradeVersionDto>>> GetReviewHistory(string projectId)
+        {
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
+            {
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+            }
+
+            try
+            {
+                var history = await _lecturerReviewService.GetReviewHistoryAsync(lecturerId, projectId);
+                return Ok(history);
+            }
+            catch (UnauthorizedAccessException ex) { return Unauthorized(ex.Message); }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
     }

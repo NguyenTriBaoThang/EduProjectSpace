@@ -33,6 +33,8 @@ namespace EduProject_TADProgrammer.Controllers
                 var contentType = fileExtension switch
                 {
                     ".pdf" => "application/pdf",
+                    ".mp4" => "video/mp4", // Thêm hỗ trợ video MP4
+                    ".avi" => "video/x-msvideo", // Thêm hỗ trợ video AVI
                     ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                     ".jpg" => "image/jpeg",
                     ".png" => "image/png",

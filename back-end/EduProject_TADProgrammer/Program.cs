@@ -35,6 +35,7 @@ internal class Program
 
         builder.Services.AddScoped<AdminUserService>();
         builder.Services.AddScoped<AdminRoleService>();
+        builder.Services.AddScoped<AdminCourseService>();
         builder.Services.AddScoped<AdminReportService>();
         builder.Services.AddScoped<AdminProjectService>();
         builder.Services.AddScoped<AdminSemesterService>();
@@ -73,6 +74,12 @@ internal class Program
                       .AllowAnyMethod()
                       .AllowCredentials(); //hỗ trợ HttpOnly cookie
             });
+        });
+
+        builder.Services.AddLogging(logging =>
+        {
+            logging.AddConsole();
+            logging.AddDebug();
         });
 
         // Cấu hình JWT Authentication AddJwtBearer

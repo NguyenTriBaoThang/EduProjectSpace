@@ -20,7 +20,6 @@ namespace EduProject_TADProgrammer.Services
             _context = context;
         }
 
-        // Ghi chú: Lấy danh sách kỳ học
         public async Task<List<SemesterAdminReportDto>> GetSemesters()
         {
             return await _context.Semesters
@@ -32,7 +31,6 @@ namespace EduProject_TADProgrammer.Services
                 .ToListAsync();
         }
 
-        // Ghi chú: Lấy danh sách khoa/bộ môn
         public async Task<List<DepartmentAdminReportDto>> GetDepartments()
         {
             return await _context.Departments
@@ -45,29 +43,20 @@ namespace EduProject_TADProgrammer.Services
                 .ToListAsync();
         }
 
-        // Ghi chú: Lấy dữ liệu báo cáo dựa trên bộ lọc
-        public async Task<AdminReportResponseDto> GetReport(string semesterCode, string facultyCode, string departmentCode)
+        public async Task<AdminReportResponseDto> GetReport(string semesterCode, string facultyCode)
         {
-            // Ghi chú: Lấy danh sách sinh viên (RoleId = 3)
             var studentsQuery = _context.Users
-                .Where(u => u.RoleId == 3)
+                .Where(u => u.RoleId == 3) // Sinh viên
                 .Select(u => new StudentAdminReportDto
                 {
                     Id = u.Id,
                     StudentId = u.Username,
                     Name = u.FullName,
                     ClassCode = u.ClassCode,
-                    FacultyCode = _context.Departments
-                        .Where(d => d.Id == u.Id)
-                        .Select(d => d.FacultyCode)
-                        .FirstOrDefault(),
-                    SemesterCode = _context.Semesters
-                        .Where(s => s.Id == u.Id)
-                        .Select(s => s.Name)
-                        .FirstOrDefault()
+                    FacultyCode = u.Department.FacultyCode ?? "",
+                    SemesterCode = u.CoursesAsStudent.Any() ? u.CoursesAsStudent.First().Course.Semester.Name : ""
                 });
 
-            // Ghi chú: Lấy danh sách đề tài
             var projectsQuery = _context.Projects
                 .Select(p => new ProjectAdminReportDto
                 {
@@ -75,64 +64,44 @@ namespace EduProject_TADProgrammer.Services
                     ProjectId = p.ProjectCode,
                     Name = p.Title,
                     StudentName = string.Join(", ", p.Group.GroupMembers.Select(gm => gm.Student.FullName)),
-                    LecturerName = p.Group.Lecturer.FullName,
+                    LecturerName = p.Group.Lecturer.FullName ?? "",
                     Status = p.Status,
                     SemesterCode = p.Course.Semester.Name,
                     FacultyCode = p.Course.Department.FacultyCode,
                     FacultyName = p.Course.Department.FacultyName
                 });
 
-            // Ghi chú: Lấy danh sách giảng viên (RoleId = 2 hoặc 4)
             var lecturersQuery = _context.Users
-                .Where(u => u.RoleId == 2 || u.RoleId == 4)
+                .Where(u => u.RoleId == 2 || u.RoleId == 4) // Giảng viên
                 .Select(u => new LecturerAdminReportDto
                 {
                     Id = u.Id,
                     LecturerId = u.Username,
                     Name = u.FullName,
-                    FacultyCode = _context.Departments
-                        .Where(d => d.Id == u.Id)
-                        .Select(d => d.FacultyCode)
-                        .FirstOrDefault()
+                    FacultyCode = u.Department.FacultyCode ?? ""
                 });
 
-            // Ghi chú: Áp dụng bộ lọc
             if (!string.IsNullOrEmpty(semesterCode))
             {
-                studentsQuery = studentsQuery
-                    .Where(s => s.SemesterCode == semesterCode);
-                projectsQuery = projectsQuery
-                    .Where(p => p.SemesterCode == semesterCode);
+                studentsQuery = studentsQuery.Where(s => s.SemesterCode == semesterCode);
+                projectsQuery = projectsQuery.Where(p => p.SemesterCode == semesterCode);
             }
 
             if (!string.IsNullOrEmpty(facultyCode))
             {
-                studentsQuery = studentsQuery
-                    .Where(s => s.FacultyCode == facultyCode);
-                projectsQuery = projectsQuery
-                    .Where(p => p.FacultyCode == facultyCode);
-                lecturersQuery = lecturersQuery
-                    .Where(l => l.FacultyCode == facultyCode);
+                studentsQuery = studentsQuery.Where(s => s.FacultyCode == facultyCode);
+                projectsQuery = projectsQuery.Where(p => p.FacultyCode == facultyCode);
+                lecturersQuery = lecturersQuery.Where(l => l.FacultyCode == facultyCode);
             }
 
-            if (!string.IsNullOrEmpty(departmentCode))
-            {
-                studentsQuery = studentsQuery
-                    .Where(s => s.DepartmentCode == departmentCode);
-                lecturersQuery = lecturersQuery
-                    .Where(l => l.DepartmentCode == departmentCode);
-            }
-
-            // Ghi chú: Thực thi truy vấn
             var students = await studentsQuery.ToListAsync();
             var projects = await projectsQuery.ToListAsync();
             var lecturers = await lecturersQuery.ToListAsync();
 
-            // Ghi chú: Tính toán thống kê
             var summary = new AdminReportSummaryDto
             {
                 StudentCount = students.Count,
-                ApprovedProjects = projects.Count(p => p.Status == "SUBMITTED" || p.Status == "GRADED"),
+                ApprovedProjects = projects.Count(p => p.Status == "APPROVED"),
                 PendingProjects = projects.Count(p => p.Status == "PENDING"),
                 LecturerCount = lecturers.Count
             };

@@ -3,30 +3,31 @@ using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_LECTURER_GUIDE")]
+    [Authorize(Roles = "ROLE_LECTURER_GUIDE")]
     public class LecturerResourcesController : ControllerBase
     {
         private readonly LecturerResourcesService _lecturerResourcesService;
+        private readonly IWebHostEnvironment _environment;
 
-        public LecturerResourcesController(LecturerResourcesService lecturerResourcesService)
+        public LecturerResourcesController(LecturerResourcesService lecturerResourcesService, IWebHostEnvironment environment)
         {
             _lecturerResourcesService = lecturerResourcesService;
+            _environment = environment;
         }
 
-        // GET: api/LecturerResources
-        // Lấy danh sách môn học cần gợi ý tài liệu của giảng viên
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseResourceDto>>> GetCoursesForResources()
         {
-            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
-            {
+            var lecturerId = long.TryParse(User.FindFirst("id")?.Value, out var id) ? id : 0;
+            if (lecturerId == 0)
                 return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
-            }
 
             try
             {
@@ -43,19 +44,16 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // GET: api/LecturerResources/resources?courseId=CS101&semester=HK1-2025&classId=CNTT01
-        // Lấy danh sách tài liệu cho một môn học
         [HttpGet("resources")]
-        public async Task<ActionResult<IEnumerable<ResourceDto>>> GetResources([FromQuery] string courseId, [FromQuery] string semester, [FromQuery] string classId)
+        public async Task<ActionResult<IEnumerable<ResourceDto>>> GetResources([FromQuery] string courseId)
         {
-            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
-            {
+            var lecturerId = long.TryParse(User.FindFirst("id")?.Value, out var id) ? id : 0;
+            if (lecturerId == 0)
                 return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
-            }
 
             try
             {
-                var resources = await _lecturerResourcesService.GetResourcesAsync(lecturerId, courseId, semester, classId);
+                var resources = await _lecturerResourcesService.GetResourcesAsync(lecturerId, courseId);
                 return Ok(resources);
             }
             catch (UnauthorizedAccessException ex)
@@ -68,19 +66,16 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // POST: api/LecturerResources/resources
-        // Thêm danh sách tài liệu mới
         [HttpPost("resources")]
-        public async Task<IActionResult> AddResources([FromBody] List<AddResourceDto> resourceDtos)
+        public async Task<IActionResult> AddResources([FromBody] AddResourceDto resourceDto)
         {
-            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
-            {
+            var lecturerId = long.TryParse(User.FindFirst("id")?.Value, out var id) ? id : 0;
+            if (lecturerId == 0)
                 return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
-            }
 
             try
             {
-                await _lecturerResourcesService.AddResourcesAsync(lecturerId, resourceDtos);
+                await _lecturerResourcesService.AddResourcesAsync(lecturerId, resourceDto); // Gọi trực tiếp với một đối tượng
                 return Ok(new { message = "Tài liệu đã được thêm thành công." });
             }
             catch (UnauthorizedAccessException ex)
@@ -93,15 +88,12 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // PUT: api/LecturerResources/resources/{id}
-        // Sửa thông tin tài liệu
         [HttpPut("resources/{id}")]
         public async Task<IActionResult> UpdateResource(long id, [FromBody] UpdateResourceDto resourceDto)
         {
-            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
-            {
+            var lecturerId = long.TryParse(User.FindFirst("id")?.Value, out var idUser) ? idUser : 0;
+            if (lecturerId == 0)
                 return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
-            }
 
             try
             {
@@ -122,15 +114,12 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // DELETE: api/LecturerResources/resources/{id}
-        // Xóa tài liệu
         [HttpDelete("resources/{id}")]
         public async Task<IActionResult> DeleteResource(long id)
         {
-            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId))
-            {
+            var lecturerId = long.TryParse(User.FindFirst("id")?.Value, out var idUser) ? idUser : 0;
+            if (lecturerId == 0)
                 return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
-            }
 
             try
             {
@@ -151,31 +140,69 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // POST: api/LecturerResources/suggestions
-        // Tạo gợi ý tài liệu bằng AI
         [HttpPost("suggestions")]
         public async Task<ActionResult<IEnumerable<AISuggestionDto>>> GenerateSuggestions([FromBody] GenerateSuggestionDto suggestionDto)
         {
+            var lecturerId = long.TryParse(User.FindFirst("id")?.Value, out var id) ? id : 0;
+            if (lecturerId == 0)
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+
             try
             {
-                long lecturerId = 4;
-                Console.WriteLine($"⏳ Gọi GenerateSuggestions với ProjectId: {suggestionDto.ProjectId}, Keywords: {suggestionDto.Keywords}");
-
                 var suggestions = await _lecturerResourcesService.GenerateSuggestionsAsync(lecturerId, suggestionDto);
-
-                Console.WriteLine($"✅ Gợi ý trả về: {suggestions.Count()} dòng");
                 return Ok(suggestions);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Console.WriteLine("❌ Lỗi truy cập: " + ex.Message);
                 return Unauthorized(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                Console.WriteLine("❌ Lỗi hệ thống: " + ex.Message);
                 return BadRequest(new { message = "Lỗi hệ thống: " + ex.Message });
             }
+        }
+
+        [HttpPost("save-suggestions")]
+        public async Task<IActionResult> SaveSelectedSuggestions([FromBody] List<AISuggestionDto> selectedSuggestions)
+        {
+            var lecturerId = long.TryParse(User.FindFirst("id")?.Value, out var id) ? id : 0;
+            if (lecturerId == 0)
+                return BadRequest(new { message = "ID người dùng không hợp lệ hoặc thiếu thông tin." });
+
+            try
+            {
+                await _lecturerResourcesService.SaveSelectedSuggestionsAsync(lecturerId, selectedSuggestions);
+                return Ok(new { message = "Gợi ý đã được lưu thành công." });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile file, [FromForm] string projectId, [FromForm] string title, [FromForm] string type)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            var basePath = Path.Combine(_environment.WebRootPath, "resource");
+            var subFolder = type.ToLower() == "pdf" ? "pdf" : "video";
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(basePath, subFolder, fileName);
+
+            Directory.CreateDirectory(Path.Combine(basePath, subFolder));
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var relativePath = $"/resource/{subFolder}/{fileName}";
+            return Ok(new { filePath = relativePath });
         }
     }
 }

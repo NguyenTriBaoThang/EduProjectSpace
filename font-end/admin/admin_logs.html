@@ -17,13 +17,21 @@
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
         <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
-        <a href="/font-end/admin/admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
-        <a href="/font-end/admin/admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
-        <a href="/font-end/admin/admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <div class="dropdown-menu-wrapper">
+            <a href="#" onclick="toggleDropdown(event)" class="dropdown-toggle">
+                <i class="bi bi-person-circle"></i> Quản lý tài khoản
+            </a>
+            <div class="dropdown-content" style="display: none; padding-left: 20px;">
+                <a href="/font-end/admin/admin_users.html"><i class="bi bi-person-lines-fill"></i> Người dùng</a>
+                <a href="/font-end/admin/admin_lecturers.html"><i class="bi bi-person-workspace"></i> Giảng viên</a>
+                <a href="/font-end/admin/admin_students.html"><i class="bi bi-people"></i> Sinh viên</a>
+            </div>
+        </div>
+        <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="/font-end/admin/admin_courses.html"><i class="bi bi-book"></i> Quản lý môn học</a>
+        <a href="/font-end/admin/admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
         <a href="/font-end/admin/admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
         <a href="/font-end/admin/admin_logs.html" class="active"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
-        <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
-        <a href="/font-end/admin/admin_projects.html"><i class="bi bi-folder"></i> Quản lý đề tài</a>
         <a href="/font-end/admin/admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
         <a href="/font-end/admin/admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
         <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
@@ -459,6 +467,12 @@
             localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
         });
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdown = event.target.closest('.dropdown-menu-wrapper').querySelector('.dropdown-content');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
 
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");

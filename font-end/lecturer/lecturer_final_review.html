@@ -44,7 +44,6 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="form-control me-3" id="searchInput" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -89,9 +88,8 @@
                     <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm kiếm đồ án..." onkeyup="filterTable()">
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Tất cả trạng thái</option>
-                        <option value="PENDING">Chưa duyệt</option>
-                        <option value="APPROVED">Đã duyệt</option>
-                        <option value="REJECTED">Từ chối</option>
+                        <option value="Hoàn tất">Hoàn tất</option>
+                        <option value="Chưa hoàn tất">Chưa hoàn tất</option>
                     </select>
                 </div>
 
@@ -105,7 +103,6 @@
                                 <th class="sortable" onclick="sortTable('groupName')">Tên nhóm <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('groupLeader')">Nhóm trưởng <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('memberCount')">Số thành viên <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('isFullyReviewed')">Đã đánh giá</th>
                                 <th>Hành động</th>
                             </tr>
@@ -227,13 +224,18 @@
             const searchText = document.getElementById("searchInput").value.toLowerCase();
             const statusFilter = document.getElementById("statusFilter").value;
 
-            let filtered = projects.filter(project => 
-                ((project.projectId || "").toLowerCase().includes(searchText) ||
-                 (project.name || "").toLowerCase().includes(searchText) ||
-                 (project.groupName || "").toLowerCase().includes(searchText) ||
-                 (project.groupLeader || "").toLowerCase().includes(searchText)) &&
-                (statusFilter === "" || project.status === statusFilter)
-            );
+            let filtered = projects.filter(project => {
+                const matchesSearch = (project.projectId || "").toLowerCase().includes(searchText) ||
+                                    (project.name || "").toLowerCase().includes(searchText) ||
+                                    (project.groupName || "").toLowerCase().includes(searchText) ||
+                                    (project.groupLeader || "").toLowerCase().includes(searchText);
+
+                const matchesStatus = statusFilter === "" ||
+                                    (statusFilter === "Hoàn tất" && project.isFullyReviewed) ||
+                                    (statusFilter === "Chưa hoàn tất" && !project.isFullyReviewed);
+
+                return matchesSearch && matchesStatus;
+            });
 
             if (sortColumn) {
                 filtered.sort((a, b) => {
@@ -272,8 +274,6 @@
                 tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Không tìm thấy đồ án nào.</td></tr>';
             } else {
                 paginatedData.forEach((project, index) => {
-                    const statusClass = project.status === "APPROVED" ? "bg-success" :
-                                    project.status === "REJECTED" ? "bg-danger" : "bg-warning";
                     const reviewStatusClass = project.isFullyReviewed ? "bg-success" : "bg-danger";
                     tableBody.innerHTML += `
                         <tr>
@@ -283,7 +283,6 @@
                             <td>${project.groupName || "N/A"}</td>
                             <td>${project.groupLeader || "N/A"}</td>
                             <td>${project.memberCount || 0}</td>
-                            <td><span class="badge ${statusClass}">${project.status === "APPROVED" ? "Đã duyệt" : project.status === "REJECTED" ? "Từ chối" : "Chưa duyệt"}</span></td>
                             <td><span class="badge ${reviewStatusClass}">${project.isFullyReviewed ? "Hoàn tất" : "Chưa hoàn tất"}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-primary" onclick="window.location.href='/font-end/lecturer/lecturer_project_review.html?projectId=${project.projectId}&courseId=${courseId}'">
@@ -353,11 +352,6 @@
             ];
 
             filteredProjects.forEach((project, index) => {
-                let classStatus = project.status === "APPROVED"
-                    ? "Đã duyệt"
-                    : project.status === "REJECTED"
-                    ? "Từ chối"
-                    : "Chưa duyệt";
 
                 worksheetData.push([
                     index + 1,
@@ -366,7 +360,6 @@
                     project.groupName || "",
                     project.groupLeader || "",
                     project.memberCount || "",
-                    classStatus,
                     project.isFullyReviewed ? "Hoàn thành" : "Chưa hoàn tất"
                 ]);
             });

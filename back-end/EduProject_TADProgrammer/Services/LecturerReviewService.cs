@@ -1,9 +1,10 @@
-﻿using EduProject_TADProgrammer.Data;
-using EduProject_TADProgrammer.Controllers;
-using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.InkML;
+using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
-using System.ComponentModel.DataAnnotations;
 using EduProject_TADProgrammer.Models;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace EduProject_TADProgrammer.Services
 {
@@ -86,23 +87,23 @@ namespace EduProject_TADProgrammer.Services
         {
             var project = await _context.Projects
                 .Include(p => p.Course)
-                .ThenInclude(c => c.LecturerCourses)
+                    .ThenInclude(c => c.LecturerCourses)
                 .Include(p => p.Group)
-                .ThenInclude(g => g.GroupMembers)
-                .ThenInclude(gm => gm.Student)
-                .Include(p => p.Course)
-                .ThenInclude(c => c.GradeCriteria)
+                    .ThenInclude(g => g.GroupMembers)
+                    .ThenInclude(gm => gm.Student)
+                    .ThenInclude(s => s.Grades)
+                    .ThenInclude(g => g.Criteria)
                 .Include(p => p.Group)
-                .ThenInclude(g => g.GroupMembers)
-                .ThenInclude(gm => gm.Student)
-                .ThenInclude(s => s.Grades)
-                .ThenInclude(g => g.Criteria)
-                .Include(p => p.Group)
-                .ThenInclude(g => g.GroupMembers)
-                .ThenInclude(gm => gm.Student)
-                .ThenInclude(s => s.GradeAppeals)
+                    .ThenInclude(g => g.GroupMembers)
+                    .ThenInclude(gm => gm.Student)
+                    .ThenInclude(s => s.Grades)
+                    .ThenInclude(g => g.GradeVersions)
                 .Include(p => p.Tasks)
-                .ThenInclude(t => t.Submissions)
+                    .ThenInclude(t => t.Submissions)
+                    .ThenInclude(s => s.Student)
+                .Include(p => p.Tasks)
+                    .ThenInclude(t => t.Submissions)
+                    .ThenInclude(s => s.Feedbacks)
                 .FirstOrDefaultAsync(p => p.ProjectCode == projectId && p.Course.LecturerCourses.Any(lc => lc.LecturerId == lecturerId));
 
             if (project == null)
@@ -119,17 +120,28 @@ namespace EduProject_TADProgrammer.Services
                 {
                     CriteriaId = c.Id,
                     CriteriaName = c.Name ?? "Unknown",
-                    Score = student.Grades.FirstOrDefault(g => g.ProjectId == project.Id && g.CriteriaId == c.Id)?.Score != null
-                        ? (decimal?)student.Grades.FirstOrDefault(g => g.ProjectId == project.Id && g.CriteriaId == c.Id)?.Score
-                        : null,
+                    Score = (decimal?)student.Grades.FirstOrDefault(g => g.ProjectId == project.Id && g.CriteriaId == c.Id)?.Score ?? 0,
                     Weight = c.Weight
                 }).ToList(),
-                HasPendingAppeal = student.Grades.Any(a => a.ProjectId == project.Id && a.Comment == "Chưa duyệt"),
-                TotalScore = criteria.All(c => student.Grades.Any(g => g.ProjectId == project.Id && g.CriteriaId == c.Id && g.Score > 0))
+                HasPendingAppeal = student.Grades.Any(g => g.ProjectId == project.Id && g.GradeAppeals.Any(ga => ga.Status == "Pending")),
+                TotalScore = criteria.Any(c => student.Grades.Any(g => g.ProjectId == project.Id && g.CriteriaId == c.Id))
                     ? (decimal)student.Grades
                         .Where(g => g.ProjectId == project.Id)
                         .Sum(g => g.Score * criteria.First(c => c.Id == g.CriteriaId).Weight)
-                    : null
+                    : 0,
+                GradeVersions = student.Grades
+                    .Where(g => g.ProjectId == project.Id)
+                    .SelectMany(g => g.GradeVersions)
+                    .OrderBy(gv => gv.VersionNumber)
+                    .Select(gv => new GradeVersionDto
+                    {
+                        StudentId = gv.Grade.StudentId ?? 0,
+                        FullName = gv.Grade.Student?.FullName ?? "Unknown",
+                        VersionNumber = gv.VersionNumber,
+                        TotalScore = gv.Score,
+                        Comment = gv.Comment,
+                        CreatedAt = gv.CreatedAt
+                    }).ToList()
             }).ToList();
 
             bool isFullyReviewed = studentGrades.All(sg =>
@@ -156,15 +168,18 @@ namespace EduProject_TADProgrammer.Services
                     Submissions = t.Submissions?.Select(s => new SubmissionLecturerReviewDto
                     {
                         Id = s.Id,
-                        FileName = s.Task.Title,
+                        FileName = s.FilePath.Split('/').Last(),
                         FilePath = s.FilePath,
-                        SubmittedById = s.Student.Username,
-                        FullName = s.Student.FullName,
-                        Feedback = s.Feedbacks.FirstOrDefault(f => f.LecturerId == lecturerId)?.Content ?? "",
+                        SubmittedById = s.Student?.Username ?? "Unknown",
+                        FullName = s.Student?.FullName ?? "Unknown",
+                        Feedback = s.Feedbacks
+                            .OrderByDescending(f => f.CreatedAt)
+                            .FirstOrDefault()?.Content ?? ""
                     }).ToList() ?? new List<SubmissionLecturerReviewDto>()
                 }).ToList() ?? new List<TaskLecturerReviewDto>()
             };
         }
+
 
         public async System.Threading.Tasks.Task SaveProjectGradesAsync(long lecturerId, string projectId, SaveGradesLecturerReviewDto saveGradesDto)
         {
@@ -192,31 +207,79 @@ namespace EduProject_TADProgrammer.Services
 
             foreach (var studentGrade in saveGradesDto.StudentGrades)
             {
+                var student = await _context.Users.FindAsync(studentGrade.StudentId);
+                if (student == null) continue;
+
+                var existingGrades = await _context.Grades
+                    .Where(g => g.ProjectId == project.Id && g.StudentId == studentGrade.StudentId)
+                    .ToListAsync();
+
+                int versionNumber = await _context.GradeVersions
+                    .Where(gv => gv.Grade.ProjectId == project.Id && gv.Grade.StudentId == studentGrade.StudentId)
+                    .CountAsync() + 1;
+
+                string versionComment = $"Phiên bản lần {versionNumber}";
+
                 foreach (var criteriaGrade in studentGrade.CriteriaGrades)
                 {
-                    var existingGrade = await _context.Grades
-                        .FirstOrDefaultAsync(g => g.ProjectId == project.Id && g.StudentId == studentGrade.StudentId && g.CriteriaId == criteriaGrade.CriteriaId);
-
+                    var existingGrade = existingGrades.FirstOrDefault(g => g.CriteriaId == criteriaGrade.CriteriaId);
                     if (existingGrade != null)
                     {
                         existingGrade.Score = (float)criteriaGrade.Score;
                         existingGrade.Comment = studentGrade.Comment;
+                        existingGrade.GradedAt = DateTime.UtcNow;
+                        existingGrade.GradedBy = lecturerId;
                     }
                     else
                     {
                         _context.Grades.Add(new Grade
                         {
                             ProjectId = project.Id,
+                            GroupId = project.GroupId,
                             StudentId = studentGrade.StudentId,
                             CriteriaId = criteriaGrade.CriteriaId,
                             Score = (float)criteriaGrade.Score,
-                            Comment = studentGrade.Comment
+                            Comment = studentGrade.Comment,
+                            GradedAt = DateTime.UtcNow,
+                            GradedBy = lecturerId
                         });
                     }
+
+                    _context.GradeVersions.Add(new GradeVersion
+                    {
+                        GradeId = existingGrade?.Id ?? (_context.Grades
+                            .Where(g => g.ProjectId == project.Id && g.StudentId == studentGrade.StudentId && g.CriteriaId == criteriaGrade.CriteriaId)
+                            .OrderByDescending(g => g.Id)
+                            .Select(g => g.Id)
+                            .FirstOrDefault()),
+                        Score = (float)criteriaGrade.Score,
+                        Comment = string.IsNullOrEmpty(studentGrade.Comment) ? versionComment : $"{versionComment}, {studentGrade.Comment}",
+                        VersionNumber = versionNumber,
+                        CreatedAt = DateTime.UtcNow,
+                        //CreatedBy = lecturerId // Thêm trường này
+                    });
                 }
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<GradeVersionDto>> GetReviewHistoryAsync(long lecturerId, string projectId)
+        {
+            return await _context.GradeVersions
+                .Include(gv => gv.Grade)
+                .ThenInclude(g => g.Student)
+                .Where(gv => gv.Grade.Project.ProjectCode == projectId && gv.Grade.Project.Course.LecturerCourses.Any(lc => lc.LecturerId == lecturerId))
+                .Select(gv => new GradeVersionDto
+                {
+                    StudentId = gv.Grade.StudentId ?? 0,
+                    FullName = gv.Grade.Student.FullName ?? "Unknown",
+                    VersionNumber = gv.VersionNumber,
+                    TotalScore = gv.Score,
+                    Comment = gv.Comment,
+                    CreatedAt = gv.CreatedAt
+                })
+                .ToListAsync();
         }
     }
 }

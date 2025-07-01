@@ -8,6 +8,7 @@
         public Dictionary<string, int> ProgressByProject { get; set; }
         public int PendingTasks { get; set; }
         public int UnreadNotifications { get; set; }
+        public bool HasTodoProposal { get; set; } // Thêm thuộc tính mới
     }
 
     // DTO cho thông báo

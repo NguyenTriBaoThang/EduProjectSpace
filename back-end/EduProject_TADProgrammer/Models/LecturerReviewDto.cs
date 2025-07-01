@@ -68,6 +68,7 @@ namespace EduProject_TADProgrammer.Models
         public List<CriteriaGradeLecturerReviewDto> CriteriaGrades { get; set; } = new List<CriteriaGradeLecturerReviewDto>();
         public bool HasPendingAppeal { get; set; }
         public decimal? TotalScore { get; set; }
+        public List<GradeVersionDto> GradeVersions { get; set; }
     }
 
     public class CriteriaGradeLecturerReviewDto
@@ -97,5 +98,15 @@ namespace EduProject_TADProgrammer.Models
         public long CriteriaId { get; set; }
         [Range(0, 10)]
         public decimal Score { get; set; }
+    }
+
+    public class GradeVersionDto
+    {
+        public long StudentId { get; set; }
+        public string FullName { get; set; }
+        public int VersionNumber { get; set; }
+        public float? TotalScore { get; set; }
+        public string Comment { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

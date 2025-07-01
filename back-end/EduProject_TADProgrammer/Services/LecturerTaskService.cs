@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace EduProject_TADProgrammer.Services
@@ -14,10 +15,12 @@ namespace EduProject_TADProgrammer.Services
     public class LecturerTaskService 
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public LecturerTaskService(ApplicationDbContext context)
+        public LecturerTaskService(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // Lấy danh sách công việc của giảng viên
@@ -85,6 +88,9 @@ namespace EduProject_TADProgrammer.Services
                 .Include(t => t.Course)
                 .ThenInclude(p => p.LecturerCourses)
                 .Include(lc => lc.Course.Department)
+                .Include(p => p.Group) // Đảm bảo tải Group
+                .ThenInclude(g => g.GroupMembers) // Tải GroupMembers
+                .ThenInclude(gm => gm.Student) // Tải Student trong GroupMember
                 .FirstOrDefaultAsync(p => p.ProjectCode == createTaskDto.ProjectId && p.Course.LecturerCourses.Any(lc => lc.LecturerId == lecturerId));
 
             if (project == null)
@@ -105,6 +111,9 @@ namespace EduProject_TADProgrammer.Services
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
 
+            // Gửi email thông báo cho sinh viên trong nhóm qua GroupMember
+            await SendEmailToStudents(project.Group.GroupMembers.Select(gm => gm.Student).ToList(), task);
+
             // Trả về TaskDto
             return new LecturerTaskDto
             {
@@ -117,6 +126,51 @@ namespace EduProject_TADProgrammer.Services
                 DueDate = task.Deadline,
                 Status = "Chưa hoàn thành"
             };
+        }
+
+        // Phương thức gửi email
+        private async System.Threading.Tasks.Task SendEmailToStudents(ICollection<User> students, Entities.Task task)
+        {
+            var smtpHost = _configuration["Smtp:Host"];
+            var smtpPort = int.Parse(_configuration["Smtp:Port"]);
+            var smtpUsername = _configuration["Smtp:Username"];
+            var smtpPassword = _configuration["Smtp:Password"];
+
+            using var smtpClient = new SmtpClient(smtpHost)
+            {
+                Port = smtpPort,
+                Credentials = new System.Net.NetworkCredential(smtpUsername, smtpPassword),
+                EnableSsl = true,
+            };
+
+            var course = await _context.Courses
+                .Include(c => c.Semester)
+                .FirstOrDefaultAsync(c => c.Id == task.Project.CourseId);
+
+            foreach (var student in students)
+            {
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(smtpUsername, "HUTECH EduProject"),
+                    Subject = $"Thông báo: Công việc mới cho đồ án {task.Project.ProjectCode}",
+                    Body = $@"
+                        <h3>Thông báo từ HUTECH EduProject</h3>
+                        <p>Xin chào {student.FullName},</p>
+                        <p>Một công việc mới đã được giao cho nhóm của bạn trong môn học <strong>{course.Name}</strong> (Học kỳ: {course.Semester.Name}):</p>
+                        <ul>
+                            <li><strong>Công việc:</strong> {task.Title}</li>
+                            <li><strong>Thời gian bắt đầu:</strong> {task.CreatedAt:dd/MM/yyyy}</li>
+                            <li><strong>Thời hạn:</strong> {task.Deadline:dd/MM/yyyy}</li>
+                        </ul>
+                        <p>Vui lòng hoàn thành đúng hạn. Liên hệ giảng viên hướng dẫn nếu cần hỗ trợ!</p>
+                        <p>Trân trọng,<br>Đội ngũ HUTECH EduProject</p>",
+                    IsBodyHtml = true,
+                };
+
+                mailMessage.To.Add(student.Email);
+
+                await smtpClient.SendMailAsync(mailMessage);
+            }
         }
 
         // Cập nhật công việc
