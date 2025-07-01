@@ -28,7 +28,7 @@
             <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
             <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
             <a href="/font-end/lecturer/lecturer_course_resources.html"><i class="bi bi-book"></i> Gợi ý tài liệu</a>
-            <a href="/font-end/lecturer/lecturer_course_evaluation.html" class="active"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
+            <a href="/font-end/lecturer/lecturer_course_reviews.html" class="active"><i class="bi bi-star"></i> Đánh giá tổng quan</a>
             <a href="/font-end/lecturer/lecturer_course_groups.html"><i class="bi bi-people"></i> Chia nhóm sinh viên</a>
         </div>
     </div>
@@ -44,7 +44,6 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="form-control me-3" id="searchInput" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -132,7 +131,7 @@
                                 <th>Trọng số</th>
                                 <th>Điểm (0-10)</th>
                                 <th>Điểm tổng</th>
-                                <th>Nhận xét</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody id="criteriaTable"></tbody>
@@ -195,7 +194,6 @@
         const projectId = urlParams.get("projectId");
         const courseId = urlParams.get("courseId");
 
-        //const courseId = new URLSearchParams(window.location.search).get('courseId');
         function goBack() {
             window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
         }
@@ -276,14 +274,12 @@
                 if (!response.ok) throw new Error(`Không thể tải chi tiết đồ án: ${response.statusText}`);
                 const project = await response.json();
 
-                // Điền thông tin đồ án
                 document.getElementById("projectCode").value = project.projectId || "";
                 document.getElementById("projectName").value = project.name || "";
                 document.getElementById("groupName").value = project.groupName || "";
                 document.getElementById("groupLeader").value = project.groupLeader || "";
                 document.getElementById("groupMembers").value = project.groupMembers || "";
 
-                // Điền bảng điểm từng sinh viên
                 const criteriaTable = document.getElementById("criteriaTable");
                 criteriaTable.innerHTML = "";
                 project.studentGrades.forEach(student => {
@@ -296,15 +292,22 @@
                                 <td>
                                     <input type="number" class="criteria-score" data-student-id="${student.studentId}" data-criteria-id="${criteria.criteriaId}" value="${criteria.score != null ? criteria.score : ""}" class="form-control" min="0" max="10" step="0.1" required>
                                 </td>
-                                ${index === 0 ? `<td rowspan="${student.criteriaGrades.length}">${student.totalScore != null ? student.totalScore.toFixed(2) : "Chưa đủ tiêu chí"}</td>` : ""}
-                                ${index === 0 ? `<td rowspan="${student.criteriaGrades.length}"><textarea class="form-control" data-student-id="${student.studentId}">${student.comment || ""}</textarea></td>` : ""}
+                                ${index === 0 ? `<td rowspan="${student.criteriaGrades.length}" id="totalScore-${student.studentId}">${student.totalScore != null ? student.totalScore.toFixed(2) : "Chưa đủ tiêu chí"}</td>` : ""}
+                                ${index === 0 ? `<td rowspan="${student.criteriaGrades.length}"><select class="form-select" data-student-id="${student.studentId}"><option value="Chưa duyệt" ${!student.comment || student.comment === "Chưa duyệt" ? "selected" : ""}>Chưa duyệt</option><option value="Đã duyệt" ${student.comment === "Đã duyệt" ? "selected" : ""}>Đã duyệt</option></select></td>` : ""}
                             </tr>
                         `;
                         criteriaTable.innerHTML += row;
                     });
                 });
 
-                // Điền bảng tiến độ với các liên kết file
+                // Tự động cập nhật Điểm tổng khi thay đổi điểm
+                document.querySelectorAll(".criteria-score").forEach(input => {
+                    input.addEventListener("input", () => {
+                        const studentId = parseInt(input.getAttribute("data-student-id"));
+                        calculateTotalScore(studentId);
+                    });
+                });
+
                 const progressTable = document.getElementById("progressTable");
                 progressTable.innerHTML = "";
                 if (project.tasks && project.tasks.length) {
@@ -313,15 +316,9 @@
                             <tr>
                                 <td>${task.title || "N/A"}</td>
                                 <td>${task.description || "Chưa có mô tả"}</td>
-                                <td>
-                                    <ul class="submission-list">
-                                        ${task.submissions.map(sub => `
-                                            <li><a href="${API_URL}/api/File/files/${sub.filePath}" target="_blank">${sub.fileName || sub.filePath.split("/").pop() || "N/A"} (${sub.submittedById} - ${sub.fullName || "Unknown"})</a></li>
-                                        `).join("")}
-                                    </ul>
-                                </td>
+                                <td><ul class="submission-list">${task.submissions.map(sub => `<li><a href="${API_URL}/api/File/files/${sub.filePath}" target="_blank">${sub.fileName || sub.filePath.split("/").pop() || "N/A"} (${sub.submittedById} - ${sub.fullName || "Unknown"})</a></li>`).join("")}</ul></td>
                                 <td>${task.dueDate || "N/A"}</td>
-                                <td>${task.submissions.length > 0 ? task.submissions[0].feedback || "Chưa có phản hồi" : "Chưa có"}</td>
+                                <td><ul class="submission-list">${task.submissions.map(sub => `<li><a href="${API_URL}/api/File/files/${sub.filePath}" target="_blank">${sub.fileName || (sub.filePath ? sub.filePath.split("/").pop() : "N/A")} (${sub.submittedById} - ${sub.fullName || "Unknown"})</a><br><em>Phản hồi: ${sub.feedback || "Chưa có phản hồi"}</em></li>`).join("")}</ul></td>
                             </tr>
                         `;
                     });
@@ -329,38 +326,68 @@
                     progressTable.innerHTML = '<tr><td colspan="5" class="text-center">Chưa có tiến độ</td></tr>';
                 }
 
-                // Điền lịch sử đánh giá
-                const historyDiv = document.getElementById("reviewHistory");
-                historyDiv.innerHTML = project.studentGrades
-                    .filter(g => g.comment)
-                    .map(g => `Sinh viên: ${g.fullName}, TotalScore: ${g.totalScore != null ? g.totalScore.toFixed(2) : "Chưa có"}, Nhận xét: ${g.comment}, Ngày: ${new Date().toLocaleString("vi-VN")}`)
-                    .join("<br/>") || "Chưa có lịch sử đánh giá";
+                // Lấy lịch sử từ GradeVersions
+                const historyResponse = await fetch(`${API_URL}/api/LecturerReview/projects/${encodeURIComponent(projectId)}/history`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    credentials: "include"
+                });
+                if (historyResponse.ok) {
+                    const history = await historyResponse.json();
+                    const historyDiv = document.getElementById("reviewHistory");
+                    historyDiv.innerHTML = history.map(h => `Sinh viên: ${h.fullName}, Version: Phiên bản ${h.versionNumber}, TotalScore: ${h.totalScore?.toFixed(2) || "Chưa có"}, Nhận xét: ${h.comment || ""}, Ngày: ${new Date(h.createdAt).toLocaleString("vi-VN")}`).join("<br/>") || "Chưa có lịch sử đánh giá";
+                }
             } catch (e) {
                 alert("Lỗi khi tải chi tiết đồ án: " + e.message);
                 window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
             }
         }
 
-        // Lưu đánh giá
+        function calculateTotalScore(studentId) {
+            const scores = document.querySelectorAll(`.criteria-score[data-student-id="${studentId}"]`);
+            const weights = document.querySelectorAll(`td:nth-child(3)[rowspan="${scores.length}"]`);
+            let total = 0;
+            let weightSum = 0;
+
+            scores.forEach((scoreInput, index) => {
+                const score = parseFloat(scoreInput.value) || 0;
+                const weight = parseFloat(weights[index].textContent) || 0;
+                total += score * weight;
+                weightSum += weight;
+            });
+
+            const totalScoreCell = document.getElementById(`totalScore-${studentId}`);
+            totalScoreCell.textContent = weightSum > 0 ? (total / weightSum).toFixed(2) : "Chưa đủ tiêu chí";
+        }
+
         async function saveReview() {
-            const form = document.createElement("form"); // Form tạm để kiểm tra tính hợp lệ
-            const projectId = projectId;
+            const form = document.createElement("form");
+            const projectId = urlParams.get("projectId");
             const studentGrades = [];
 
-            // Thu thập điểm số cho từng sinh viên
             const studentIds = new Set();
             document.querySelectorAll(".criteria-score").forEach(input => {
                 const studentId = parseInt(input.getAttribute("data-student-id"));
                 const criteriaId = parseInt(input.getAttribute("data-criteria-id"));
-                const score = parseFloat(input.value) || 0;
+                const score = parseFloat(input.value);
+
+                if (isNaN(score) || score < 0 || score > 10) {
+                    alert(`Điểm cho sinh viên ID ${studentId} không hợp lệ (phải từ 0 đến 10).`);
+                    return;
+                }
 
                 if (!studentIds.has(studentId)) {
                     studentIds.add(studentId);
-                    const comment = document.querySelector(`textarea[data-student-id="${studentId}"]`).value;
+                    const statusSelect = document.querySelector(`select[data-student-id="${studentId}"]`);
+                    const status = statusSelect ? statusSelect.value : "Chưa duyệt";
                     studentGrades.push({
                         studentId: studentId,
                         criteriaGrades: [],
-                        comment: comment
+                        comment: status // Sử dụng trạng thái thay vì comment tự do
                     });
                 }
 
@@ -368,7 +395,11 @@
                 studentGrade.criteriaGrades.push({ criteriaId, score });
             });
 
-            // Kiểm tra và lưu điểm
+            if (studentGrades.length === 0) {
+                alert("Không có dữ liệu điểm để lưu.");
+                return;
+            }
+
             try {
                 const response = await fetch(`${API_URL}/api/LecturerReview/projects/${encodeURIComponent(projectId)}/grades`, {
                     method: 'POST',
@@ -381,10 +412,14 @@
                     body: JSON.stringify({ studentGrades })
                 });
 
-                if (!response.ok) throw new Error(`Không thể lưu điểm: ${response.statusText}`);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Không thể lưu điểm: ${errorText || response.statusText}`);
+                }
                 alert("Đã lưu điểm thành công");
-                window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
+                window.location.href = `/font-end/lecturer/lecturer_project_review.html?projectId=${encodeURIComponent(projectId)}&courseId=${courseId}`;
             } catch (e) {
+                console.error("Lỗi khi lưu điểm:", e);
                 alert("Lỗi khi lưu điểm: " + e.message);
             }
         }

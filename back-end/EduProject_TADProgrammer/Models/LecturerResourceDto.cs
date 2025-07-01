@@ -9,7 +9,7 @@
         public string CourseId { get; set; }
         public string Name { get; set; }
         public string Semester { get; set; }
-        public string FacultyCode { get; set; } // Đổi từ ClassId thành FacultyCode
+        public string FacultyCode { get; set; }
         public int ProjectCount { get; set; }
         public int ResourceCount { get; set; }
     }
@@ -18,6 +18,7 @@
     {
         public long Id { get; set; }
         public string ProjectId { get; set; }
+        public string ProjectName { get; set; }
         public string GroupName { get; set; }
         public string Title { get; set; }
         public string Type { get; set; }
@@ -27,8 +28,6 @@
     public class AddResourceDto
     {
         public string ProjectId { get; set; }
-        public long GroupId { get; set; }
-        public string FacultyCode { get; set; } // Đổi từ ClassId thành FacultyCode
         public string Title { get; set; }
         public string Type { get; set; }
         public string Link { get; set; }

@@ -110,8 +110,8 @@
                             <i class="bi bi-lightbulb text-warning fs-4 me-2"></i> <h5 class="mb-0">Đề xuất đề tài</h5>
                         </div>
                         <div class="card-content text-center">
-                            <p>Chưa có đề tài nào được đề xuất.</p>
-                            <a href="/font-end/student/student_proposals_list.html" class="btn btn-primary">Đề xuất ngay</a>
+                            <p id="proposalMessage">Chưa có đề tài nào được đề xuất.</p>
+                            <a href="/font-end/student/student_proposals_list.html" class="btn btn-primary" id="proposalLink" style="display: none;">Đề xuất ngay</a>
                         </div>
                         <div class="card-footer text-center text-muted">📅 Cập nhật: Hôm nay</div>
                     </div>
@@ -193,7 +193,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Cấu hình API
         const API_URL = "https://localhost:7047";
         const token = localStorage.getItem("token");
         let dashboardData = {};
@@ -203,7 +202,6 @@
         let currentPage = 1;
         const itemsPerPage = 5;
 
-        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", toggleSidebar);
         document.getElementById("notificationBtn").addEventListener("click", () => window.location.href = "/font-end/student/notifications_list.html");
         document.getElementById("calendarBtn").addEventListener("click", () => window.location.href = "/font-end/student/student_schedule.html");
@@ -216,21 +214,10 @@
             const dropdown = document.getElementById("profileDropdown");
             if (!dropdown.contains(event.target) && event.target.id !== "profileBtn") dropdown.style.display = "none";
         });
-        document.getElementById("toggleFullscreen").addEventListener("click", () => {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
-        });
-        document.getElementById("toggleFullscreenBtn").addEventListener("click", () => {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
-        });
-        document.getElementById("toggleTheme").addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
-        });
-        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+        document.getElementById("toggleFullscreen").addEventListener("click", toggleFullscreen);
+        document.getElementById("toggleFullscreenBtn").addEventListener("click", toggleFullscreen);
+        document.getElementById("toggleTheme").addEventListener("click", toggleTheme);
 
-        // Toggle Sidebar
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
             const content = document.getElementById("content");
@@ -241,166 +228,136 @@
             icon.classList.toggle("bi-layout-sidebar-inset");
         }
 
-        // Tải thông tin người dùng
-        async function loadUserProfile() {
-            try {
-                const user = JSON.parse(localStorage.getItem("user"));
-                if (!user || user.roleName !== "ROLE_STUDENT") {
-                    throw new Error("Không có quyền Sinh viên hoặc chưa đăng nhập.");
-                }
-                document.getElementById("userName").textContent = user.fullName || "Nguyễn Tri Bão Thắng";
-                document.getElementById("userEmail").textContent = user.email || "nguyentribaothang@gmail.com";
-            } catch (error) {
-                console.error("Lỗi khi tải thông tin người dùng:", error);
-                alert("Không có quyền Sinh viên hoặc chưa đăng nhập.");
-                logout();
-            }
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
         }
 
-        // Tải dữ liệu dashboard
-        async function loadDashboardData() {
-            if (!token) {
-                console.error("Không tìm thấy token. Vui lòng đăng nhập lại.");
-                alert("Vui lòng đăng nhập lại.");
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        }
+        if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user || user.roleName !== "ROLE_STUDENT") {
+                alert("Không có quyền Sinh viên hoặc chưa đăng nhập.");
                 logout();
                 return;
             }
+            document.getElementById("userName").textContent = user.fullName || "Nguyễn Tri Bão Thắng";
+            document.getElementById("userEmail").textContent = user.email || "nguyentribaothang@gmail.com";
+        }
+
+        async function loadDashboardData() {
             try {
                 const response = await fetch(`${API_URL}/api/StudentDashboard`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Lỗi ${response.status}: Không thể tải dữ liệu dashboard`);
-                }
+                if (!response.ok) throw new Error(`Lỗi ${response.status}`);
                 dashboardData = await response.json();
-                document.getElementById("totalSubmissions").textContent = dashboardData.totalSubmissions;
-                document.getElementById("pendingTasks").textContent = dashboardData.pendingTasks;
-                document.getElementById("unreadNotifications").textContent = dashboardData.unreadNotifications;
-                document.getElementById("unreadCount").textContent = dashboardData.unreadNotifications;
+                document.getElementById("totalSubmissions").textContent = dashboardData.totalSubmissions || 0;
+                document.getElementById("pendingTasks").textContent = dashboardData.pendingTasks || 0;
+                document.getElementById("unreadNotifications").textContent = dashboardData.unreadNotifications || 0;
+                document.getElementById("unreadCount").textContent = dashboardData.unreadNotifications || 0;
+
+                // Cập nhật đề xuất đề tài
+                const proposalMessage = document.getElementById("proposalMessage");
+                const proposalLink = document.getElementById("proposalLink");
+                if (dashboardData.hasTodoProposal) {
+                    proposalMessage.textContent = "Bạn có đề tài chưa hoàn thành. Hãy đề xuất ngay!";
+                    proposalLink.style.display = "block";
+                } else {
+                    proposalMessage.textContent = "Chưa có đề tài nào được đề xuất.";
+                    proposalLink.style.display = "none";
+                }
+
                 renderCharts();
             } catch (error) {
-                console.error("Lỗi khi tải dữ liệu dashboard:", error);
-                alert(`Không tải được dữ liệu: ${error.message}`);
+                console.error("Lỗi dashboard:", error);
+                alert(`Lỗi: ${error.message}`);
             }
         }
 
-        // Tải thông báo
         async function loadNotifications() {
-            if (!token) {
-                console.error("Không tìm thấy token. Vui lòng đăng nhập lại.");
-                alert("Vui lòng đăng nhập lại.");
-                logout();
-                return;
-            }
             try {
                 const response = await fetch(`${API_URL}/api/StudentDashboard/notifications?limit=5`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Lỗi ${response.status}: Không thể tải thông báo`);
-                }
+                if (!response.ok) throw new Error(`Lỗi ${response.status}`);
                 notifications = await response.json();
                 displayNotifications();
             } catch (error) {
-                console.error("Lỗi khi tải thông báo:", error);
-                alert(`Không tải được thông báo: ${error.message}`);
+                console.error("Lỗi notifications:", error);
+                alert(`Lỗi: ${error.message}`);
             }
         }
 
-        // Tải công việc
         async function loadTasks() {
-            if (!token) {
-                console.error("Không tìm thấy token. Vui lòng đăng nhập lại.");
-                alert("Vui lòng đăng nhập lại.");
-                logout();
-                return;
-            }
             try {
-                const searchText = document.getElementById("taskSearchInput").value;
+                const searchText = encodeURIComponent(document.getElementById("taskSearchInput").value);
                 const status = document.getElementById("statusFilter").value;
-                const response = await fetch(`${API_URL}/api/StudentDashboard/tasks?searchText=${encodeURIComponent(searchText)}&status=${status}&page=${currentPage}&pageSize=${itemsPerPage}`, {
+                const response = await fetch(`${API_URL}/api/StudentDashboard/tasks?searchText=${searchText}&status=${status}&page=${currentPage}&pageSize=${itemsPerPage}`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Lỗi ${response.status}: Không thể tải công việc`);
-                }
+                if (!response.ok) throw new Error(`Lỗi ${response.status}`);
                 const data = await response.json();
-                tasks = data.tasks;
-                displayTable(data.totalCount);
+                tasks = data.tasks || [];
+                displayTable(data.totalCount || 0);
             } catch (error) {
-                console.error("Lỗi khi tải công việc:", error);
-                document.getElementById("taskTable").innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy công việc nào.</td></tr>';
-                alert(`Không tải được công việc: ${error.message}`);
+                console.error("Lỗi tasks:", error);
+                document.getElementById("taskTable").innerHTML = '<tr><td colspan="7">Không tải được công việc</td></tr>';
             }
         }
 
-        // Tải sự kiện lịch
         async function loadCalendarEvents() {
-            if (!token) {
-                console.error("Không tìm thấy token. Vui lòng đăng nhập lại.");
-                alert("Vui lòng đăng nhập lại.");
-                logout();
-                return;
-            }
             try {
                 const response = await fetch(`${API_URL}/api/StudentDashboard/calendar`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Lỗi ${response.status}: Không thể tải sự kiện lịch`);
-                }
+                if (!response.ok) throw new Error(`Lỗi ${response.status}`);
                 calendarEvents = await response.json();
                 displayCalendarEvents();
             } catch (error) {
-                console.error("Lỗi khi tải sự kiện lịch:", error);
-                alert(`Không tải được sự kiện lịch: ${error.message}`);
+                console.error("Lỗi calendar:", error);
+                alert(`Lỗi: ${error.message}`);
             }
         }
 
-        // Vẽ biểu đồ
         function renderCharts() {
             const ctx1 = document.getElementById("submissionChart").getContext("2d");
             new Chart(ctx1, {
                 type: "doughnut",
                 data: {
                     labels: Object.keys(dashboardData.submissionByProject || {}),
-                    datasets: [{
-                        data: Object.values(dashboardData.submissionByProject || {}),
-                        backgroundColor: ["#4CAF50", "#2196F3", "#FF9800"]
-                    }]
+                    datasets: [{ data: Object.values(dashboardData.submissionByProject || {}), backgroundColor: ["#4CAF50", "#2196F3", "#FF9800"] }]
                 },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { position: "bottom" }, tooltip: { enabled: true } }
-                }
+                options: { responsive: true, plugins: { legend: { position: "bottom" }, tooltip: { enabled: true } } }
             });
 
             const ctx2 = document.getElementById("progressChart").getContext("2d");
@@ -408,100 +365,54 @@
                 type: "bar",
                 data: {
                     labels: Object.keys(dashboardData.progressByProject || {}),
-                    datasets: [{
-                        label: "Tiến độ (%)",
-                        data: Object.values(dashboardData.progressByProject || {}),
-                        backgroundColor: ["#4CAF50", "#2196F3", "#FF9800"]
-                    }]
+                    datasets: [{ label: "Tiến độ (%)", data: Object.values(dashboardData.progressByProject || {}), backgroundColor: ["#4CAF50", "#2196F3", "#FF9800"] }]
                 },
-                options: {
-                    responsive: true,
-                    indexAxis: "y",
-                    scales: { x: { beginAtZero: true, max: 100 } }
-                }
+                options: { responsive: true, indexAxis: "y", scales: { x: { beginAtZero: true, max: 100 } } }
             });
         }
 
-        // Hiển thị thông báo
         function displayNotifications() {
             const notificationList = document.getElementById("notificationList");
             notificationList.innerHTML = "";
-            notifications.forEach((notif, index) => {
+            (notifications || []).forEach((notif, index) => {
                 const iconClass = index === 0 ? "bi-exclamation-circle text-warning" : "bi-info-circle text-primary";
-                notificationList.innerHTML += `
-                    <li class="dashboard-list-group-item">
-                        <div class="d-flex align-items-center">
-                            <i class="${iconClass} me-2"></i>
-                            <a href="/font-end/student/notification_detail.html?id=${notif.id}" class="dashboard-notification-title text-decoration-none text-dark" data-full-text="${notif.fullText || ''}">
-                                ${notif.title || 'Không có tiêu đề'}
-                            </a>
-                            <span class="ms-auto text-muted fs-6">${formatDate(notif.date)}</span>
-                        </div>
-                    </li>
-                `;
+                notificationList.innerHTML += `<li class="dashboard-list-group-item"><div class="d-flex align-items-center"><i class="${iconClass} me-2"></i><a href="/font-end/student/notification_detail.html?id=${notif.id}" class="dashboard-notification-title text-decoration-none text-dark">${notif.title || 'Không có tiêu đề'}</a><span class="ms-auto text-muted fs-6">${formatDate(notif.date)}</span></div></li>`;
             });
-            if (notifications.length >= 5) document.getElementById("viewMoreNotifications").style.display = "block";
+            document.getElementById("viewMoreNotifications").style.display = notifications.length >= 5 ? "block" : "none";
         }
 
-        // Hiển thị sự kiện lịch
         function displayCalendarEvents() {
             const calendarList = document.getElementById("calendarList");
             calendarList.innerHTML = "";
-            calendarEvents.forEach(event => {
-                const iconClass = event.type === "Deadline" ? "bi-folder-check" : 
-                                 event.type === "Meeting" ? "bi-people" : 
-                                 event.type === "Reminder" ? "bi-bell" : "bi-calendar-event";
-                calendarList.innerHTML += `
-                    <li class="dashboard-list-group-item">
-                        <i class="${iconClass}"></i>
-                        <span class="dashboard-notification-title">${event.eventTitle || 'Không có tiêu đề'}</span>
-                        <span class="text-muted">${formatDate(event.startTime)}</span>
-                    </li>
-                `;
+            (calendarEvents || []).forEach(event => {
+                const iconClass = event.type === "Deadline" ? "bi-folder-check" : event.type === "Meeting" ? "bi-people" : "bi-bell";
+                calendarList.innerHTML += `<li class="dashboard-list-group-item"><i class="${iconClass}"></i><span class="dashboard-notification-title">${event.eventTitle || 'Không có tiêu đề'}</span><span class="text-muted">${formatDate(event.startTime)}</span></li>`;
             });
         }
 
-        // Hiển thị bảng công việc
         function displayTable(totalCount) {
             const tableBody = document.getElementById("taskTable");
             tableBody.innerHTML = "";
-            tasks.forEach((task, index) => {
+            (tasks || []).forEach((task, index) => {
                 const daysRemaining = calculateDaysRemaining(task.deadline);
                 const statusClass = daysRemaining === "Hết hạn nộp" ? "badge bg-danger" : task.status === "Chưa nộp" ? "badge bg-warning" : "badge bg-success";
-                tableBody.innerHTML += `
-                    <tr>
-                        <td>${(currentPage - 1) * itemsPerPage + index + 1}</td>
-                        <td>${task.name || 'Không có tên'}</td>
-                        <td>${task.projectName || 'Không có dự án'}</td>
-                        <td>${formatDate(task.deadline)}</td>
-                        <td>${daysRemaining}</td>
-                        <td><span class="${statusClass}">${daysRemaining === "Hết hạn nộp" ? "Hết hạn" : task.status}</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-info">👁️ Xem</button>
-                            ${task.status === "Chưa nộp" && daysRemaining !== "Hết hạn nộp" ? `<button class="btn btn-sm btn-primary ms-1" onclick="submitTask(${task.id})">📤 Nộp</button>` : ""}
-                        </td>
-                    </tr>
-                `;
+                tableBody.innerHTML += `<tr><td>${(currentPage - 1) * itemsPerPage + index + 1}</td><td>${task.name || 'Không có tên'}</td><td>${task.projectName || 'Không có dự án'}</td><td>${formatDate(task.deadline)}</td><td>${daysRemaining}</td><td><span class="${statusClass}">${daysRemaining === "Hết hạn nộp" ? "Hết hạn" : task.status}</span></td><td><button class="btn btn-sm btn-info">👁️ Xem</button>${task.status === "Chưa nộp" && daysRemaining !== "Hết hạn nộp" ? '<button class="btn btn-sm btn-primary ms-1" onclick="submitTask(' + task.id + ')">📤 Nộp</button>' : ''}</td></tr>`;
             });
             setupPagination(totalCount);
         }
 
-        // Tính thời gian còn lại
         function calculateDaysRemaining(deadline) {
             const today = new Date();
             const deadlineDate = new Date(deadline);
             const timeDiff = deadlineDate - today;
-            const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-            return daysRemaining < 0 ? "Hết hạn nộp" : `${daysRemaining} ngày`;
+            return timeDiff < 0 ? "Hết hạn nộp" : `${Math.ceil(timeDiff / (1000 * 60 * 60 * 24))} ngày`;
         }
 
-        // Phân trang
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
             pagination.innerHTML = "";
             if (totalPages <= 1) return;
-
             let paginationHTML = `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
             if (currentPage > 2) paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
             if (currentPage > 3) paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
@@ -524,56 +435,43 @@
             loadTasks();
         }
 
-        // Nộp công việc
         function submitTask(id) {
             window.location.href = `/font-end/student/student_submissions_list.html?taskId=${id}`;
         }
 
-        // Định dạng ngày
         function formatDate(date) {
             if (!date) return "";
             const d = new Date(date);
             return `${d.getDate().toString().padStart(2, "0")}-${(d.getMonth() + 1).toString().padStart(2, "0")}-${d.getFullYear()}`;
         }
 
-        // Đăng xuất
         async function logout() {
+            if (!token) return;
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
                     method: "POST",
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
                     },
                     credentials: "include"
                 });
-                const text = await response.text();
-                if (response.ok) {
-                    const data = text ? JSON.parse(text) : {};
-                    alert(data.message || "Đã đăng xuất thành công.");
-                }
+                if (response.ok) alert("Đã đăng xuất thành công.");
             } catch (error) {
-                console.error("Lỗi khi đăng xuất:", error);
+                console.error("Lỗi logout:", error);
             }
             localStorage.removeItem("user");
             localStorage.removeItem("token");
             window.location.replace("/font-end/login/login.html");
         }
 
-        // Khởi chạy
         document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                await loadUserProfile();
-                await loadDashboardData();
-                await loadNotifications();
-                await loadTasks();
-                await loadCalendarEvents();
-            } catch (error) {
-                console.error("Lỗi khi tải dashboard:", error);
-                alert(`Không tải được dữ liệu: ${error.message || "Vui lòng đăng nhập lại."}`);
-                logout();
-            }
+            await loadUserProfile();
+            await loadDashboardData();
+            await loadNotifications();
+            await loadTasks();
+            await loadCalendarEvents();
         });
     </script>
 </body>

@@ -25,13 +25,21 @@
     <div class="sidebar" id="sidebar">
         <h4 class="text-center mb-4">🎓 Hệ thống Admin</h4>
         <a href="/font-end/admin/admin_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
-        <a href="/font-end/admin/admin_users.html"><i class="bi bi-person-lines-fill"></i> Quản lý người dùng</a>
-        <a href="/font-end/admin/admin_students.html"><i class="bi bi-people"></i> Quản lý sinh viên</a>
-        <a href="/font-end/admin/admin_lecturers.html"><i class="bi bi-person-workspace"></i> Quản lý giảng viên</a>
+        <div class="dropdown-menu-wrapper">
+            <a href="#" onclick="toggleDropdown(event)" class="dropdown-toggle">
+                <i class="bi bi-person-circle"></i> Quản lý tài khoản
+            </a>
+            <div class="dropdown-content" style="display: none; padding-left: 20px;">
+                <a href="/font-end/admin/admin_users.html"><i class="bi bi-person-lines-fill"></i> Người dùng</a>
+                <a href="/font-end/admin/admin_lecturers.html"><i class="bi bi-person-workspace"></i> Giảng viên</a>
+                <a href="/font-end/admin/admin_students.html"><i class="bi bi-people"></i> Sinh viên</a>
+            </div>
+        </div>
+        <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
+        <a href="/font-end/admin/admin_courses.html"><i class="bi bi-book"></i> Quản lý môn học</a>
+        <a href="/font-end/admin/admin_projects.html" class="active"><i class="bi bi-folder"></i> Quản lý đề tài</a>
         <a href="/font-end/admin/admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
         <a href="/font-end/admin/admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
-        <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
-        <a href="/font-end/admin/admin_projects.html" class="active"><i class="bi bi-folder"></i> Quản lý đề tài</a>
         <a href="/font-end/admin/admin_grading.html"><i class="bi bi-award"></i> Quản lý hội đồng</a>
         <a href="/font-end/admin/admin_settings.html"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
         <a href="/font-end/admin/admin_reports.html"><i class="bi bi-bar-chart"></i> Báo cáo thống kê</a>
@@ -89,7 +97,10 @@
 
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm đề tài..." onkeyup="filterTable()">
+                    <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm tên đề tài..." onkeyup="filterTable()">
+                    <select id="courseFilter" class="form-select" onchange="filterTable()">
+                        <option value="">📚 Chọn tên môn học</option>
+                    </select>
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
                         <option value="PENDING">Chưa duyệt</option>
@@ -103,7 +114,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('projectCode')">Mã đề tài <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('courseName')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('title')">Tên đề tài <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Sinh viên</th>
                                 <th class="sortable" onclick="sortTable('lecturerName')">Giảng viên <i class="bi bi-arrow-down-up"></i></th>
@@ -134,11 +145,7 @@
                         <input type="hidden" id="editProjectId">
                         <input type="hidden" id="editProjectCourseId">
                         <div class="mb-3">
-                            <label class="form-label">Mã đề tài</label>
-                            <input type="text" id="editProjectCode" class="form-control" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Môn học</label>
+                            <label class="form-label">Tên môn học</label>
                             <input type="text" id="editProjectCourse" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
@@ -193,7 +200,7 @@
         function createFuseIndex(data) {
             return new Fuse(data, {
                 keys: [
-                    { name: 'projectCode', weight: 0.3 },
+                    { name: 'courseName', weight: 0.3 },
                     { name: 'title', weight: 0.4 },
                     { name: 'lecturerName', weight: 0.3 }
                 ],
@@ -223,6 +230,31 @@
             }
         }
 
+        async function loadCourses() {
+            try {
+                const response = await fetch(`${API_URL}/api/AdminProjects/courses`, {
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải danh sách môn học: ${response.status}`);
+                const courses = await response.json();
+                const courseFilter = document.getElementById("courseFilter");
+                courses.forEach(course => {
+                    const option = document.createElement("option");
+                    option.value = course.name;
+                    option.textContent = course.name;
+                    courseFilter.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Lỗi khi tải môn học:', error);
+                alert(`Không thể tải danh sách môn học: ${error.message}`);
+            }
+        }
+
         async function loadProjects() {
             try {
                 const response = await fetch(`${API_URL}/api/AdminProjects`, {
@@ -245,6 +277,7 @@
         function getFilteredProjects() {
             const searchText = removeVietnameseTones(document.getElementById("searchInputFuse").value);
             const statusFilter = document.getElementById("statusFilter").value;
+            const courseFilter = document.getElementById("courseFilter").value;
 
             let filtered = searchText
                 ? fuse.search(searchText).map(result => result.item)
@@ -252,6 +285,9 @@
 
             if (statusFilter) {
                 filtered = filtered.filter(project => project.status === statusFilter);
+            }
+            if (courseFilter) {
+                filtered = filtered.filter(project => project.courseName === courseFilter);
             }
 
             if (sortColumn) {
@@ -292,7 +328,7 @@
                     tableBody.innerHTML += `
                         <tr>
                             <td>${start + index + 1}</td>
-                            <td>${project.projectCode}</td>
+                            <td>${project.courseName}</td>
                             <td>${project.title}</td>
                             <td>${students}</td>
                             <td>${project.lecturerName || "Chưa có giảng viên"}</td>
@@ -361,7 +397,6 @@
                 if (!response.ok) throw new Error(`Lỗi tải thông tin đề tài: ${response.status}`);
                 const project = await response.json();
                 document.getElementById("editProjectId").value = project.id;
-                document.getElementById("editProjectCode").value = project.projectCode;
                 document.getElementById("editProjectCourseId").value = project.courseId;
                 document.getElementById("editProjectCourse").value = project.courseName;
                 document.getElementById("editProjectTitle").value = project.title;
@@ -385,7 +420,6 @@
             const id = parseInt(document.getElementById("editProjectId").value);
             const updatedProject = {
                 id: id,
-                projectCode: document.getElementById("editProjectCode").value,
                 title: document.getElementById("editProjectTitle").value,
                 description: document.getElementById("editProjectDescription").value,
                 courseId: parseInt(document.getElementById("editProjectCourseId").value),
@@ -443,14 +477,14 @@
             const worksheetData = [
                 ["Danh sách đề tài - Hệ thống Sinh viên HUTECH"],
                 [],
-                ["#", "Mã đề tài", "Tên đề tài", "Sinh viên", "Giảng viên", "Trạng thái"]
+                ["#", "Tên môn học", "Tên đề tài", "Sinh viên", "Giảng viên", "Trạng thái"]
             ];
 
             filteredProjects.forEach((project, index) => {
                 const students = project.group?.students?.map(s => s.fullName).join(", ") || "Chưa có sinh viên";
                 worksheetData.push([
                     index + 1,
-                    project.projectCode,
+                    project.courseName,
                     project.title,
                     students,
                     project.lecturerName || "Chưa có giảng viên",
@@ -522,6 +556,12 @@
         });
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdown = event.target.closest('.dropdown-menu-wrapper').querySelector('.dropdown-content');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
@@ -538,6 +578,7 @@
         window.onload = async () => {
             try {
                 await loadUserProfile();
+                await loadCourses();
                 await loadProjects();
             } catch (error) {
                 console.error("Error loading projects:", error);

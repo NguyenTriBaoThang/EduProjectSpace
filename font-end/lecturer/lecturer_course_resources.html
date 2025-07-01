@@ -18,7 +18,6 @@
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
         <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <h6 class="sidebar-subtitle">Giảng viên hướng dẫn</h6>
             <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
             <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
             <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
@@ -40,7 +39,6 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -92,7 +90,6 @@
                                 <th class="sortable" onclick="sortTable('courseId')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('name')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('semester')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('facultyCode')">Mã ngành <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('projectCount')">Số đồ án <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('resourceCount')">Số tài liệu <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
@@ -193,8 +190,9 @@
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
                 });
                 if (!response.ok) throw new Error("Không thể tải danh sách môn học");
                 courses = await response.json();
@@ -242,7 +240,7 @@
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy môn học nào.</td></tr>';
             } else {
                 paginatedData.forEach((course, index) => {
                     tableBody.innerHTML += `
@@ -251,11 +249,10 @@
                             <td>${course.courseId || 'N/A'}</td>
                             <td>${course.name || 'N/A'}</td>
                             <td>${course.semester || 'N/A'}</td>
-                            <td>${course.facultyCode}</td> 
                             <td>${course.projectCount || 0}</td>
                             <td>${course.resourceCount || 0}</td>
                             <td>
-                                <button class="btn btn-sm btn-primary" onclick="viewResources('${course.courseId}', '${course.semester}', '${course.facultyCode}')">
+                                <button class="btn btn-sm btn-primary" onclick="viewResources('${course.courseId}')">
                                     <i class="bi bi-eye"></i> Xem tài liệu
                                 </button>
                             </td>
@@ -311,8 +308,8 @@
         }
 
         // Điều hướng đến trang tài liệu
-        function viewResources(courseId, semester, facultyCode) {
-            window.location.href = `/font-end/lecturer/lecturer_resources.html?courseId=${encodeURIComponent(courseId)}&semester=${encodeURIComponent(semester)}&facultyCode=${encodeURIComponent(facultyCode)}`;
+        function viewResources(courseId) {
+            window.location.href = `/font-end/lecturer/lecturer_resources.html?courseId=${encodeURIComponent(courseId)}`;
         }
 
         // Xuất danh sách môn học sang Excel

@@ -13,6 +13,31 @@
     <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
     <style>
         .resource-entry { margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .suggestion-entry { margin-bottom: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .modal-body.loading .loading-spinner {
+            display: block;
+        }
+        .modal-body.loading form, .modal-body.loading #suggestionsList {
+            opacity: 0.5;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +68,6 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." onkeyup="filterTable()">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -130,33 +154,34 @@
                 <div class="modal-body">
                     <form id="addResourceForm">
                         <div id="resourceList">
-                            <div class="resource-entry">
+                            <div id="resourceEntry1" class="resource-entry">
                                 <div class="mb-3">
                                     <label class="form-label">Nhóm và đồ án</label>
-                                    <select class="form-select resource-group" required>
+                                    <select id="resourceGroup1" class="form-select" required>
                                         <option value="">Chọn nhóm</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tiêu đề</label>
-                                    <input type="text" class="form-control resource-title" required>
+                                    <input type="text" id="resourceTitle1" class="form-control" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Loại tài liệu</label>
-                                    <select class="form-select resource-type" required>
+                                    <select id="resourceType1" class="form-select" required onchange="toggleLinkInput('resourceType1', 'resourceLink1', 'resourceFile1')">
+                                        <option value="">Chọn loại</option>
                                         <option value="PDF">PDF</option>
                                         <option value="Website">Website</option>
                                         <option value="Video">Video</option>
                                     </select>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 resource-link-container">
                                     <label class="form-label">Liên kết</label>
-                                    <input type="url" class="form-control resource-link" required>
+                                    <input type="url" id="resourceLink1" class="form-control" required>
+                                    <input type="file" id="resourceFile1" class="form-control" style="display: none;" accept=".pdf,.mp4">
                                 </div>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeResourceEntry('resourceEntry1')">Xóa</button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-success btn-sm mt-2" onclick="addResourceField()">Thêm tài liệu khác</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -188,15 +213,16 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Loại tài liệu</label>
-                            <select id="editResourceType" class="form-select" required>
+                            <select id="editResourceType" class="form-select" required onchange="toggleEditLinkInput('editResourceType', 'editResourceLink', 'editResourceFile')">
                                 <option value="PDF">PDF</option>
                                 <option value="Website">Website</option>
                                 <option value="Video">Video</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Liên kết</label>
+                            <label class="form-label">Liên kết hoặc File</label>
                             <input type="url" id="editResourceLink" class="form-control" required>
+                            <input type="file" id="editResourceFile" class="form-control" style="display: none;" accept=".pdf,.mp4">
                         </div>
                     </form>
                 </div>
@@ -210,13 +236,13 @@
 
     <!-- Modal Tạo Gợi Ý AI -->
     <div class="modal fade" id="aiSuggestionModal" tabindex="-1" aria-labelledby="aiSuggestionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="aiSuggestionModalLabel">Tạo gợi ý tài liệu bằng AI</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="aiModalBody">
                     <form id="aiSuggestionForm">
                         <div class="mb-3">
                             <label class="form-label">Chọn đồ án</label>
@@ -229,10 +255,13 @@
                             <input type="text" id="aiKeywords" class="form-control" placeholder="ví dụ: Java, Web Development" required>
                         </div>
                     </form>
+                    <div id="suggestionsList" class="mt-3"></div>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="generateSuggestions()">Tạo gợi ý</button>
+                    <button type="button" class="btn btn-primary" id="generateBtn" onclick="generateSuggestions()">Tạo gợi ý</button>
+                    <button type="button" class="btn btn-success" id="saveSuggestionsBtn" onclick="saveSelectedSuggestions()" disabled>Lưu gợi ý đã chọn</button>
                 </div>
             </div>
         </div>
@@ -244,11 +273,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Cấu hình API
         const API_URL = "https://localhost:7047";
-        let token = localStorage.getItem("token");
         let fullNameLecturer = null;
-
         const itemsPerPage = 5;
         let currentPage = 1;
         let sortColumn = null;
@@ -256,6 +282,7 @@
         let resources = [];
         let projects = [];
         let groups = [];
+        let aiSuggestions = [];
 
         const urlParams = new URLSearchParams(window.location.search);
         const selectedCourseId = urlParams.get("courseId");
@@ -288,11 +315,10 @@
         });
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
         function toggleSidebar() {
-            let sidebar = document.querySelector(".sidebar");
-            let content = document.querySelector(".content");
-            let icon = document.getElementById("sidebarIcon");
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("content"); // Note: ID added to content div
+            const icon = document.getElementById("sidebarIcon");
 
             sidebar.classList.toggle("collapsed");
             content.classList.toggle("expanded");
@@ -304,7 +330,6 @@
             }
         }
 
-        // Tải thông tin người dùng
         async function loadUserProfile() {
             try {
                 const user = JSON.parse(localStorage.getItem("user"));
@@ -321,16 +346,16 @@
             }
         }
 
-        // Tải danh sách tài liệu từ API
         async function loadResources() {
             try {
-                const response = await fetch(`${API_URL}/api/LearnerResources/resources?courseId=${selectedCourseId}&semester=${encodeURIComponent(selectedSemester)}&facultyCode=${selectedFacultyCode}`, {
+                const response = await fetch(`${API_URL}/api/LecturerResources/resources?courseId=${selectedCourseId}`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
                 });
                 if (!response.ok) throw new Error("Không thể tải danh sách tài liệu");
                 resources = await response.json();
@@ -342,19 +367,20 @@
             }
         }
 
-        // Tải danh sách đồ án và nhóm
         async function loadProjectsAndGroups() {
             try {
                 const response = await fetch(`${API_URL}/api/LecturerFeedback/projects?courseId=${selectedCourseId}`, {
                     method: "GET",
                     headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
                 });
                 if (!response.ok) throw new Error("Không thể tải danh sách đồ án");
                 projects = await response.json();
 
-                // Lấy danh sách nhóm (giả lập từ projects, cần endpoint thực tế)
                 groups = projects.map(p => ({
                     id: p.groupId || Math.floor(Math.random() * 1000),
                     name: p.groupName || `Group-${p.projectId}`,
@@ -366,24 +392,23 @@
             }
         }
 
-        // Lọc và sắp xếp bảng
         function getFilteredResources() {
             const searchText = document.getElementById("searchInput").value.toLowerCase();
             const projectFilter = document.getElementById("projectFilter").value;
 
             let filtered = resources.filter(resource =>
-                resource.projectId?.toLowerCase().includes(searchText) || 
+                (resource.projectId?.toLowerCase().includes(searchText) || 
                 resource.groupName?.toLowerCase().includes(searchText) || 
                 resource.title?.toLowerCase()?.includes(searchText) || 
                 resource.type?.toLowerCase()?.includes(searchText) || 
-                resource.link?.toLowerCase()?.includes(searchText) &&
+                resource.link?.toLowerCase()?.includes(searchText)) &&
                 (projectFilter === "" || resource.projectId === projectFilter)
             );
 
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = sortColumn === 'groupName' ? getGroupName(a.groupId).toLowerCase() : a[sortColumn].toLowerCase();
-                    let valueB = sortColumn === 'groupName' ? getGroupName(b.groupId).toLowerCase() : b[sortColumn].toLowerCase();
+                    let valueA = sortColumn === 'groupName' ? (a.groupName || '').toLowerCase() : (a[sortColumn] || '').toLowerCase();
+                    let valueB = sortColumn === 'groupName' ? (b.groupName || '').toLowerCase() : (b[sortColumn] || '').toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -391,7 +416,6 @@
             return filtered;
         }
 
-        // Hiển thị bảng
         function displayTable(page = currentPage) {
             const filteredResources = getFilteredResources();
             const start = (page - 1) * itemsPerPage;
@@ -401,39 +425,43 @@
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
 
-            if (!selectedCourseId || !selectedSemester || !selectedFacultyCode) {
+            if (!selectedCourseId) {
                 tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Vui lòng chọn một môn học từ danh sách để xem tài liệu.</td></tr>';
+            } else if (paginatedData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy tài liệu nào.</td></tr>';
             } else {
-                if (paginatedData.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy tài liệu nào.</td></tr>';
-                } else {
-                        paginatedData.forEach((resource, index) => {
-                            tableBody.innerHTML += `
-                                <tr>
-                                    <td>${start + index + 1}</td>
-                                    <td>${resource.projectId || 'N/A'}</td>
-                                    <td>${resource.groupName || 'N/A'}</td>
-                                    <td>${resource.title || 'N/A'}</td>
-                                    <td>${resource.type || 'N/A'}</td>
-                                    <td><a href="${resource.link || '#'} target="_blank">${resource.link || 'N/A'}</a></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info me-1" onclick="editResource(${resource.id})">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteResource(${resource.id})">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `;
-                        });
+                paginatedData.forEach((resource, index) => {
+                    const fileUrl = resource.link ? `/api/File/files/${resource.link}` : '#';
+                    let displayLink = resource.link || 'N/A';
+                    if (resource.type === 'PDF' || resource.type === 'Video') {
+                        displayLink = `<a href="${fileUrl}" target="_blank">${displayLink}</a>`;
+                    } else {
+                        displayLink = `<a href="${resource.link}" target="_blank">${displayLink}</a>`; // Website
                     }
-                }
-
-                setupPagination(filteredResources.length);
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${resource.projectName || 'N/A'}</td>
+                            <td>${resource.groupName || 'N/A'}</td>
+                            <td>${resource.title || 'N/A'}</td>
+                            <td>${resource.type || 'N/A'}</td>
+                            <td>${displayLink}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info me-1" onclick="editResource(${resource.id})">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteResource(${resource.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
             }
 
-        // Thiết lập phân trang
+            setupPagination(filteredResources.length);
+        }
+
         function setupPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const pagination = document.getElementById("pagination");
@@ -453,32 +481,24 @@
             pagination.innerHTML = paginationHTML;
         }
 
-        // Chuyển trang
         function changePage(page) {
             currentPage = page;
             displayTable(currentPage);
         }
 
-        // Sắp xếp bảng
         function sortTable(column) {
-            if (sortColumn === column) {
-                sortDirection === sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortColumn = column;
-                sortDirection = 'asc';
-            }
+            sortDirection = sortColumn === column ? (sortDirection === 'asc' ? 'desc' : 'asc') : 'asc';
+            sortColumn = column;
             displayTable(currentPage);
         }
 
-        // Lọc bảng
         function filterTable() {
             currentPage = 1;
             displayTable(currentPage);
         }
 
-        // Điền danh sách đồ án và nhóm vào bộ lọc và form
         function populateFiltersAndForms() {
-            const projectFilter = document.getElementById("project-id");
+            const projectFilter = document.getElementById("projectFilter");
             const aiProjectFilter = document.getElementById("aiProjectId");
             projectFilter.innerHTML = '<option value="">📂 Chọn đồ án</option>';
             aiProjectFilter.innerHTML = '<option value="">Chọn đồ án</option>';
@@ -488,80 +508,143 @@
                 aiProjectFilter.innerHTML += `<option value="${project.projectId}">${project.projectId} - ${project.name || 'N/A'}</option>`;
             });
 
-            const groupSelects = document.querySelectorAll(".resource-group");
-            groupSelects.forEach(select => {
+            // Update all resource group selects with IDs
+            let entryCount = 1;
+            while (document.getElementById(`resourceGroup${entryCount}`)) {
+                const select = document.getElementById(`resourceGroup${entryCount}`);
                 select.innerHTML = '<option value="">Chọn nhóm</option>';
                 projects.forEach(project => {
                     const group = groups.find(g => g.projectId === project.projectId);
                     if (group) {
-                        select.innerHTML += `<option value="${project.projectId}|${group.id}">${group.name} (${project.projectId} - ${project.name || 'N/A'})</option>`;
+                        select.innerHTML += `<option value="${project.projectId}">${group.name} (${project.projectId} - ${project.name || 'N/A'})</option>`;
                     }
                 });
-            });
+                entryCount++;
+            }
         }
 
-        // Thêm trường nhập tài liệu mới trong modal
-        function addResourceField() {
-            const resourceList = document.getElementById("resourceList");
-            const newEntry = document.createElement("div");
-            newEntry.className = "resource-entry";
-            newEntry.innerHTML = `
-                <div class="mb-3">
-                    <label class="form-label">Nhóm và đồ án</label>
-                    <select class="form-select resource-group" required>
-                        <option value="">Chọn nhóm</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Tiêu đề</label>
-                    <input type="text" class="form-control resource-title" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Loại tài liệu</label>
-                    <select class="form-select resource-type" required>
-                        <option value="PDF">PDF</option>
-                        <option value="Website">Website</option>
-                        <option value="Video">Video</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Liên kết</label>
-                    <input type="url" class="form-control resource-link" required>
-                </div>
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">Xóa</button>
-            `;
-            resourceList.appendChild(newEntry);
-            populateFiltersAndForms();
+        let resourceEntryCount = 1; // Track number of resource entries (though no longer used for adding)
+
+        function removeResourceEntry(entryId) {
+            const entry = document.getElementById(entryId);
+            if (entry) entry.remove();
+            populateFiltersAndForms(); // Update selects after removal
         }
 
-        // Thêm nhiều tài liệu
+        function toggleLinkInput(typeId, linkId, fileId) {
+            const typeSelect = document.getElementById(typeId);
+            const urlInput = document.getElementById(linkId);
+            const fileInput = document.getElementById(fileId);
+
+            if (typeSelect.value === "Website") {
+                urlInput.style.display = "block";
+                fileInput.style.display = "none";
+                urlInput.required = true;
+                fileInput.required = false;
+            } else { // PDF hoặc Video
+                urlInput.style.display = "none";
+                fileInput.style.display = "block";
+                urlInput.required = false;
+                fileInput.required = true;
+            }
+        }
+
+        function toggleEditLinkInput(typeId, linkId, fileId) {
+            const typeSelect = document.getElementById(typeId);
+            const linkInput = document.getElementById(linkId);
+            if (typeSelect.value === "Website") {
+                linkInput.type = "url";
+            } else {
+                linkInput.type = "text";
+            }
+        }
+
         async function addResources() {
             const form = document.getElementById("addResourceForm");
             if (form.checkValidity()) {
-                const resourceEntries = document.querySelectorAll(".resource-entry");
-                const newResources = [];
-                resourceEntries.forEach(entry => {
-                    const [projectId, groupId] = entry.querySelector(".resource-group").value.split("|");
-                    newResources.push({
-                        projectId: projectId,
-                        groupId: parseInt(groupId),
-                        facultyCode: selectedFacultyCode,
-                        title: entry.querySelector(".resource-title").value,
-                        type: entry.querySelector(".resource-type").value,
-                        link: entry.querySelector(".resource-link").value
+                const token = localStorage.getItem("token");
+                const entryCount = 1; // Chỉ xử lý entry đầu tiên
+
+                const groupSelect = document.getElementById(`resourceGroup${entryCount}`);
+                const [projectId] = groupSelect.value.split("|"); // Chỉ lấy projectId
+                const titleInput = document.getElementById(`resourceTitle${entryCount}`);
+                const typeSelect = document.getElementById(`resourceType${entryCount}`);
+                const urlInput = document.getElementById(`resourceLink${entryCount}`);
+                const fileInput = document.getElementById(`resourceFile${entryCount}`);
+
+                const title = titleInput.value;
+                const type = typeSelect.value;
+
+                if (!type || type === "") {
+                    alert("Vui lòng chọn loại tài liệu.");
+                    return;
+                }
+
+                let link = "";
+                if (type === "Website") {
+                    link = urlInput.value;
+                } else {
+                    const file = fileInput.files[0];
+                    if (!file) {
+                        alert("Vui lòng chọn file cho loại tài liệu PDF hoặc Video.");
+                        return;
+                    }
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("projectId", projectId);
+                    formData.append("title", title);
+                    formData.append("type", type);
+
+                    console.log("FormData contents:", [...formData.entries()]);
+                    const uploadResponse = await fetch(`${API_URL}/api/LecturerResources/upload`, {
+                        method: "POST",
+                        headers: { 
+                            "Accept": "*/*",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        credentials: "include",
+                        body: formData
                     });
-                });
+                    if (!uploadResponse.ok) {
+                        const errorText = await uploadResponse.text();
+                        console.error("Upload error:", uploadResponse.status, errorText);
+                        alert(`Lỗi tải file lên: ${uploadResponse.status} - ${errorText}`);
+                        return;
+                    }
+                    const result = await uploadResponse.json();
+                    console.log("Upload response:", result);
+                    link = result.filePath || result.link || "";
+                    if (!link) {
+                        alert("Không nhận được liên kết từ server sau khi tải file.");
+                        return;
+                    }
+                }
+
+                const newResource = {
+                    courseId: selectedCourseId,
+                    projectId: projectId,
+                    title: title,
+                    type: type,
+                    link: link
+                };
 
                 try {
+                    console.log("Sending resource:", newResource);
                     const response = await fetch(`${API_URL}/api/LecturerResources/resources`, {
                         method: "POST",
                         headers: {
+                            "Accept": "*/*",
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${token}`
                         },
-                        body: JSON.stringify(newResources)
+                        credentials: "include",
+                        body: JSON.stringify(newResource)
                     });
-                    if (!response.ok) throw new Error("Không thể thêm tài liệu");
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error("Add resource error:", response.status, errorText);
+                        throw new Error(`Không thể thêm tài liệu: ${response.status} - ${errorText}`);
+                    }
                     const result = await response.json();
                     alert(result.message);
                     bootstrap.Modal.getInstance(document.getElementById("addResourceModal")).hide();
@@ -575,7 +658,6 @@
             }
         }
 
-        // Sửa tài liệu
         async function editResource(resourceId) {
             const resource = resources.find(r => r.id === resourceId);
             if (resource) {
@@ -593,25 +675,52 @@
             const form = document.getElementById("editResourceForm");
             if (form.checkValidity()) {
                 const resourceId = parseInt(document.getElementById("editResourceId").value);
-                const resourceDto = {
-                    title: document.getElementById("editResourceTitle").value,
-                    type: document.getElementById("editResourceType").value,
-                    link: document.getElementById("editResourceLink").value
-                };
+                const type = document.getElementById("editResourceType").value;
+                const title = document.getElementById("editResourceTitle").value;
+                const linkInput = document.getElementById("editResourceLink");
+                const fileInput = document.getElementById("editResourceFile");
+
+                let link = linkInput.value;
+                if (type !== "Website" && fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("projectId", document.getElementById("editResourceProjectId").value);
+                    formData.append("groupId", resources.find(r => r.id === resourceId)?.groupId || 0);
+                    formData.append("title", title);
+                    formData.append("type", type);
+
+                    const response = await fetch(`${API_URL}/api/LecturerResources/upload`, {
+                        method: "POST",
+                        headers: { 
+                            "Accept": "*/*",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include",
+                        body: formData
+                    });
+                    if (!response.ok) throw new Error("Không thể tải file lên");
+                    const result = await response.json();
+                    link = result.filePath;
+                }
+
+                const resourceDto = { title, type, link };
 
                 try {
                     const response = await fetch(`${API_URL}/api/LecturerResources/resources/${resourceId}`, {
                         method: "PUT",
                         headers: {
+                            "Accept": "*/*",
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
+                        credentials: "include",
                         body: JSON.stringify(resourceDto)
                     });
                     if (!response.ok) throw new Error("Không thể cập nhật tài liệu");
                     const result = await response.json();
                     alert(result.message);
-                    bootstrap.Modal.getInstance(document.getElementById("editResourceModal")).hide();
+                    bootstrap.Modal.getElementById("editResourceModal").hide();
                     await loadResources();
                 } catch (error) {
                     console.error("Lỗi khi cập nhật tài liệu:", error);
@@ -622,15 +731,17 @@
             }
         }
 
-        // Xóa tài liệu
         async function deleteResource(resourceId) {
             if (confirm("Bạn có chắc chắn muốn xóa tài liệu này không?")) {
                 try {
                     const response = await fetch(`${API_URL}/api/LecturerResources/resources/${resourceId}`, {
                         method: "DELETE",
                         headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
+                            "Accept": "*/*",
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
                     });
                     if (!response.ok) throw new Error("Không thể xóa tài liệu");
                     const result = await response.json();
@@ -643,10 +754,15 @@
             }
         }
 
-        // Tạo gợi ý bằng AI
         async function generateSuggestions() {
             const form = document.getElementById("aiSuggestionForm");
+            const modalBody = document.getElementById("aiModalBody");
+            const generateBtn = document.getElementById("generateBtn");
+
             if (form.checkValidity()) {
+                modalBody.classList.add("loading");
+                generateBtn.disabled = true;
+
                 const projectId = document.getElementById("aiProjectId").value;
                 const keywords = document.getElementById("aiKeywords").value;
 
@@ -654,26 +770,86 @@
                     const response = await fetch(`${API_URL}/api/LecturerResources/suggestions`, {
                         method: "POST",
                         headers: {
+                            "Accept": "*/*",
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
                         },
+                        credentials: "include",
                         body: JSON.stringify({ projectId, keywords })
                     });
                     if (!response.ok) throw new Error("Không thể tạo gợi ý");
-                    const suggestions = await response.json();
-                    alert(`Đã tạo ${suggestions.length} gợi ý tài liệu mới.`);
-                    bootstrap.Modal.getInstance(document.getElementById("aiSuggestionModal")).hide();
-                    await loadResources();
+                    aiSuggestions = await response.json();
+                    displaySuggestions();
+                    document.getElementById("saveSuggestionsBtn").disabled = false;
                 } catch (error) {
                     console.error("Lỗi khi tạo gợi ý:", error);
                     alert("Lỗi khi tạo gợi ý: " + error.message);
+                } finally {
+                    modalBody.classList.remove("loading");
+                    generateBtn.disabled = false;
                 }
             } else {
                 form.reportValidity();
             }
         }
 
-        // Xuất danh sách tài liệu sang Excel
+        function displaySuggestions() {
+            const suggestionsList = document.getElementById("suggestionsList");
+            suggestionsList.innerHTML = "";
+
+            if (aiSuggestions.length === 0) {
+                suggestionsList.innerHTML = '<p class="text-center">Không có gợi ý nào.</p>';
+                return;
+            }
+
+            aiSuggestions.forEach((suggestion, index) => {
+                suggestionsList.innerHTML += `
+                    <div class="suggestion-entry">
+                        <div class="form-check">
+                            <input class="form-check-input suggestion-checkbox" type="checkbox" id="suggestion-${index}" data-index="${index}">
+                            <label class="form-check-label" for="suggestion-${index}">
+                                ${suggestion.content}
+                            </label>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function saveSelectedSuggestions() {
+            const selectedSuggestions = [];
+            document.querySelectorAll(".suggestion-checkbox:checked").forEach(checkbox => {
+                const index = parseInt(checkbox.dataset.index);
+                selectedSuggestions.push(aiSuggestions[index]);
+            });
+
+            if (selectedSuggestions.length === 0) {
+                alert("Vui lòng chọn ít nhất một gợi ý để lưu.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/LecturerResources/save-suggestions`, {
+                    method: "POST",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(selectedSuggestions)
+                });
+                if (!response.ok) throw new Error("Không thể lưu gợi ý");
+                const result = await response.json();
+                alert(result.message);
+                bootstrap.Modal.getInstance(document.getElementById("aiSuggestionModal")).hide();
+                await loadResources();
+            } catch (error) {
+                console.error("Lỗi khi lưu gợi ý:", error);
+                alert("Lỗi khi lưu gợi ý: " + error.message);
+            }
+        }
+
         function exportResources() {
             const filteredResources = getFilteredResources();
             const worksheetData = [
@@ -700,7 +876,6 @@
             XLSX.writeFile(workbook, `tai_lieu_goi_y_${selectedCourseId}_${selectedFacultyCode}.xlsx`);
         }
 
-        // Đăng xuất
         async function logout() {
             try {
                 const response = await fetch(`${API_URL}/api/Auth/logout`, {
@@ -708,8 +883,9 @@
                     headers: {
                         "Accept": "*/*",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
                 });
                 const text = await response.text();
                 if (response.ok) {
@@ -728,7 +904,6 @@
             window.location.replace("/font-end/login/login.html");
         }
 
-        // Khởi chạy
         document.addEventListener("DOMContentLoaded", async () => {
             try {
                 await loadUserProfile();

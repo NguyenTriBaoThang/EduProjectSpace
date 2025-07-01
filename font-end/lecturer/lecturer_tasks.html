@@ -300,7 +300,7 @@
         async function updateProjectOptions() {
             const courseId = document.getElementById("taskCourseId").value;
             try {
-                const response = await fetch(`${API_URL}/api/LecturerProjectApproval?courseId=${courseId}`,{ 
+                const response = await fetch(`${API_URL}/api/LecturerProjectApproval/course?courseId=${courseId}`,{ 
                         method: "GET",
                         headers: {
                             "Accept": "*/*",

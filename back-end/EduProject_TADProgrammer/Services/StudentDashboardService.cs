@@ -31,9 +31,9 @@ namespace EduProject_TADProgrammer.Services
 
             // Tính tổng số bài nộp
             var submissions = await _context.Submissions
-                .Where(s => s.GroupId != null && projects.Any(p => p.GroupId == s.GroupId))
+                .Where(s => s.GroupId != null)
                 .ToListAsync();
-            var totalSubmissions = submissions.Count;
+            var totalSubmissions = submissions.Count(s => projects.Any(p => p.GroupId == s.GroupId));
 
             // Số bài nộp theo đồ án
             var submissionByProject = projects.GroupBy(p => p.ProjectCode)
@@ -58,16 +58,22 @@ namespace EduProject_TADProgrammer.Services
             }
 
             // Số công việc chưa nộp
-            var pendingTasks = await _context.Tasks
-                .Where(t => projects.Any(p => p.Id == t.ProjectId) &&
-                           t.Deadline >= DateTime.UtcNow &&
-                           t.Status != "DONE")
-                .CountAsync();
+            var allTasks = await _context.Tasks
+                .Where(t => t.Deadline >= DateTime.UtcNow)
+                .ToListAsync();
+            var pendingTasks = allTasks.Count(t => projects.Any(p => p.Id == t.ProjectId) &&
+                                                 t.Deadline >= DateTime.UtcNow &&
+                                                 t.Status != "DONE");
 
             // Số thông báo chưa đọc
             var unreadNotifications = await _context.Notifications
                 .Where(n => n.UserId == studentId)
                 .CountAsync();
+
+            // Kiểm tra đề xuất đề tài (nếu có task với status TODO trong project đã đăng ký)
+            var hasTodoProposal = allTasks.Any(t => projects.Any(p => p.Id == t.ProjectId) &&
+                                                  t.Status == "TODO" &&
+                                                  t.Title.Contains("Đăng ký đề tài"));
 
             return new StudentDashboardDto
             {
@@ -75,7 +81,8 @@ namespace EduProject_TADProgrammer.Services
                 SubmissionByProject = submissionByProject,
                 ProgressByProject = progressByProject,
                 PendingTasks = pendingTasks,
-                UnreadNotifications = unreadNotifications
+                UnreadNotifications = unreadNotifications,
+                HasTodoProposal = hasTodoProposal // Thêm thuộc tính mới
             };
         }
 
