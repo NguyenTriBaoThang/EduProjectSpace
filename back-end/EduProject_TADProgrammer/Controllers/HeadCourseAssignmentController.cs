@@ -18,7 +18,6 @@ namespace EduProject_TADProgrammer.Controllers
             _service = service;
         }
 
-        // GET: api/HeadCourseAssignment
         [HttpGet]
         public async Task<IActionResult> GetAllCourses([FromQuery] long headLecturer)
         {
@@ -33,13 +32,12 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // GET: api/HeadCourseAssignment/students
         [HttpGet("students")]
-        public async Task<IActionResult> GetUnassignedStudents([FromQuery] long courseId, [FromQuery] string semesterName, [FromQuery] string facultyCode)
+        public async Task<IActionResult> GetUnassignedStudents([FromQuery] long courseId)
         {
             try
             {
-                var students = await _service.GetUnassignedStudentsAsync(courseId, semesterName, facultyCode);
+                var students = await _service.GetUnassignedStudentsAsync(courseId);
                 return Ok(students);
             }
             catch (Exception ex)
@@ -48,7 +46,6 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // GET: api/HeadCourseAssignment/lecturers
         [HttpGet("lecturers")]
         public async Task<IActionResult> GetLecturers([FromQuery] long? courseId)
         {
@@ -63,7 +60,6 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // POST: api/HeadCourseAssignment/assign
         [HttpPost("assign")]
         public async Task<IActionResult> AssignLecturer([FromBody] HeadCourseAssignmentRequest request, [FromQuery] long courseId)
         {
@@ -78,13 +74,26 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // POST: api/HeadCourseAssignment/auto-assign
-        [HttpPost("auto-assign")]
-        public async Task<IActionResult> AutoAssignLecturers([FromQuery] long courseId, [FromQuery] string semesterName, [FromQuery] string facultyCode)
+        [HttpGet("available-lecturers")]
+        public async Task<IActionResult> GetAvailableLecturers([FromQuery] long courseId)
         {
             try
             {
-                await _service.AutoAssignLecturersAsync(courseId, semesterName, facultyCode);
+                var lecturers = await _service.GetAvailableLecturersAsync(courseId);
+                return Ok(lecturers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi khi lấy danh sách giảng viên: {ex.Message}");
+            }
+        }
+
+        [HttpPost("auto-assign")]
+        public async Task<IActionResult> AutoAssignLecturers([FromQuery] long courseId, [FromBody] List<long> selectedLecturerIds)
+        {
+            try
+            {
+                await _service.AutoAssignLecturersAsync(courseId, selectedLecturerIds);
                 return Ok("Phân công tự động thành công.");
             }
             catch (Exception ex)
@@ -93,14 +102,13 @@ namespace EduProject_TADProgrammer.Controllers
             }
         }
 
-        // POST: api/HeadCourseAssignment/import
         [HttpPost("import")]
-        public async Task<IActionResult> ImportAssignments([FromForm] IFormFile file, [FromQuery] long courseId, [FromQuery] string semesterName, [FromQuery] string facultyCode)
+        public async Task<IActionResult> ImportAssignments([FromForm] IFormFile file, [FromQuery] long courseId)
         {
             try
             {
                 if (file == null || file.Length == 0) return BadRequest("File không hợp lệ.");
-                await _service.ImportAssignmentsAsync(file, courseId, semesterName, facultyCode);
+                await _service.ImportAssignmentsAsync(file, courseId);
                 return Ok("Nhập phân công từ Excel thành công.");
             }
             catch (Exception ex)

@@ -59,6 +59,7 @@ internal class Program
         builder.Services.AddScoped<LecturerCourseGroupService>();
         builder.Services.AddScoped<LecturerProjectApprovalService>();
 
+        builder.Services.AddScoped<StudentCourseService>();
         builder.Services.AddScoped<StudentDashboardService>();
 
         builder.Services.AddHttpClient<LecturerResourcesService>();

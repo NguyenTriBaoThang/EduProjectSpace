@@ -57,7 +57,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">👩‍🏫 Phân công giảng viên hướng dẫn</h2>
                 <div>
-                    <button class="btn btn-success me-2" onclick="autoAssign()">Phân công tự động</button>
+                    <button class="btn btn-success me-2" onclick="showAutoAssignModal()">Phân công tự động</button>
                     <button class="btn btn-info me-2" onclick="exportAssignments()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
                     <label class="btn btn-warning">
                         Nhập Excel <input type="file" id="importFile" accept=".xlsx" style="display:none;" onchange="importAssignments(event)">
@@ -96,41 +96,65 @@
                     <ul id="pagination" class="pagination"></ul>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="assignModalLabel">Phân công giảng viên hướng dẫn</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <div class="modal fade" id="autoAssignModal" tabindex="-1" aria-labelledby="autoAssignModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="autoAssignModalLabel">Phân công tự động</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="autoAssignForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Chọn giảng viên (ít nhất 1)</label>
+                                    <div id="lecturerCheckboxes" class="lecturer-checkboxes"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" onclick="confirmAutoAssign()">Xác nhận</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form id="assignForm">
-                        <input type="hidden" id="assignStudentId">
-                        <div class="mb-3">
-                            <label class="form-label">Mã sinh viên</label>
-                            <input type="text" id="assignStudentCode" class="form-control" readonly>
+            </div>
+
+            <div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="assignModalLabel">Phân công giảng viên hướng dẫn</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tên sinh viên</label>
-                            <input type="text" id="assignStudentName" class="form-control" readonly>
+                        <div class="modal-body">
+                            <form id="assignForm">
+                                <input type="hidden" id="assignStudentId">
+                                <div class="mb-3">
+                                    <label class="form-label">Mã sinh viên</label>
+                                    <input type="text" id="assignStudentCode" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tên sinh viên</label>
+                                    <input type="text" id="assignStudentName" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Môn học</label>
+                                    <input type="text" id="assignCourseCode" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Giảng viên hướng dẫn</label>
+                                    <select id="assignLecturer" class="form-select" required>
+                                        <option value="">Chọn giảng viên</option>
+                                    </select>
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Môn học</label>
-                            <input type="text" id="assignCourseCode" class="form-control" readonly>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" onclick="saveAssignment()">Lưu</button>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Giảng viên hướng dẫn</label>
-                            <select id="assignLecturer" class="form-select" required>
-                                <option value="">Chọn giảng viên</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="saveAssignment()">Lưu</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -192,14 +216,12 @@
         async function loadStudents() {
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('courseId');
-            const semesterName = urlParams.get('semester');
-            const facultyCode = urlParams.get('facultyCode');
-            if (!courseId || !semesterName || !facultyCode) {
-                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="text-center">Thiếu thông tin môn học, học kỳ hoặc khoa.</td></tr>';
+            if (!courseId) {
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="text-center">Thiếu thông tin môn học.</td></tr>';
                 return;
             }
             try {
-                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/students?courseId=${courseId}&semesterName=${encodeURIComponent(semesterName)}&facultyCode=${encodeURIComponent(facultyCode)}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/students?courseId=${courseId}`, {
                     method: "GET",
                     headers: {
                         "Accept": "*/*",
@@ -210,8 +232,8 @@
                 if (!response.ok) throw new Error(`Lỗi tải danh sách sinh viên: ${await response.text()}`);
                 students = await response.json();
                 document.getElementById('courseCodeDisplay').value = students[0]?.courseCode || '';
-                document.getElementById('semesterNameDisplay').value = semesterName;
-                document.getElementById('facultyCodeDisplay').value = facultyCode;
+                document.getElementById('semesterNameDisplay').value = '';
+                document.getElementById('facultyCodeDisplay').value = '';
                 displayTable(currentPage);
             } catch (error) {
                 console.error('Lỗi tải danh sách sinh viên:', error);
@@ -286,7 +308,7 @@
 
         function filterTable() {
             const searchText = document.getElementById('searchInput').value.toLowerCase();
-            const originalStudents = [...students]; // Lưu danh sách gốc
+            const originalStudents = [...students];
             students = originalStudents.filter(student =>
                 student.studentCode.toLowerCase().includes(searchText) ||
                 student.fullName.toLowerCase().includes(searchText) ||
@@ -308,6 +330,77 @@
             }
         }
 
+        async function showAutoAssignModal() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('courseId');
+            if (!courseId) {
+                alert('Thiếu thông tin môn học.');
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/available-lecturers?courseId=${courseId}`, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "*/*",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải danh sách giảng viên: ${await response.text()}`);
+                const lecturers = await response.json();
+                const checkboxesDiv = document.getElementById('lecturerCheckboxes');
+                checkboxesDiv.innerHTML = '';
+                lecturers.forEach(lecturer => {
+                    const div = document.createElement('div');
+                    div.className = 'form-check';
+                    div.innerHTML = `<input type="checkbox" class="form-check-input" id="lecturer_${lecturer.id}" value="${lecturer.id}">
+                                     <label class="form-check-label" for="lecturer_${lecturer.id}">${lecturer.fullName}</label>`;
+                    checkboxesDiv.appendChild(div);
+                });
+                new bootstrap.Modal(document.getElementById('autoAssignModal')).show();
+            } catch (error) {
+                console.error('Lỗi tải danh sách giảng viên:', error);
+                alert(`Không thể tải danh sách giảng viên: ${error.message}`);
+            }
+        }
+
+        async function confirmAutoAssign() {
+            const checkboxes = document.querySelectorAll('#lecturerCheckboxes input[type="checkbox"]:checked');
+            const selectedLecturerIds = Array.from(checkboxes).map(cb => parseInt(cb.value));
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = urlParams.get('courseId');
+            if (!courseId) {
+                alert('Thiếu thông tin môn học.');
+                return;
+            }
+            if (selectedLecturerIds.length < 1) {
+                alert('Vui lòng chọn ít nhất một giảng viên.');
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/auto-assign?courseId=${courseId}`, {
+                    method: 'POST',
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(selectedLecturerIds)
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Lỗi phân công tự động: ${response.statusText}`);
+                }
+                alert('Phân công tự động thành công!');
+                bootstrap.Modal.getInstance(document.getElementById('autoAssignModal')).hide();
+                await loadStudents();
+            } catch (error) {
+                console.error('Lỗi phân công tự động:', error);
+                alert(`Không thể phân công tự động: ${error.message}`);
+            }
+        }
+
         async function saveAssignment() {
             const form = document.getElementById('assignForm');
             if (form.checkValidity()) {
@@ -326,10 +419,6 @@
                         credentials: "include",
                         body: JSON.stringify({ studentId: parseInt(studentId), lecturerName })
                     });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || `Lỗi lưu phân công: ${response.statusText}`);
-                    }
                     alert(`Đã phân công ${lecturerName} cho ${document.getElementById('assignStudentName').value}`);
                     bootstrap.Modal.getInstance(document.getElementById('assignModal')).hide();
                     await loadStudents();
@@ -342,45 +431,12 @@
             }
         }
 
-        async function autoAssign() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const courseId = urlParams.get('courseId');
-            const semesterName = urlParams.get('semester');
-            const facultyCode = urlParams.get('facultyCode');
-            if (!courseId || !semesterName || !facultyCode) {
-                alert('Thiếu thông tin môn học, học kỳ hoặc khoa.');
-                return;
-            }
-            try {
-                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/auto-assign?courseId=${courseId}&semesterName=${encodeURIComponent(semesterName)}&facultyCode=${encodeURIComponent(facultyCode)}`, {
-                    method: 'POST',
-                    headers: {
-                        "Accept": "*/*",
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    credentials: "include"
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Lỗi phân công tự động: ${response.statusText}`);
-                }
-                alert('Phân công tự động thành công!');
-                await loadStudents();
-            } catch (error) {
-                console.error('Lỗi phân công tự động:', error);
-                alert(`Không thể phân công tự động: ${error.message}`);
-            }
-        }
-
         function exportAssignments() {
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('courseId');
-            const semesterName = urlParams.get('semester');
-            const facultyCode = urlParams.get('facultyCode');
             const worksheetData = [
                 ['Danh sách phân công GVHD - Hệ thống Sinh viên HUTECH'],
-                [`Môn học: ${courseId} - ${facultyCode} - ${semesterName}`],
+                [`Môn học: ${courseId}`],
                 [],
                 ['#', 'Mã SV', 'Tên SV', 'Môn học', 'Giảng viên hướng dẫn']
             ];
@@ -396,7 +452,7 @@
             const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'PhanCongGVHD');
-            XLSX.writeFile(workbook, `phan_cong_gvhd_${courseId}_${facultyCode}.xlsx`);
+            XLSX.writeFile(workbook, `phan_cong_gvhd_${courseId}.xlsx`);
         }
 
         async function importAssignments(event) {
@@ -409,14 +465,12 @@
             formData.append('file', file);
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('courseId');
-            const semesterName = urlParams.get('semester');
-            const facultyCode = urlParams.get('facultyCode');
-            if (!courseId || !semesterName || !facultyCode) {
-                alert('Thiếu thông tin môn học, học kỳ hoặc khoa.');
+            if (!courseId) {
+                alert('Thiếu thông tin môn học.');
                 return;
             }
             try {
-                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/import?courseId=${courseId}&semesterName=${encodeURIComponent(semesterName)}&facultyCode=${encodeURIComponent(facultyCode)}`, {
+                const response = await fetch(`${API_URL}/api/HeadCourseAssignment/import?courseId=${courseId}`, {
                     method: 'POST',
                     headers: {
                         "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -503,5 +557,15 @@
             await loadStudents();
         });
     </script>
+    <style>
+        .lecturer-checkboxes {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .form-check {
+            margin-bottom: 10px;
+        }
+    </style>
 </body>
 </html>
