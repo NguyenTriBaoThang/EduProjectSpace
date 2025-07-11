@@ -402,9 +402,3 @@ FodyWeavers.xsd
 
 
 Resources/
-
-# Bỏ qua file cấu hình nhạy cảm
-**/appsettings.json
-back-end/EduProject_TADProgrammer/appsettings.json
-appsettings.json
-appsettings.Development.json
