@@ -204,5 +204,6 @@ namespace EduProject_TADProgrammer.Controllers
             var relativePath = $"/resource/{subFolder}/{fileName}";
             return Ok(new { filePath = relativePath });
         }
+
     }
 }

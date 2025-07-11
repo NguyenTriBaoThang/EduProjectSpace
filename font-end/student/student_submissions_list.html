@@ -37,7 +37,7 @@
                 <i class="bi bi-list"></i>
             </button>
             <div class="ms-auto d-flex align-items-center">
-                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm...">
+                <input type="text" class="search-box me-3" placeholder="🔍 Tìm kiếm..." id="searchInput">
                 <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
                 <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
                 <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
@@ -64,7 +64,7 @@
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold text-primary">📌 Danh sách môn học</h2>
-                <button class="btn btn-info" onclick="exportProjects()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                <button class="btn btn-info" onclick="exportCourses()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
             </div>
             
             <!-- Breadcrumb -->
@@ -82,7 +82,7 @@
             <div class="table-container">
                 <!-- Header tìm kiếm -->
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm kiếm đồ án..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm kiếm môn học..." onkeyup="filterTable()">
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
                         <option value="Chưa hoàn thành">Chưa hoàn thành</option>
@@ -101,7 +101,6 @@
                                 <th>Giảng viên hướng dẫn</th>
                                 <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Tiến độ</th>
-                                <th class="sortable" onclick="sortTable('score')">Điểm số <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -123,30 +122,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu bảng
-        const projects = [
-            { id: 1, name: "Công nghệ phần mềm", instructor: "Nguyễn Thanh Tùng", status: "Đã chấm điểm", progress: 100, score: 9.8 },
-            { id: 2, name: "Lập trình trên môi trường Windows", instructor: "Nguyễn Đình Ánh", status: "Đã chấm điểm", progress: 100, score: 9.5 },
-            { id: 3, name: "Trí tuệ nhân tạo", instructor: "Nguyễn Khắc Chiến", status: "Đã chấm điểm", progress: 100, score: 9.3 },
-            { id: 4, name: "Bảo mật thông tin", instructor: "Văn Thiên Hoàng", status: "Đã chấm điểm", progress: 100, score: 8.8 },
-            { id: 5, name: "Lập trình ứng dụng với Java", instructor: "Búi Phú Khuyên", status: "Đã chấm điểm", progress: 100, score: 8.5 },
-            { id: 6, name: "Lập trình Web", instructor: "Nguyễn Hữu Trung", status: "Đã chấm điểm", progress: 100, score: 9.3 },
-            { id: 7, name: "Cơ sở dữ liệu nâng cao", instructor: "Võ Hoàng Khang", status: "Đã chấm điểm", progress: 100, score: 9.0 },
-            { id: 8, name: "Lập trình mạng máy tính", instructor: "Nguyễn Lê Văn", status: "Đã chấm điểm", progress: 100, score: 9.0 },
-            { id: 9, name: "Lập trình trên thiết bị di động", instructor: "Nguyễn Mạnh Hùng", status: "Đã chấm điểm", progress: 100, score: 8.5 },
-            { id: 10, name: "Quản lý dự án công nghệ thông tin", instructor: "Trần Thị Vân Anh", status: "Đã chấm điểm", progress: 100, score: 9.3 },
-            { id: 11, name: "Lập trình hướng đối tượng", instructor: "Nguyễn Thanh Tùng", status: "Đã chấm điểm", progress: 100, score: 9.0 },
-            { id: 12, name: "Đồ án cơ sở Công nghệ thông tin", instructor: "Nguyễn Huy Cường", status: "Đã nộp", progress: 80, score: 0.0 },
-            { id: 13, name: "Đồ án chuyên ngành Công nghệ thông tin", instructor: "Nguyễn Huy Cường", status: "Đã nộp", progress: 90, score: 0.0 },
-            { id: 14, name: "Đồ án tốt nghiệp Công nghệ thông tin", instructor: "Nguyễn Huy Cường", status: "Chưa hoàn thành", progress: 50, score: 0.0 }
-        ];
-
-        const itemsPerPage = 5;
+        const API_URL = "https://localhost:7047";
+        const token = localStorage.getItem("token");
+        let courses = [];
         let currentPage = 1;
         let sortColumn = null;
         let sortDirection = 'asc';
 
-        // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => {
             toggleSidebar();
         });
@@ -185,7 +167,6 @@
 
         if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
 
-        // Toggle Sidebar
         function toggleSidebar() {
             let sidebar = document.querySelector(".sidebar");
             let content = document.querySelector(".content");
@@ -201,24 +182,41 @@
             }
         }
 
-        // Lọc và sắp xếp bảng
-        function getFilteredProjects() {
+        async function loadCourses() {
+            if (!token) {
+                alert("Vui lòng đăng nhập lại.");
+                window.location.href = "../LOGIN/login.html";
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/api/StudentCourse`, {
+                    headers: { "Authorization": `Bearer ${token}`, "Accept": "*/*", "Content-Type": "application/json" },
+                    credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi ${response.status}`);
+                const data = await response.json();
+                courses = data.items || [];
+                displayTable(1, data.totalCount); // Reset về trang 1 khi tải lại
+            } catch (error) {
+                console.error("Lỗi khi tải danh sách môn học:", error);
+                alert(`Không tải được dữ liệu: ${error.message}`);
+            }
+        }
+
+        function getFilteredCourses() {
+            let filtered = [...courses];
             const searchText = document.getElementById("searchInput").value.toLowerCase();
             const statusFilter = document.getElementById("statusFilter").value;
 
-            let filtered = projects.filter(project =>
-                project.name.toLowerCase().includes(searchText) &&
-                (statusFilter === "" || project.status === statusFilter)
+            filtered = filtered.filter(course =>
+                course.name.toLowerCase().includes(searchText) &&
+                (statusFilter === "" || course.status === statusFilter)
             );
 
             if (sortColumn) {
                 filtered.sort((a, b) => {
-                    let valueA = sortColumn === 'score' ? a[sortColumn] : a[sortColumn].toLowerCase();
-                    let valueB = sortColumn === 'score' ? b[sortColumn] : b[sortColumn].toLowerCase();
-                    if (sortColumn === 'score') {
-                        valueA = a.status === "Đã chấm điểm" ? valueA : -1;
-                        valueB = b.status === "Đã chấm điểm" ? valueB : -1;
-                    }
+                    let valueA = sortColumn === 'progress' ? a[sortColumn] : a[sortColumn].toLowerCase();
+                    let valueB = sortColumn === 'progress' ? b[sortColumn] : b[sortColumn].toLowerCase();
                     return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
                 });
             }
@@ -226,45 +224,42 @@
             return filtered;
         }
 
-        function displayTable(page) {
-            const filteredProjects = getFilteredProjects();
-            const start = (page - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const paginatedData = filteredProjects.slice(start, end);
+        function displayTable(page, totalCount) {
+            const filteredCourses = getFilteredCourses();
+            const start = (page - 1) * 5;
+            const end = start + 5;
+            const paginatedData = filteredCourses.slice(start, end);
 
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Không tìm thấy môn học nào.</td></tr>';
             } else {
-                paginatedData.forEach((project, index) => {
+                paginatedData.forEach((course, index) => {
                     let statusClass = "";
-                    if (project.status === "Đã chấm điểm") statusClass = "bg-primary";
-                    if (project.status === "Đã nộp") statusClass = "bg-success";
-                    if (project.status === "Chưa hoàn thành") statusClass = "bg-warning";
-
-                    const score = project.status === "Đã chấm điểm" ? project.score : "Chưa chấm";
+                    if (course.status === "Đã chấm điểm") statusClass = "bg-primary";
+                    if (course.status === "Đã nộp") statusClass = "bg-success";
+                    if (course.status === "Chưa hoàn thành") statusClass = "bg-warning";
 
                     tableBody.innerHTML += `
                         <tr>
                             <td>${start + index + 1}</td>
-                            <td>${project.name}</td>
-                            <td>${project.instructor}</td>
-                            <td><div class="status ${statusClass}">${project.status}</div></td>
-                            <td><div class="progress"><div class="progress-bar ${statusClass}" style="width: ${project.progress}%">${project.progress}%</div></div></td>
-                            <td>${score}</td>
-                            <td><a href="student_submissions_week.html?id=${project.id}" class="btn btn-sm btn-info">📄 Xem</a></td>
+                            <td>${course.name}</td>
+                            <td>${course.instructor}</td>
+                            <td><div class="status ${statusClass}">${course.status}</div></td>
+                            <td><div class="progress"><div class="progress-bar ${statusClass}" style="width: ${course.progress}%">${course.progress}%</div></div></td>
+                            <td><a href="student_submissions_week.html?id=${course.id}" class="btn btn-sm btn-info">📄 Xem</a></td>
                         </tr>
                     `;
                 });
             }
 
-            setupPagination(filteredProjects.length);
+            setupPagination(totalCount);
         }
 
         function setupPagination(totalItems) {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const totalPages = Math.ceil(totalItems / 5);
             const pagination = document.getElementById("pagination");
             pagination.innerHTML = "";
 
@@ -284,12 +279,12 @@
 
         function changePage(page) {
             currentPage = page;
-            displayTable(currentPage);
+            displayTable(currentPage, courses.length); // Sử dụng tổng số bản ghi từ API
         }
 
         function filterTable() {
             currentPage = 1;
-            displayTable(currentPage);
+            displayTable(currentPage, courses.length);
         }
 
         function sortTable(column) {
@@ -299,27 +294,23 @@
                 sortColumn = column;
                 sortDirection = 'asc';
             }
-            displayTable(currentPage);
+            displayTable(currentPage, courses.length);
         }
 
-        // Xuất danh sách môn học sang Excel
-        function exportProjects() {
-            const filteredProjects = getFilteredProjects();
+        function exportCourses() {
             const worksheetData = [
                 ["Danh sách môn học"],
                 [],
-                ["#", "Môn học", "Giảng viên hướng dẫn", "Trạng thái", "Tiến độ", "Điểm số"]
+                ["#", "Môn học", "Giảng viên hướng dẫn", "Trạng thái", "Tiến độ"]
             ];
 
-            filteredProjects.forEach((project, index) => {
-                const score = project.status === "Đã chấm điểm" ? project.score : "Chưa chấm";
+            courses.forEach((course, index) => {
                 worksheetData.push([
                     index + 1,
-                    project.name,
-                    project.instructor,
-                    project.status,
-                    project.progress + "%",
-                    score
+                    course.name,
+                    course.instructor,
+                    course.status,
+                    course.progress + "%"
                 ]);
             });
 
@@ -329,8 +320,9 @@
             XLSX.writeFile(workbook, "danh_sach_mon_hoc.xlsx");
         }
 
-        // Khởi chạy
-        displayTable(currentPage);
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCourses();
+        });
     </script>
 </body>
 </html>
