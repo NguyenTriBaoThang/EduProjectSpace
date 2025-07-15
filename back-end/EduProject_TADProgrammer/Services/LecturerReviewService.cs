@@ -1,20 +1,24 @@
-﻿using DocumentFormat.OpenXml.InkML;
-using EduProject_TADProgrammer.Data;
+﻿using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace EduProject_TADProgrammer.Services
 {
     public class LecturerReviewService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public LecturerReviewService(ApplicationDbContext context)
+        public LecturerReviewService(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         public async Task<IEnumerable<CourseLecturerReviewDto>> GetCoursesForReviewAsync(long lecturerId)
@@ -68,7 +72,7 @@ namespace EduProject_TADProgrammer.Services
                 var students = p.Group?.GroupMembers.Select(gm => gm.Student).ToList() ?? new List<User>();
                 var isFullyReviewed = students.All(s =>
                     criteria.All(c => s.Grades.Any(g => g.ProjectId == p.Id && g.CriteriaId == c.Id && g.Score > 0)) &&
-                    !s.Grades.Any(a => a.ProjectId == p.Id && a.Comment == "Chưa duyệt"));
+                    !students.Any(s => s.Grades.Any(g => g.ProjectId == p.Id && g.Comment == "Chưa duyệt")));
 
                 return new ProjectLecturerReviewListDto
                 {
@@ -96,8 +100,7 @@ namespace EduProject_TADProgrammer.Services
                 .Include(p => p.Group)
                     .ThenInclude(g => g.GroupMembers)
                     .ThenInclude(gm => gm.Student)
-                    .ThenInclude(s => s.Grades)
-                    .ThenInclude(g => g.GradeVersions)
+                    .ThenInclude(s => s.GradeAppeals)
                 .Include(p => p.Tasks)
                     .ThenInclude(t => t.Submissions)
                     .ThenInclude(s => s.Student)
@@ -180,7 +183,6 @@ namespace EduProject_TADProgrammer.Services
             };
         }
 
-
         public async System.Threading.Tasks.Task SaveProjectGradesAsync(long lecturerId, string projectId, SaveGradesLecturerReviewDto saveGradesDto)
         {
             var project = await _context.Projects
@@ -218,7 +220,9 @@ namespace EduProject_TADProgrammer.Services
                     .Where(gv => gv.Grade.ProjectId == project.Id && gv.Grade.StudentId == studentGrade.StudentId)
                     .CountAsync() + 1;
 
-                string versionComment = $"Phiên bản lần {versionNumber}";
+                string versionComment = string.IsNullOrEmpty(studentGrade.Comment)
+                    ? $"Phiên bản lần {versionNumber} (Chưa được duyệt)"
+                    : $"{studentGrade.Comment}, Phiên bản lần {versionNumber} (Chưa được duyệt)";
 
                 foreach (var criteriaGrade in studentGrade.CriteriaGrades)
                 {
@@ -253,15 +257,80 @@ namespace EduProject_TADProgrammer.Services
                             .Select(g => g.Id)
                             .FirstOrDefault()),
                         Score = (float)criteriaGrade.Score,
-                        Comment = string.IsNullOrEmpty(studentGrade.Comment) ? versionComment : $"{versionComment}, {studentGrade.Comment}",
+                        Comment = versionComment,
                         VersionNumber = versionNumber,
-                        CreatedAt = DateTime.UtcNow,
-                        //CreatedBy = lecturerId // Thêm trường này
+                        CreatedAt = DateTime.UtcNow
                     });
                 }
+
+                // Gửi email thông báo điểm
+                await SendGradeNotificationEmail(student, project, studentGrade, criteria);
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        private async System.Threading.Tasks.Task SendGradeNotificationEmail(User student, Project project, StudentGradeInputLecturerReviewDto studentGrade, List<GradeCriteria> criteria)
+        {
+            if (string.IsNullOrEmpty(student.Email)) return;
+
+            var smtpHost = _configuration["Smtp:Host"];
+            var smtpPort = int.Parse(_configuration["Smtp:Port"]);
+            var smtpUsername = _configuration["Smtp:Username"];
+            var smtpPassword = _configuration["Smtp:Password"];
+
+            using var smtpClient = new SmtpClient(smtpHost)
+            {
+                Port = smtpPort,
+                Credentials = new NetworkCredential(smtpUsername, smtpPassword),
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
+
+            // Lấy Semester nếu chưa được tải
+            if (project.Course.Semester == null)
+            {
+                project.Course = await _context.Courses
+                    .Include(c => c.Semester)
+                    .FirstOrDefaultAsync(c => c.Id == project.Course.Id) ?? project.Course;
+            }
+
+            var semesterName = project.Course.Semester?.Name ?? "Chưa xác định";
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(smtpUsername, "HUTECH EduProject"),
+                Subject = $"Thông báo điểm đồ án {project.Title} (Chưa được duyệt)",
+                Body = $@"
+                    <h3>Thông báo điểm đồ án</h3>
+                    <p>Xin chào {student.FullName},</p>
+                    <p>Điểm đánh giá cho đồ án <strong>{project.Title}</strong> (Mã đồ án: {project.ProjectCode}, Môn học: {project.Course.Name}, Học kỳ: {semesterName}) đã được giảng viên hướng dẫn chấm. Lưu ý: Điểm này <strong>chưa được duyệt</strong> và cần được Trưởng bộ môn phê duyệt để chính thức.</p>
+                    <h4>Chi tiết điểm:</h4>
+                    <ul>
+                        {string.Join("", studentGrade.CriteriaGrades.Select(cg =>
+                {
+                    var criterion = criteria.FirstOrDefault(c => c.Id == cg.CriteriaId);
+                    return $"<li>{criterion?.Name ?? "Unknown"}: {cg.Score:F2} (Trọng số: {(criterion?.Weight * 100):F0}%)</li>";
+                }))}
+                    </ul>
+                    <p><strong>Tổng điểm:</strong> {studentGrade.CriteriaGrades.Sum(cg => (float)cg.Score * (criteria.FirstOrDefault(c => c.Id == cg.CriteriaId)?.Weight ?? 0)):F2}</p>
+                    <p><strong>Nhận xét:</strong> {studentGrade.Comment ?? "Không có nhận xét"}</p>
+                    <p><strong>Trạng thái:</strong> Chưa được duyệt</p>
+                    <p>Thời gian: {DateTime.Now:dd/MM/yyyy HH:mm} (Giờ Việt Nam)</p>
+                    <p>Vui lòng kiểm tra hệ thống để biết thêm chi tiết hoặc liên hệ giảng viên hướng dẫn nếu có thắc mắc.</p>
+                    <p>Trân trọng,<br>Hệ thống Sinh viên HUTECH - Team TAD Programmer</p>",
+                IsBodyHtml = true
+            };
+            mailMessage.To.Add(student.Email);
+
+            try
+            {
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi gửi email cho {student.Email}: {ex.Message}");
+            }
         }
 
         public async Task<IEnumerable<GradeVersionDto>> GetReviewHistoryAsync(long lecturerId, string projectId)

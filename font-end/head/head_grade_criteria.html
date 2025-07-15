@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang quản lý tiêu chí chấm điểm của môn học - Hệ thống Sinh viên HUTECH">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer, Khoa CNTT, HUTECH">
+    <title>Quản lý tiêu chí chấm điểm | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1055; }
+        .table-responsive { max-height: 600px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
+        <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <div class="sidebar-section">
+            <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="/font-end/head/head_course_list.html" class="active"><i class="bi bi-book"></i> Danh sách môn học</a>
+            <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="/font-end/head/head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" id="searchInput" placeholder="🔍 Tìm tiêu chí..." onkeyup="filterTable()">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Avatar">
+                <h6 id="headName">Head HUTECH</h6>
+                <p id="headEmail">head@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#" id="resetDefaultBtn"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">📊 Quản lý tiêu chí chấm điểm: <span id="courseName">Môn học</span></h2>
+                <div>
+                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addModal">Thêm tiêu chí <i class="bi bi-plus-circle"></i></button>
+                    <label class="btn btn-warning me-2">
+                        Nhập Excel <input type="file" id="importExcel" accept=".xlsx" style="display:none;" onchange="importExcel(event)">
+                    </label>
+                    <button class="btn btn-info" onclick="exportExcel()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
+                </div>
+            </div>
+
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_course_list.html">Danh sách môn học</a></li>
+                    <li class="breadcrumb-item active"><i class="bi bi-list-ul"></i> Quản lý tiêu chí chấm điểm</li>
+                </ol>
+            </nav>
+
+            <div class="table-container">
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('name')">Tên tiêu chí <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('weight')">Trọng số <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Mô tả</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast-container">
+            <div id="toast" class="toast" role="alert" data-bs-autohide="true" data-bs-delay="3000">
+                <div class="toast-body"></div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Thêm tiêu chí chấm điểm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addForm">
+                            <input type="hidden" id="addCourseId">
+                            <div class="mb-3">
+                                <label class="form-label">Tên tiêu chí</label>
+                                <input type="text" id="addName" class="form-control" maxlength="100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Trọng số (0-1)</label>
+                                <input type="number" id="addWeight" class="form-control" step="0.01" min="0" max="1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mô tả</label>
+                                <textarea id="addDescription" class="form-control" maxlength="500"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary" onclick="addGradeCriteria()">Thêm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Sửa tiêu chí chấm điểm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                            <input type="hidden" id="editId">
+                            <input type="hidden" id="editCourseId">
+                            <div class="mb-3">
+                                <label class="form-label">Tên tiêu chí</label>
+                                <input type="text" id="editName" class="form-control" maxlength="100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Trọng số (0-1)</label>
+                                <input type="number" id="editWeight" class="form-control" step="0.01" min="0" max="1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mô tả</label>
+                                <textarea id="editDescription" class="form-control" maxlength="500"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary" onclick="updateGradeCriteria()">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền HUTECH – Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = 'https://localhost:7047';
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+        let gradeCriteriaList = [];
+        let headLecturerId = null;
+        let courseId = null;
+        let courseName = 'Môn học';
+
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            courseId = parseInt(params.get('courseId')) || null;
+            headLecturerId = parseInt(params.get('headLecturer')) || null;
+        }
+
+        async function loadUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                if (!user || user.roleName !== 'ROLE_HEAD' || !user.id) {
+                    throw new Error('Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.');
+                }
+                if (!headLecturerId) headLecturerId = user.id;
+                if (headLecturerId !== user.id) throw new Error('ID Trưởng bộ môn không khớp.');
+                document.getElementById('headName').textContent = user.fullName || 'Head HUTECH';
+                document.getElementById('headEmail').textContent = user.email || 'head@hutech.edu.vn';
+            } catch (error) {
+                showToast(`Vui lòng đăng nhập lại: ${error.message}`, true);
+                window.location.replace('/font-end/login/login.html');
+            }
+        }
+
+        async function loadCourseName() {
+            if (!courseId) {
+                showToast('Không tìm thấy môn học.', true);
+                window.location.replace('/font-end/head/head_course_list.html');
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/api/HeadGradeCriteria/courses?headLecturer=${headLecturerId}`, {
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải thông tin môn học: ${await response.text()}`);
+                const courses = await response.json();
+                const course = courses.find(c => c.id === courseId);
+                if (!course) throw new Error('Môn học không tồn tại hoặc không thuộc quyền quản lý.');
+                courseName = course.name;
+                document.getElementById('courseName').textContent = courseName;
+                document.getElementById('addCourseId').value = courseId;
+                document.getElementById('editCourseId').value = courseId;
+            } catch (error) {
+                showToast(`Lỗi tải thông tin môn học: ${error.message}`, true);
+                window.location.replace('/font-end/head/head_course_list.html');
+            }
+        }
+
+        async function loadGradeCriteria() {
+            if (!courseId) return;
+            try {
+                const response = await fetch(`${API_URL}/api/HeadGradeCriteria?headLecturer=${headLecturerId}`, {
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải danh sách tiêu chí: ${await response.text()}`);
+                gradeCriteriaList = (await response.json()).filter(c => c.courseId === courseId);
+                displayTable(currentPage);
+            } catch (error) {
+                showToast(`Lỗi tải danh sách tiêu chí: ${error.message}`, true);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" class="text-center">Không thể tải danh sách tiêu chí.</td></tr>';
+            }
+        }
+
+        function displayTable(page) {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = gradeCriteriaList.filter(c => c.name.toLowerCase().includes(searchText));
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = sortColumn === 'weight' ? a[sortColumn] : a[sortColumn].toLowerCase();
+                    let valueB = sortColumn === 'weight' ? b[sortColumn] : b[sortColumn].toLowerCase();
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginated = filtered.slice(start, end);
+
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = paginated.length === 0
+                ? '<tr><td colspan="5" class="text-center">Không tìm thấy tiêu chí.</td></tr>'
+                : paginated.map((c, i) => `
+                    <tr>
+                        <td>${start + i + 1}</td>
+                        <td>${c.name}</td>
+                        <td>${(c.weight * 100).toFixed(0)}%</td>
+                        <td>${c.description || 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="editGradeCriteria(${c.id})"><i class="bi bi-pencil"></i> Sửa</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteGradeCriteria(${c.id})"><i class="bi bi-trash"></i> Xóa</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            setupPagination(filtered.length);
+        }
+
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            if (totalPages <= 1) return;
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage > 1) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            pagination.innerHTML += `<li class="page-item active"><a class="page-link" href="#">${currentPage}</a></li>`;
+            if (currentPage < totalPages) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage < totalPages - 1) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        function showToast(message, isError = false) {
+            const toast = new bootstrap.Toast(document.getElementById('toast'));
+            const toastBody = document.querySelector('.toast-body');
+            toastBody.textContent = message;
+            toastBody.className = `toast-body ${isError ? 'bg-danger text-white' : 'bg-success text-white'}`;
+            toast.show();
+        }
+
+        async function addGradeCriteria() {
+            const form = document.getElementById('addForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const criteria = {
+                courseId: parseInt(document.getElementById('addCourseId').value),
+                name: document.getElementById('addName').value.trim(),
+                weight: parseFloat(document.getElementById('addWeight').value),
+                description: document.getElementById('addDescription').value.trim() || null
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/HeadGradeCriteria?headLecturer=${headLecturerId}`, {
+                    method: 'POST',
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include",
+                    body: JSON.stringify(criteria)
+                });
+                if (!response.ok) throw new Error((await response.json()).message || 'Lỗi khi thêm tiêu chí.');
+                bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+                form.reset();
+                await loadGradeCriteria();
+                showToast('Thêm tiêu chí thành công!');
+            } catch (error) {
+                showToast(`Lỗi khi thêm tiêu chí: ${error.message}`, true);
+            }
+        }
+
+        function editGradeCriteria(id) {
+            const criteria = gradeCriteriaList.find(c => c.id === id);
+            if (!criteria) {
+                showToast('Tiêu chí không tồn tại.', true);
+                return;
+            }
+            document.getElementById('editId').value = criteria.id;
+            document.getElementById('editCourseId').value = criteria.courseId;
+            document.getElementById('editName').value = criteria.name;
+            document.getElementById('editWeight').value = criteria.weight;
+            document.getElementById('editDescription').value = criteria.description || '';
+            new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+
+        async function updateGradeCriteria() {
+            const form = document.getElementById('editForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const criteria = {
+                id: parseInt(document.getElementById('editId').value),
+                courseId: parseInt(document.getElementById('editCourseId').value),
+                name: document.getElementById('editName').value.trim(),
+                weight: parseFloat(document.getElementById('editWeight').value),
+                description: document.getElementById('editDescription').value.trim() || null
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/HeadGradeCriteria/${criteria.id}?headLecturer=${headLecturerId}`, {
+                    method: 'PUT',
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include",
+                    body: JSON.stringify(criteria)
+                });
+                if (!response.ok) throw new Error((await response.json()).message || 'Lỗi khi cập nhật tiêu chí.');
+                bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                await loadGradeCriteria();
+                showToast('Cập nhật tiêu chí thành công!');
+            } catch (error) {
+                showToast(`Lỗi khi cập nhật tiêu chí: ${error.message}`, true);
+            }
+        }
+
+        async function deleteGradeCriteria(id) {
+            if (!confirm('Xác nhận xóa tiêu chí này?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/HeadGradeCriteria/${id}?headLecturer=${headLecturerId}`, {
+                    method: 'DELETE',
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
+                });
+                if (!response.ok) throw new Error((await response.json()).message || 'Lỗi khi xóa tiêu chí.');
+                await loadGradeCriteria();
+                showToast('Xóa tiêu chí thành công!');
+            } catch (error) {
+                showToast(`Lỗi khi xóa tiêu chí: ${error.message}`, true);
+            }
+        }
+
+        async function importExcel(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                showToast('Vui lòng chọn file Excel.', true);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const workbook = XLSX.read(e.target.result, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(sheet, {
+                        header: ['name', 'courseId', 'weight', 'description'],
+                        skipHeader: true
+                    });
+
+                    const criteriaList = rows.map(row => ({
+                        courseId: courseId,
+                        name: row.name?.trim(),
+                        weight: parseFloat(row.weight),
+                        description: row.description?.trim() || null
+                    })).filter(c => c.name && c.weight >= 0 && c.weight <= 1);
+
+                    if (!criteriaList.length) throw new Error('File Excel không chứa dữ liệu hợp lệ.');
+
+                    const response = await fetch(`${API_URL}/api/HeadGradeCriteria/import?headLecturer=${headLecturerId}`, {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include",
+                        body: JSON.stringify(criteriaList)
+                    });
+                    if (!response.ok) throw new Error((await response.json()).message || 'Lỗi khi nhập Excel.');
+                    const result = await response.json();
+                    let message = `Nhập thành công ${result.successCount} tiêu chí.`;
+                    if (result.failedCount > 0) message += `\nLỗi: ${result.errors.join('; ')}`;
+                    await loadGradeCriteria();
+                    showToast(message, result.failedCount > 0);
+                    event.target.value = '';
+                } catch (error) {
+                    showToast(`Lỗi nhập Excel: ${error.message}`, true);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function exportExcel() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const worksheetData = [
+                ['Danh sách tiêu chí chấm điểm - Hệ thống Sinh viên HUTECH'],
+                [`Trưởng bộ môn: ${user.fullName || 'Head HUTECH'}`],
+                [`Môn học: ${courseName}`],
+                [],
+                ['Tên tiêu chí', 'Trọng số', 'Mô tả'],
+                ...gradeCriteriaList.map(c => [
+                    c.name,
+                    c.weight,
+                    c.description || 'N/A'
+                ])
+            ];
+            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'TieuChi');
+            XLSX.writeFile(workbook, `tieu_chi_cham_diem_${courseId}.xlsx`);
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: 'POST',
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Đăng xuất thất bại: ${await response.text()}`);
+                showToast('Đăng xuất thành công!');
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                window.location.replace('/font-end/login/login.html');
+            } catch (error) {
+                showToast(`Lỗi đăng xuất: ${error.message}`, true);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            getQueryParams();
+            await loadUserProfile();
+            await loadCourseName();
+            await loadGradeCriteria();
+        });
+    </script>
+</body>
+</html>

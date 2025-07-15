@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang danh sách môn học của Trưởng bộ môn - Hệ thống Sinh viên HUTECH">
+    <meta name="copyright" content="© 2025 - Nhóm TAD Programmer, Khoa CNTT, HUTECH">
+    <title>Danh sách môn học | Hệ thống Sinh viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-end/static/css/styles_head.css" rel="stylesheet">
+    <link href="/font-end/static/img/img_logohutech.png" type="image/png" rel="icon">
+    <style>
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1055; }
+        .table-responsive { max-height: 600px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🎓 Hệ thống Trưởng bộ môn</h4>
+        <a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
+        <div class="sidebar-section">
+            <a href="/font-end/head/head_lecturer_assign.html"><i class="bi bi-list-ul"></i> Danh sách GVHD</a>
+            <a href="/font-end/head/head_course_assign.html"><i class="bi bi-person-plus"></i> Phân công GVHD</a>
+            <a href="/font-end/head/head_course_list.html" class="active"><i class="bi bi-book"></i> Danh sách môn học</a>
+            <a href="/font-end/head/head_progress_courses.html"><i class="bi bi-clock"></i> Theo dõi tiến độ</a>
+            <a href="/font-end/head/head_grading_courses.html"><i class="bi bi-award"></i> Duyệt chấm điểm</a>
+            <a href="/font-end/head/head_defense_list.html"><i class="bi bi-calendar"></i> Quản lý lịch bảo vệ</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <nav class="navbar navbar-expand-lg px-3">
+            <button id="toggleSidebarBtn" class="btn btn-outline-light me-2">
+                <i id="sidebarIcon" class="bi bi-list"></i>
+            </button>
+            <button class="navbar-toggler toggle-btn" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="search-box me-3" id="searchInput" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
+                <button id="toggleFullscreen" class="btn"><i class="bi bi-arrows-fullscreen"></i></button>
+                <button id="toggleTheme" class="btn"><i class="bi bi-moon"></i></button>
+                <button id="notificationBtn" class="btn"><i class="bi bi-bell"></i></button>
+                <button id="profileBtn" class="btn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </nav>
+
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <img src="/font-end/static/medit/imgUser/avatar.jpg" alt="Avatar">
+                <h6 id="headName">Head HUTECH</h6>
+                <p id="headEmail">head@hutech.edu.vn</p>
+            </div>
+            <div class="profile-menu">
+                <a href="#"><i class="bi bi-gear"></i> Cài đặt hiển thị</a>
+                <a href="#" id="toggleFullscreenBtn"><i class="bi bi-arrows-fullscreen"></i> Toàn màn hình</a>
+                <a href="#" id="resetDefaultBtn"><i class="bi bi-arrow-clockwise"></i> Khôi phục mặc định</a>
+                <a href="#" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">📚 Danh sách môn học</h2>
+            </div>
+
+            <nav class="breadcrumb-container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/font-end/head/head_dashboard.html"><i class="bi bi-house-door"></i></a></li>
+                    <li class="breadcrumb-item active"><i class="bi bi-book"></i> Danh sách môn học</li>
+                </ol>
+            </nav>
+
+            <div class="table-container">
+                <div class="table-content">
+                    <table class="table-custom table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="sortable" onclick="sortTable('name')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('courseCode')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <ul id="pagination" class="pagination"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast-container">
+            <div id="toast" class="toast" role="alert" data-bs-autohide="true" data-bs-delay="3000">
+                <div class="toast-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Bản quyền HUTECH – Team TAD Programmer ©2025
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = 'https://localhost:7047';
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let sortColumn = null;
+        let sortDirection = 'asc';
+        let courseList = [];
+        let headLecturerId = null;
+
+        // Navbar Functions
+        document.getElementById('toggleSidebarBtn').addEventListener('click', toggleSidebar);
+        document.getElementById('notificationBtn').addEventListener('click', () => window.location.href = '/font-end/head/lecturer_notifications.html');
+        document.getElementById('profileBtn').addEventListener('click', (event) => {
+            event.stopPropagation();
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById('profileDropdown');
+            if (!dropdown.contains(event.target) && event.target.id !== 'profileBtn') {
+                dropdown.style.display = 'none';
+            }
+        });
+        document.getElementById('toggleFullscreen').addEventListener('click', () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById('toggleFullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+        document.getElementById('toggleTheme').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const content = document.querySelector('.content');
+            const icon = document.getElementById('sidebarIcon');
+            sidebar.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
+            icon.classList.toggle('bi-list', !sidebar.classList.contains('collapsed'));
+            icon.classList.toggle('bi-layout-sidebar-inset', sidebar.classList.contains('collapsed'));
+        }
+
+        async function loadUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                if (!user || user.roleName !== 'ROLE_HEAD' || !user.id) {
+                    throw new Error('Không có quyền Trưởng bộ môn hoặc chưa đăng nhập.');
+                }
+                headLecturerId = user.id;
+                document.getElementById('headName').textContent = user.fullName || 'Head HUTECH';
+                document.getElementById('headEmail').textContent = user.email || 'head@hutech.edu.vn';
+            } catch (error) {
+                showToast(`Vui lòng đăng nhập lại: ${error.message}`, true);
+                window.location.replace('/font-end/login/login.html');
+            }
+        }
+
+        async function loadCourses() {
+            try {
+                const response = await fetch(`${API_URL}/api/HeadGradeCriteria/courses?headLecturer=${headLecturerId}`, {
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Lỗi tải danh sách môn học: ${await response.text()}`);
+                courseList = await response.json();
+                displayTable(currentPage);
+            } catch (error) {
+                showToast(`Lỗi tải danh sách môn học: ${error.message}`, true);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="4" class="text-center">Không thể tải danh sách môn học.</td></tr>';
+            }
+        }
+
+        function displayTable(page) {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = courseList.filter(c =>
+                c.name.toLowerCase().includes(searchText) ||
+                c.courseCode.toLowerCase().includes(searchText)
+            );
+
+            if (sortColumn) {
+                filtered.sort((a, b) => {
+                    let valueA = a[sortColumn].toLowerCase();
+                    let valueB = b[sortColumn].toLowerCase();
+                    return sortDirection === 'asc' ? (valueA > valueB ? 1 : -1) : (valueA < valueB ? 1 : -1);
+                });
+            }
+
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginated = filtered.slice(start, end);
+
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = paginated.length === 0
+                ? '<tr><td colspan="4" class="text-center">Không tìm thấy môn học.</td></tr>'
+                : paginated.map((c, i) => `
+                    <tr>
+                        <td>${start + i + 1}</td>
+                        <td>${c.name}</td>
+                        <td>${c.courseCode}</td>
+                        <td>
+                            <a href="/font-end/head/head_grade_criteria.html?courseId=${c.id}&headLecturer=${headLecturerId}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-list-ul"></i> Quản lý tiêu chí
+                            </a>
+                        </td>
+                    </tr>
+                `).join('');
+
+            setupPagination(filtered.length);
+        }
+
+        function setupPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            if (totalPages <= 1) return;
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">«</a></li>`;
+            if (currentPage > 2) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
+            if (currentPage > 3) pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage > 1) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">${currentPage - 1}</a></li>`;
+            pagination.innerHTML += `<li class="page-item active"><a class="page-link" href="#">${currentPage}</a></li>`;
+            if (currentPage < totalPages) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">${currentPage + 1}</a></li>`;
+            if (currentPage < totalPages - 2) pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            if (currentPage < totalPages - 1) pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">»</a></li>`;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayTable(currentPage);
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            displayTable(currentPage);
+        }
+
+        function filterTable() {
+            currentPage = 1;
+            displayTable(currentPage);
+        }
+
+        function showToast(message, isError = false) {
+            const toast = new bootstrap.Toast(document.getElementById('toast'));
+            const toastBody = document.querySelector('.toast-body');
+            toastBody.textContent = message;
+            toastBody.className = `toast-body ${isError ? 'bg-danger text-white' : 'bg-success text-white'}`;
+            toast.show();
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch(`${API_URL}/api/Auth/logout`, {
+                    method: 'POST',
+                    headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${localStorage.getItem("token")}`
+                        },
+                        credentials: "include"
+                });
+                if (!response.ok) throw new Error(`Đăng xuất thất bại: ${await response.text()}`);
+                showToast('Đăng xuất thành công!');
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                window.location.replace('/font-end/login/login.html');
+            } catch (error) {
+                showToast(`Lỗi đăng xuất: ${error.message}`, true);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadUserProfile();
+            await loadCourses();
+        });
+    </script>
+</body>
+</html>

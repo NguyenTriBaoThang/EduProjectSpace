@@ -20,6 +20,7 @@ internal class Program
                    .EnableDetailedErrors());
 
         // Thêm dịch vụ MVC và Razor Pages
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddControllersWithViews();
 
         // Thêm Swagger
@@ -42,10 +43,11 @@ internal class Program
         builder.Services.AddScoped<AdminDashboardService>();
         builder.Services.AddScoped<AdminRolePermissionService>();
         builder.Services.AddScoped<AdminDefenseCommitteeService>();
-
+        
         builder.Services.AddScoped<HeadLecturerService>();
         builder.Services.AddScoped<HeadDashboardService>();
         builder.Services.AddScoped<HeadCourseGradingService>();
+        builder.Services.AddScoped<HeadGradeCriteriaService>();
         builder.Services.AddScoped<HeadDefenseScheduleService>();
         builder.Services.AddScoped<HeadProgressCoursesService>();
         builder.Services.AddScoped<HeadCourseAssignmentService>();

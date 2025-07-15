@@ -37,8 +37,6 @@ namespace EduProject_TADProgrammer.Controllers
             return Ok(groups);
         }
 
-        // Endpoint mới để lấy chi tiết nhóm
-        // Ghi chú: Thêm API để lấy chi tiết từng nhóm, bao gồm điểm cho từng sinh viên.
         [HttpGet("group-details")]
         public async Task<IActionResult> GetGroupGradingDetails(long groupId, string courseId, string semester, string facultyCode)
         {
@@ -48,5 +46,39 @@ namespace EduProject_TADProgrammer.Controllers
             var groupDetails = await _courseGradingService.GetGroupGradingDetailsAsync(groupId, courseId, semester, facultyCode);
             return groupDetails != null ? Ok(groupDetails) : NotFound("Không tìm thấy thông tin nhóm.");
         }
+
+        [HttpPost("approve-grade")]
+        public async Task<IActionResult> ApproveGrade([FromBody] ApproveGradeRequest request)
+        {
+            if (string.IsNullOrEmpty(request.CourseId) || string.IsNullOrEmpty(request.Semester) || string.IsNullOrEmpty(request.FacultyCode))
+                return BadRequest("Thông tin môn học, học kỳ và mã lớp không được để trống.");
+
+            try
+            {
+                await _courseGradingService.ApproveGradesAsync(request.GroupId, request.CourseId, request.Semester, request.FacultyCode, request.CouncilFeedback);
+                return Ok(new { Message = "Duyệt điểm thành công" });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi server: {ex.Message}");
+            }
+        }
+    }
+
+    public class ApproveGradeRequest
+    {
+        public long GroupId { get; set; }
+        public string CourseId { get; set; }
+        public string Semester { get; set; }
+        public string FacultyCode { get; set; }
+        public string CouncilFeedback { get; set; }
     }
 }

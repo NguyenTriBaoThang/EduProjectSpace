@@ -173,7 +173,7 @@
             <!-- Save Button -->
             <div class="d-flex justify-content-end mt-4">
                 <button type="button" class="btn btn-primary" onclick="saveReview()">Lưu</button>
-                <button type="button" class="btn btn-info ms-2" onclick="window.location.href='/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}'">Đánh giá</button>
+                <button type="button" class="btn btn-info ms-2" onclick="window.location.href='/font-end/lecturer/lecturer_project_review.html?projectId=${projectId}&courseId=${courseId}'">Đánh giá</button>
             </div>
         </div>
     </div>
@@ -256,7 +256,7 @@
         async function loadProjectReview() {
             if (!projectId) {
                 alert("Không tìm thấy mã đồ án.");
-                window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
+                window.location.href = `/font-end/lecturer/lecturer_project_review.html?projectId=${projectId}&courseId=${courseId}`;
                 return;
             }
 
@@ -343,7 +343,7 @@
                 }
             } catch (e) {
                 alert("Lỗi khi tải chi tiết đồ án: " + e.message);
-                window.location.href = `/font-end/lecturer/lecturer_project_review.html?courseId=${courseId}`;
+                window.location.href = `/font-end/lecturer/lecturer_project_review.html?projectId=${projectId}&courseId=${courseId}`;
             }
         }
 

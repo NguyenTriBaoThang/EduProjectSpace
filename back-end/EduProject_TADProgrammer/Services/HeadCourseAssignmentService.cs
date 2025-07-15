@@ -41,10 +41,7 @@ namespace EduProject_TADProgrammer.Services
                     CourseId = c.Id,
                     Name = c.Name,
                     Semester = c.Semester.Name,
-                    FacultyCode = c.StudentCourses
-                        .Select(sc => sc.Student.Department.FacultyCode)
-                        .Distinct()
-                        .FirstOrDefault() ?? "Unknown",
+                    FacultyCode = c.Department.FacultyCode,
                     StudentCount = c.StudentCourses.Count(),
                     AssignedCount = c.StudentCourses.Count(sc => sc.LecturerId != null),
                     AssignedNullCount = c.StudentCourses.Count(sc => sc.LecturerId == null)

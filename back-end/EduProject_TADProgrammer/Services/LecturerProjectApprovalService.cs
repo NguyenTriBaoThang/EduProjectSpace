@@ -6,19 +6,24 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace EduProject_TADProgrammer.Services
 {
     public class LecturerProjectApprovalService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public LecturerProjectApprovalService(ApplicationDbContext context)
+        public LecturerProjectApprovalService(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public async Task<IEnumerable<LecturerProjectApprovalDto>> GetCoursesForLecturerAsync(long lecturerId)
@@ -141,6 +146,7 @@ namespace EduProject_TADProgrammer.Services
                 .ThenInclude(c => c.LecturerCourses)
                 .Include(p => p.Group)
                 .ThenInclude(g => g.GroupMembers)
+                .ThenInclude(gm => gm.Student)
                 .Include(p => p.Course)
                 .ThenInclude(c => c.Semester)
                 .FirstOrDefaultAsync(p => p.ProjectCode == projectId &&
@@ -149,15 +155,12 @@ namespace EduProject_TADProgrammer.Services
             if (project == null)
                 throw new Exception("Project not found or not authorized.");
 
-
             // Check if group has members
             if (project.Group == null || !project.Group.GroupMembers.Any())
                 throw new Exception("Cannot approve or reject project: Group has no members.");
 
             if (approvalStatus == "REJECTED" && string.IsNullOrEmpty(approvalReason))
-            {
                 throw new Exception("Reason is required for rejection.");
-            }
 
             if (!new[] { "PENDING", "APPROVED", "REJECTED" }.Contains(approvalStatus))
                 throw new Exception("Invalid approval status.");
@@ -173,6 +176,70 @@ namespace EduProject_TADProgrammer.Services
             project.ApprovalReason = approvalStatus == "REJECTED" ? approvalReason : null;
 
             await _context.SaveChangesAsync();
+
+            // Send email notification to all students in the group
+            foreach (var member in project.Group.GroupMembers)
+            {
+                var student = member.Student;
+                if (student != null && !string.IsNullOrEmpty(student.Email))
+                {
+                    await SendApprovalEmail(student, project, approvalStatus, approvalReason);
+                }
+            }
+        }
+
+        private async System.Threading.Tasks.Task SendApprovalEmail(User student, Project project, string approvalStatus, string approvalReason)
+        {
+            var smtpHost = _configuration["Smtp:Host"];
+            var smtpPort = int.Parse(_configuration["Smtp:Port"]);
+            var smtpUsername = _configuration["Smtp:Username"];
+            var smtpPassword = _configuration["Smtp:Password"];
+
+            using var smtpClient = new SmtpClient(smtpHost)
+            {
+                Port = smtpPort,
+                Credentials = new NetworkCredential(smtpUsername, smtpPassword),
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
+
+            // Load Semester if not already loaded
+            if (project.Course.Semester == null)
+            {
+                project.Course = await _context.Courses
+                    .Include(c => c.Semester)
+                    .FirstOrDefaultAsync(c => c.Id == project.Course.Id) ?? project.Course;
+            }
+
+            var semesterName = project.Course.Semester?.Name ?? "Chưa xác định";
+            var statusText = approvalStatus == "APPROVED" ? "Đã duyệt" : "Bị từ chối";
+            var reasonText = approvalStatus == "REJECTED" ? $"<p><strong>Lý do từ chối:</strong> {approvalReason}</p>" : "";
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(smtpUsername, "HUTECH EduProject"),
+                Subject = $"Thông báo trạng thái duyệt đề tài {project.Title}",
+                Body = $@"
+                    <h3>Thông báo trạng thái duyệt đề tài</h3>
+                    <p>Xin chào {student.FullName},</p>
+                    <p>Đề tài <strong>{project.Title}</strong> (Mã đề tài: {project.ProjectCode}, Môn học: {project.Course.Name}, Học kỳ: {semesterName}) đã được Giảng viên hướng dẫn xem xét.</p>
+                    <p><strong>Trạng thái:</strong> {statusText}</p>
+                    {reasonText}
+                    <p>Thời gian: {DateTime.Now:dd/MM/yyyy HH:mm} (Giờ Việt Nam)</p>
+                    <p>Vui lòng kiểm tra hệ thống để biết thêm chi tiết hoặc liên hệ Giảng viên hướng dẫn nếu có thắc mắc.</p>
+                    <p>Trân trọng,<br>Hệ thống Sinh viên HUTECH - Team TAD Programmer</p>",
+                IsBodyHtml = true
+            };
+            mailMessage.To.Add(student.Email);
+
+            try
+            {
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi gửi email cho {student.Email}: {ex.Message}");
+            }
         }
 
         private async Task<string> GenerateProjectCode(string title, string semester)
@@ -210,5 +277,4 @@ namespace EduProject_TADProgrammer.Services
                 .Replace("Đ", "D").Replace("đ", "d");
         }
     }
-
 }
