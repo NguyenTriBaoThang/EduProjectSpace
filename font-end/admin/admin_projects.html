@@ -36,7 +36,7 @@
             </div>
         </div>
         <a href="/font-end/admin/admin_semesters.html"><i class="bi bi-calendar"></i> Quản lý kỳ học</a>
-        <a href="/font-end/admin/admin_courses.html"><i class="bi bi-book"></i> Quản lý môn học</a>
+        <a href="/font-end/admin/admin_courses.html"><i class="bi bi-book"></i> Quản lý học phần</a>
         <a href="/font-end/admin/admin_projects.html" class="active"><i class="bi bi-folder"></i> Quản lý đề tài</a>
         <a href="/font-end/admin/admin_notifications.html"><i class="bi bi-bell"></i> Quản lý thông báo</a>
         <a href="/font-end/admin/admin_logs.html"><i class="bi bi-clock-history"></i> Lịch sử hoạt động</a>
@@ -99,7 +99,7 @@
                 <div class="table-header d-flex gap-2">
                     <input type="text" id="searchInputFuse" class="form-control" placeholder="🔍 Tìm tên đề tài..." onkeyup="filterTable()">
                     <select id="courseFilter" class="form-select" onchange="filterTable()">
-                        <option value="">📚 Chọn tên môn học</option>
+                        <option value="">📚 Chọn tên học phần</option>
                     </select>
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
@@ -114,7 +114,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('courseName')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('courseName')">Tên học phần <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('title')">Tên đề tài <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Sinh viên</th>
                                 <th class="sortable" onclick="sortTable('lecturerName')">Giảng viên <i class="bi bi-arrow-down-up"></i></th>
@@ -145,7 +145,7 @@
                         <input type="hidden" id="editProjectId">
                         <input type="hidden" id="editProjectCourseId">
                         <div class="mb-3">
-                            <label class="form-label">Tên môn học</label>
+                            <label class="form-label">Tên học phần</label>
                             <input type="text" id="editProjectCourse" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
@@ -240,7 +240,7 @@
                     },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error(`Lỗi tải danh sách môn học: ${response.status}`);
+                if (!response.ok) throw new Error(`Lỗi tải danh sách học phần: ${response.status}`);
                 const courses = await response.json();
                 const courseFilter = document.getElementById("courseFilter");
                 courses.forEach(course => {
@@ -250,8 +250,8 @@
                     courseFilter.appendChild(option);
                 });
             } catch (error) {
-                console.error('Lỗi khi tải môn học:', error);
-                alert(`Không thể tải danh sách môn học: ${error.message}`);
+                console.error('Lỗi khi tải học phần:', error);
+                alert(`Không thể tải danh sách học phần: ${error.message}`);
             }
         }
 
@@ -477,7 +477,7 @@
             const worksheetData = [
                 ["Danh sách đề tài - Hệ thống Sinh viên HUTECH"],
                 [],
-                ["#", "Tên môn học", "Tên đề tài", "Sinh viên", "Giảng viên", "Trạng thái"]
+                ["#", "Tên học phần", "Tên đề tài", "Sinh viên", "Giảng viên", "Trạng thái"]
             ];
 
             filteredProjects.forEach((project, index) => {

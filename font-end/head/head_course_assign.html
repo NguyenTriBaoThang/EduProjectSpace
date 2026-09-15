@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Trang danh sách môn học cần phân công GVHD - Hệ thống Sinh viên HUTECH">
+    <meta name="description" content="Trang danh sách học phần cần phân công GVHD - Hệ thống Sinh viên HUTECH">
     <meta name="copyright" content="© 2025 - Nhóm TAD Programmer, Khoa CNTT, HUTECH">
     <title>Danh sách môn cần phân công GVHD | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -56,7 +56,7 @@
         </div>
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold text-primary">👩‍🏫 Danh sách môn học cần phân công GVHD</h2>
+                <h2 class="fw-bold text-primary">👩‍🏫 Danh sách học phần cần phân công GVHD</h2>
                 <button class="btn btn-info" onclick="exportCourses()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
             </div>
             <nav class="breadcrumb-container">
@@ -67,15 +67,15 @@
             </nav>
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm học phần..." onkeyup="filterTable()">
                 </div>
                 <div class="table-content">
                     <table class="table-custom table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('courseId')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('name')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('courseId')">Mã học phần <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('name')">Tên học phần <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('semester')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('facultyCode')">Mã khoa <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('studentCount')">Số sinh viên <i class="bi bi-arrow-down-up"></i></th>
@@ -169,13 +169,13 @@
                 });
                 if (!response.ok) {
                     if (response.status === 401) throw new Error("Phiên đăng nhập hết hạn.");
-                    throw new Error(`Không thể lấy danh sách môn học: ${response.statusText}`);
+                    throw new Error(`Không thể lấy danh sách học phần: ${response.statusText}`);
                 }
                 const data = await response.json();
                 courses = data.courses || [];
                 displayTable(currentPage);
             } catch (error) {
-                console.error('Lỗi lấy môn học:', error);
+                console.error('Lỗi lấy học phần:', error);
                 alert(`Lỗi: ${error.message}`);
                 courses = [];
                 displayTable(currentPage);
@@ -205,7 +205,7 @@
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Không tìm thấy môn học.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="9" class="text-center">Không tìm thấy học phần.</td></tr>';
             } else {
                 paginatedData.forEach((course, index) => {
                     tableBody.innerHTML += `
@@ -268,7 +268,7 @@
 
         function viewAssignments(courseId, semester, facultyCode) {
             if (!courseId || !semester || !facultyCode) {
-                alert("Thông tin môn học không đầy đủ!");
+                alert("Thông tin học phần không đầy đủ!");
                 return;
             }
             window.location.href = `/font-end/head/head_assign.html?courseId=${courseId}`;
@@ -277,10 +277,10 @@
         function exportCourses() {
             const filteredCourses = getFilteredCourses();
             const worksheetData = [
-                ["Danh sách môn học cần phân công GVHD - Hệ thống Sinh viên HUTECH"],
+                ["Danh sách học phần cần phân công GVHD - Hệ thống Sinh viên HUTECH"],
                 ["Trưởng bộ môn: " + (document.getElementById("headName").textContent || "Head HUTECH")],
                 [],
-                ["#", "Mã môn học", "Tên môn học", "Học kỳ", "Mã khoa", "Số sinh viên", "Số SV đã phân công", "Số SV chưa phân công"]
+                ["#", "Mã học phần", "Tên học phần", "Học kỳ", "Mã khoa", "Số sinh viên", "Số SV đã phân công", "Số SV chưa phân công"]
             ];
             filteredCourses.forEach((course, index) => {
                 worksheetData.push([

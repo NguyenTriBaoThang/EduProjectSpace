@@ -18,7 +18,7 @@
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên hướng dẫn</h4>
         <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án học phần</a>
             <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
             <a href="/font-end/lecturer/lecturer_tasks.html" class="active"><i class="bi bi-list-task"></i> Quản lý công việc</a>
             <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
@@ -83,7 +83,7 @@
             <!-- Tasks Filters -->
             <div class="table-header d-flex gap-2 mb-4">
                 <select id="courseFilter" class="form-select" onchange="filterTasks()">
-                    <option value="">Tất cả môn học</option>
+                    <option value="">Tất cả học phần</option>
                 </select>
                 <select id="projectFilter" class="form-select" onchange="filterTasks()">
                     <option value="">Tất cả đồ án</option>
@@ -119,9 +119,9 @@
                 <div class="modal-body">
                     <form id="addTaskForm">
                         <div class="mb-3">
-                            <label class="form-label">Môn học</label>
+                            <label class="form-label">Học phần</label>
                             <select id="taskCourseId" class="form-select" required onchange="updateProjectOptions()">
-                                <option value="">Chọn môn học</option>
+                                <option value="">Chọn học phần</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -269,7 +269,7 @@
             }
         }
 
-        // Lấy danh sách môn học
+        // Lấy danh sách học phần
         async function loadCourses() {
             try {
                 const response = await fetch(`${API_URL}/api/LecturerCourses`, {
@@ -281,22 +281,22 @@
                     },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error("Không thể lấy môn học");
+                if (!response.ok) throw new Error("Không thể lấy học phần");
                 courses = await response.json();
                 const courseSelect = document.getElementById("courseFilter");
                 const taskCourseSelect = document.getElementById("taskCourseId");
-                courseSelect.innerHTML = "<option value=''>Tất cả môn học</option>";
-                taskCourseSelect.innerHTML = "<option value=''>Chọn môn học</option>";
+                courseSelect.innerHTML = "<option value=''>Tất cả học phần</option>";
+                taskCourseSelect.innerHTML = "<option value=''>Chọn học phần</option>";
                 courses.forEach(c => {
                     courseSelect.innerHTML += `<option value="${c.courseId}">${c.name}</option>`;
                     taskCourseSelect.innerHTML += `<option value="${c.courseId}">${c.name}</option>`;
                 });
             } catch (e) {
-                console.error("Lỗi khi tải môn học:", e);
+                console.error("Lỗi khi tải học phần:", e);
             }
         }
 
-        // Lấy danh sách dự án theo môn học
+        // Lấy danh sách dự án theo học phần
         async function updateProjectOptions() {
             const courseId = document.getElementById("taskCourseId").value;
             try {
@@ -600,7 +600,7 @@
                 ["Danh sách công việc theo học kỳ - Hệ thống Sinh viên HUTECH"],
                 [`Giảng viên hướng dẫn: ${fullNameLecturer}`],
                 [],
-                ["#", "Môn học", "Mã đồ án", "Công việc", "Học kỳ", "Thời gian bắt đầu", "Thời gian hết hạn", "Trạng thái"]
+                ["#", "Học phần", "Mã đồ án", "Công việc", "Học kỳ", "Thời gian bắt đầu", "Thời gian hết hạn", "Trạng thái"]
             ];
 
             tasks.forEach((task, index) => {

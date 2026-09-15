@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Trang danh sách môn học cần quản lý lịch bảo vệ của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
+    <meta name="description" content="Trang danh sách học phần cần quản lý lịch bảo vệ của Trưởng bộ môn trong hệ thống Sinh viên HUTECH.">
     <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
     <title>Danh sách môn cần quản lý lịch bảo vệ | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -64,7 +64,7 @@
         <!-- Courses Section -->
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold text-primary">📋 Danh sách môn học cần quản lý lịch bảo vệ</h2>
+                <h2 class="fw-bold text-primary">📋 Danh sách học phần cần quản lý lịch bảo vệ</h2>
                 <button class="btn btn-info" onclick="exportCourses()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
             </div>
 
@@ -79,7 +79,7 @@
             <!-- Courses Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm học phần..." onkeyup="filterTable()">
                 </div>
 
                 <div class="table-content">
@@ -87,8 +87,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('courseId')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('name')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('courseId')">Mã học phần <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('name')">Tên học phần <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('semester')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('classId')">Mã lớp <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('groupCount')">Số nhóm <i class="bi bi-arrow-down-up"></i></th>
@@ -179,7 +179,7 @@
             }
         }
 
-        // Lấy danh sách môn học từ API
+        // Lấy danh sách học phần từ API
         async function loadCourses() {
             try {
                 const response = await fetch(`${API_URL}/api/HeadDefenseSchedule/courses?headId=${headId}`, {
@@ -191,12 +191,12 @@
                     },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error("Không thể tải danh sách môn học");
+                if (!response.ok) throw new Error("Không thể tải danh sách học phần");
                 courses = await response.json();
                 filterTable();
             } catch (e) {
-                console.error("Lỗi khi tải môn học:", e);
-                document.getElementById("tableBody").innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                console.error("Lỗi khi tải học phần:", e);
+                document.getElementById("tableBody").innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy học phần nào.</td></tr>';
             }
         }
 
@@ -239,7 +239,7 @@
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy học phần nào.</td></tr>';
             } else {
                 paginatedData.forEach((course, index) => {
                     tableBody.innerHTML += `
@@ -312,14 +312,14 @@
             window.location.href = `/font-end/head/head_defense.html?courseId=${courseId}&semester=${semester}&classId=${classId}`;
         }
 
-        // Xuất danh sách môn học sang Excel
+        // Xuất danh sách học phần sang Excel
         function exportCourses() {
             const filteredCourses = getFilteredCourses();
             const worksheetData = [
-                ["Danh sách môn học cần quản lý lịch bảo vệ - Hệ thống Sinh viên HUTECH"],
+                ["Danh sách học phần cần quản lý lịch bảo vệ - Hệ thống Sinh viên HUTECH"],
                 [`Trưởng bộ môn: ${document.getElementById("userName").textContent}`],
                 [],
-                ["#", "Mã môn học", "Tên môn học", "Học kỳ", "Mã lớp", "Số nhóm", "Số nhóm đã xếp lịch"]
+                ["#", "Mã học phần", "Tên học phần", "Học kỳ", "Mã lớp", "Số nhóm", "Số nhóm đã xếp lịch"]
             ];
 
             filteredCourses.forEach((course, index) => {

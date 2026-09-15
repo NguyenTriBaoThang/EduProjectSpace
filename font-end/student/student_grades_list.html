@@ -98,7 +98,7 @@
             <!-- Bảng điểm -->
             <div class="table-container mt-4">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm học phần..." onkeyup="filterTable()">
                     <button class="btn btn-info" onclick="exportGrades()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
                 </div>
                 <div class="table-content">
@@ -106,7 +106,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('subject')">Môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('subject')">học phần <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('score')">Điểm số <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
@@ -249,7 +249,7 @@
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy học phần nào.</td></tr>';
             } else {
                 paginatedData.forEach((grade, index) => {
                     let badgeClass = "badge bg-secondary";
@@ -316,7 +316,7 @@
             const worksheetData = [
                 ["Hệ thống chấm điểm - Danh sách các môn"],
                 [],
-                ["#", "Môn học", "Điểm số", "Trạng thái"]
+                ["#", "học phần", "Điểm số", "Trạng thái"]
             ];
 
             grades.forEach((grade, index) => {

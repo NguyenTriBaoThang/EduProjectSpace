@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Trang danh sách môn học cần chia nhóm sinh viên của Giảng viên hướng dẫn trong hệ thống Sinh viên HUTECH.">
+    <meta name="description" content="Trang danh sách học phần cần chia nhóm sinh viên của Giảng viên hướng dẫn trong hệ thống Sinh viên HUTECH.">
     <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
     <title>Danh sách môn cần chia nhóm | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -18,7 +18,7 @@
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên</h4>
         <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án học phần</a>
             <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
             <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
             <a href="/font-end/lecturer/lecturer_course_feedback.html"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
@@ -64,7 +64,7 @@
         <!-- Courses Section -->
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold text-primary">👥 Danh sách môn học cần chia nhóm</h2>
+                <h2 class="fw-bold text-primary">👥 Danh sách học phần cần chia nhóm</h2>
                 <button class="btn btn-info" onclick="exportCourses()">Xuất Excel <i class="bi bi-file-earmark-excel"></i></button>
             </div>
 
@@ -79,7 +79,7 @@
             <!-- Courses Table -->
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm học phần..." onkeyup="filterTable()">
                 </div>
 
                 <div class="table-content">
@@ -87,8 +87,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('courseId')">Mã môn học <i class="bi bi-arrow-down-up"></i></th>
-                                <th class="sortable" onclick="sortTable('name')">Tên môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('courseId')">Mã học phần <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('name')">Tên học phần <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('semester')">Học kỳ <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('facultyCode')">Mã khoa <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('studentCount')">Số SV <i class="bi bi-arrow-down-up"></i></th>
@@ -191,7 +191,7 @@
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy học phần nào.</td></tr>';
             } else {
                 paginatedData.forEach((course, index) => {
                     tableBody.innerHTML += `
@@ -264,14 +264,14 @@
             window.location.href = `lecturer_groups.html?courseId=${courseId}`;
         }
 
-        // Xuất danh sách môn học sang Excel
+        // Xuất danh sách học phần sang Excel
         function exportCourses() {
             const filteredCourses = getFilteredCourses();
             const worksheetData = [
-                ["Danh sách môn học cần chia nhóm - Hệ thống Sinh viên HUTECH"],
+                ["Danh sách học phần cần chia nhóm - Hệ thống Sinh viên HUTECH"],
                 [`Giảng viên hướng dẫn: ${fullNameLecturer}`],
                 [],
-                ["#", "Mã môn học", "Tên môn học", "Học kỳ", "Mã khoa", "Số SV", "Số nhóm"]
+                ["#", "Mã học phần", "Tên học phần", "Học kỳ", "Mã khoa", "Số SV", "Số nhóm"]
             ];
 
             filteredCourses.forEach((course, index) => {
@@ -322,13 +322,13 @@
                     },
                     credentials: "include"
                 });
-                if (!response.ok) throw new Error("Không thể lấy danh sách môn học.");
+                if (!response.ok) throw new Error("Không thể lấy danh sách học phần.");
 
                 const data = await response.json();
                 courses = data.courses || [];
                 displayTable(currentPage);
             } catch (error) {
-                console.error("Lỗi khi tải danh sách môn học:", error);
+                console.error("Lỗi khi tải danh sách học phần:", error);
                 alert("Lỗi: " + error.message);
             }
         }

@@ -80,7 +80,7 @@
             <div class="table-container">
                 <!-- Header tìm kiếm -->
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm môn học..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Tìm học phần..." onkeyup="filterTable()">
                     <select id="statusFilter" class="form-select" onchange="filterTable()">
                         <option value="">📂 Trạng thái</option>
                         <option value="Chưa nộp">Chưa nộp</option>
@@ -95,7 +95,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th class="sortable" onclick="sortTable('name')">Môn học <i class="bi bi-arrow-down-up"></i></th>
+                                <th class="sortable" onclick="sortTable('name')">học phần <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('status')">Trạng thái <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('progress')">Tiến độ <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
@@ -233,7 +233,7 @@
             tableBody.innerHTML = "";
 
             if (paginatedData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy môn học nào.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Không tìm thấy học phần nào.</td></tr>';
             } else {
                 paginatedData.forEach((project, index) => {
                     const statusClass = project.status === "Đã chấm điểm" ? "bg-primary" : project.status === "Đã nộp" ? "bg-success" : "bg-warning";
@@ -307,7 +307,7 @@
             const worksheetData = [
                 ["Danh sách đồ án - Theo dõi tiến độ"],
                 [],
-                ["#", "Môn học", "Trạng thái", "Tiến độ"]
+                ["#", "học phần", "Trạng thái", "Tiến độ"]
             ];
 
             filteredProjects.forEach((project, index) => {

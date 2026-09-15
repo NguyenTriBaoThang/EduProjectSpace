@@ -74,7 +74,7 @@
             </nav>
             <div class="table-container">
                 <div class="table-header d-flex gap-2">
-                    <input type="text" id="courseCodeDisplay" class="form-control" readonly placeholder="Môn học">
+                    <input type="text" id="courseCodeDisplay" class="form-control" readonly placeholder="Học phần">
                     <input type="text" id="semesterNameDisplay" class="form-control" readonly placeholder="Học kỳ">
                     <input type="text" id="facultyCodeDisplay" class="form-control" readonly placeholder="Khoa">
                 </div>
@@ -85,7 +85,7 @@
                                 <th>#</th>
                                 <th class="sortable" onclick="sortTable('studentCode')">Mã SV <i class="bi bi-arrow-down-up"></i></th>
                                 <th class="sortable" onclick="sortTable('fullName')">Tên SV <i class="bi bi-arrow-down-up"></i></th>
-                                <th>Môn học</th>
+                                <th>Học phần</th>
                                 <th class="sortable" onclick="sortTable('lecturerName')">Giảng viên HD <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Hành động</th>
                             </tr>
@@ -140,7 +140,7 @@
                                     <input type="text" id="assignStudentName" class="form-control" readonly>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Môn học</label>
+                                    <label class="form-label">Học phần</label>
                                     <input type="text" id="assignCourseCode" class="form-control" readonly>
                                 </div>
                                 <div class="mb-3">
@@ -218,7 +218,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('courseId');
             if (!courseId) {
-                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="text-center">Thiếu thông tin môn học.</td></tr>';
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="text-center">Thiếu thông tin học phần.</td></tr>';
                 return;
             }
             try {
@@ -335,7 +335,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('courseId');
             if (!courseId) {
-                alert('Thiếu thông tin môn học.');
+                alert('Thiếu thông tin học phần.');
                 return;
             }
             try {
@@ -371,7 +371,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('courseId');
             if (!courseId) {
-                alert('Thiếu thông tin môn học.');
+                alert('Thiếu thông tin học phần.');
                 return;
             }
             if (selectedLecturerIds.length < 1) {
@@ -437,9 +437,9 @@
             const courseId = urlParams.get('courseId');
             const worksheetData = [
                 ['Danh sách phân công GVHD - Hệ thống Sinh viên HUTECH'],
-                [`Môn học: ${courseId}`],
+                [`Học phần: ${courseId}`],
                 [],
-                ['#', 'Mã SV', 'Tên SV', 'Môn học', 'Giảng viên hướng dẫn']
+                ['#', 'Mã SV', 'Tên SV', 'Học phần', 'Giảng viên hướng dẫn']
             ];
             students.forEach((student, index) => {
                 worksheetData.push([
@@ -467,7 +467,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const courseId = urlParams.get('courseId');
             if (!courseId) {
-                alert('Thiếu thông tin môn học.');
+                alert('Thiếu thông tin học phần.');
                 return;
             }
             try {

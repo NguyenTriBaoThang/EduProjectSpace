@@ -77,9 +77,9 @@
 
             <form id="proposalForm" class="mt-4" onsubmit="submitProposal(event)">
                 <div class="mb-3">
-                    <label class="form-label">Môn học</label>
+                    <label class="form-label">học phần</label>
                     <select id="subject" class="form-select" name="subject" required>
-                        <option value="">-- Chọn môn học --</option>
+                        <option value="">-- Chọn học phần --</option>
                         <option value="Kỹ thuật lập trình">Kỹ thuật lập trình</option>
                         <option value="Đồ án chuyên ngành">Đồ án chuyên ngành</option>
                         <option value="Đồ án cơ sở">Đồ án cơ sở</option>
@@ -237,7 +237,7 @@
             // Xuất Excel
             const worksheetData = [
                 ["Đề xuất đề tài đồ án"],
-                ["Môn học", proposalData.subject],
+                ["học phần", proposalData.subject],
                 ["Tên đề tài", proposalData.title],
                 ["Mô tả ngắn", proposalData.description],
                 ["Công nghệ sử dụng", proposalData.technology],

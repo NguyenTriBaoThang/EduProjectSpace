@@ -82,7 +82,7 @@
                         <option value="Đã nộp">Đã nộp</option>
                     </select>
                     <select id="projectFilter" class="form-select" onchange="filterTable()">
-                        <option value="">📁 Môn học</option>
+                        <option value="">📁 học phần</option>
                         <option value="Đồ án cơ sở">Đồ án cơ sở</option>
                         <option value="Đồ án chuyên ngành">Đồ án chuyên ngành</option>
                         <option value="Đồ án tốt nghiệp">Đồ án tốt nghiệp</option>
@@ -96,7 +96,7 @@
                             <tr>
                                 <th>#</th>
                                 <th class="sortable" onclick="sortTable('name')">Bài tập <i class="bi bi-arrow-down-up"></i></th>
-                                <th>Môn học</th>
+                                <th>học phần</th>
                                 <th class="sortable" onclick="sortTable('date')">Ngày nộp <i class="bi bi-arrow-down-up"></i></th>
                                 <th>Trạng thái</th>
                                 <th class="sortable" onclick="sortTable('score')">Điểm <i class="bi bi-arrow-down-up"></i></th>
@@ -299,7 +299,7 @@
             const worksheetData = [
                 ["Lịch sử nộp bài"],
                 [],
-                ["#", "Bài tập", "Môn học", "Ngày nộp", "Trạng thái", "Điểm"]
+                ["#", "Bài tập", "học phần", "Ngày nộp", "Trạng thái", "Điểm"]
             ];
 
             filteredTasks.forEach((task, index) => {

@@ -132,7 +132,7 @@
         const semester = urlParams.get('semester');
         const classId = urlParams.get('classId');
 
-        document.getElementById("schedule-title").innerHTML = `📅 Quản lý lịch bảo vệ - ${courseId || 'Chưa chọn môn học'}`;
+        document.getElementById("schedule-title").innerHTML = `📅 Quản lý lịch bảo vệ - ${courseId || 'Chưa chọn học phần'}`;
 
         // Navbar Functions
         document.getElementById("toggleSidebarBtn").addEventListener("click", () => toggleSidebar());
@@ -194,7 +194,7 @@
         // Tải danh sách lịch bảo vệ
         async function loadSchedules() {
             if (!courseId || !semester || !classId) {
-                document.getElementById("tableBody").innerHTML = '<tr><td colspan="8" class="text-center">Vui lòng chọn một môn học từ danh sách để quản lý lịch bảo vệ.</td></tr>';
+                document.getElementById("tableBody").innerHTML = '<tr><td colspan="8" class="text-center">Vui lòng chọn một học phần từ danh sách để quản lý lịch bảo vệ.</td></tr>';
                 return;
             }
             try {
@@ -257,7 +257,7 @@
             tableBody.innerHTML = "";
 
             if (!courseId || !semester || !classId) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Vui lòng chọn một môn học từ danh sách để quản lý lịch bảo vệ.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Vui lòng chọn một học phần từ danh sách để quản lý lịch bảo vệ.</td></tr>';
             } else if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Không tìm thấy nhóm nào.</td></tr>';
             } else {
@@ -383,7 +383,7 @@
             const worksheetData = [
                 ["Danh sách lịch bảo vệ - Hệ thống Sinh viên HUTECH"],
                 [`Trưởng bộ môn: ${document.getElementById("userName").textContent}`],
-                [`Môn học: ${courseId || 'Chưa chọn'} - Học kỳ: ${semester || 'Chưa chọn'} - Lớp: ${classId || 'Chưa chọn'}`],
+                [`Học phần: ${courseId || 'Chưa chọn'} - Học kỳ: ${semester || 'Chưa chọn'} - Lớp: ${classId || 'Chưa chọn'}`],
                 [],
                 ["#", "Mã đề tài", "Tên nhóm", "Thành viên", "Ngày bảo vệ", "Địa điểm", "Hội đồng"]
             ];

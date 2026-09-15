@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hệ thống Quản lý đồ án môn học của Sinh viên HUTECH.">
+    <meta name="description" content="Hệ thống Quản lý đồ án học phần của Sinh viên HUTECH.">
     <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu.">
     <title>Nộp bài tập | Hệ thống Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -72,7 +72,7 @@
                         <a href="student_dashboard.html"><i class="bi bi-house-door"></i></a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="student_submissions_list.html"><i class="bi bi-list-ul"></i> Danh sách môn học</a>
+                        <a href="student_submissions_list.html"><i class="bi bi-list-ul"></i> Danh sách học phần</a>
                     </li>
                     <li class="breadcrumb-item active">
                         <i class="bi bi-file-earmark-text"></i> Danh sách bài tập
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <!-- Nút quay lại danh sách môn học -->
+            <!-- Nút quay lại danh sách học phần -->
             <div class="mt-2 mb-2 text-right">
                 <a href="student_submissions_list.html" class="btn btn-secondary btn-back">
                     <i class="bi bi-arrow-left-circle"></i> Danh sách Môn
@@ -159,7 +159,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dữ liệu môn học và bài tập
+        // Dữ liệu học phần và bài tập
         const subjects = {
             "1": { name: "Công nghệ phần mềm", tasks: [
                 { id: 1, name: "Đề xuất đề tài giữa kỳ", startDate: "25/01/2025", deadline: "01-02-2025", status: "Đã nộp", grade: "Chưa có điểm" },
@@ -177,7 +177,7 @@
                 { id: 13, name: "Bài tập Tuần 10", startDate: "19/04/2025", deadline: "25-04-2025", status: "Chưa nộp", grade: "Chưa có điểm" },
                 { id: 14, name: "Báo cáo cuối kỳ", startDate: "26/04/2025", deadline: "02-05-2025", status: "Chưa nộp", grade: "Chưa có điểm" }
             ]},
-            // Thêm dữ liệu môn học khác nếu cần
+            // Thêm dữ liệu học phần khác nếu cần
             "2": { name: "Lập trình Web", tasks: [
                 { id: 15, name: "Bài tập Tuần 1", startDate: "01/02/2025", deadline: "07-02-2025", status: "Đã nộp", grade: "8.0" },
                 { id: 16, name: "Bài tập Tuần 2", startDate: "08/02/2025", deadline: "14-02-2025", status: "Chưa nộp", grade: "Chưa có điểm" }

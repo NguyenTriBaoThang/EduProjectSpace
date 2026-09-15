@@ -109,9 +109,9 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Môn học</label>
+                                            <label class="form-label">Học phần</label>
                                             <select id="courseId" class="form-select" required>
-                                                <option value="">Chọn môn học</option>
+                                                <option value="">Chọn học phần</option>
                                             </select>
                                         </div>
                                     </div>
@@ -278,10 +278,10 @@
             }
         }
 
-        // Cập nhật danh sách môn học
+        // Cập nhật danh sách học phần
         function updateCourseOptions(searchText) {
             const courseSelect = document.getElementById("courseId");
-            courseSelect.innerHTML = '<option value="">Chọn môn học</option>';
+            courseSelect.innerHTML = '<option value="">Chọn học phần</option>';
             courses.filter(course => course.name.toLowerCase().includes(searchText.toLowerCase()))
                 .forEach(course => {
                     courseSelect.innerHTML += `<option value="${course.courseId}">${course.name}</option>`;
@@ -293,7 +293,7 @@
             });
         }
 
-        // Cập nhật danh sách nhóm theo môn học
+        // Cập nhật danh sách nhóm theo học phần
         function updateGroupOptions(courseId) {
             const groupSelect = document.getElementById("groupIds");
             groupSelect.innerHTML = '<option value="">Chọn nhóm</option>';

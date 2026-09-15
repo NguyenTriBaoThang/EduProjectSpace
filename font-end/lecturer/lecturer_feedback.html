@@ -18,7 +18,7 @@
         <h4 class="text-center mb-4">🎓 Hệ thống Giảng viên hướng dẫn</h4>
         <a href="/font-end/lecturer/lecturer_dashboard.html"><i class="bi bi-house-door"></i> Tổng quan</a>
         <div class="sidebar-section">
-            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án môn học</a>
+            <a href="/font-end/lecturer/lecturer_courses.html"><i class="bi bi-book"></i> Đồ án học phần</a>
             <a href="/font-end/lecturer/lecturer_course_approvals.html"><i class="bi bi-check-circle"></i> Duyệt đề tài</a>
             <a href="/font-end/lecturer/lecturer_tasks.html"><i class="bi bi-list-task"></i> Quản lý công việc</a>
             <a href="/font-end/lecturer/lecturer_course_feedback.html" class="active"><i class="bi bi-chat-left-text"></i> Nhận xét & phản hồi</a>
@@ -195,7 +195,7 @@
         // Tải danh sách đồ án từ API
         async function loadProjects() {
             if (!selectedCourseId) {
-                document.getElementById("tableBody").innerHTML = '<tr><td colspan="7" class="text-center">Vui lòng chọn một môn học từ danh sách để gửi phản hồi.</td></tr>';
+                document.getElementById("tableBody").innerHTML = '<tr><td colspan="7" class="text-center">Vui lòng chọn một học phần từ danh sách để gửi phản hồi.</td></tr>';
                 return;
             }
 
@@ -254,7 +254,7 @@
             tableBody.innerHTML = "";
 
             if (!selectedCourseId) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Vui lòng chọn một môn học từ danh sách để gửi phản hồi.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Vui lòng chọn một học phần từ danh sách để gửi phản hồi.</td></tr>';
             } else if (paginatedData.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Không tìm thấy đồ án nào.</td></tr>';
             } else {
