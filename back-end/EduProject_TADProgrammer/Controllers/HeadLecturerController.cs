@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using EduProject_TADProgrammer.Services;
@@ -7,7 +7,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_HEAD")]
+    [Authorize(Roles = "ROLE_HEAD")]
     public class HeadLecturerController : ControllerBase
     {
         private readonly HeadLecturerService _service;

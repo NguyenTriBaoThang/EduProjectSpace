@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
@@ -109,21 +109,31 @@ namespace EduProject_TADProgrammer.Services
                 {
                     try
                     {
+                        var reminderTitle = $"Nhắc nhở: Nhiệm vụ '{task.Title}' đến hạn ngày mai";
+                        var reminderContent = $"Nhiệm vụ '{task.Title}' đến hạn vào {task.Deadline.Value:yyyy-MM-dd}. Vui lòng hoàn thành đúng hạn.";
+                        var pending = await context.Notifications.FirstOrDefaultAsync(n => n.UserId == recipient.Id &&
+                            n.Title == reminderTitle && n.Content == reminderContent);
+                        if (pending?.Status == "SENT") continue;
+
                         // Tạo và gửi thông báo web/email
                         var notificationDto = new NotificationDto
                         {
                             UserId = recipient.Id,
-                            Title = $"Nhắc nhở: Nhiệm vụ '{task.Title}' đến hạn ngày mai",
-                            Content = $"Nhiệm vụ '{task.Title}' đến hạn vào {task.Deadline.Value:yyyy-MM-dd}. Vui lòng hoàn thành đúng hạn.",
-                            Type = "WEB,EMAIL",
-                            Status = "SENT",
+                            Title = reminderTitle,
+                            Content = reminderContent,
+                            Type = "Web",
+                            Status = "PENDING",
                             RecipientType = "user"
                         };
 
-                        await notificationService.CreateNotificationAsync(notificationDto);
+                        if (pending == null) await notificationService.CreateNotificationAsync(notificationDto);
+                        else notificationDto.Id = pending.Id;
 
                         // Gửi email
-                        await SendEmailReminder(recipient, task, context);
+                        if ((await notificationService.GetConfigAsync()).EnableEmail)
+                            await SendEmailReminder(recipient, task, context);
+                        var sent = await context.Notifications.FindAsync(notificationDto.Id);
+                        if (sent != null) { sent.Status = "SENT"; await context.SaveChangesAsync(); }
                         _logger.LogInformation("Sent reminder for task {TaskId} to {Email}", task.Id, recipient.Email);
                     }
                     catch (Exception ex)

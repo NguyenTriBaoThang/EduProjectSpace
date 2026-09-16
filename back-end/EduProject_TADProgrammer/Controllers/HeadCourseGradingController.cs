@@ -1,4 +1,5 @@
-﻿// File: Controllers/HeadCourseGradingController.cs
+using Microsoft.AspNetCore.Authorization;
+// File: Controllers/HeadCourseGradingController.cs
 // Mục đích: Xử lý yêu cầu API để lấy danh sách môn học, nhóm và chi tiết nhóm cần duyệt chấm điểm.
 // Ghi chú: Thêm endpoint mới để lấy chi tiết nhóm, cập nhật để hỗ trợ API thực thi.
 using EduProject_TADProgrammer.Models;
@@ -11,6 +12,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "ROLE_HEAD")]
     public class HeadCourseGradingController : ControllerBase
     {
         private readonly HeadCourseGradingService _courseGradingService;

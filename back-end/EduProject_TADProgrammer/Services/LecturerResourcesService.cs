@@ -1,4 +1,4 @@
-﻿using EduProject_TADProgrammer.Data;
+using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +31,30 @@ namespace EduProject_TADProgrammer.Services
             _huggingFaceApiKey = configuration["HuggingFace:ApiKey"] ?? Environment.GetEnvironmentVariable("HUGGINGFACE_API_KEY");
             _configuration = configuration;
             _environment = environment;
-            if (string.IsNullOrEmpty(_huggingFaceApiKey))
-                throw new InvalidOperationException("Hugging Face API key is not configured.");
+
+        }
+
+        public async Task<bool> CanUploadAsync(long lecturerId, string projectCode)
+        {
+            return await _context.Projects.AnyAsync(p => p.ProjectCode == projectCode &&
+                p.Course.LecturerCourses.Any(l => l.LecturerId == lecturerId));
+        }
+
+        private string ValidateResourceLink(long lecturerId, string type, string link, string? existing = null)
+        {
+            if (type.Equals("Website", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!Uri.TryCreate(link, UriKind.Absolute, out var uri) ||
+                    (uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp))
+                    throw new ArgumentException("Website must use HTTP or HTTPS.");
+                return uri.AbsoluteUri;
+            }
+            var relative = link.TrimStart('/');
+            if (relative != existing?.TrimStart('/') && !relative.StartsWith($"resource/uploads/{lecturerId}/", StringComparison.Ordinal))
+                throw new ArgumentException("Choose a file uploaded by your account.");
+            var path = PrivateFileAccessService.ResolvePath(_environment.WebRootPath, relative);
+            if (path == null || !System.IO.File.Exists(path)) throw new ArgumentException("Uploaded file not found.");
+            return relative;
         }
 
         public async Task<IEnumerable<CourseResourceDto>> GetCoursesForResourcesAsync(long lecturerId)
@@ -100,7 +122,7 @@ namespace EduProject_TADProgrammer.Services
                 GroupId = project.GroupId,
                 Title = resourceDto.Title,
                 Type = resourceDto.Type,
-                FilePath = resourceDto.Link,
+                FilePath = ValidateResourceLink(lecturerId, resourceDto.Type, resourceDto.Link),
                 CreatedBy = lecturerId,
                 CreatedAt = DateTime.UtcNow
             };
@@ -141,24 +163,11 @@ namespace EduProject_TADProgrammer.Services
             if (!resource.Project.Course.LecturerCourses.Any(lc => lc.LecturerId == lecturerId))
                 throw new UnauthorizedAccessException("Bạn không có quyền sửa tài liệu này.");
 
-            var basePath = Path.Combine(_environment.WebRootPath, "resource");
-            var subFolder = resourceDto.Type.ToLower() == "pdf" ? "pdf" : "video";
-            var fileName = Path.GetFileName(resourceDto.Link);
-
-            if (resourceDto.Type != "Website" && !string.IsNullOrEmpty(resource.FilePath) && System.IO.File.Exists(Path.Combine(_environment.WebRootPath, resource.FilePath)))
-                System.IO.File.Delete(Path.Combine(_environment.WebRootPath, resource.FilePath));
-
-            if (resourceDto.Type != "Website")
-            {
-                var fullPath = Path.Combine(basePath, subFolder, fileName);
-                Directory.CreateDirectory(Path.Combine(basePath, subFolder));
-                if (!System.IO.File.Exists(fullPath))
-                    System.IO.File.Copy(resourceDto.Link, fullPath, true);
-            }
-
+            var link = ValidateResourceLink(lecturerId, resourceDto.Type, resourceDto.Link, resource.FilePath);
+            var fileName = Path.GetFileName(link);
             resource.Title = resourceDto.Title;
             resource.Type = resourceDto.Type;
-            resource.FilePath = resourceDto.Type == "Website" ? resourceDto.Link : Path.Combine(subFolder, fileName).Replace("\\", "/");
+            resource.FilePath = link;
 
             var suggestion = await _context.AISuggestions
                 .FirstOrDefaultAsync(s => s.ProjectId == resource.ProjectId && s.Type == "Resource" && s.Content.Contains(resource.Title));
@@ -184,8 +193,8 @@ namespace EduProject_TADProgrammer.Services
             if (!resource.Project.Course.LecturerCourses.Any(lc => lc.LecturerId == lecturerId))
                 throw new UnauthorizedAccessException("Bạn không có quyền xóa tài liệu này.");
 
-            if (!string.IsNullOrEmpty(resource.FilePath) && System.IO.File.Exists(Path.Combine(_environment.WebRootPath, resource.FilePath)))
-                System.IO.File.Delete(Path.Combine(_environment.WebRootPath, resource.FilePath));
+            // Files may be referenced by other records; metadata deletion does not delete shared storage.
+
 
             _context.Resources.Remove(resource);
 
@@ -327,6 +336,7 @@ namespace EduProject_TADProgrammer.Services
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(_huggingFaceApiKey)) return FallbackSuggestions();
                 var request = new HttpRequestMessage(HttpMethod.Post, "https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1");
                 request.Headers.Add("Authorization", $"Bearer {_huggingFaceApiKey}");
                 request.Content = new StringContent(

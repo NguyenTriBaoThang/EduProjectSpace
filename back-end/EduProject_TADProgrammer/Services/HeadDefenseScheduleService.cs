@@ -1,4 +1,4 @@
-﻿using EduProject_TADProgrammer.Data;
+using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -169,9 +169,10 @@ namespace EduProject_TADProgrammer.Services
 
         /// Lấy danh sách tất cả meeting
         /// </summary>
-        public async Task<List<MeetingDto>> GetAllMeetingsAsync()
+        public async Task<List<MeetingDto>> GetAllMeetingsAsync(long headId)
         {
             return await _context.Meetings
+                .Where(m => _context.Users.Any(u => u.Id == headId && u.DepartmentId != null && u.DepartmentId == m.Group.Project.Course.DepartmentId))
                 .Select(m => new MeetingDto
                 {
                     MeetingId = m.Id,

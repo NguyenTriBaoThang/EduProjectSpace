@@ -1,3 +1,5 @@
+import { usePresentation } from '../../runtime/usePresentation';
+import { API_BASE_URL } from '../../config';
 // src/pages/login/LoginForm.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +9,7 @@ import FooterLogin from '../../components/FooterLogin';
 
 
 function LoginForm() {
+  usePresentation("/login");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -26,7 +29,7 @@ function LoginForm() {
 
     try {
       const response = await axios.post(
-        'https://localhost:7047/api/Auth/login',
+        `${API_BASE_URL}/api/Auth/login`,
         { username, password },
         { withCredentials: true }
       );
@@ -94,12 +97,8 @@ function LoginForm() {
               <img src="/static/img/mobile.png" alt="Mobile Dashboard" className="dashboard-image" />
             </div>
             <div className="app-links">
-              <a href="#">
-                <img src="/static/img/appstore.png" alt="App Store" className="store-icon" />
-              </a>
-              <a href="#">
-                <img src="/static/img/playstore.png" alt="Google Play" className="store-icon" />
-              </a>
+              <span><img src="/static/img/appstore.png" alt="App Store" className="store-icon" /></span>
+              <span><img src="/static/img/playstore.png" alt="Google Play" className="store-icon" /></span>
             </div>
           </div>
         </div>
@@ -138,7 +137,7 @@ function LoginForm() {
                 {isLoading && <i className="fas fa-spinner fa-spin" id="spinner"></i>}
               </button>
             </form>
-            <a href="#">Đăng nhập không được? Xem hướng dẫn tại đây</a>
+            <p>Nếu không đăng nhập được, hãy liên hệ quản trị viên để kiểm tra tài khoản.</p>
           </div>
         </div>
       </div>

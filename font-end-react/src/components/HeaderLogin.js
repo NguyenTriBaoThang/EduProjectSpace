@@ -1,6 +1,5 @@
 // src/components/HeaderLogin.js
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 function HeaderLogin({ isLoginPage = false }) {
@@ -17,17 +16,6 @@ function HeaderLogin({ isLoginPage = false }) {
 
   return (
     <>
-      <Helmet>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content={isLoginPage ? "Cổng thông tin sinh viên HUTECH." : "Hệ thống Quản lý đồ án môn học của Sinh viên HUTECH."} />
-        <meta name="copyright" content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH." />
-        <title>{isLoginPage ? "Cổng thông tin sinh viên" : "HUTECH | Hệ thống Sinh viên"}</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
-        <link href="static/css/styles_login.css" rel="stylesheet"/>
-        <link rel="icon" href="/static/img/img_logohutech.png" type="image/png" />
-      </Helmet>
       {isLoginPage ? (
         <header>
           <div className="header-container">

@@ -1,4 +1,5 @@
-﻿from flask import Flask, request, jsonify
+import os
+from flask import Flask, request, jsonify
 from sentence_transformers import SentenceTransformer, util
 
 app = Flask(__name__)
@@ -23,4 +24,4 @@ def find_similar():
     return jsonify({"top_resource": top_resource})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host=os.getenv('AI_HOST', '127.0.0.1'), port=int(os.getenv('AI_PORT', '5000')), debug=False)

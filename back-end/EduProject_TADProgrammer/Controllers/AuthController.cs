@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
@@ -26,6 +26,7 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var user = await _userService.Authenticate(request.Username, request.Password);
@@ -48,6 +49,8 @@ namespace EduProject_TADProgrammer.Controllers
 
             try
             {
+                user.FailedLoginAttempts = 0;
+                await _userService.UpdateUser(user.Id, user);
                 var token = _jwtService.GenerateToken(user);
                 if (string.IsNullOrEmpty(token))
                 {

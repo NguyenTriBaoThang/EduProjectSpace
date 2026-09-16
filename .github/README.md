@@ -24,7 +24,7 @@
 
 <p align="center">
 	<img src="https://img.shields.io/badge/.NET%20Core-8.0-purple?logo=dotnet" alt=".NET Core 8.0">
-	<img src="https://img.shields.io/badge/React-18.2-blue?logo=react" alt="React 18.2">
+	<img src="https://img.shields.io/badge/React-19-blue?logo=react" alt="React 19">
 	<img src="https://img.shields.io/badge/SQL%20Server-2022-red?logo=microsoftsqlserver" alt="SQL Server 2022">
 	<img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
 </p>
@@ -33,9 +33,9 @@
 
 ## Giới Thiệu / Introduction
 
-**EduProjectSpace** là hệ thống quản lý môn học đồ án được phát triển để tự động hóa và tối ưu hóa quy trình quản lý học thuật tại các trường đại học, đặc biệt tại **HUTECH**. Hệ thống hỗ trợ **quản trị viên**, **trưởng bộ môn**, **giảng viên**, và **sinh viên** trong việc quản lý thông tin người dùng, nhóm, đề tài, bài nộp, điểm số, lịch bảo vệ, tài nguyên, và thảo luận. Với giao diện thân thiện, tích hợp công nghệ hiện đại như **.NET Core 8.0**, **React với TypeScript**, và **SQL Server**, **EduProjectSpace** đảm bảo hiệu suất cao, bảo mật, và khả năng mở rộng.
+**EduProjectSpace** là hệ thống quản lý môn học đồ án được phát triển để tự động hóa và tối ưu hóa quy trình quản lý học thuật tại các trường đại học, đặc biệt tại **HUTECH**. Hệ thống hỗ trợ **quản trị viên**, **trưởng bộ môn**, **giảng viên**, và **sinh viên** trong việc quản lý thông tin người dùng, nhóm, đề tài, bài nộp, điểm số, lịch bảo vệ, tài nguyên, và thảo luận. Với giao diện thân thiện, tích hợp công nghệ hiện đại như **.NET Core 8.0**, **React với JavaScript/JSX**, và **SQL Server**, **EduProjectSpace** đảm bảo hiệu suất cao, bảo mật, và khả năng mở rộng.
 
-**EduProjectSpace** is a course project management system designed to automate and optimize academic management processes at universities, particularly **HUTECH**. It supports **administrators**, **department heads**, **lecturers**, and **students** in managing user information, groups, projects, submissions, grades, defense schedules, resources, and discussions. Built with modern technologies like **.NET Core 8.0**, **React with TypeScript**, and **SQL Server**, **EduProjectSpace** ensures high performance, security, and scalability.
+**EduProjectSpace** is a course project management system designed to automate and optimize academic management processes at universities, particularly **HUTECH**. It supports **administrators**, **department heads**, **lecturers**, and **students** in managing user information, groups, projects, submissions, grades, defense schedules, resources, and discussions. Built with modern technologies like **.NET Core 8.0**, **React with JavaScript/JSX**, and **SQL Server**, **EduProjectSpace** ensures high performance, security, and scalability.
 
 🔗 **Repository**: [https://github.com/NguyenTriBaoThang/EduProjectSpace](https://github.com/NguyenTriBaoThang/EduProjectSpace)  
 📚 **Wiki**: [https://github.com/NguyenTriBaoThang/EduProjectSpace/wiki](https://github.com/NguyenTriBaoThang/EduProjectSpace/wiki)
@@ -122,7 +122,7 @@
   - **HostedService**: Tác vụ nền cho sao lưu dữ liệu và thông báo tự động.
 
 - **Frontend**: 
-  - **React 18.2 với TypeScript**: Giao diện người dùng động, responsive, và an toàn kiểu dữ liệu.
+  - **React 19 với JavaScript/JSX**: Giao diện người dùng động và responsive.
   - **Fuse.js**: Tìm kiếm mờ linh hoạt cho tên đề tài, người dùng, và tài liệu.
   - **HTML/CSS/JS (Live Server)**: Hỗ trợ giao diện tĩnh đơn giản.
 

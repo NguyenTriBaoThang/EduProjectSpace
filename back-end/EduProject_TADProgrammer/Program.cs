@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Middleware;
 using EduProject_TADProgrammer.Services;
@@ -15,13 +15,16 @@ internal class Program
 
         // Thêm ApplicationDbContext với SQL Server
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-                   .EnableSensitiveDataLogging()
-                   .EnableDetailedErrors());
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                if (builder.Environment.IsDevelopment()) options.EnableDetailedErrors();
+            });
 
         // Thêm dịch vụ MVC và Razor Pages
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews(options => options.Filters.Add<HeadScopeFilter>());
+        builder.Services.AddAuthorization(options => options.FallbackPolicy =
+            new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
 
         // Thêm Swagger
         builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +32,7 @@ internal class Program
 
         // Thêm các dịch vụ
         builder.Services.AddScoped<JwtService>();
+        builder.Services.AddScoped<PrivateFileAccessService>();
         builder.Services.AddScoped<LogService>();
         builder.Services.AddScoped<NotificationService>();
         builder.Services.AddScoped<CourseOptionsService>();
@@ -72,7 +76,10 @@ internal class Program
         {
             options.AddPolicy(name: "MyAllowOrigins", policy =>
             {
-                policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000", "http://localhost:8080", "http://localhost:5000")
+                policy.WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ??
+                        (builder.Environment.IsDevelopment()
+                            ? new[] { "http://127.0.0.1:5500", "http://localhost:5500", "http://localhost:3000", "http://localhost:8080", "http://localhost:5000" }
+                            : Array.Empty<string>()))
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials(); //hỗ trợ HttpOnly cookie
@@ -119,12 +126,15 @@ internal class Program
         }
         else
         {
-            app.UseExceptionHandler("/Home/Error");
+            app.UseExceptionHandler(error => error.Run(async context =>
+            {
+                context.Response.StatusCode = 500;
+                await context.Response.WriteAsJsonAsync(new { message = "Đã xảy ra lỗi máy chủ." });
+            }));
             app.UseHsts();
         }
 
-        //app.UseHttpsRedirection();
-        app.UseStaticFiles();
+        app.UseHttpsRedirection();
         app.UseRouting();
 
         app.UseCors("MyAllowOrigins");
@@ -142,8 +152,8 @@ internal class Program
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             try
             {
-                dbContext.Database.CanConnect();
-                Console.WriteLine("Kết nối cơ sở dữ liệu thành công!");
+                var connected = dbContext.Database.CanConnect();
+                Console.WriteLine(connected ? "Kết nối cơ sở dữ liệu thành công!" : "Không kết nối được cơ sở dữ liệu.");
             }
             catch (Exception ex)
             {

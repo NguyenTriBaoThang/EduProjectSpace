@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
 using System;
@@ -11,6 +11,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "ROLE_HEAD")]
     public class HeadDefenseScheduleController : ControllerBase
     {
         private readonly HeadDefenseScheduleService _scheduleService;
@@ -78,7 +79,7 @@ namespace EduProject_TADProgrammer.Controllers
         public async Task<IActionResult> CreateDefenseSchedule([FromBody] CreateDefenseScheduleDto dto)
         {
             if (dto == null) return BadRequest("Invalid request body.");
-            if (!long.TryParse(User.FindFirst("Id")?.Value, out long headId))
+            if (!long.TryParse(User.FindFirst("id")?.Value, out long headId))
                 return BadRequest("Invalid head ID.");
 
             try
@@ -96,7 +97,7 @@ namespace EduProject_TADProgrammer.Controllers
         [HttpGet("meeting")]
         public async Task<IActionResult> GetMeetings()
         {
-            var meetings = await _scheduleService.GetAllMeetingsAsync();
+            var meetings = await _scheduleService.GetAllMeetingsAsync(long.Parse(User.FindFirst("id")!.Value));
             return Ok(meetings);
         }
 

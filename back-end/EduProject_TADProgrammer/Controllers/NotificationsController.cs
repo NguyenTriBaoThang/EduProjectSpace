@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using EduProject_TADProgrammer.Services;
 using EduProject_TADProgrammer.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -22,26 +22,27 @@ namespace EduProject_TADProgrammer.Controllers
         [HttpGet]
         public async Task<IActionResult> GetNotifications()
         {
-            var result = await _notificationService.GetNotificationsAsync();
+            var result = await _notificationService.GetNotificationsAsync(User);
             return Ok(new { notifications = result.Notifications, totalItems = result.TotalItems });
         }
 
         [HttpGet("recent")]
         public async Task<ActionResult<IEnumerable<NotificationDto>>> GetRecentNotificationsAsync()
         {
-            var notifications = await _notificationService.GetRecentNotificationsAsync();
+            var notifications = await _notificationService.GetRecentNotificationsAsync(User);
             return Ok(notifications);
         }
 
         [HttpGet("config")]
-       // [Authorize(Roles = "ROLE_ADMIN")]
+       [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<ActionResult<NotificationConfigDto>> GetConfigAsync()
         {
             var config = await _notificationService.GetConfigAsync();
+            if (config.SmtpConfig != null) config.SmtpConfig.Password = "";
             return Ok(config);
         }
 
-        // [Authorize(Roles = "ROLE_ADMIN,ROLE_LECTURER")]
+        [Authorize(Roles = "ROLE_ADMIN")]
         [HttpPost]
         public async Task<IActionResult> CreateNotification([FromBody] NotificationDtoWrapper wrapper)
         {
@@ -61,7 +62,7 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "ROLE_ADMIN,ROLE_LECTURER")]
+        [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<IActionResult> UpdateNotification(long id, [FromBody] NotificationDto notificationDto)
         {
             await _notificationService.UpdateNotificationAsync(id, notificationDto);
@@ -69,7 +70,7 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpDelete("{id}")]
-      //  [Authorize(Roles = "ROLE_ADMIN")]
+      [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<IActionResult> DeleteNotification(long id)
         {
             await _notificationService.DeleteNotificationAsync(id);
@@ -77,7 +78,7 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpPost("config")]
-       // [Authorize(Roles = "ROLE_ADMIN")]
+       [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<IActionResult> SaveConfig([FromBody] NotificationConfigDto config)
         {
             await _notificationService.SaveConfigAsync(config);
@@ -85,6 +86,7 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpGet("users")]
+        [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<ActionResult<IEnumerable<UserNotificationDto>>> GetUsersAsync([FromQuery] int? roleId)
         {
             var users = await _notificationService.GetUsersByRoleAsync(roleId ?? 0);
@@ -92,6 +94,7 @@ namespace EduProject_TADProgrammer.Controllers
         }
 
         [HttpGet("groups")]
+        [Authorize(Roles = "ROLE_ADMIN")]
         public async Task<ActionResult<IEnumerable<GroupNotificationDto>>> GetGroupsAsync()
         {
             var groups = await _notificationService.GetGroupsAsync();

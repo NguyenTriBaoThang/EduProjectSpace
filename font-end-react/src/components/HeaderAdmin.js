@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 // src/components/HeaderAdmin.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -33,12 +34,13 @@ function HeaderAdmin({ toggleSidebar }) {
   // Logout
   const logout = async () => {
     try {
-      const response = await fetch('https://localhost:7047/api/Auth/logout', {
+      const response = await fetch(`${API_BASE_URL}/api/Auth/logout`, {
         method: 'POST',
         credentials: 'include',
       });
       if (response.ok) {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         navigate('/login');
       } else {
         throw new Error('Đăng xuất thất bại.');
@@ -105,15 +107,15 @@ function HeaderAdmin({ toggleSidebar }) {
           <a href="/admin/settings">
             <i className="bi bi-gear"></i> Cài đặt hiển thị
           </a>
-          <a href="#" onClick={toggleFullscreen}>
+          <button type="button" className="btn btn-link" onClick={toggleFullscreen}>
             <i className="bi bi-arrows-fullscreen"></i> Toàn màn hình
-          </a>
-          <a href="#">
+          </button>
+          <button type="button" className="btn btn-link" onClick={() => window.location.reload()}>
             <i className="bi bi-arrow-clockwise"></i> Khôi phục mặc định
-          </a>
-          <a href="#" className="logout" onClick={logout}>
+          </button>
+          <button type="button" className="btn btn-link logout" onClick={logout}>
             <i className="bi bi-box-arrow-right"></i> Đăng xuất
-          </a>
+          </button>
         </div>
       </div>
     </nav>

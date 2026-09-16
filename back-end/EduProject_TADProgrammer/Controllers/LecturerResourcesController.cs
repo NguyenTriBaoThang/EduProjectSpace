@@ -1,4 +1,4 @@
-﻿using EduProject_TADProgrammer.Models;
+using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -190,18 +190,20 @@ namespace EduProject_TADProgrammer.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
-            var basePath = Path.Combine(_environment.WebRootPath, "resource");
-            var subFolder = type.ToLower() == "pdf" ? "pdf" : "video";
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(basePath, subFolder, fileName);
-
-            Directory.CreateDirectory(Path.Combine(basePath, subFolder));
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
+            if (!long.TryParse(User.FindFirst("id")?.Value, out var lecturerId) ||
+                !await _lecturerResourcesService.CanUploadAsync(lecturerId, projectId)) return Forbid();
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (file.Length > 50 * 1024 * 1024 ||
+                !(type.Equals("PDF", StringComparison.OrdinalIgnoreCase) ? extension == ".pdf" :
+                  type.Equals("Video", StringComparison.OrdinalIgnoreCase) && new[] { ".mp4", ".avi", ".webm" }.Contains(extension)))
+                return BadRequest("Only PDF/video files up to 50 MB are allowed.");
+            var relativePath = $"resource/uploads/{lecturerId}/{Guid.NewGuid():N}{extension}";
+            var filePath = PrivateFileAccessService.ResolvePath(_environment.WebRootPath, relativePath);
+            if (filePath == null) return BadRequest("Invalid storage path.");
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
+            await using (var stream = new FileStream(filePath, FileMode.CreateNew))
                 await file.CopyToAsync(stream);
-            }
 
-            var relativePath = $"/resource/{subFolder}/{fileName}";
             return Ok(new { filePath = relativePath });
         }
 

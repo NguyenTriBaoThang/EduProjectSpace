@@ -1,0 +1,921 @@
+[
+  {
+    "source": "admin/admin_courses.html",
+    "path": "/admin/courses",
+    "role": "ROLE_ADMIN",
+    "name": "AdminCourses",
+    "title": "Quản lý học phần | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .select2-container { z-index: 9999; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_dashboard.html",
+    "path": "/admin/dashboard",
+    "role": "ROLE_ADMIN",
+    "name": "AdminDashboard",
+    "title": "Tổng quan Admin | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .dashboard-list-group-item {\n            display: flex;\n            align-items: center;\n            gap: 10px;\n        }\n        .dashboard-notification-title {\n            flex: 1;\n            white-space: nowrap;\n            overflow: hidden;\n            text-overflow: ellipsis;\n        }\n        .text-muted {\n            white-space: nowrap;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": true
+  },
+  {
+    "source": "admin/admin_grading.html",
+    "path": "/admin/grading",
+    "role": "ROLE_ADMIN",
+    "name": "AdminGrading",
+    "title": "Quản lý hội đồng chấm điểm | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_lecturers.html",
+    "path": "/admin/lecturers",
+    "role": "ROLE_ADMIN",
+    "name": "AdminLecturers",
+    "title": "Quản lý giảng viên | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_logs.html",
+    "path": "/admin/logs",
+    "role": "ROLE_ADMIN",
+    "name": "AdminLogs",
+    "title": "Lịch sử hoạt động | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_notifications.html",
+    "path": "/admin/notifications",
+    "role": "ROLE_ADMIN",
+    "name": "AdminNotifications",
+    "title": "Quản lý thông báo | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_projects.html",
+    "path": "/admin/projects",
+    "role": "ROLE_ADMIN",
+    "name": "AdminProjects",
+    "title": "Quản lý đề tài | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .select2-container {\n            z-index: 9999;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_reports.html",
+    "path": "/admin/reports",
+    "role": "ROLE_ADMIN",
+    "name": "AdminReports",
+    "title": "Báo cáo thống kê | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_semesters.html",
+    "path": "/admin/semesters",
+    "role": "ROLE_ADMIN",
+    "name": "AdminSemesters",
+    "title": "Quản lý kỳ học | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_settings.html",
+    "path": "/admin/settings",
+    "role": "ROLE_ADMIN",
+    "name": "AdminSettings",
+    "title": "Cài đặt hệ thống | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_students.html",
+    "path": "/admin/students",
+    "role": "ROLE_ADMIN",
+    "name": "AdminStudents",
+    "title": "Quản lý sinh viên | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "admin/admin_users.html",
+    "path": "/admin/users",
+    "role": "ROLE_ADMIN",
+    "name": "AdminUsers",
+    "title": "Quản lý người dùng | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_admin.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "error/404.html",
+    "path": "/404",
+    "role": null,
+    "name": "NotFound",
+    "title": "HUTECH | Lỗi 404 - Trang không tìm thấy",
+    "styles": [
+      "\n        body {\n            font-family: 'Poppins', sans-serif;\n            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);\n            margin: 0;\n            display: flex;\n            flex-direction: column;\n            min-height: 100vh;\n        }\n        .dark-mode {\n            background: linear-gradient(135deg, #2c3e50, #4a5568);\n            color: #e9ecef;\n        }\n        .navbar {\n            background-color: #1976d2;\n            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);\n        }\n        .navbar-brand img {\n            width: 40px;\n        }\n        .container-error {\n            flex: 1;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            text-align: center;\n            padding: 20px;\n        }\n        .error-content {\n            max-width: 600px;\n            padding: 40px;\n            background: white;\n            border-radius: 15px;\n            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);\n            transition: transform 0.3s ease;\n        }\n        .dark-mode .error-content {\n            background: #343a40;\n            color: #e9ecef;\n        }\n        .error-content:hover {\n            transform: translateY(-10px);\n        }\n        .error-icon {\n            font-size: 80px;\n            color: #dc3545;\n            margin-bottom: 20px;\n        }\n        .error-code {\n            font-size: 48px;\n            font-weight: 700;\n            color: #dc3545;\n            margin-bottom: 10px;\n        }\n        .error-message {\n            font-size: 18px;\n            color: #555;\n            margin-bottom: 30px;\n        }\n        .dark-mode .error-message {\n            color: #ced4da;\n        }\n        .btn-primary {\n            background-color: #1976d2;\n            border-color: #1976d2;\n            padding: 10px 20px;\n            font-size: 16px;\n        }\n        .btn-primary:hover {\n            background-color: #0d47a1;\n            border-color: #0d47a1;\n        }\n        .footer {\n            background-color: rgba(255, 255, 255, 0.9);\n            color: #555;\n            text-align: center;\n            font-size: 12px;\n            padding: 10px 0;\n            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);\n        }\n        .dark-mode .footer {\n            background-color: #212529;\n            color: #ced4da;\n        }\n        @media (max-width: 576px) {\n            .error-content {\n                padding: 20px;\n            }\n            .error-icon {\n                font-size: 60px;\n            }\n            .error-code {\n                font-size: 36px;\n            }\n            .error-message {\n                font-size: 16px;\n            }\n        }\n    "
+    ],
+    "links": [],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/google_meet.html",
+    "path": "/head/google-meet",
+    "role": "ROLE_HEAD",
+    "name": "GoogleMeet",
+    "title": "Quản lý Google Meet | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .nav-link.active { background-color: #007bff; color: white; }\n        .form-check-input:checked { background-color: #007bff; border-color: #007bff; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_assign.html",
+    "path": "/head/assign",
+    "role": "ROLE_HEAD",
+    "name": "HeadAssign",
+    "title": "Phân công GVHD | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .lecturer-checkboxes {\n            max-height: 200px;\n            overflow-y: auto;\n            padding: 10px;\n        }\n        .form-check {\n            margin-bottom: 10px;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_course_assign.html",
+    "path": "/head/course-assign",
+    "role": "ROLE_HEAD",
+    "name": "HeadCourseAssign",
+    "title": "Danh sách môn cần phân công GVHD | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_course_list.html",
+    "path": "/head/course-list",
+    "role": "ROLE_HEAD",
+    "name": "HeadCourseList",
+    "title": "Danh sách học phần | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1055; }\n        .table-responsive { max-height: 600px; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_dashboard.html",
+    "path": "/head/dashboard",
+    "role": "ROLE_HEAD",
+    "name": "HeadDashboard",
+    "title": "Tổng quan Trưởng bộ môn | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_defense.html",
+    "path": "/head/defense",
+    "role": "ROLE_HEAD",
+    "name": "HeadDefense",
+    "title": "Quản lý lịch bảo vệ | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_defense_add.html",
+    "path": "/head/defense-add",
+    "role": "ROLE_HEAD",
+    "name": "HeadDefenseAdd",
+    "title": "Thêm lịch bảo vệ | Hệ thống Sinh viên",
+    "styles": [
+      "\n        body {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            background-color: #f4f7fa;\n        }\n        .content {\n            padding: 20px;\n        }\n        .card {\n            border: none;\n            border-radius: 12px;\n            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n            overflow: hidden;\n        }\n        .card-header {\n            background: linear-gradient(135deg, #28a745, #20c997);\n            color: white;\n            padding: 15px 20px;\n            border-bottom: none;\n            border-radius: 12px 12px 0 0;\n        }\n        .card-body {\n            padding: 20px;\n        }\n        .form-label {\n            font-weight: 600;\n            color: #495057;\n        }\n        .form-control, .form-select {\n            border-radius: 8px;\n            padding: 10px;\n            border: 1px solid #ced4da;\n        }\n        .form-control[readonly] {\n            background-color: #e9ecef;\n            color: #6c757d;\n        }\n        .btn-primary {\n            background: linear-gradient(135deg, #007bff, #00c4ff);\n            border: none;\n            border-radius: 8px;\n            padding: 10px 20px;\n            font-weight: 600;\n        }\n        .btn-secondary {\n            background: linear-gradient(135deg, #6c757d, #adb5bd);\n            border: none;\n            border-radius: 8px;\n            padding: 10px 20px;\n            font-weight: 600;\n        }\n    "
+    ],
+    "links": [],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_defense_edit.html",
+    "path": "/head/defense-edit",
+    "role": "ROLE_HEAD",
+    "name": "HeadDefenseEdit",
+    "title": "Sửa lịch bảo vệ | Hệ thống Sinh viên",
+    "styles": [
+      "\n        body {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            background-color: #f4f7fa;\n        }\n        .content {\n            padding: 20px;\n        }\n        .card {\n            border: none;\n            border-radius: 12px;\n            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n            overflow: hidden;\n        }\n        .card-header {\n            background: linear-gradient(135deg, #007bff, #00c4ff);\n            color: white;\n            padding: 15px 20px;\n            border-bottom: none;\n            border-radius: 12px 12px 0 0;\n        }\n        .card-body {\n            padding: 20px;\n        }\n        .form-label {\n            font-weight: 600;\n            color: #495057;\n        }\n        .form-control, .form-select {\n            border-radius: 8px;\n            padding: 10px;\n            border: 1px solid #ced4da;\n        }\n        .form-control[readonly] {\n            background-color: #e9ecef;\n            color: #6c757d;\n        }\n        .btn-primary {\n            background: linear-gradient(135deg, #007bff, #00c4ff);\n            border: none;\n            border-radius: 8px;\n            padding: 10px 20px;\n            font-weight: 600;\n        }\n        .btn-secondary {\n            background: linear-gradient(135deg, #6c757d, #adb5bd);\n            border: none;\n            border-radius: 8px;\n            padding: 10px 20px;\n            font-weight: 600;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_defense_list.html",
+    "path": "/head/defense-list",
+    "role": "ROLE_HEAD",
+    "name": "HeadDefenseList",
+    "title": "Danh sách môn cần quản lý lịch bảo vệ | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_grade_criteria.html",
+    "path": "/head/grade-criteria",
+    "role": "ROLE_HEAD",
+    "name": "HeadGradeCriteria",
+    "title": "Quản lý tiêu chí chấm điểm | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1055; }\n        .table-responsive { max-height: 600px; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_grading.html",
+    "path": "/head/grading",
+    "role": "ROLE_HEAD",
+    "name": "HeadGrading",
+    "title": "Xem và duyệt chấm điểm | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_grading_courses.html",
+    "path": "/head/grading-courses",
+    "role": "ROLE_HEAD",
+    "name": "HeadGradingCourses",
+    "title": "Danh sách môn cần duyệt chấm điểm | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_grading_details.html",
+    "path": "/head/grading-details",
+    "role": "ROLE_HEAD",
+    "name": "HeadGradingDetails",
+    "title": "Chi tiết duyệt chấm điểm | Hệ thống Sinh viên",
+    "styles": [
+      "\n        body {\n            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n            background-color: #f4f7fa;\n        }\n        .content {\n            padding: 20px;\n        }\n        .card {\n            border: none;\n            border-radius: 12px;\n            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n            overflow: hidden;\n        }\n        .card-header {\n            background: linear-gradient(135deg, #007bff, #00c4ff);\n            color: white;\n            padding: 15px 20px;\n            border-bottom: none;\n            border-radius: 12px 12px 0 0;\n        }\n        .card-body {\n            padding: 25px;\n            background-color: #fff;\n        }\n        .info-section, .grade-section {\n            padding: 20px;\n        }\n        .info-section {\n            background-color: #f8f9fa;\n            border-right: 1px solid #e9ecef;\n        }\n        .grade-section {\n            background-color: #fff;\n        }\n        .form-label {\n            font-weight: 600;\n            color: #495057;\n            margin-bottom: 8px;\n        }\n        .form-control, .form-select {\n            border-radius: 10px;\n            padding: 12px 15px;\n            font-size: 1rem;\n            background-color: #ffffff;\n            border: 2px solid #007bff;\n            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);\n            transition: border-color 0.3s, box-shadow 0.3s;\n        }\n        .form-control:focus, .form-select:focus {\n            border-color: #0056b3;\n            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);\n            outline: none;\n        }\n        .form-control[readonly] {\n            background-color: #f0f8ff;\n            color: #2c3e50;\n            border: 2px dashed #00c4ff;\n            opacity: 0.9;\n        }\n        .file-list {\n            list-style: none;\n            padding: 0;\n        }\n        .file-list li {\n            margin-bottom: 8px;\n            padding: 8px 12px;\n            background-color: #f1f3f5;\n            border-radius: 6px;\n            transition: background-color 0.3s;\n            display: flex;\n            align-items: center;\n            gap: 10px;\n        }\n        .file-list li:hover {\n            background-color: #e9ecef;\n        }\n        .file-list a {\n            color: #007bff;\n            text-decoration: none;\n            font-weight: 500;\n        }\n        .file-list a:hover {\n            text-decoration: underline;\n            color: #0056b3;\n        }\n        .btn-primary {\n            background: linear-gradient(135deg, #007bff, #00c4ff);\n            border: none;\n            padding: 12px 25px;\n            border-radius: 8px;\n            font-weight: 600;\n            transition: transform 0.2s, box-shadow 0.2s;\n        }\n        .btn-primary:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);\n        }\n        .btn-info {\n            background: linear-gradient(135deg, #17a2b8, #48c9b0);\n            border: none;\n            padding: 10px 20px;\n            border-radius: 8px;\n            font-weight: 600;\n        }\n        .member-table {\n            width: 100%;\n            border-collapse: collapse;\n        }\n        .member-table th, .member-table td {\n            padding: 10px;\n            text-align: left;\n            border: 1px solid #dee2e6;\n        }\n        .member-table th {\n            background-color: #007bff;\n            color: white;\n        }\n        .modal-content {\n            border-radius: 12px;\n        }\n        .modal-body pre {\n            max-height: 500px;\n            overflow-y: auto;\n            background-color: #f8f9fa;\n            padding: 15px;\n            border-radius: 8px;\n        }\n        .modal-body iframe {\n            width: 100%;\n            height: 80vh;\n            border: none;\n        }\n        .toast-container {\n            position: fixed;\n            top: 20px;\n            right: 20px;\n            z-index: 1055;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_group_details.html",
+    "path": "/head/group-details",
+    "role": "ROLE_HEAD",
+    "name": "HeadGroupDetails",
+    "title": "Chi tiết nhóm và đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css",
+      "/assets/static/css/styles_head_lecturer_group_details.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_lecturer_assign.html",
+    "path": "/head/lecturer-assign",
+    "role": "ROLE_HEAD",
+    "name": "HeadLecturerAssign",
+    "title": "Danh sách GVHD | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_lecturer_details.html",
+    "path": "/head/lecturer-details",
+    "role": "ROLE_HEAD",
+    "name": "HeadLecturerDetails",
+    "title": "Chi tiết GVHD | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_progress.html",
+    "path": "/head/progress",
+    "role": "ROLE_HEAD",
+    "name": "HeadProgress",
+    "title": "Theo dõi tiến độ | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_progress_courses.html",
+    "path": "/head/progress-courses",
+    "role": "ROLE_HEAD",
+    "name": "HeadProgressCourses",
+    "title": "Danh sách môn cần theo dõi tiến độ | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "head/head_progress_details.html",
+    "path": "/head/progress-details",
+    "role": "ROLE_HEAD",
+    "name": "HeadProgressDetails",
+    "title": "Chi tiết tiến độ đồ án | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .file-list {\n            list-style: none;\n            padding: 0;\n        }\n        .file-list li {\n            margin-bottom: 5px;\n        }\n        .file-list a {\n            color: #0d6efd;\n            text-decoration: none;\n        }\n        .file-list a:hover {\n            text-decoration: underline;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_head.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "index.html",
+    "path": "/",
+    "role": null,
+    "name": "Home",
+    "title": "HUTECH | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .user-profile {\n            display: flex;\n            align-items: center;\n            color: white;\n        }\n        .user-profile span {\n            margin-right: 15px;\n            font-weight: 500;\n        }\n        .user-profile .btn {\n            margin-left: 10px;\n        }\n        .btn-logout {\n            background-color: #dc3545;\n            border-color: #dc3545;\n        }\n        .btn-logout:hover {\n            background-color: #b02a37;\n            border-color: #b02a37;\n        }\n        .hero-image {\n            max-width: 300px; /* Giới hạn chiều rộng tối đa của hình ảnh */\n            width: 100%; /* Đảm bảo responsive */\n            height: auto; /* Giữ tỷ lệ hình ảnh */\n            margin: 0 auto; /* Căn giữa */\n            transition: transform 0.3s ease; /* Hiệu ứng mượt mà khi hover */\n        }\n        .hero-image:hover {\n            transform: scale(1.05); /* Phóng to nhẹ khi hover */\n        }\n        @media (max-width: 768px) {\n            .hero-image {\n                max-width: 200px; /* Giảm kích thước trên màn hình nhỏ */\n            }\n        }\n        @media (max-width: 576px) {\n            .user-profile span {\n                display: none;\n            }\n            .user-profile .btn {\n                margin-left: 5px;\n                padding: 5px 10px;\n                font-size: 14px;\n            }\n            .hero-image {\n                max-width: 150px; /* Giảm kích thước hơn nữa trên điện thoại */\n            }\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_index.css"
+    ],
+    "bodyClass": "",
+    "native": true
+  },
+  {
+    "source": "lecturer/lecturer_approval.html",
+    "path": "/lecturer/approval",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerApproval",
+    "title": "Duyệt đề tài đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_courses.html",
+    "path": "/lecturer/courses",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerCourses",
+    "title": "Quản lý học phần | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_course_approvals.html",
+    "path": "/lecturer/course-approvals",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerCourseApprovals",
+    "title": "Danh sách học phần cần duyệt | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_course_feedback.html",
+    "path": "/lecturer/course-feedback",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerCourseFeedback",
+    "title": "Danh sách môn cần phản hồi | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_course_groups.html",
+    "path": "/lecturer/course-groups",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerCourseGroups",
+    "title": "Danh sách môn cần chia nhóm | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_course_resources.html",
+    "path": "/lecturer/course-resources",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerCourseResources",
+    "title": "Danh sách môn cần gợi ý tài liệu | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_course_reviews.html",
+    "path": "/lecturer/course-reviews",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerCourseReviews",
+    "title": "Danh sách môn cần đánh giá tổng quan | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_dashboard.html",
+    "path": "/lecturer/dashboard",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerDashboard",
+    "title": "Tổng quan Giảng viên hướng dẫn | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_feedback.html",
+    "path": "/lecturer/feedback",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerFeedback",
+    "title": "Nhận xét & phản hồi | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_feedback_detail.html",
+    "path": "/lecturer/feedback-detail",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerFeedbackDetail",
+    "title": "Chi tiết phản hồi | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .submission-list { list-style: none; padding: 0; }\n        .submission-list li { margin-bottom: 5px; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_final_review.html",
+    "path": "/lecturer/final-review",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerFinalReview",
+    "title": "Đánh giá tổng quan học phần | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .submission-list { list-style: none; padding: 0; }\n        .submission-list li { margin-bottom: 5px; }\n        .criteria-table td { vertical-align: middle; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_groups.html",
+    "path": "/lecturer/groups",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerGroups",
+    "title": "Chia nhóm sinh viên | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_projects.html",
+    "path": "/lecturer/projects",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerProjects",
+    "title": "Quản lý đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_project_progress.html",
+    "path": "/lecturer/project-progress",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerProjectProgress",
+    "title": "Chi tiết tiến độ đồ án | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .submission-list { list-style: none; padding: 0; }\n        .submission-list li { margin-bottom: 5px; }\n        .btn-action-spacing { margin-right: 8px; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_project_review.html",
+    "path": "/lecturer/project-review",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerProjectReview",
+    "title": "Chi tiết đánh giá đồ án | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .submission-list { list-style: none; padding: 0; }\n        .submission-list li { margin-bottom: 5px; }\n        .criteria-table td { vertical-align: middle; }\n        .content { padding: 20px; }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_resources.html",
+    "path": "/lecturer/resources",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerResources",
+    "title": "Gợi ý tài liệu | Hệ thống Sinh viên",
+    "styles": [
+      "\n        .resource-entry { margin-bottom: 15px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }\n        .suggestion-entry { margin-bottom: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }\n        .loading-spinner {\n            display: none;\n            position: absolute;\n            top: 50%;\n            left: 50%;\n            transform: translate(-50%, -50%);\n            border: 4px solid #f3f3f3;\n            border-top: 4px solid #007bff;\n            border-radius: 50%;\n            width: 30px;\n            height: 30px;\n            animation: spin 1s linear infinite;\n        }\n        @keyframes spin {\n            0% { transform: translate(-50%, -50%) rotate(0deg); }\n            100% { transform: translate(-50%, -50%) rotate(360deg); }\n        }\n        .modal-body.loading .loading-spinner {\n            display: block;\n        }\n        .modal-body.loading form, .modal-body.loading #suggestionsList {\n            opacity: 0.5;\n            pointer-events: none;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "lecturer/lecturer_tasks.html",
+    "path": "/lecturer/tasks",
+    "role": "ROLE_LECTURER_GUIDE",
+    "name": "LecturerTasks",
+    "title": "Quản lý công việc | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_lecturer.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "login/login.html",
+    "path": "/login",
+    "role": null,
+    "name": "LoginForm",
+    "title": "Cổng thông tin sinh viên",
+    "styles": [
+      "\n        .login.disabled {\n            opacity: 0.6;\n            pointer-events: none;\n        }\n        .error-message {\n            display: none;\n            color: red;\n            font-size: 14px;\n            margin-bottom: 10px;\n        }\n        .logged-in-section {\n            text-align: center;\n            padding: 40px;\n            background-color: #f0f4f8;\n            border-radius: 15px;\n            width: 100%;\n            max-width: 400px;\n        }\n        .logged-in-section h2 {\n            font-size: 24px;\n            color: #333;\n            margin-bottom: 20px;\n        }\n        .logged-in-section p {\n            font-size: 16px;\n            color: #555;\n            margin-bottom: 30px;\n        }\n        .logged-in-section button {\n            width: 48%;\n            margin: 0 1%;\n            padding: 12px;\n            background-color: #1976d2;\n            color: white;\n            font-size: 16px;\n            border: none;\n            border-radius: 5px;\n            cursor: pointer;\n            transition: background-color 0.3s, transform 0.2s;\n        }\n        .logged-in-section button:hover {\n            background-color: #0d47a1;\n            transform: translateY(-2px);\n        }\n        .logged-in-section button.logout {\n            background-color: #dc3545;\n        }\n        .logged-in-section button.logout:hover {\n            background-color: #b02a37;\n        }\n    "
+    ],
+    "links": [
+      "/assets/static/css/styles_login.css"
+    ],
+    "bodyClass": "",
+    "native": true
+  },
+  {
+    "source": "student/notifications_list.html",
+    "path": "/student/notifications-list",
+    "role": "ROLE_STUDENT",
+    "name": "NotificationsList",
+    "title": "Danh sách Thông báo | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/notification_detail.html",
+    "path": "/student/notification-detail",
+    "role": "ROLE_STUDENT",
+    "name": "NotificationDetail",
+    "title": "Chi tiết thông báo | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_dashboard.html",
+    "path": "/student/dashboard",
+    "role": "ROLE_STUDENT",
+    "name": "StudentDashboard",
+    "title": "HUTECH | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/static/css/styles_student.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_grades_detail.html",
+    "path": "/student/grades-detail",
+    "role": "ROLE_STUDENT",
+    "name": "StudentGradesDetail",
+    "title": "Chi tiết điểm số | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_grades_list.html",
+    "path": "/student/grades-list",
+    "role": "ROLE_STUDENT",
+    "name": "StudentGradesList",
+    "title": "Hệ thống chấm điểm | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_grades_week.html",
+    "path": "/student/grades-week",
+    "role": "ROLE_STUDENT",
+    "name": "StudentGradesWeek",
+    "title": "Chi tiết điểm bài tập | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_history_submissions_list.html",
+    "path": "/student/history-submissions-list",
+    "role": "ROLE_STUDENT",
+    "name": "StudentHistorySubmissionsList",
+    "title": "Lịch sử nộp bài | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_history_submissions_overview.html",
+    "path": "/student/history-submissions-overview",
+    "role": "ROLE_STUDENT",
+    "name": "StudentHistorySubmissionsOverview",
+    "title": "Chi tiết Bài Nộp | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_proposals_create.html",
+    "path": "/student/proposals-create",
+    "role": "ROLE_STUDENT",
+    "name": "StudentProposalsCreate",
+    "title": "Đề xuất đề tài đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_proposals_detail.html",
+    "path": "/student/proposals-detail",
+    "role": "ROLE_STUDENT",
+    "name": "StudentProposalsDetail",
+    "title": "Xem chi tiết đề tài đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_proposals_list.html",
+    "path": "/student/proposals-list",
+    "role": "ROLE_STUDENT",
+    "name": "StudentProposalsList",
+    "title": "Danh sách đề xuất đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_schedule.html",
+    "path": "/student/schedule",
+    "role": "ROLE_STUDENT",
+    "name": "StudentSchedule",
+    "title": "Lịch cá nhân | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_submissions.html",
+    "path": "/student/submissions",
+    "role": "ROLE_STUDENT",
+    "name": "StudentSubmissions",
+    "title": "Bài tập tuần 1 | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_submissions_list.html",
+    "path": "/student/submissions-list",
+    "role": "ROLE_STUDENT",
+    "name": "StudentSubmissionsList",
+    "title": "Danh sách học phần | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_submissions_week.html",
+    "path": "/student/submissions-week",
+    "role": "ROLE_STUDENT",
+    "name": "StudentSubmissionsWeek",
+    "title": "Nộp bài tập | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_tracking_details.html",
+    "path": "/student/tracking-details",
+    "role": "ROLE_STUDENT",
+    "name": "StudentTrackingDetails",
+    "title": "Theo dõi tiến độ đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  },
+  {
+    "source": "student/student_tracking_list.html",
+    "path": "/student/tracking-list",
+    "role": "ROLE_STUDENT",
+    "name": "StudentTrackingList",
+    "title": "Theo dõi tiến độ đồ án | Hệ thống Sinh viên",
+    "styles": [],
+    "links": [
+      "/assets/student/styles.css"
+    ],
+    "bodyClass": "",
+    "native": false
+  }
+]

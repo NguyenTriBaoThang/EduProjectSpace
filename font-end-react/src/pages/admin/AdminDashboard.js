@@ -1,14 +1,18 @@
+import { usePresentation } from '../../runtime/usePresentation';
+import { API_BASE_URL } from '../../config';
 // src/pages/admin/AdminDashboard.js
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import Chart from 'chart.js/auto';
 import * as XLSX from 'xlsx';
 import HeaderAdmin from '../../components/HeaderAdmin';
 import FooterAdmin from '../../components/FooterAdmin';
 import Sidebar from '../../components/SidebarAdmin';
 
+const API_URL = API_BASE_URL;
+
 function AdminDashboard() {
+  usePresentation("/admin/dashboard");
   const navigate = useNavigate();
   const chartRef = useRef(null);
   const [user, setUser] = useState(null);
@@ -24,7 +28,6 @@ function AdminDashboard() {
     graded: 0,
   });
 
-  const API_URL = 'https://localhost:7047';
 
   // Load user profile
   useEffect(() => {
@@ -45,7 +48,7 @@ function AdminDashboard() {
     const loadDashboardData = async () => {
       try {
         // Load summary
-        const summaryResponse = await fetch(`${API_URL}/api/Dashboard/summary`, {
+        const summaryResponse = await fetch(`${API_URL}/api/AdminDashboard/summary`, {
           method: 'GET',
           headers: { Accept: '*/*' },
           credentials: 'include',
@@ -55,7 +58,7 @@ function AdminDashboard() {
         setSummary(summaryData);
 
         // Load project status
-        const statusResponse = await fetch(`${API_URL}/api/Dashboard/project-status`, {
+        const statusResponse = await fetch(`${API_URL}/api/AdminDashboard/project-status`, {
           method: 'GET',
           headers: { Accept: '*/*' },
           credentials: 'include',
@@ -157,20 +160,6 @@ function AdminDashboard() {
 
   return (
     <>
-      <Helmet>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Trang tổng quan Admin của hệ thống Sinh viên HUTECH." />
-        <meta
-          name="copyright"
-          content="© 2025 - Nhóm TAD Programmer Khoa Công nghệ Thông tin - Trường Đại học Công nghệ TP.HCM - HUTECH. Tất cả quyền được bảo lưu."
-        />
-        <title>Tổng quan Admin | Hệ thống Sinh viên</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="/static/css/styles_admin.css" rel="stylesheet" />
-        <link href="/static/img/img_logohutech.png" type="image/png" rel="icon" />
-      </Helmet>
       <div>
         
         <Sidebar />

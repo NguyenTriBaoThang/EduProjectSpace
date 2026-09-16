@@ -1,0 +1,4 @@
+.page-frame { min-height: 100vh; }
+.link-button { border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; cursor: pointer; }
+.sidebar .link-button, .profile-menu .link-button { display: block; width: 100%; padding: 10px 15px; }
+.page-loading { min-height: 50vh; display: grid; place-items: center; }

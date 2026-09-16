@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using EduProject_TADProgrammer.Data;
 using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
@@ -41,12 +42,9 @@ namespace EduProject_TADProgrammer.Services
             }
         }
 
-        public async Task<(List<NotificationDto> Notifications, int TotalItems)> GetNotificationsAsync()
+        public async Task<(List<NotificationDto> Notifications, int TotalItems)> GetNotificationsAsync(ClaimsPrincipal user)
         {
-            var query = _context.Notifications
-                .Include(n => n.User)
-                .Include(n => n.Group)
-                .AsQueryable();
+            var query = VisibleNotifications(user);
 
             var totalItems = await query.CountAsync();
             var notifications = await query
@@ -70,9 +68,9 @@ namespace EduProject_TADProgrammer.Services
             return (notifications, totalItems);
         }
 
-        public async Task<List<NotificationDto>> GetRecentNotificationsAsync()
+        public async Task<List<NotificationDto>> GetRecentNotificationsAsync(ClaimsPrincipal user)
         {
-            return await _context.Notifications
+            return await VisibleNotifications(user)
                 .OrderByDescending(n => n.CreatedAt)
                 .Take(5)
                 .Select(n => new NotificationDto
@@ -90,6 +88,15 @@ namespace EduProject_TADProgrammer.Services
                     FirstViewedAt = n.FirstViewedAt
                 })
                 .ToListAsync();
+        }
+
+        private IQueryable<Notification> VisibleNotifications(ClaimsPrincipal user)
+        {
+            var query = _context.Notifications.AsNoTracking();
+            if (user.IsInRole("ROLE_ADMIN")) return query;
+            if (!long.TryParse(user.FindFirst("id")?.Value, out var id)) return query.Where(n => false);
+            return query.Where(n => n.UserId == id ||
+                (n.GroupId != null && _context.GroupMembers.Any(g => g.GroupId == n.GroupId && g.StudentId == id)));
         }
 
         public async Task<NotificationConfigDto> GetConfigAsync()
@@ -135,6 +142,12 @@ namespace EduProject_TADProgrammer.Services
             var recipients = new List<User>();
             switch (notificationDto.RecipientType?.ToLower())
             {
+                case "user":
+                    if (!notificationDto.UserId.HasValue)
+                        throw new ArgumentException("UserId is required for an individual notification.");
+                    recipients = await _context.Users.Where(u => u.Id == notificationDto.UserId.Value).ToListAsync();
+                    if (recipients.Count == 0) throw new ArgumentException("Recipient not found.");
+                    break;
                 case "all":
                     recipients = await _context.Users.ToListAsync();
                     break;
@@ -172,6 +185,7 @@ namespace EduProject_TADProgrammer.Services
                     throw new ArgumentException("RecipientType không hợp lệ.");
             }
 
+            var createdNotifications = new List<Notification>();
             foreach (var recipient in recipients.Distinct())
             {
                 var notification = new Notification
@@ -187,6 +201,7 @@ namespace EduProject_TADProgrammer.Services
                     FirstViewedAt = null
                 };
                 _context.Notifications.Add(notification);
+                createdNotifications.Add(notification);
 
                 if (config?.EnableEmail == true && !string.IsNullOrEmpty(recipient.Email) && notification.Type == "Email")
                     await SendEmailAsync(recipient.Email, notification.Title, notification.Content);
@@ -208,10 +223,11 @@ namespace EduProject_TADProgrammer.Services
                     FirstViewedAt = null
                 };
                 _context.Notifications.Add(notification);
+                createdNotifications.Add(notification);
             }
 
             await _context.SaveChangesAsync();
-            notificationDto.Id = _context.Notifications.Max(n => n.Id);
+            notificationDto.Id = createdNotifications.FirstOrDefault()?.Id ?? 0;
             return notificationDto;
         }
 
@@ -264,6 +280,9 @@ namespace EduProject_TADProgrammer.Services
                 };
                 _context.SystemConfigs.Add(systemConfig);
             }
+
+            if (config.SmtpConfig != null && string.IsNullOrEmpty(config.SmtpConfig.Password))
+                config.SmtpConfig.Password = (await GetConfigAsync()).SmtpConfig?.Password ?? "";
 
             systemConfig.Value = $"WEB:{config.EnableWeb},EMAIL:{config.EnableEmail},FREQUENCY:{config.ReminderFrequency}";
             if (config.SmtpConfig != null)

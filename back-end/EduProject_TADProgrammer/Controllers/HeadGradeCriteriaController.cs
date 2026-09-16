@@ -1,4 +1,4 @@
-﻿using EduProject_TADProgrammer.Entities;
+using EduProject_TADProgrammer.Entities;
 using EduProject_TADProgrammer.Models;
 using EduProject_TADProgrammer.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +11,7 @@ namespace EduProject_TADProgrammer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "ROLE_HEAD")]
+    [Authorize(Roles = "ROLE_HEAD")]
     public class HeadGradeCriteriaController : ControllerBase
     {
         private readonly HeadGradeCriteriaService _gradeCriteriaService;
