@@ -138,6 +138,9 @@ namespace EduProject_TADProgrammer.Services
             if (existingCriteria.Course.DepartmentId != headLecturer.DepartmentId)
                 throw new Exception("Không có quyền sửa tiêu chí của khoa khác.");
 
+            if (!await _context.Courses.AnyAsync(c => c.Id == gradeCriteria.CourseId && c.DepartmentId == headLecturer.DepartmentId))
+                throw new Exception("Không có quyền chuyển tiêu chí sang môn học của khoa khác.");
+
             if (gradeCriteria.CourseId != existingCriteria.CourseId &&
                 await _context.GradeCriteria.AnyAsync(gc => gc.Name == gradeCriteria.Name && gc.CourseId == gradeCriteria.CourseId))
                 throw new Exception($"Tiêu chí '{gradeCriteria.Name}' đã tồn tại.");

@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { api, downloadFile } from '../../api/client';
+import useResource from '../../api/useResource';
+import Resource from '../../components/workspace/Resource';
 import DataTable from '../../components/workspace/DataTable';
+import CalendarView from '../../components/workspace/CalendarView';
 import pages from '../../pageManifest.json';
 import './workspace.css';
 
@@ -9,27 +12,6 @@ const menu = [['dashboard', 'Tổng quan'], ['proposals-list', 'Đề xuất đ�
 const date = value => value ? new Date(value).toLocaleString('vi-VN') : '—';
 const status = value => ({ PENDING: 'Chờ duyệt', APPROVED: 'Đã duyệt', REJECTED: 'Từ chối', TODO: 'Chưa làm', INPROGRESS: 'Đang làm', DONE: 'Hoàn thành', SUBMITTED: 'Đã nộp', VALIDATED: 'Hợp lệ', PROPOSED: 'Đề xuất' }[String(value).toUpperCase()] || value || '—');
 const link = (page, id) => `/student/${page}?projectId=${encodeURIComponent(id)}`;
-
-function useResource(path) {
-  const [state, setState] = useState({ loading: true, data: null, error: '' });
-  const [revision, setRevision] = useState(0);
-  const reload = useCallback(() => setRevision(value => value + 1), []);
-  useEffect(() => {
-    const controller = new AbortController();
-    setState({ loading: true, data: null, error: '' });
-    api(path, { signal: controller.signal }).then(data => {
-      if (!controller.signal.aborted) setState({ loading: false, data, error: '' });
-    }).catch(error => { if (!controller.signal.aborted) setState({ loading: false, data: null, error: error.message }); });
-    return () => controller.abort();
-  }, [path, revision]);
-  return { ...state, reload };
-}
-
-function Resource({ resource, children }) {
-  if (resource.loading) return <p role="status">Đang tải dữ liệu…</p>;
-  if (resource.error) return <div role="alert" className="alert alert-danger">{resource.error} <button className="btn btn-outline-danger" onClick={resource.reload}>Thử lại</button></div>;
-  return children(resource.data);
-}
 
 function Download({ path }) {
   const [error, setError] = useState('');
@@ -142,7 +124,7 @@ function Grades({ projectId }) {
 }
 function Schedule() {
   const resource = useResource('/api/student/schedule');
-  return <Resource resource={resource}>{rows => <DataTable rows={rows.map(e => ({ ...e, id: `${e.kind}-${e.id}` }))} columns={[{ key: 'title', label: 'Nội dung' }, { key: 'kind', label: 'Loại', render: e => e.kind === 'defense' ? 'Bảo vệ' : 'Họp nhóm' }, { key: 'startTime', label: 'Bắt đầu', render: e => date(e.startTime) }, { key: 'endTime', label: 'Kết thúc', render: e => date(e.endTime) }, { key: 'location', label: 'Địa điểm', render: e => /^https?:\/\//i.test(e.location) ? <a href={e.location} target="_blank" rel="noreferrer">Tham gia cuộc họp</a> : e.location }]} />}</Resource>;
+  return <Resource resource={resource}>{rows => <><CalendarView events={rows} /><DataTable rows={rows.map(e => ({ ...e, id: `${e.kind}-${e.id}` }))} columns={[{ key: 'title', label: 'Nội dung' }, { key: 'kind', label: 'Loại', render: e => e.kind === 'defense' ? 'Bảo vệ' : 'Họp nhóm' }, { key: 'startTime', label: 'Bắt đầu', render: e => date(e.startTime) }, { key: 'endTime', label: 'Kết thúc', render: e => date(e.endTime) }, { key: 'location', label: 'Địa điểm', render: e => /^https?:\/\//i.test(e.location) ? <a href={e.location} target="_blank" rel="noreferrer">Tham gia cuộc họp</a> : e.location }]} /></>}</Resource>;
 }
 function Notifications({ id }) {
   const resource = useResource('/api/Notifications');

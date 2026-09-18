@@ -64,7 +64,7 @@ namespace EduProject_TADProgrammer.Services
                 Semester = t.Project.Course.Semester.Name,
                 StartDate = t.CreatedAt,
                 DueDate = t.Deadline,
-                Status = t.Status == "DONE" ? "Đã hoàn thành" : t.Deadline < DateTime.UtcNow ? "Quá hạn" : "Chưa hoàn thành"
+                Status = t.Status.ToUpper().Replace("INPROGRESS", "IN_PROGRESS")
             }).ToListAsync();
         }
 
@@ -124,53 +124,15 @@ namespace EduProject_TADProgrammer.Services
                 Semester = project.Course?.Semester?.Name ?? "Không rõ học kỳ",
                 StartDate = task.CreatedAt,
                 DueDate = task.Deadline,
-                Status = "Chưa hoàn thành"
+                Status = "TODO"
             };
         }
 
         // Phương thức gửi email
         private async System.Threading.Tasks.Task SendEmailToStudents(ICollection<User> students, Entities.Task task)
         {
-            var smtpHost = _configuration["Smtp:Host"];
-            var smtpPort = int.Parse(_configuration["Smtp:Port"]);
-            var smtpUsername = _configuration["Smtp:Username"];
-            var smtpPassword = _configuration["Smtp:Password"];
-
-            using var smtpClient = new SmtpClient(smtpHost)
-            {
-                Port = smtpPort,
-                Credentials = new System.Net.NetworkCredential(smtpUsername, smtpPassword),
-                EnableSsl = true,
-            };
-
-            var course = await _context.Courses
-                .Include(c => c.Semester)
-                .FirstOrDefaultAsync(c => c.Id == task.Project.CourseId);
-
             foreach (var student in students)
-            {
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(smtpUsername, "HUTECH EduProject"),
-                    Subject = $"Thông báo: Công việc mới cho đồ án {task.Project.ProjectCode}",
-                    Body = $@"
-                        <h3>Thông báo từ HUTECH EduProject</h3>
-                        <p>Xin chào {student.FullName},</p>
-                        <p>Một công việc mới đã được giao cho nhóm của bạn trong môn học <strong>{course.Name}</strong> (Học kỳ: {course.Semester.Name}):</p>
-                        <ul>
-                            <li><strong>Công việc:</strong> {task.Title}</li>
-                            <li><strong>Thời gian bắt đầu:</strong> {task.CreatedAt:dd/MM/yyyy}</li>
-                            <li><strong>Thời hạn:</strong> {task.Deadline:dd/MM/yyyy}</li>
-                        </ul>
-                        <p>Vui lòng hoàn thành đúng hạn. Liên hệ giảng viên hướng dẫn nếu cần hỗ trợ!</p>
-                        <p>Trân trọng,<br>Đội ngũ HUTECH EduProject</p>",
-                    IsBodyHtml = true,
-                };
-
-                mailMessage.To.Add(student.Email);
-
-                await smtpClient.SendMailAsync(mailMessage);
-            }
+                await AcademicEmailService.TrySendAsync(_context, _configuration, student.Email, "Nhiệm vụ mới", $"Nhiệm vụ: {task.Title}. Hạn nộp: {task.Deadline:dd/MM/yyyy HH:mm} UTC.");
         }
 
         // Cập nhật công việc
@@ -189,7 +151,8 @@ namespace EduProject_TADProgrammer.Services
             // Cập nhật thông tin
             task.Title = updateTaskDto.TaskDescription;
             task.Deadline = updateTaskDto.DueDate;
-            task.Status = updateTaskDto.Status == "Đã hoàn thành" ? "Done" : "Todo";
+            task.Status = updateTaskDto.Status?.ToUpperInvariant() switch { "DONE" or "ĐÃ HOÀN THÀNH" => "DONE", "TODO" or "CHƯA HOÀN THÀNH" or "QUÁ HẠN" => "TODO", "IN_PROGRESS" or "INPROGRESS" => "IN_PROGRESS", _ => throw new ArgumentException("Trạng thái nhiệm vụ không hợp lệ.") };
+            task.Description = updateTaskDto.TaskDescription;
 
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();

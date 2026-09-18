@@ -12,7 +12,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_dashboard.html",
@@ -27,7 +28,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": true
+    "native": true,
+    "component": "src/pages/admin/AdminDashboard.js"
   },
   {
     "source": "admin/admin_grading.html",
@@ -40,7 +42,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_lecturers.html",
@@ -53,7 +56,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_logs.html",
@@ -66,7 +70,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_notifications.html",
@@ -79,7 +84,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_projects.html",
@@ -94,7 +100,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_reports.html",
@@ -107,7 +114,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_semesters.html",
@@ -120,7 +128,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_settings.html",
@@ -133,7 +142,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_students.html",
@@ -146,7 +156,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "admin/admin_users.html",
@@ -159,7 +170,8 @@
       "/assets/static/css/styles_admin.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/admin/AdminWorkspace.jsx"
   },
   {
     "source": "error/404.html",
@@ -172,7 +184,8 @@
     ],
     "links": [],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/error/NotFound.jsx"
   },
   {
     "source": "head/google_meet.html",
@@ -187,7 +200,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_assign.html",
@@ -202,7 +216,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_course_assign.html",
@@ -215,7 +230,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_course_list.html",
@@ -230,7 +246,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_dashboard.html",
@@ -243,7 +260,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_defense.html",
@@ -256,7 +274,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_defense_add.html",
@@ -269,7 +288,8 @@
     ],
     "links": [],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_defense_edit.html",
@@ -284,7 +304,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_defense_list.html",
@@ -297,7 +318,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_grade_criteria.html",
@@ -312,7 +334,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_grading.html",
@@ -325,7 +348,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_grading_courses.html",
@@ -338,7 +362,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_grading_details.html",
@@ -353,7 +378,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_group_details.html",
@@ -367,7 +393,8 @@
       "/assets/static/css/styles_head_lecturer_group_details.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_lecturer_assign.html",
@@ -380,7 +407,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_lecturer_details.html",
@@ -393,7 +421,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_progress.html",
@@ -406,7 +435,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_progress_courses.html",
@@ -419,7 +449,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "head/head_progress_details.html",
@@ -434,7 +465,8 @@
       "/assets/static/css/styles_head.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/head/HeadWorkspace.jsx"
   },
   {
     "source": "index.html",
@@ -449,7 +481,8 @@
       "/assets/static/css/styles_index.css"
     ],
     "bodyClass": "",
-    "native": true
+    "native": true,
+    "component": "src/pages/index/Home.js"
   },
   {
     "source": "lecturer/lecturer_approval.html",
@@ -462,7 +495,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_courses.html",
@@ -475,7 +509,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_course_approvals.html",
@@ -488,7 +523,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_course_feedback.html",
@@ -501,7 +537,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_course_groups.html",
@@ -514,7 +551,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_course_resources.html",
@@ -527,7 +565,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_course_reviews.html",
@@ -540,7 +579,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_dashboard.html",
@@ -553,7 +593,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_feedback.html",
@@ -566,7 +607,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_feedback_detail.html",
@@ -581,7 +623,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_final_review.html",
@@ -596,7 +639,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_groups.html",
@@ -609,7 +653,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_projects.html",
@@ -622,7 +667,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_project_progress.html",
@@ -637,7 +683,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_project_review.html",
@@ -652,7 +699,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_resources.html",
@@ -667,7 +715,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "lecturer/lecturer_tasks.html",
@@ -680,7 +729,8 @@
       "/assets/static/css/styles_lecturer.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/lecturer/LecturerWorkspace.jsx"
   },
   {
     "source": "login/login.html",
@@ -695,7 +745,8 @@
       "/assets/static/css/styles_login.css"
     ],
     "bodyClass": "",
-    "native": true
+    "native": true,
+    "component": "src/pages/login/LoginForm.js"
   },
   {
     "source": "student/notifications_list.html",
@@ -708,7 +759,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/notification_detail.html",
@@ -721,7 +773,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_dashboard.html",
@@ -734,7 +787,8 @@
       "/assets/static/css/styles_student.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_grades_detail.html",
@@ -747,7 +801,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_grades_list.html",
@@ -760,7 +815,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_grades_week.html",
@@ -773,7 +829,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_history_submissions_list.html",
@@ -786,7 +843,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_history_submissions_overview.html",
@@ -799,7 +857,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_proposals_create.html",
@@ -812,7 +871,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_proposals_detail.html",
@@ -825,7 +885,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_proposals_list.html",
@@ -838,7 +899,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_schedule.html",
@@ -851,7 +913,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_submissions.html",
@@ -864,7 +927,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_submissions_list.html",
@@ -877,7 +941,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_submissions_week.html",
@@ -890,7 +955,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_tracking_details.html",
@@ -903,7 +969,8 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   },
   {
     "source": "student/student_tracking_list.html",
@@ -916,6 +983,7 @@
       "/assets/student/styles.css"
     ],
     "bodyClass": "",
-    "native": false
+    "native": true,
+    "component": "src/screens/student/StudentWorkspace.jsx"
   }
 ]

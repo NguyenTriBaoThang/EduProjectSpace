@@ -244,10 +244,7 @@ namespace EduProject_TADProgrammer.Services
             notification.Content = notificationDto.Content;
             notification.Status = notificationDto.Status ?? "PENDING";
             notification.Type = notificationDto.Type ?? "Web";
-            notification.RecipientType = notificationDto.RecipientType;
-            notification.UserId = (long)notificationDto.UserId;
-            notification.GroupId = notificationDto.GroupId;
-            notification.CreatedAt = DateTime.UtcNow;
+            // Editing content must not transfer a delivered notification to another recipient.
 
             _context.Notifications.Update(notification);
             await _context.SaveChangesAsync();
@@ -322,7 +319,7 @@ namespace EduProject_TADProgrammer.Services
         public async Task<List<UserNotificationDto>> GetUsersByRoleAsync(int roleId)
         {
             return await _context.Users
-                .Where(u => u.RoleId == roleId)
+                .Where(u => roleId == 0 || u.RoleId == roleId)
                 .Select(u => new UserNotificationDto
                 {
                     Id = u.Id,

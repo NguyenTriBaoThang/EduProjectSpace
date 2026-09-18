@@ -39,7 +39,7 @@ namespace EduProject_TADProgrammer.Services
                     Semester = lc.Course.Semester != null ? lc.Course.Semester.Name : "Chưa xác định",
                     FacultyCode = lc.Course.Department != null ? lc.Course.Department.FacultyCode : "Chưa xác định",
                     ProjectCount = lc.Course.Projects.Count,
-                    ReviewedCount = lc.Course.Projects.Count(p => p.Grades.Any(g => g.Score > 0))
+                    ReviewedCount = lc.Course.Projects.Count(p => p.Grades.Any())
                 })
                 .ToListAsync();
         }
@@ -149,7 +149,7 @@ namespace EduProject_TADProgrammer.Services
 
             bool isFullyReviewed = studentGrades.All(sg =>
                 !sg.HasPendingAppeal &&
-                sg.CriteriaGrades.All(cg => cg.Score > 0));
+                sg.CriteriaGrades.All(cg => cg.Score.HasValue));
 
             return new ProjectLecturerReviewDto
             {
@@ -201,10 +201,12 @@ namespace EduProject_TADProgrammer.Services
             var criteria = project.Course.GradeCriteria?.ToList() ?? new List<GradeCriteria>();
             var studentIds = project.Group?.GroupMembers.Select(gm => gm.StudentId).ToList() ?? new List<long>();
 
+            if (criteria.Count == 0 || saveGradesDto.StudentGrades.Count == 0 || saveGradesDto.StudentGrades.Select(sg => sg.StudentId).Distinct().Count() != saveGradesDto.StudentGrades.Count)
+                throw new ValidationException("Danh sách sinh viên trống hoặc trùng lặp.");
             if (saveGradesDto.StudentGrades.Any(sg => !studentIds.Contains(sg.StudentId)))
                 throw new ValidationException("Có sinh viên không thuộc nhóm");
             if (saveGradesDto.StudentGrades.Any(sg => sg.CriteriaGrades.Count != criteria.Count ||
-                sg.CriteriaGrades.Any(cg => !criteria.Any(c => c.Id == cg.CriteriaId))))
+                sg.CriteriaGrades.Select(cg => cg.CriteriaId).Distinct().Count() != criteria.Count || sg.CriteriaGrades.Any(cg => cg.Score < 0 || cg.Score > 10 || !criteria.Any(c => c.Id == cg.CriteriaId))))
                 throw new ValidationException("Danh sách tiêu chí không hợp lệ");
 
             foreach (var studentGrade in saveGradesDto.StudentGrades)
@@ -218,7 +220,8 @@ namespace EduProject_TADProgrammer.Services
 
                 int versionNumber = await _context.GradeVersions
                     .Where(gv => gv.Grade.ProjectId == project.Id && gv.Grade.StudentId == studentGrade.StudentId)
-                    .CountAsync() + 1;
+                    .Select(gv => (int?)gv.VersionNumber).MaxAsync() ?? 0;
+                versionNumber++;
 
                 string versionComment = string.IsNullOrEmpty(studentGrade.Comment)
                     ? $"Phiên bản lần {versionNumber} (Chưa được duyệt)"
@@ -236,7 +239,7 @@ namespace EduProject_TADProgrammer.Services
                     }
                     else
                     {
-                        _context.Grades.Add(new Grade
+                        existingGrade = new Grade
                         {
                             ProjectId = project.Id,
                             GroupId = project.GroupId,
@@ -246,16 +249,13 @@ namespace EduProject_TADProgrammer.Services
                             Comment = studentGrade.Comment,
                             GradedAt = DateTime.UtcNow,
                             GradedBy = lecturerId
-                        });
+                        };
+                        _context.Grades.Add(existingGrade);
                     }
 
                     _context.GradeVersions.Add(new GradeVersion
                     {
-                        GradeId = existingGrade?.Id ?? (_context.Grades
-                            .Where(g => g.ProjectId == project.Id && g.StudentId == studentGrade.StudentId && g.CriteriaId == criteriaGrade.CriteriaId)
-                            .OrderByDescending(g => g.Id)
-                            .Select(g => g.Id)
-                            .FirstOrDefault()),
+                        Grade = existingGrade,
                         Score = (float)criteriaGrade.Score,
                         Comment = versionComment,
                         VersionNumber = versionNumber,
@@ -264,72 +264,13 @@ namespace EduProject_TADProgrammer.Services
                 }
 
                 // Gửi email thông báo điểm
-                await SendGradeNotificationEmail(student, project, studentGrade, criteria);
+                _context.Notifications.Add(new Notification { UserId = student.Id, Title = "Điểm đồ án đã được cập nhật", Content = $"Đồ án: {project.Title}. Vui lòng xem điểm và nhận xét trong hệ thống.", Type = "Web", Status = "SENT", RecipientType = "user" });
             }
 
             await _context.SaveChangesAsync();
-        }
-
-        private async System.Threading.Tasks.Task SendGradeNotificationEmail(User student, Project project, StudentGradeInputLecturerReviewDto studentGrade, List<GradeCriteria> criteria)
-        {
-            if (string.IsNullOrEmpty(student.Email)) return;
-
-            var smtpHost = _configuration["Smtp:Host"];
-            var smtpPort = int.Parse(_configuration["Smtp:Port"]);
-            var smtpUsername = _configuration["Smtp:Username"];
-            var smtpPassword = _configuration["Smtp:Password"];
-
-            using var smtpClient = new SmtpClient(smtpHost)
-            {
-                Port = smtpPort,
-                Credentials = new NetworkCredential(smtpUsername, smtpPassword),
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network
-            };
-
-            // Lấy Semester nếu chưa được tải
-            if (project.Course.Semester == null)
-            {
-                project.Course = await _context.Courses
-                    .Include(c => c.Semester)
-                    .FirstOrDefaultAsync(c => c.Id == project.Course.Id) ?? project.Course;
-            }
-
-            var semesterName = project.Course.Semester?.Name ?? "Chưa xác định";
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(smtpUsername, "HUTECH EduProject"),
-                Subject = $"Thông báo điểm đồ án {project.Title} (Chưa được duyệt)",
-                Body = $@"
-                    <h3>Thông báo điểm đồ án</h3>
-                    <p>Xin chào {student.FullName},</p>
-                    <p>Điểm đánh giá cho đồ án <strong>{project.Title}</strong> (Mã đồ án: {project.ProjectCode}, Môn học: {project.Course.Name}, Học kỳ: {semesterName}) đã được giảng viên hướng dẫn chấm. Lưu ý: Điểm này <strong>chưa được duyệt</strong> và cần được Trưởng bộ môn phê duyệt để chính thức.</p>
-                    <h4>Chi tiết điểm:</h4>
-                    <ul>
-                        {string.Join("", studentGrade.CriteriaGrades.Select(cg =>
-                {
-                    var criterion = criteria.FirstOrDefault(c => c.Id == cg.CriteriaId);
-                    return $"<li>{criterion?.Name ?? "Unknown"}: {cg.Score:F2} (Trọng số: {(criterion?.Weight * 100):F0}%)</li>";
-                }))}
-                    </ul>
-                    <p><strong>Tổng điểm:</strong> {studentGrade.CriteriaGrades.Sum(cg => (float)cg.Score * (criteria.FirstOrDefault(c => c.Id == cg.CriteriaId)?.Weight ?? 0)):F2}</p>
-                    <p><strong>Nhận xét:</strong> {studentGrade.Comment ?? "Không có nhận xét"}</p>
-                    <p><strong>Trạng thái:</strong> Chưa được duyệt</p>
-                    <p>Thời gian: {DateTime.Now:dd/MM/yyyy HH:mm} (Giờ Việt Nam)</p>
-                    <p>Vui lòng kiểm tra hệ thống để biết thêm chi tiết hoặc liên hệ giảng viên hướng dẫn nếu có thắc mắc.</p>
-                    <p>Trân trọng,<br>Hệ thống Sinh viên HUTECH - Team TAD Programmer</p>",
-                IsBodyHtml = true
-            };
-            mailMessage.To.Add(student.Email);
-
-            try
-            {
-                await smtpClient.SendMailAsync(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi gửi email cho {student.Email}: {ex.Message}");
+            foreach (var studentGrade in saveGradesDto.StudentGrades) {
+                var student = await _context.Users.FindAsync(studentGrade.StudentId);
+                await AcademicEmailService.TrySendAsync(_context, _configuration, student?.Email, "Điểm đồ án đã được cập nhật", $"Đồ án: {project.Title}. Vui lòng xem điểm và nhận xét trong hệ thống.");
             }
         }
 

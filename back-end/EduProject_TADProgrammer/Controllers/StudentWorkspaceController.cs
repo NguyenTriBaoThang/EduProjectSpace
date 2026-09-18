@@ -14,7 +14,7 @@ namespace EduProject_TADProgrammer.Controllers;
 public sealed class StudentWorkspaceController(ApplicationDbContext db, IWebHostEnvironment environment) : ControllerBase
 {
     private long StudentId => long.TryParse(User.FindFirst("id")?.Value, out var id) ? id : 0;
-    private IQueryable<GroupMember> Memberships => db.GroupMembers.Where(m => m.StudentId == StudentId && StudentId > 0);
+    private IQueryable<GroupMember> Memberships => db.GroupMembers.Where(m => m.StudentId == StudentId && StudentId > 0 && !m.Student.Locked);
     private IQueryable<Project> Projects => db.Projects.Where(p => Memberships.Any(m => m.GroupId == p.GroupId && m.Group.ProjectId == p.Id));
     private IQueryable<Submission> Submissions => db.Submissions.Where(s => Projects.Any(p => p.Id == s.ProjectId && p.GroupId == s.GroupId));
 

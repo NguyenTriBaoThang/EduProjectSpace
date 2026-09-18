@@ -19,24 +19,10 @@ namespace EduProject_TADProgrammer.Services
         // Lấy tổng quan số liệu
         public async Task<object> GetDashboardSummary(long userId)
         {
-            var now = DateTime.UtcNow; // 06:00 PM +07, Sunday, May 18, 2025
-
-            // Đếm số đề tài đã có giáo viên hướng dẫn (ROLE_LECTURER_GUIDE)
-            var projectCount = await _context.Projects
-                .Include(p => p.Group.Lecturer)
-                .CountAsync(p => p.Group.Lecturer != null && p.Group.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE");
-
-            // Đếm số đề tài đã có giáo viên hướng dẫn và đã được duyệt
-            var approvedProjects = await _context.Projects
-                .Include(p => p.Group.Lecturer)
-                .CountAsync(p => p.Group.Lecturer != null && p.Group.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE" &&
-                               (p.Status == "APPROVED" || p.Status == "GRADED"));
-
-            // Đếm số đề tài đã có giáo viên hướng dẫn nhưng chưa được duyệt
-            var pendingProjects = await _context.Projects
-                .Include(p => p.Group.Lecturer)
-                .CountAsync(p => p.Group.Lecturer != null && p.Group.Lecturer.Role.Name == "ROLE_LECTURER_GUIDE" &&
-                               p.Status == "PENDING");
+            var projects = _context.Projects.Where(p => _context.Users.Any(u => u.Id == userId && u.DepartmentId != null && u.DepartmentId == p.Course.DepartmentId));
+            var projectCount = await projects.CountAsync();
+            var approvedProjects = await projects.CountAsync(p => p.ApprovalStatus == "APPROVED");
+            var pendingProjects = await projects.CountAsync(p => p.ApprovalStatus == "PENDING");
 
             return new
             {

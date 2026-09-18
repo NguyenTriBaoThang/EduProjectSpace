@@ -22,7 +22,7 @@ export async function api(path, { body, ...options } = {}) {
       window.dispatchEvent(new Event('session-expired'));
     }
     const validation = data?.errors && Object.values(data.errors).flat().join(' ');
-    throw new ApiError(data?.message || validation || (response.status === 403 ? 'Bạn không có quyền thực hiện thao tác này.' : response.status === 404 ? 'Không tìm thấy dữ liệu hoặc bạn không có quyền truy cập.' : 'Không thể xử lý yêu cầu. Vui lòng thử lại.'), response.status);
+    throw new ApiError(data?.message || validation || (response.status < 500 && typeof data === 'string' ? data : '') || (response.status === 403 ? 'Bạn không có quyền thực hiện thao tác này.' : response.status === 404 ? 'Không tìm thấy dữ liệu hoặc bạn không có quyền truy cập.' : 'Không thể xử lý yêu cầu. Vui lòng thử lại.'), response.status);
   }
   return data;
 }

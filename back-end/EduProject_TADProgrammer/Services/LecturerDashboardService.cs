@@ -34,10 +34,10 @@ namespace EduProject_TADProgrammer.Services
                 var projectCount = projects.Count;
 
                 // Đếm số đề tài đã duyệt (APPROVED hoặc GRADED)
-                var approvedProjects = projects.Count(p => p.Status == "APPROVED");
+                var approvedProjects = projects.Count(p => p.ApprovalStatus == "APPROVED");
 
                 // Đếm số đề tài chờ duyệt (PENDING)
-                var pendingProjects = projects.Count(p => p.Status == "PENDING");
+                var pendingProjects = projects.Count(p => p.ApprovalStatus == "PENDING");
 
                 var notification = await _context.Notifications
                     .Where(n => n.UserId == lecturerId).ToArrayAsync();

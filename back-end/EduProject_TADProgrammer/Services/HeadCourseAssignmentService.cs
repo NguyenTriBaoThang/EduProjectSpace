@@ -190,11 +190,13 @@ namespace EduProject_TADProgrammer.Services
                 for (int j = 0; j < count && index < unassignedStudents.Count; j++)
                 {
                     unassignedStudents[index].LecturerId = lecturers[i].Id;
-                    await SendAssignmentEmail(unassignedStudents[index].Student, lecturers[i], course);
+                    
                     index++;
                 }
             }
             await _context.SaveChangesAsync();
+            foreach (var assigned in unassignedStudents)
+                await SendAssignmentEmail(assigned.Student, lecturers.Single(l => l.Id == assigned.LecturerId), course);
         }
 
         public async System.Threading.Tasks.Task ImportAssignmentsAsync(IFormFile file, long courseId)
@@ -208,6 +210,7 @@ namespace EduProject_TADProgrammer.Services
                 .FirstOrDefaultAsync(u => u.Role.Name == "ROLE_HEAD" && u.DepartmentId == course.DepartmentId);
             if (headLecturer == null) throw new Exception("Bạn không có quyền phân công môn học này.");
 
+            var deliveries = new List<(User Student, User Lecturer)>();
             using var stream = new MemoryStream();
             await file.CopyToAsync(stream);
             using var package = new ExcelPackage(stream);
@@ -233,59 +236,16 @@ namespace EduProject_TADProgrammer.Services
                 if (studentCourse != null)
                 {
                     studentCourse.LecturerId = lecturer.Id;
-                    await SendAssignmentEmail(studentCourse.Student, lecturer, course);
+                    deliveries.Add((studentCourse.Student, lecturer));
                 }
             }
             await _context.SaveChangesAsync();
+            foreach (var delivery in deliveries) await SendAssignmentEmail(delivery.Student, delivery.Lecturer, course);
         }
 
         private async System.Threading.Tasks.Task SendAssignmentEmail(User student, User lecturer, Course course)
         {
-            var smtpHost = _configuration["Smtp:Host"];
-            var smtpPort = int.Parse(_configuration["Smtp:Port"]);
-            var smtpUsername = _configuration["Smtp:Username"];
-            var smtpPassword = _configuration["Smtp:Password"];
-
-            using var smtpClient = new SmtpClient(smtpHost)
-            {
-                Port = smtpPort,
-                Credentials = new System.Net.NetworkCredential(smtpUsername, smtpPassword),
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network
-            };
-
-            // Lấy Semester nếu chưa được tải (nếu cần)
-            if (course.Semester == null)
-            {
-                course = await _context.Courses
-                    .Include(c => c.Semester)
-                    .FirstOrDefaultAsync(c => c.Id == course.Id) ?? course;
-            }
-
-            var semesterName = course.Semester?.Name ?? "Chưa xác định";
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(smtpUsername, "HUTECH EduProject"),
-                Subject = "Thông báo phân công giảng viên hướng dẫn",
-                Body = $@"
-                    <h3>Thông báo từ HUTECH EduProject</h3>
-                    <p>Xin chào {student.FullName},</p>
-                    <p>Bạn đã được phân công giảng viên hướng dẫn <strong>{lecturer.FullName}</strong> cho môn học <strong>{course.Name}</strong> (Mã: {course.CourseCode}) - Học kỳ: {semesterName}.</p>
-                    <p>Thông tin chi tiết:</p>
-                    <ul>
-                        <li><strong>Môn học:</strong> {course.Name}</li>
-                        <li><strong>Mã môn học:</strong> {course.CourseCode}</li>
-                        <li><strong>Giảng viên hướng dẫn:</strong> {lecturer.FullName}</li>
-                        <li><strong>Học kỳ:</strong> {semesterName}</li>
-                    </ul>
-                    <p>Thời gian: {DateTime.Now:dd/MM/yyyy HH:mm} (Giờ Việt Nam)</p>
-                    <p>Trân trọng,<br>Đội ngũ HUTECH - Team TAD Programmer</p>",
-                        IsBodyHtml = true
-            };
-            mailMessage.To.Add(student.Email);
-
-            await smtpClient.SendMailAsync(mailMessage);
+            await AcademicEmailService.TrySendAsync(_context, _configuration, student.Email, "Phân công giảng viên hướng dẫn", $"Học phần: {course.Name}. Giảng viên hướng dẫn: {lecturer.FullName}.");
         }
     }
 }
